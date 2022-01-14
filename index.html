@@ -33,13 +33,13 @@
                 <div id="areaPhone">
                   <div class="mb-3 relative">
                     <label for="phoneNumber" class="form-label">EMail Id / Mobile Number</label>
-                    <input type="text" class="form-control user" id="phoneNumber" placeholder="Enter Your EMail Id / Mobile Number Here" title="+919908XXXXXX">
+                    <input type="text" class="form-control user" id="phoneNumber" placeholder="Enter Your EMail Id / Mobile Number Here" title="+919908XXXXXX" tabindex="1">
                   </div>
                   <div class="mb-3 relative">
-                    <input type="checkbox" class="form-check-input" id="remember">
+                    <input type="checkbox" class="form-check-input" id="remember" tabindex="3">
                     <label for="remember" class="form-label">Remember Me</label>
                   </div>
-                  <a class="login-btn" onClick="submitPhoneNumberAuth()" href="#">Get OTP<!--<input type="submit" value="Get OTP" >--></a>
+                  <a class="login-btn" onClick="submitPhoneNumberAuth()" href="#" tabindex="2">Get OTP<!--<input type="submit" value="Get OTP" >--></a>
                   <div class="mb-4 mt-4 relative or">
                     <p>OR</p>
                   </div>
@@ -154,25 +154,33 @@
         .signInWithPhoneNumber(phoneNumber, appVerifier)
         .then(function(confirmationResult) {
           console.log("confirmationResult", confirmationResult);
+          toastr.info("Enter One Time Password(OTP)");
           window.confirmationResult = confirmationResult;
           $("#areaPhone").hide();
           $("#areaCode").show();
-        })
-        .catch(function(error) {
+          $("#o1").focus();
+        }).catch(function(error) {
+          if(error.code === "auth/invalid-phone-number") {
+            toastr.error("Server Response: " + error.message);
+            return false; 
+          }
+          toastr.info("Enter One Time Password(OTP)");
           console.log(error);
-          toastr.error("Server Response: " + error.message);
           $("#areaPhone").hide();
           $("#areaCode").show();
+          $("#o1").focus();
         });
     } else {
       if(phoneNumber.match(pattern) == null) {
         toastr.error("Error: Invalid Number");
         document.getElementById("phoneNumber").focus();
       } else {
-        $("#areaPhone").hide();
-        $("#areaCode").show();
+        toastr.info("Enter One Time Password(OTP)");
         localStorage.setItem("auth_type", "mail");
         localStorage.setItem("auth_user", phoneNumber);
+        $("#areaPhone").hide();
+        $("#areaCode").show();
+        $("#o1").focus();
       }
     }
   }

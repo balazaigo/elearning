@@ -47,44 +47,44 @@
     >
       <nav class="animated bounceInDown">
         <div class="dashlogo">
-          <a href="#" class="my-2 mb-4"
-            ><img src="../assets/images/logo.svg" alt="" />
+          <a href="./" class="my-2 mb-4"
+            ><img src="../assets/images/logo.svg" alt="Exper" />
           </a>
         </div>
         <ul class="text-white w-100 pt-4">
           <li>
             <a href="#" data-flinkto="dashboard"
-              ><img class="menuicon" src="../assets/images/dash.svg" />
+              ><img class="menuicon" src="../assets/images/dash.svg" alt="Dashboard" />
               <span class="mx-2" data-flinkto="dashboard">Dashboard</span></a
             >
           </li>
           <li>
             <a href="#" data-flinkto="roles"
-              ><img class="menuicon" src="../assets/images/roles.svg" />
+              ><img class="menuicon" src="../assets/images/roles.svg" alt="roles" />
               <span class="mx-2" data-flinkto="roles">Roles</span></a
             >
           </li>
           <li>
             <a href="#" data-flinkto="courses"
-              ><img class="menuicon" src="../assets/images/course.svg" />
+              ><img class="menuicon" src="../assets/images/course.svg" alt="course" />
               <span class="mx-2" data-flinkto="courses">Courses</span></a
             >
           </li>
           <li>
             <a href="#" data-flinkto="task"
-              ><img class="menuicon" src="../assets/images/task.svg" />
+              ><img class="menuicon" src="../assets/images/task.svg" alt="task" />
               <span class="mx-2" data-flinkto="task">Task</span></a
             >
           </li>
           <li>
             <a href="#" data-flinkto="members"
-              ><img class="menuicon" src="../assets/images/roles.svg" />
+              ><img class="menuicon" src="../assets/images/roles.svg" alt="members" />
               <span class="mx-2" data-flinkto="members">Members</span></a
             >
           </li>
           <li class="sub-menu">
             <a href="#"
-              ><img class="menuicon" src="../assets/images/setting.svg" />
+              ><img class="menuicon" src="../assets/images/setting.svg" alt="settings" />
               <span class="mx-2">Settings</span>
               <div class="fa fa-caret-down right"></div>
             </a>
@@ -127,7 +127,7 @@
                   <div id="hidden-div">
                     <ul>
                       <li>
-                        <img src="../assets/images/user.png" />
+                        <img src="../assets/images/user.png" alt="users" />
                         <div class="ntext">
                           <h4>heading</h4>
                           <p>Manage your day</p>
@@ -234,5 +234,10 @@
     <script src="../assets/global/mcelib/jquery.tinymce.min.js"></script>
     <script src="../assets/global/mcelib/tinymce.min.js"></script>
     <script src="../assets/pages/course/course.js"></script>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        getDashboardPage();
+      });
+    </script>
   </body>
 </html>
