@@ -1,22 +1,7 @@
 //API_BASE_URL - Base URL for API
 const API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
-
-//SITE_URL_PROTOCOL - With protocol(http or https) in prefix
-let SITE_URL_PROTOCOL = window.location.protocol + "//" + window.location.hostname;
-if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
-	SITE_URL_PROTOCOL = "http://127.0.0.1:5501";
-}else if(SITE_URL_PROTOCOL === "http://94.177.203.98"){
-	SITE_URL_PROTOCOL = "http://94.177.203.98/exper-js-latest/";
-}else if(SITE_URL_PROTOCOL === "https://localhost"){
-	SITE_URL_PROTOCOL = "https://localhost/exper-js/";
-}else if(SITE_URL_PROTOCOL === "https://elearning.zaigoinfotech.com"){
-        SITE_URL_PROTOCOL = "https://elearning.zaigoinfotech.com/";
-}
-
-
-
+let SITE_URL_PROTOCOL = "https://localhost/elearning/";
 console.log(SITE_URL_PROTOCOL);
-
 /* Firebase */
 var firebaseConfig = {
   apiKey: "AIzaSyAdLTHIe9poMMrgL46G-NtUfSGRqkGvYN8",
