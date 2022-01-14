@@ -3227,3 +3227,19 @@ form#multiple {
 }
 
 /*************courses new css end****************/
+
+/* round button */
+.btn.dbtn {
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;  
+}
+
+.gridTaskID {
+  background-color: #72ca83 !important;
+  height: 24px;
+  line-height: 14px;
+  min-width: 55px;
+  font-weight: 400;
+  font-size: 13px;
+}

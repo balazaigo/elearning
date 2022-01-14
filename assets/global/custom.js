@@ -206,4 +206,3 @@ function selects() {
 }
 
 /**************select and deselect checkbox*************/
-
