@@ -113,6 +113,10 @@
     auth2.attachClickHandler(element, {}, function(googleUser) {
       console.log(googleUser.getBasicProfile());
       toastr.success("Welcome : " + googleUser.getBasicProfile().getEmail());
+      //validated the email from backend
+      localStorage.setItem("auth", 1);
+      localStorage.setItem("auth_type", "social");
+      localStorage.setItem("auth_user", googleUser.getBasicProfile().getEmail());
       setTimeout(function() {
         window.location.href = `${SITE_URL_PROTOCOL}admin/`;
       }, 2000);
@@ -135,9 +139,15 @@
     }
   );
   
+  function isLetter(str) {
+    str = str.toLowerCase();
+    return str.length === 1 && str.match(/[a-z]/i);
+  }
+
   function submitPhoneNumberAuth() {
+    let pattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i;
     var phoneNumber = document.getElementById("phoneNumber").value;
-    if(phoneNumber) {
+    if(phoneNumber && phoneNumber.match(pattern) == null) {
       var appVerifier = window.recaptchaVerifier;
       firebase
         .auth()
@@ -155,8 +165,15 @@
           $("#areaCode").show();
         });
     } else {
-      toastr.error("Error: Invalid Number");
-      document.getElementById("phoneNumber").focus();
+      if(phoneNumber.match(pattern) == null) {
+        toastr.error("Error: Invalid Number");
+        document.getElementById("phoneNumber").focus();
+      } else {
+        $("#areaPhone").hide();
+        $("#areaCode").show();
+        localStorage.setItem("auth_type", "mail");
+        localStorage.setItem("auth_user", phoneNumber);
+      }
     }
   }
   
@@ -170,12 +187,26 @@
       toastr.error("Error: Invalid OTP");
       return false;
     }
+    const auth_type = localStorage.getItem("auth_type");
+    if(auth_type === 'mail') {
+      const auth_user = localStorage.getItem("auth_user");
+      toastr.success("Welcome : " + auth_user);
+      localStorage.setItem("auth", 1);
+      setTimeout(function() {
+        window.location.href = `${SITE_URL_PROTOCOL}admin/`;
+      }, 2000);
+      return;
+    }
     confirmationResult
       .confirm(values)
       .then(function(result) {
         var user = result.user;
         console.log(user);
         toastr.success("Welcome : " + user.uid);
+        //Get the user.email from backend
+        localStorage.setItem("auth", 1);
+        localStorage.setItem("auth_type", "phone");
+        localStorage.setItem("auth_user", user.uid); //replace the uid with email address
         setTimeout(function() {
           window.location.href = `${SITE_URL_PROTOCOL}admin/`;
         }, 2000);
@@ -190,7 +221,7 @@
     if(first.value.length){
       document.getElementById(last).focus();
     }
-  }  
+  }
   
 </script>
 </body>
