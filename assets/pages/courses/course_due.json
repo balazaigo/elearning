@@ -1,0 +1,25 @@
+[
+	{
+	    "due_date": 31,
+	    "progress": "80",
+	    "course_id": "f4a4eba8-d595-47ff-81c2-836c6dffa418"
+	},
+
+	{
+	    "due_date": 23,
+	    "progress": "15",
+	    "course_id": "74379cab-e61b-4e1b-91c3-9958991c4e1e"
+	},
+
+	{
+	    "due_date": 15,
+	    "progress": "13",
+	    "course_id": "74379cab-e61b-4e1b-91c3-9958991c4e14"
+	},
+
+	{
+	    "due_date": 40,
+	    "progress": "0",
+	    "course_id": "74379cab-e61b-4e1b-91c3-9958991c4e17"
+	}
+]

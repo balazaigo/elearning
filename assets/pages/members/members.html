@@ -1,0 +1,373 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 title-head mb-3">
+      <div class="container-fluid p-0">
+        <div class="row">
+          <div class="col-md-6">
+            <h2> Members <dfn
+                data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."
+                ><i class="fas fa-info-circle"></i
+              ></dfn> </h2>
+          </div>
+          <div class="col-md-6 p-0 side-btn">
+            <ul>
+              <li> <span class="border-btn"
+                  ><a href="#addusers">
+                <button><i class="fas fa-plus"></i> Bulk Upload</button>
+                </a></span
+                > </li>
+              <li> <span class="orange-btn">
+                <button id="trigger-member-create-form"> <i class="fas fa-plus"></i> Add Member </button>
+                </span> </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row loader" id="member-loader"><span>Loading Members</span></div>
+  <div id="memberListContainer">
+    <div class="row">
+      <div class="col-12">
+        <div class="white-bg title-head p-3">
+          <div class="container-fluid p-0">
+            <div class="row">
+              <div class="col-lg-4 col-md-4">
+                <div class="searchbar">
+                  <h4> List of Members <dfn
+                      data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."
+                      ><i class="fas fa-info-circle"></i
+                    ></dfn> </h4>
+                </div>
+              </div>
+              <div class="col-lg-8 col-md-8 top-btn">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6">
+                    <div class="topsearch relative">
+                      <input
+                        class="form-control form-control-dark w-100"
+                        type="text"
+                        placeholder="Search Here"
+                        aria-label="Search"
+                      />
+                      <i class="fas fa-search"></i> </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3">
+                    <div class="dropdown-select">
+                      <select class="sort-select" id="member-role-list">
+                        <option value="" selected disabled>Select Role</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3">
+                    <div class="dropdown-select">
+                      <select class="sort-select">
+                        <option value="" selected disabled> Select Status </option>
+                        <option value="">Active</option>
+                        <option value="">InActive</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="whitebg col-md-12">
+        <div class="container-fluid p-0">
+          <div class="white-bg p-3 mt-3">
+            <div class="p-0">
+              <div class="table-section">
+                <table class="table table-bordered responsive">
+                  <thead>
+                    <tr>
+                      <th> <div class="form-check">
+                          <input
+                            class="form-check-input parentcheck"
+                            name="chk"
+                            type="checkbox"
+                            value=""
+                            id="myCheck"
+                            onclick="selects()"
+                          />
+                          <label class="form-check-label" for="myCheck"> </label>
+                        </div>
+                      </th>
+                      <th>S.No</th>
+                      <th>NAME</th>
+                      <th>EMAIL</th>
+                      <th>PHONE NO</th>
+                      <th>ROLE</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody id="memberListDataContainer">
+                    <!-- HTML snippet will be dynamically appended-->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pagination mt-5">
+    <div class="container-fluid p-0">
+      <div class="row">
+        <div class="col-md-6 align-left">
+          <ul>
+            <li class="previous"><a href="#">&lt;</a></li>
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li class="next"><a href="#">&gt;</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6 align-right">
+          <ul>
+            <li class="previous">Go to page</li>
+            <li>
+              <input type="text" />
+            </li>
+            <li class=""><a href="#">Go &gt;</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Member Create Form Start -->
+<div id="member-create-form-container" class="overlay">
+  <div class="popup">
+    <h4>Add New Member</h4>
+    <span class="cancel-member-create-form close" href="#">&times;</span>
+    <form class="pop-form" id="member-create-form">
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="topsearch relative">
+            <input
+              class="form-control form-control-dark w-100"
+              id="member-email"
+              name="email_id"
+              type="text"
+              autocomplete="off"
+              placeholder="Search by Email"
+              aria-label="Search"
+            />
+            <i class="fas fa-search"></i> </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <input
+            id="member-fName"
+            name="first_name"
+            type="name"
+            class="form-control"
+            placeholder="First Name"
+            disabled
+          />
+        </div>
+        <div class="col-md-6">
+          <input
+            id="member-lName"
+            name="last_name"
+            type="name"
+            class="form-control"
+            placeholder="Last Name"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <input
+            id="member-phoneNo"
+            name="phone_number"
+            type="number"
+            class="form-control"
+            placeholder="Phone No"
+            min="0"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="dropdown-select">
+            <select
+              class="form-control sort-select"
+              id="member-role"
+              name="roles_name"
+              disabled
+            >
+              <option value="" selected disabled>Select Role</option>
+              <!-- HTML snippet will be dynamically appended-->
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 pt-3 pb-3 wauto"> <span class="border-btn nbtn">
+          <button class="cancel-member-create-form" type="button"> Cancel </button>
+          </span> <span class="orange-btn nbtn">
+          <button id="save-member-create-form" type="submit">Save</button>
+          </span> </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Member Create Form End -->
+<div id="addusers" class="overlay">
+  <div class="popup defaultopen">
+    <h4>Bulk Upload Members</h4>
+    <a class="close" href="#">&times;</a>
+    <div class="col-lg-12 col-md-12 mt-3 mb-3">
+      <div class="dropdown-select">
+        <select id="" class="form-control sort-select">
+          <option value="Select Role">Select Role</option>
+          <option value="Select Role1">Select Role1</option>
+          <option value="Select Role2">Select Role2</option>
+          <option value="Select Role3">Select Role3</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-12 mb-3 buttonupload">
+        <div id="drop-zone" class="drop-zone">
+          <div id="clickHere"><i class="fas fa-plus"></i> Attach File 
+            <input type="file" name="file" id="file" multiple />
+          </div>          
+        </div>
+        <div id='filename'></div>
+    </div>
+    <div class="col-lg-12 col-md-12 mt-2 mb-2 text-right"> <span class="orange-btn nbtn"
+        ><a href="#">
+      <button>Save</button>
+      </a></span
+      > </div>
+  </div>
+</div>
+<div id="delete" class="overlay">
+  <div class="popup"> <a class="close" href="#">×</a>
+    <form method="get" class="pop-form">
+      <div class="row">
+        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" /> </div>
+        <div class="col-md-12 text-center mb-2">
+          <p>Are you sure you want to delete it</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 pt-3 pb-3 wauto text-center"> <span class="dborder-btn nbtn"
+            ><a href="#">
+          <button>Cancel</button>
+          </a></span
+          > <span class="danger-btn nbtn"
+            ><a href="#">
+          <button>Delete</button>
+          </a></span
+          > </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+$(function () {
+    var dropZoneId = "drop-zone";
+    var buttonId = "clickHere";
+    var mouseOverClass = "mouse-over";
+
+    var dropZone = $("#" + dropZoneId);
+    var ooleft = dropZone.offset().left;
+    var ooright = dropZone.outerWidth() + ooleft;
+    var ootop = dropZone.offset().top;
+    var oobottom = dropZone.outerHeight() + ootop;
+    var inputFile = dropZone.find("input");
+    document.getElementById(dropZoneId).addEventListener("dragover", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.addClass(mouseOverClass);
+        var x = e.pageX;
+        var y = e.pageY;
+
+        if (!(x < ooleft || x > ooright || y < ootop || y > oobottom)) {
+            inputFile.offset({
+                top: y - 15,
+                left: x - 100
+            });
+        } else {
+            inputFile.offset({
+                top: -400,
+                left: -400
+            });
+        }
+
+    }, true);
+
+    if (buttonId != "") {
+        var clickZone = $("#" + buttonId);
+
+        var oleft = clickZone.offset().left;
+        var oright = clickZone.outerWidth() + oleft;
+        var otop = clickZone.offset().top;
+        var obottom = clickZone.outerHeight() + otop;
+
+        $("#" + buttonId).mousemove(function (e) {
+            var x = e.pageX;
+            var y = e.pageY;
+            if (!(x < oleft || x > oright || y < otop || y > obottom)) {
+                inputFile.offset({
+                    top: y - 15,
+                    left: x - 160
+                });
+            } else {
+                inputFile.offset({
+                    top: -400,
+                    left: -400
+                });
+            }
+        });
+    }
+
+    document.getElementById(dropZoneId).addEventListener("drop", function (e) {
+        $("#" + dropZoneId).removeClass(mouseOverClass);
+    }, true);
+
+    inputFile.on('change', function (e) {
+        $('#filename').html("");
+        var fileNum = this.files.length,
+            initial = 0,
+            counter = 0;
+		var filenamenew = '';
+        for (initial; initial < fileNum; initial++) {
+            counter = counter + 1;
+			var filename = this.files[initial].name;
+			if(filename){
+			  console.log(filename);
+			  splitfilename = filename.split(".");
+			  console.log(filename);
+			  if(splitfilename[0]){
+				filenamenew = splitfilename[0].substring(0, 10);
+				filenamenew = filenamenew.replace(/[\/-]+/g, '');
+				//filenamenew.replace('-', '');
+				//filenamenew.replace('/','');
+				filenamenew = filenamenew +'.'+splitfilename[1];
+			  }
+			}
+			  
+			
+            $('#filename').append('<div class="fileuploads"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="" style="color:#FFF; font-size:12px; margin-top:2px;">'+ counter + '</strong></span> ' + filenamenew + '&nbsp;&nbsp;<span class="fa fa-times-circle fa-lg closeBtn" title="remove"></span><br></div>');
+        }
+    });
+	
+})
+$(document).on('click','.fa-lg.closeBtn',function(){
+		console.log('earwr');
+		$(this).parent('.fileuploads').remove();	
+});
+</script> 

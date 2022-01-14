@@ -1,0 +1,87 @@
+<div id="roles-one" class="container-fluid">
+  <div class="row">
+    <div class="col-12 title-head mb-3">
+      <h2>
+        Roles
+        <dfn
+          data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."
+          ><i class="fas fa-info-circle"></i
+        ></dfn>
+      </h2>
+      <span class="orange-btn nbtn">
+        <button id="trigger-role-create-form">Create Role</button>
+      </span>
+    </div>
+  </div>
+  <div class="row loader" id="role-loader"><span>Loading Roles</span></div>
+  <div class="row" id="rolebox">
+    <!-- HTML snippet will be dynamically appended-->
+  </div>
+</div>
+<!-- Role Create Form Start -->
+<div id="role-create-form-container" class="overlay">
+  <div class="popup pop-medium">
+    <h4 class="mb-3">Add New Role</h4>
+    <span class="close cancel-role-create-form">&times;</span>
+    <form class="pop-form" id="role-create-form">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <input
+            type="text"
+            id="role-name"
+            name="name"
+            class="form-control field-input"
+            placeholder="Role Name"
+          />
+        </div>
+        <div class="col-md-12 mb-3">
+          <textarea
+            class="form-control field-input"
+            id="role-description"
+            name="description"
+            rows="3"
+            placeholder="Role Description"
+          ></textarea>
+        </div>
+        <div class="col-md-12 mb-3">
+          <div class="dropdown-select">
+            <select
+              class="sort-select field-input"
+              name="level"
+              id="role-level"
+            >
+              <option selected disabled value="">Select Role Level</option>
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+              <option value="6">Level 6</option>
+              <option value="7">Level 7</option>
+              <option value="8">Level 8</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-12 mb-3">
+          <div class="role-rights">
+            <!-- HTML snippet will be dynamically appended-->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 pt-3 pb-3 wauto">
+          <span class="border-btn nbtn">
+            <button class="cancel-role-create-form" type="button">
+              Cancel
+            </button>
+          </span>
+          <span class="orange-btn nbtn">
+            <button id="save-role-create-form" type="submit">Save</button>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Role Create Form End -->
+

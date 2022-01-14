@@ -1,0 +1,100 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 title-head dash-head">
+      <h3>Hello, Ganesh Gopalan! </h3>
+      <p>Manage your day to day tasks with style! Enjoy a well built UI system</p>
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-12 title-head mb-2">
+      <h4>Tasks <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
+      <span class=" nbtn">
+      <p class="vmore"><a href="#">View All</a></p>
+      </span> </div>
+  </div>
+  <div class="white-bg col-md-12">
+    <div class="container-fluid p-0">
+      <div class="col-12 p-3 pb-0">
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="searchbar">
+            <h4>List of Tasks </h4>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 top-btn">
+          <div class="row">
+            <div class="col-lg-9 col-md-9">
+              <div class="topsearch relative">
+                <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search">
+                <i class="fas fa-search"></i> </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+              <div class="dropdown-select">
+                <select class="form-control sort-select">
+                  <option value="Recent">Sort By</option>
+                  <option value="New">New</option>
+                  <option value="Active">Active</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Onhold">Onhold</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="tabs white-bg p-3 mt-3">
+        <input type="radio" name="tabs" id="tabone" checked="checked">
+        <label for="tabone">Assigned To</label>
+        <div class="tab p-0">
+          <div class="table-section">
+            <table class="table table-bordered responsive">
+              <thead>
+                <tr>
+                  <th><div class="form-check">
+                      <input class="form-check-input parentcheck" name="chk" type="checkbox" value="flexCheckDefault1" id="myCheck" onclick='selects()'>
+                      <label class="form-check-label" for="myCheck"> </label>
+                    </div></th>
+                  <th>TASK ID</th>
+                  <th>NAME OF THE TASK</th>
+                  <th>ASSIGNED TO</th>
+                  <th>END DATE</th>
+                  <th>STATUS</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+
+             </tbody>
+            </table>
+          </div>
+        </div>
+        <input type="radio" name="tabs" id="tabtwo">
+        <label for="tabtwo">Assigned By</label>
+        <div class="tab p-0">
+          <div class="table-section">
+            <table class="table table-bordered responsive">
+              <thead>
+                <tr>
+                  <th><div class="form-check">
+                      <input class="form-check-input parentcheck" name="chk" type="checkbox" value="" id="myCheck" onclick='selects()'>
+                      <label class="form-check-label" for="myCheck"> </label>
+                    </div></th>
+                  <th>TASK ID</th>
+                  <th>NAME OF THE TASK</th>
+                  <th>ASSIGNED BY</th>
+                  <th>END DATE</th>
+                  <th>STATUS</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+
+	      </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

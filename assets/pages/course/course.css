@@ -1,0 +1,114 @@
+.main_module, .sub_module{
+    border-style: dashed;
+    border-color: #e0e0e0;
+    border-width: 2px;
+    width: auto;
+    padding-bottom: 44px;
+}
+.module{
+    width: 100%;
+    float: right;
+    margin-top: 15px;
+}
+.module_opacity{
+    opacity: 0.5;
+}
+.disp_in_block{
+    display: inline-block; 
+}
+.input_module_fld{
+    border: 0;
+    width: 100%;
+    float: left;
+}
+.course ul{
+    padding-inline-start: 0px;
+    list-style-type: none;
+}
+.course_img_icon, .frame_img_icon, .plus_img_icon, .message_img_icon, .attach_img_icon, .dots_img_icon, .user_img_icon, .up_down_img_icon, .delete_img_icon{
+    padding: 5px;
+}
+.course_icon{
+    cursor: move;
+}
+.dots_icon{
+    margin-bottom: 3px;
+}
+.module_input {
+    margin-bottom: 4px;
+    width: 35%;
+}
+.progress_btn{
+    margin-top: 9px;
+    width: auto;
+}
+.progress_btn p{
+    /*float: left;*/
+    background: #e5e5fa;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+}
+.course input{
+    outline: none !important;
+    border:2px solid #ebeaea;
+    line-height: 22px;
+}
+.course input:focus {
+    outline: none !important;
+    border:2px solid #ebeaea;
+    line-height: 22px;
+}
+.main_module .module_input p{
+    position: absolute;
+    margin-top: 9px;
+    margin-left: 4px;
+}
+.main_module .module_input input{
+    position: absolute;
+    margin-top: 7px;
+    width: 35%;
+}
+.sub_module .module_input input{
+    position: absolute;
+    margin-top: 7px;
+    margin-left: 0px;
+}
+.sub_module .module_input p{
+    position: absolute;
+    margin-top: 9px;
+    margin-left: 4px;
+}
+.disp_none{
+    display: none;
+  -webkit-animation: out 700ms ease both;
+  animation: out 700ms ease both;
+}
+.disp_block{
+    display: block;
+  -webkit-animation: in 700ms ease both;
+  animation: in 700ms ease both;
+}
+
+.course .fa-angle-down, .course .fa-angle-up{
+    font-size: 20px;
+}
+.course  .fa-trash-alt{
+    font-size: 15px;
+    margin-top: 10px;
+    padding-right: 10px;
+}
+
+.course .dropdown-toggle::after{
+    display: none !important;
+}
+.flt_right{
+    float: right;
+}
+
+.flt_left{
+    float: left;
+}
+.course .dropdown-menu{
+    width: 15% !important;
+}
