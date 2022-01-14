@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet" />
+<link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet" />
+<link href="./assets/global/style.css" rel="stylesheet" />
+<link href="./assets/global/mediaquery.css" rel="stylesheet" />
+<link href="./assets/global/fileup.css" rel="stylesheet" />
+<!-- Toastr -->
+<link href="./assets/global/toastr/toastr.min.css" rel="stylesheet" />
+<!-- EOF Toastr -->
+</head>
+<body>
+<div id="app-login">
+  <div class="fullheight loginbg">
+    <div class="container-fluid fullheight">
+      <div class="row fullheight">
+        <div class="col-lg-6 col-md-6 col-12 p-0 fullheight">
+          <div class="login-banner fullheight"> <img src="./assets/images/exper-login.png" alt=""> </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-12 wbg">
+          <div class="form-section h-100 d-flex align-items-center p-5">
+            <div>
+              <div class="login-logo mb-3"><img src="images/logo.svg" alt=""></div>
+              <h3 class="mb-4">Welcome To</h3>
+              <h2>Exper</h2>
+              <form>
+                <div id="areaPhone">
+                  <div class="mb-3 relative">
+                    <label for="phoneNumber" class="form-label">EMail Id / Mobile Number</label>
+                    <input type="text" class="form-control user" id="phoneNumber" placeholder="Enter Your EMail Id / Mobile Number Here" title="+919908XXXXXX">
+                  </div>
+                  <div class="mb-3 relative">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label for="remember" class="form-label">Remember Me</label>
+                  </div>
+                  <a class="login-btn" onClick="submitPhoneNumberAuth()" href="#">Get OTP<!--<input type="submit" value="Get OTP" >--></a>
+                  <div class="mb-4 mt-4 relative or">
+                    <p>OR</p>
+                  </div>
+                  <div class="mb-3 relative">
+                    <div class="google-btn" id="my-signin2">
+                      <div class="google-icon-wrapper">
+                        <img class="google-icon" alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                      </div>
+                      <p class="btn-text">Sign in with google</p>
+                    </div>                
+                  </div>
+                </div>
+                
+                <div id="areaCode" style="display:none">
+                  <h4 class="mt-2 mb-2">Enter One Time Password(OTP)</h4>
+                  <div class="mb-3 relative">
+                    <label for="" class="form-label">Enter OTP</label>
+                    <div class="otp" id="otpCode"> <span>
+                      <input type="text" class="form-control" maxlength="1" id="o1" onFocus="this.select();" onkeyup="clickEvent(this,'o2')" >
+                      </span> <span>
+                      <input type="text" class="form-control" maxlength="1" id="o2" onFocus="this.select();" onkeyup="clickEvent(this,'o3')" >
+                      </span> <span>
+                      <input type="text" class="form-control" maxlength="1" id="o3" onFocus="this.select();" onkeyup="clickEvent(this,'o4')" >
+                      </span> <span>
+                      <input type="text" class="form-control" maxlength="1" id="o4" onFocus="this.select();" onkeyup="clickEvent(this,'o5')" >
+                      </span> <span>
+                      <input type="text" class="form-control" maxlength="1" id="o5" onFocus="this.select();" onkeyup="clickEvent(this,'o6')" >
+                      </span> <span>
+                      <input type="text" class="form-control" maxlength="1" id="o6" onFocus="this.select();" >
+                      </span> </div>
+                  </div>
+                  <div class="mb-4 mt-4 relative code">
+                    <p>Don't receive code? <strong><a href="#">Resend OTP</a></strong></p>
+                  </div>
+                  <a class="login-btn" href="#" onClick="submitPhoneNumberAuthCode()">Login<!--<input type="submit" value="Login" >--></a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="recaptcha-container"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script> 
+<!-- Google & Toastr -->
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
+<script src="./assets/global/toastr/toastr.min.js"></script>
+<!-- EOF :: Google & Toastr -->
+<script src="./assets/config.js"></script> 
+<script src="./assets/global/custom.js"></script>
+<script type="text/javascript">
+  firebase.initializeApp(window.firebaseConfig);
+  var googleUser = {};
+  var startApp = function() {
+    gapi.load('auth2', function(){
+      auth2 = gapi.auth2.init({
+        client_id: '651394549638-l6b1ucavv9r0agq632upbm4jbhlf85go.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+        scope: 'profile email'
+      });
+      attachSignin(document.getElementById('my-signin2'));
+    });
+  };
+  function attachSignin(element) {
+    auth2.attachClickHandler(element, {}, function(googleUser) {
+      console.log(googleUser.getBasicProfile());
+      toastr.success("Welcome : " + googleUser.getBasicProfile().getEmail());
+      setTimeout(function() {
+        window.location.href = `${SITE_URL_PROTOCOL}admin/`;
+      }, 2000);
+    }, function(error) {
+      toastr.error(error.error);
+    });
+  }
+  startApp();
+  
+  /* Process for OTP */
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+    "recaptcha-container", {
+      size: "invisible",
+      callback: function(response) {
+        // submitPhoneNumberAuth();
+      },
+      "expired-callback": function() {
+        console.log("revalid");
+      }
+    }
+  );
+  
+  function submitPhoneNumberAuth() {
+    var phoneNumber = document.getElementById("phoneNumber").value;
+    if(phoneNumber) {
+      var appVerifier = window.recaptchaVerifier;
+      firebase
+        .auth()
+        .signInWithPhoneNumber(phoneNumber, appVerifier)
+        .then(function(confirmationResult) {
+          console.log("confirmationResult", confirmationResult);
+          window.confirmationResult = confirmationResult;
+          $("#areaPhone").hide();
+          $("#areaCode").show();
+        })
+        .catch(function(error) {
+          console.log(error);
+          toastr.error("Server Response: " + error.message);
+          $("#areaPhone").hide();
+          $("#areaCode").show();
+        });
+    } else {
+      toastr.error("Error: Invalid Number");
+      document.getElementById("phoneNumber").focus();
+    }
+  }
+  
+  function submitPhoneNumberAuthCode() {
+    var inputs = document.getElementById("otpCode").querySelectorAll('input');
+    var values = "";
+    for (const input of inputs){
+       values += input.value
+    }
+    if(values.length <= 5) {
+      toastr.error("Error: Invalid OTP");
+      return false;
+    }
+    confirmationResult
+      .confirm(values)
+      .then(function(result) {
+        var user = result.user;
+        console.log(user);
+        toastr.success("Welcome : " + user.uid);
+        setTimeout(function() {
+          window.location.href = `${SITE_URL_PROTOCOL}admin/`;
+        }, 2000);
+      })
+      .catch(function(error) {
+        console.log(error);
+        toastr.error("Error: " + error.message);
+      });
+  }
+  
+  function clickEvent(first,last){
+    if(first.value.length){
+      document.getElementById(last).focus();
+    }
+  }  
+  
+</script>
+</body>
+</html>
