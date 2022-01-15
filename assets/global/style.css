@@ -574,7 +574,7 @@ dfn i {
 	font-size: 18px;
 	line-height: 26px;
 	word-wrap: break-word;
-	min-height: 50px;
+	min-height: auto;
 }
 .role-content p {
 	font-family: Inter;
