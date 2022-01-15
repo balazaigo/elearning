@@ -821,9 +821,10 @@ dfn i {
 	margin-left: 25px;
 }
 .role-add {
-	width: 33%;
-	float: left;
-	display: flex;
+	width: 50%;
+float: left;
+display: flex;
+margin: 5px 0;
 }
 .role-add span {
 	margin: 0 5px 0 0px;
