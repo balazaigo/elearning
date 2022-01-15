@@ -1595,7 +1595,7 @@ span.obg {
 }
 .popup textarea {
 	width: 100%;
-	height: 200px;
+	max-height: 150px;
 	border-radius: 5px;
 	border: 1px solid #ccc;
 }
