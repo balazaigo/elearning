@@ -3226,7 +3226,6 @@ form#multiple {
     overflow: auto;
     margin-bottom: 30px;
 }
-
 /*************courses new css end****************/
 
 /* round button */
@@ -3235,7 +3234,6 @@ form#multiple {
   width: 34px;
   height: 34px;  
 }
-
 .gridTaskID {
   background-color: #72ca83 !important;
   height: 24px;
@@ -3243,4 +3241,9 @@ form#multiple {
   min-width: 55px;
   font-weight: 400;
   font-size: 13px;
+}
+/* round button */
+
+.title-head h2 em {
+    font-style: normal;
 }
