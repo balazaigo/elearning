@@ -240,7 +240,7 @@ async function getCoursePage(e) {
   course_head += "</div>";
   var newDIV = $("<div class='course' id='course_box'></div>");
   var outerHtml = '';
-  var url = `${SITE_URL}/assets/pages/courses/nested2.json`;
+  var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/nested2.json`;
   fetch(url, {
     method: "GET",
     headers: {"Content-type": "application/json; charset=UTF-8"}
