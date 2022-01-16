@@ -86,8 +86,29 @@ h1, h2, h3, h4, h5, h6 {
  font-weight: normal;
  font-size: 16px;
  line-height: 26px;
- color: #A6A5B8;
+ color: #9A9A9A;
 }
+.form-control {
+	color: #212529;
+	padding: 10px;
+	font-size: 14px;
+}
+
+.popup input::placeholder {color: #9A9A9A!important;}
+.popup textarea::placeholder {color: #9A9A9A;}
+.popup select::placeholder {color: #9A9A9A;}
+.popup input[type=date]{color: #9A9A9A;} 
+
+select:required:invalid {
+  color: #9A9A9A;
+}
+option[value=""][disabled] {
+  display: none;
+}
+option {
+  color: #212529;
+}
+
 .form-section input[type="submit"] {
 	background: #F36A10;
 	border: none;
@@ -340,7 +361,7 @@ input[type="checkbox"]:checked + label::before {
     width: 300px;
     position: relative;
     display: none;
-} 
+}
 .topsearch {
 	width: auto;
 	position: relative;
@@ -575,7 +596,7 @@ dfn i {
 	font-size: 18px;
 	line-height: 26px;
 	word-wrap: break-word;
-	min-height: auto;
+	min-height: 50px;
 }
 .role-content p {
 	font-family: Inter;
@@ -619,6 +640,7 @@ dfn i {
 	background: #fff;
 	color: #20204F;
 	font-family: Inter;
+
 	font-style: normal;
 	font-weight: normal;
 	font-size: 15px;
@@ -823,13 +845,14 @@ dfn i {
 }
 .role-add {
 	width: 50%;
-float: left;
-display: flex;
-margin: 5px 0;
+	float: left;
+	display: flex;
+	margin: 5px 0;
 }
 .role-add span {
 	margin: 0 5px 0 0px;
 	font-size: 14px;
+	color: #212529;
 }
 .pop-form h4 {
 	font-family: Inter;
@@ -1106,20 +1129,25 @@ span.percent-label {
 	border: 1px solid #ced4da;
 	border-radius: 5px;
 	margin-bottom: 0px;
-	padding: 7px 10px;
+	padding: 10px;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
 	background: transparent url("../images/arrow.png") no-repeat 98% center;
 	color: #9A9A9A;
 }
-.form-control {
-	color: #9A9A9A;
-	padding: 8px;
-}
+.selectParent select option {color: #212529;}
+
 .topsearch .form-control {
 	padding: 7px;
 	font-size: 14px;
+}
+.popup .topsearch .form-control {
+	padding: 10px;
+	font-size: 14px;
+}
+.popup .sort-select {
+	padding: 10px;
 }
 .form-control[type="file"] {
 	overflow: hidden;
@@ -1253,7 +1281,7 @@ span.percent-label {
 	border: 1px solid #fcfcfc;
 }
 .has-children > .acnav__label::before {
-	/*content: "";*/
+	/*content: "ï§";*/
 	display: inline-block;
 	font: normal normal normal 14px/1 FontAwesome;
 	font-size: inherit;
@@ -1612,6 +1640,7 @@ span.obg {
 	color: #20204F;
 	font-size: 22px;
 	font-weight: 600;
+	margin-bottom: 15px;
 }
 .add-comment {
 	display: flex;
@@ -1847,7 +1876,7 @@ span.obg {
 	background: url(../images/arrow-back.png) no-repeat;
 	width: 100%;
 	font-size: 14px;
-	color: #545452;
+	color: #9A9A9A;
 	height: auto;
 	border-radius: 5px;
 	padding: 7px 10px;
@@ -2748,6 +2777,7 @@ a.palette-item {
 	margin-right: 5px;
 	margin-bottom: 5px;
 	box-shadow: none;
+	font-size: 14px;
 }
 .tags-input-wrapper .tag a {
 	margin: 0 7px 3px;
@@ -3168,9 +3198,6 @@ form#multiple {
 	position: relative !important;
 }
 .course_details .orange-btn button {
-    background: #e6e6e6 !important;
-    color: #F36A10 !important;
-    border: 1px solid #F36A10 !important;
     font-weight: 700 !important;
 }
 .course_details .course_name_head {
@@ -3188,33 +3215,35 @@ form#multiple {
     margin-bottom: 0rem!important;
 }
 .course_details .wrapper {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 10px;
-  grid-auto-rows: minmax(100px, auto);
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	grid-gap: 10px;
+	grid-auto-rows: minmax(100px, auto);
 }
 .course_details .wrapper .left_icon{
     grid-column: span 1;
 }
-.course_details .wrapper .course_head{
-    grid-column: span 4;
-    margin-left: -56px;
+.course_details .wrapper .course_head {
+	grid-column: span 9;
+	margin-left: 0;
 }
-.course_details .wrapper .save_drft_btn{
-    grid-column: span 1;
-
+.course_details .wrapper .save_drft_btn {
+    grid-column: span 2;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: right;
 }
-.course_details .wrapper .course_head .header_content{
-    margin-top: -12px;
-    color: #20204f;
-    font-size: 24px;
-    font-weight: 600;
+.course_details .wrapper .course_head .header_content {
+	margin: 0;
+	color: #20204f;
+	font-weight: bold;
 }
-.course_details .wrapper .course_head .header_breadcrumbs{
-    color: #97a5ba;
-    font-size: 17px;
-    font-weight: 400;
-    margin-top: 22px;
+.course_details .wrapper .course_head .header_breadcrumbs {
+	color: #97a5ba;
+	font-size: 18px;
+	font-weight: 400;
+	margin-top: 10px;
 }
 .course{
 	width: 100%;
@@ -3227,6 +3256,7 @@ form#multiple {
     overflow: auto;
     margin-bottom: 30px;
 }
+
 /*************courses new css end****************/
 
 /* round button */
