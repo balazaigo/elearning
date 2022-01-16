@@ -1791,7 +1791,7 @@ span.obg {
 	padding: 0px 10px;
 }
 #memberListContainer {
-	display: block !important;
+	/*display: block !important;*/
 }
 .content-part .pagination {
     display: flex;
