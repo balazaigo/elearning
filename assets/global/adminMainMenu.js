@@ -227,7 +227,7 @@ async function getCoursePage(e) {
   course_head += "<div class='wrapper'>";
   course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
   course_head += "<div class='course_head'>";
-  course_head += "<h4 class='header_content'>"+cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
+  course_head += "<h4 class='header_content' data-flinkto='courseslistinner'>"+cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
   course_head += "<h4 class='header_breadcrumbs'>Breadcumbs1 / Breadcumbs2</h4>";
   course_head += "</div>";
   course_head += "<div class='save_drft_btn'>";
