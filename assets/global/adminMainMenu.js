@@ -264,7 +264,8 @@ async function getCoursePage(e) {
     newDIV.append(newDiv2);
     var outerHtml = newDIV.prop('outerHTML');
     if(outerHtml !== ''){
-      getcoursesPageHtml(course_head, outerHtml);
+      //getcoursesPageHtml(course_head, outerHtml);
+      document.getElementById("app-admin").innerHTML = course_head+outerHtml;
     }
   })
   .catch(function(error){
@@ -273,14 +274,14 @@ async function getCoursePage(e) {
 }
 /**********Get Cource Page Ends Here**************/
 
-async function getcoursesPageHtml(course_head, outerHtml){
-  fetch(`${SITE_URL_PROTOCOL}/assets/pages/course/course.html`)
-    .then((data) => data.text())
-    .then((html) => (document.getElementById("app-admin").innerHTML = course_head+html + outerHtml))
-    .catch(function (error) {
-      console.log("Requestfailed", error);
-    });
-}
+// async function getcoursesPageHtml(course_head, outerHtml){
+//   fetch(`${SITE_URL_PROTOCOL}/assets/pages/course/course.html`)
+//     .then((data) => data.text())
+//     .then((html) => (document.getElementById("app-admin").innerHTML = course_head+html + outerHtml))
+//     .catch(function (error) {
+//       console.log("Requestfailed", error);
+//     });
+// }
 
 /***************Course Modules Get Json and assign Tree structured format and Design Starts Here*************/
 function get_list( a, $parent , level_count_inc) {
