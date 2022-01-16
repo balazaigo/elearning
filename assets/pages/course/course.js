@@ -214,14 +214,17 @@ function add_sub(e){
                 var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
                 var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
                 if(get_submodule_level_values != ''){
-                  post_json_dat(url, get_submodule_level_values);
+                  //post_json_dat(url, get_submodule_level_values);
                 }
                 return;
             }
             if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
                 var index = classList[1].lastIndexOf("_");
+                console.log(e.parentElement.parentElement.parentElement.parentElement.childNodes);
                 var result = Number(classList[1].substr(index+1));
-                var result = Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length)- Number(1);
+                console.log(e.parentElement.parentElement.parentElement.parentElement.childNodes.length);
+                var result = Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length) + Number(1);
+                console.log(result);
                 newHTML = "<div class='module module_"+result+" main_mod_empty' style='opacity:0.5;'>";
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
@@ -300,7 +303,7 @@ function add_sub_sub(e){
     var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
     var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
     if(get_submodule_level_values != ''){
-      post_json_dat(url, get_submodule_level_values);
+      //post_json_dat(url, get_submodule_level_values);
     }
    }
 }
