@@ -596,7 +596,7 @@ dfn i {
 	font-size: 18px;
 	line-height: 26px;
 	word-wrap: break-word;
-	min-height: 50px;
+	min-height: auto;
 }
 .role-content p {
 	font-family: Inter;
@@ -3277,4 +3277,8 @@ form#multiple {
 
 .title-head h2 em {
     font-style: normal;
+    font-size: 25px;
+}
+.gwhite textarea {
+    height: 160px;
 }
