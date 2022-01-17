@@ -745,18 +745,19 @@ dfn i {
 	opacity: 1;
 }
 .popup {
-	margin: 0px auto;
-	padding: 20px;
-	background: #fff;
-	border-radius: 5px;
-	width: 40%;
-	overflow-y:scroll;
-	position: relative;
-	transition: all 5s ease-in-out;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+    margin: 0px auto;
+    padding: 15px 10px 15px 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 40%;
+    overflow-y: scroll;
+    position: relative;
+    transition: all 5s ease-in-out;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow-x: hidden;
 }
 .popup.pop-medium {
 	height: 500px;
