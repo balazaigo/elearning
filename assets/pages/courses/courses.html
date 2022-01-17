@@ -84,14 +84,22 @@
 </div>
 
 <script type="text/javascript">
-$( document ).ready(function() {
-  const container = document.getElementById("addCourses");
-  const modal = new bootstrap.Modal(container);
-  var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
-  document.getElementById("btnShow").addEventListener("click", function () {
-    $('.modal-content').load(url,function(result){
-      modal.show();
+  $("<link/>", {
+     rel: "stylesheet",
+     type: "text/css",
+     href: "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+  }).appendTo("head");
+  $.getScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
+  $.getScript('https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js');
+  
+  $( document ).ready(function() {
+    const container = document.getElementById("addCourses");
+    const modal = new bootstrap.Modal(container);
+    var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
+    document.getElementById("btnShow").addEventListener("click", function () {
+      $('.modal-content').load(url,function(result){
+        modal.show();
+      });
     });
   });
-});
 </script>

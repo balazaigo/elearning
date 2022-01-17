@@ -1,56 +1,92 @@
+<style type="text/css">
+.custom-file {
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  background-color: #e9e8ed;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 17px;
+  color: #9e9e9e;
+}
+.custom-file span {
+  cursor:pointer;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 8px;
+}
+input[type="file"] {
+  display: none;
+}
+.has-error input,
+.has-error input.form-control:focus {
+  border-color:red;
+  box-shadow:0 0 0 0.15rem rgb(253 13 13 / 25%);
+}
+em.error.help-block {
+  color: red;
+  font-size: 12px;
+}
+</style>
 <div class="modal-header">
   <h5 class="modal-title">Add a new course</h5>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">    
 
-  <form method="post" class="pop-form" enctype="application/x-www-form-urlencoded">
+  <form method="post" class="pop-form" id="frmNewCourses" name="frmNewCourses" enctype="application/x-www-form-urlencoded">
     <div class="row">
       <div class="col-md-12 mb-3">
-        <input type="text" id="coursesName" class="form-control cm-capitalize" placeholder="Name of the Course">
+        <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize" placeholder="Name of the Course">
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="coursesID" class="form-control cm-uppercase" placeholder="Course ID Prefix">
+        <input type="text" id="coursesID" name="coursesID" class="form-control" placeholder="Course ID Prefix">
       </div>
       <div class="col-md-12 mb-3 selectParent">
         <div class="dropdown-select">
-          <select class="sort-select" id="category">
+          <select class="sort-select" id="category" name="category">
             <option value="">Select Category</option>
           </select>
         </div>
       </div>
       <div class="col-md-12 mb-3 selectParent">
        <div class="dropdown-select">
-          <select class="sort-select" id="subCategory">
+          <select class="sort-select" id="subCategory" name="subCategory">
             <option value="">Select Sub Category</option>
           </select>
         </div>
       </div>
       <div class="col-md-12 mb-3">
-        <input type="file" id="courseFile" class="form-control" placeholder="import a file">
+        <label class="custom-file">
+          <input type="file" id="courseFile" name="courseFile" class="form-control" placeholder="import a file">
+          <span>Import a file</span>
+        </label>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <input type="date" id="" name="" class="form-control" placeholder="Start Date">
+        <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date">
       </div>
       <div class="col-md-6 mb-3">
-        <input type="date" id="" name="" class="form-control" placeholder="End Date">
+        <input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date">
       </div>
     </div>
     <div class="row">
       <div class="col-md-12 mb-3 selectParent">
        <div class="dropdown-select">
-          <select class="sort-select" id="member">
-            <option value="">Select Member</option>
+          <select class="sort-select" id="member" name="member">
+            <option value="">Assign to</option>
           </select>
         </div>
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="tags" class="form-control" placeholder="Tag">
+        <select class="form-control tags" id="tags" name="tags[]" required multiple="multiple" style="width:100%">
+          <option value="Cardiology">Cardiology</option>
+          <option value="WY">Wyoming</option>
+        </select>      
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="desc" class="form-control" placeholder="One line description">
+        <input type="text" id="description" name="description" class="form-control" placeholder="One line description">
       </div>
     </div>
   </form>
@@ -63,6 +99,7 @@
 </div>
 <script type="text/javascript">
 var subCategory = {};
+var frmvalidatorfrm;
 
 $.fn.extend({
 	caps: function(str){
@@ -97,6 +134,11 @@ $.fn.extend({
 });
 
 $( document ).ready(function() {
+  
+  $('.tags').select2({
+    dropdownParent: $('#addCourses'),
+    placeholder: "Add a tag",
+  });
 
   $('.cm-capitalize').each(function() { $(this).capitalize(); });
   $('.cm-uppercase').each(function() { $(this).upperCase(); });  
@@ -106,6 +148,55 @@ $( document ).ready(function() {
       var str = $(this).val();
       var acpref = str.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'')
       $("#coursesID").val(acpref.toUpperCase());
+    }
+  });
+
+  $.validator.addMethod("pattern", function( value, element, param ) {
+    if ( this.optional( element ) ) { return true; }
+    if ( typeof param === "string" ) {
+      param = new RegExp( "^(?:" + param + ")$" );
+    }
+    return param.test( value );
+  }, "Check your inputs" );
+
+  var frmvalidatorfrm = $("#frmNewCourses").validate({
+    rules: {
+      coursesName: {required: true, minlength: 2},
+      coursesID: {required: true },
+      category: {required: true },
+      subCategory: {required: true },
+      courseFile: {required: true },
+      start_date: {required: true },
+      end_date: {required: true },
+      member: {required: true },
+    },
+    messages: {
+      coursesName: {
+        required: "Please enter a Course Name",
+        minlength: "Your course name must consist of at least 2 characters"
+      },      
+      coursesID: { required: "Please enter a Course ID Prefix" },      
+      category: {required: "Please select the category" },      
+      subCategory: {required: "Please select the subcategory" },      
+      courseFile: {required: "Please upload attachment" },      
+      start_date: {required: "Please select starting date" },      
+      end_date: {required: "Please select ending date" },      
+      member: {required: "Please selct a member" },      
+    },
+    errorElement: "em",
+    errorPlacement: function ( error, element ) {
+      error.addClass( "help-block" );
+      if ( element.prop( "type" ) === "checkbox" ) {
+        error.insertAfter( element.parent( "label" ) );
+      } else {
+        error.insertAfter( element );
+      }
+    },
+    highlight: function ( element, errorClass, validClass ) {
+      $( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
     }
   });
     
@@ -192,7 +283,11 @@ $( document ).ready(function() {
   //subCategory
   
   $("#saveCourses").on("click", function() {
-    alert("save");
+    var isValidForm = frmvalidatorfrm.form();
+    console.log(isValidForm);
+    if(isValidForm){
+      alert("save");
+    }
   });
 });
 
