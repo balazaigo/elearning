@@ -59,7 +59,7 @@ em.error.help-block {
       <div class="col-md-12 mb-3">
         <label class="custom-file">
           <input type="file" id="courseFile" name="courseFile" class="form-control" placeholder="import a file">
-          <span>Import a file</span>
+          <span class="filename">Import a file</span>
         </label>
       </div>
     </div>
@@ -149,6 +149,11 @@ $( document ).ready(function() {
       var acpref = str.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'')
       $("#coursesID").val(acpref.toUpperCase());
     }
+  });
+  
+  $("input:file").change(function (){
+    var fileName = $(this).val();
+    $(".filename").html(fileName.replace("C:\\fakepath\\", ''));
   });
 
   $.validator.addMethod("pattern", function( value, element, param ) {
