@@ -15,20 +15,14 @@
       <div class="col-md-12 mb-3 selectParent">
         <div class="dropdown-select">
           <select class="sort-select" id="category">
-            <option value="Category1">Category1</option>
-            <option value="Category2">Category2</option>
-            <option value="Category3">Category3</option>
-            <option value="Category4">Category4</option>
+            <option value="">Select Category</option>
           </select>
         </div>
       </div>
       <div class="col-md-12 mb-3 selectParent">
        <div class="dropdown-select">
           <select class="sort-select" id="subCategory">
-            <option value="Category1">Sub Category1</option>
-            <option value="Category2">Sub Category2</option>
-            <option value="Category3">Sub Category3</option>
-            <option value="Category4">Sub Category4</option>
+            <option value="">Select Sub Category</option>
           </select>
         </div>
       </div>
@@ -72,6 +66,45 @@
 </div>
 <script type="text/javascript">
 $( document ).ready(function() {
+  //load the category data
+  $.ajax({
+    url: API_BASE_URL + '/category/',
+    type: 'get',
+    dataType: 'json',
+    success:function(response){
+      $("#category").empty();
+      $("#category").append("<option value=''>Select Category</option>");
+      $.each( response, function( i, val ) {
+        $("#category").append("<option value='"+val.id+"'>"+val.name+"</option>");
+      });
+    }
+  });
+  
+  /*LATER USE*/
+  /* ============================================================ */
+  /*
+  $("#category").on("change", function() {
+    $("#subCategory").empty();
+    if($(this).val()) {
+      console.log("Changes request :"  + $(this).val());
+      $.ajax({
+        url: API_BASE_URL + '/subcategory/',
+        type: 'get',
+        dataType: 'json',
+        success:function(response){
+          $("#category").empty();
+          $("#category").append("<option value=''>Select Category</option>");
+          $.each( response, function( i, val ) {
+            $("#category").append("<option value='"+val.id+"'>"+val.name+"</option>");
+          });
+        }
+      });
+    }
+  });
+  */
+  /* ============================================================ */
+  //subCategory
+  
   $("#saveCourses").on("click", function() {
     alert("save");
   });
