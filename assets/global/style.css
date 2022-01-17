@@ -1678,6 +1678,7 @@ span.obg {
 }
 .assign-details h6 {
 	margin: 0;
+	color: #20204F;
 }
 .assign-details .dropdown-toggle {
 	width: 100%;
@@ -1870,6 +1871,11 @@ span.obg {
 	right: 0px;
 	padding-right: 15px;
 }
+.status {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
 .status a {
 	color: #20204F;
 	font-size: 14px;
@@ -1880,6 +1886,15 @@ span.obg {
 	color: #fff;
 	background: #2C5AAC;
 	font-size: 14px;
+}
+.s-active a:hover {
+    background: #2C5AAC;
+}
+.s-onhold a:hover {
+    background: #ffc107;
+}
+.s-done a:hover {
+    background: #108842;
 }
 .sort-select {
 	border: 1px solid #ced4da;
