@@ -1,6 +1,6 @@
 //API_BASE_URL - Base URL for API
 const API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
-let SITE_URL_PROTOCOL = "https://localhost/elearning/";
+let SITE_URL_PROTOCOL = "http://127.0.0.1:5500/";
 console.log(SITE_URL_PROTOCOL);
 /* Firebase */
 var firebaseConfig = {
