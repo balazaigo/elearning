@@ -221,7 +221,7 @@ async function getUserMemberProfilePage() {
 /***************new course card and list starts*****************/
 async function getCoursesPage() {
   $("#app-admin").load(
-    `${SITE_URL_PROTOCOL}/assets/pages/courses/courses.html?t=` + Math.floor(Date.now() / 1000,
+    `${SITE_URL_PROTOCOL}/assets/pages/courses/courses.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
         $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courses.js`, function() {});        
