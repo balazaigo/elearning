@@ -113,6 +113,7 @@ async function getCoursesListInnerPage(e) {
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistinner.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
+        $.getScript(`${SITE_URL_PROTOCOL}/assets/global/custom.js`, function() {});
         var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner']");
         course_flinkto_elem.forEach(el=>{
           el.setAttribute("data-cid", e.target.dataset.cid);
@@ -130,7 +131,7 @@ async function getCoursesListLevelPage(e) {
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
-        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/fileUpCourse.js`, function() {});
+        $.getScript(`${SITE_URL_PROTOCOL}/assets/global/custom.js`, function() {});
         var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner']");
         course_flinkto_elem.forEach(el=>{
           el.setAttribute("data-cid", e.target.dataset.cid);
