@@ -1,6 +1,15 @@
 //API_BASE_URL - Base URL for API
 const API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
-let SITE_URL_PROTOCOL = "http://127.0.0.1:5500/";
+let SITE_URL_PROTOCOL = window.location.protocol + "//" + window.location.hostname;
+
+if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
+	SITE_URL_PROTOCOL = "http://127.0.0.1:5500/";
+}else if(SITE_URL_PROTOCOL === "http://94.177.203.98"){
+	SITE_URL_PROTOCOL = "http://94.177.203.98/exper-js-new/";
+}else if(SITE_URL_PROTOCOL === "https://localhost"){
+	SITE_URL_PROTOCOL = "https://localhost/elearning/";
+}
+
 console.log(SITE_URL_PROTOCOL);
 /* Firebase */
 var firebaseConfig = {
