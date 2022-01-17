@@ -481,6 +481,7 @@ dfn {
 	position: relative;
 	line-height: 0;
 	display: inline-table;
+	display: none;
 }
 dfn::after {
 	content: attr(data-info);
@@ -3227,7 +3228,7 @@ form#multiple {
 	display: grid;
 	grid-template-columns: repeat(12, 1fr);
 	grid-gap: 10px;
-	grid-auto-rows: minmax(100px, auto);
+	grid-auto-rows: minmax(60px, auto);
 }
 .course_details .wrapper .left_icon{
     grid-column: span 1;
@@ -3252,7 +3253,7 @@ form#multiple {
 	color: #97a5ba;
 	font-size: 18px;
 	font-weight: 400;
-	margin-top: 10px;
+	margin-top: 10px;display: none;
 }
 .course{
 	width: 100%;
@@ -3349,3 +3350,7 @@ form#multiple {
 	width: 100%;
 }
 /************** File upload css Ends****************/
+
+.breadcrumb {
+	display: none;
+}
