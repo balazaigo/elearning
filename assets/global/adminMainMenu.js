@@ -219,16 +219,17 @@ async function getUserMemberProfilePage() {
 
 
 /***************new course card and list starts*****************/
-
 async function getCoursesPage() {
-  fetch(`${SITE_URL_PROTOCOL}/assets/pages/courses/courses.html`)
-    .then((data) => data.text())
-    .then((html) => (document.getElementById("app-admin").innerHTML = html))
-    .catch(function (error) {
-      console.log("Requestfailed", error);
-    });
-    $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courses.js`, function() {
-    });
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/courses/courses.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courses.js`, function() {});        
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
 }
 
 /*************** Get Cource Page Starts Here********************/

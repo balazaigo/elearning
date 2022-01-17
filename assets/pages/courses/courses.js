@@ -1,4 +1,3 @@
-console
 var course_details = "";
 var course_details_url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_details.json`;
 var course_assignee = "";
