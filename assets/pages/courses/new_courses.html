@@ -42,10 +42,7 @@
       <div class="col-md-12 mb-3 selectParent">
        <div class="dropdown-select">
           <select class="sort-select" id="member">
-            <option value="Membery1">Member1</option>
-            <option value="Member2">Member2</option>
-            <option value="Member3">Membery3</option>
-            <option value="Member4">Member4</option>
+            <option value="">Select Member</option>
           </select>
         </div>
       </div>
@@ -65,6 +62,7 @@
   </span>
 </div>
 <script type="text/javascript">
+var subCategory = {};
 $( document ).ready(function() {
   //load the category data
   $.ajax({
@@ -79,6 +77,49 @@ $( document ).ready(function() {
       });
     }
   });
+
+  $.ajax({
+    url: API_BASE_URL + '/sub_category/',
+    type: 'get',
+    dataType: 'json',
+    success:function(response){
+      $.each( response, function( i, val ) {
+        if(typeof (subCategory[val.category_id]) === "undefined") {
+          subCategory[val.category_id] = [];
+        }
+        subCategory[val.category_id].push(val);
+      });
+    }
+  });
+
+  $.ajax({
+    url: API_BASE_URL + '/members/',
+    type: 'get',
+    dataType: 'json',
+    success:function(response){
+      $("#member").empty();
+      $("#member").append("<option value=''>Select Member</option>");
+      $.each( response, function( i, val ) {
+        $("#member").append("<option value='"+val.id+"'>"+val.first_name+" " + val.last_name+"</option>");
+      });
+    }
+  });
+  
+  $("#category").on("change", function() {
+    $("#subCategory").empty();
+    if($(this).val()) {
+      var resp = subCategory[$(this).val()];
+      $("#subCategory").append("<option value=''>Select Sub Category</option>");
+      if(typeof(resp) === "undefined") {
+        console.log("subcategory not found: " + $(this).find("option:selected").text() );
+      } else {
+        $.each( resp, function( i, val ) {
+          $("#subCategory").append("<option value='"+val.id+"'>"+val.name+"</option>");
+        });
+      }
+    }
+  });
+  
   
   /*LATER USE*/
   /* ============================================================ */
@@ -92,10 +133,10 @@ $( document ).ready(function() {
         type: 'get',
         dataType: 'json',
         success:function(response){
-          $("#category").empty();
-          $("#category").append("<option value=''>Select Category</option>");
+          $("#subCategory").empty();
+          $("#subCategory").append("<option value=''>Select Sub Category</option>");
           $.each( response, function( i, val ) {
-            $("#category").append("<option value='"+val.id+"'>"+val.name+"</option>");
+            $("#subCategory").append("<option value='"+val.id+"'>"+val.name+"</option>");
           });
         }
       });
