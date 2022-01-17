@@ -270,7 +270,7 @@ input[type="checkbox"]:checked + label::before {
 	color: #fff;
 	margin-left: -5px;
 	position: absolute;
-	top: 101px;
+	top: 75px;
 	right: -40px;
 	border-radius: 0;
 }
@@ -279,7 +279,7 @@ input[type="checkbox"]:checked + label::before {
 	color: #fff;
 	margin-left: -5px;
 	position: absolute;
-	top: 101px;
+	top: 75px;
 	right: -90px;
 	border-radius: 0;
 }
@@ -331,12 +331,20 @@ input[type="checkbox"]:checked + label::before {
 }
 .dashlogo {
 	background: #fff;
-	padding: 13px;
+	padding: 0;
+}
+.active-cont .dashlogo {
+	display: none;
+}
+.active-cont .top-navbar {
+	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.05);
+	background: #fff;
+	padding: 18px 15px;
 }
 .top-navbar {
 	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.05);
 	background: #fff;
-	padding: 31.5px 15px;
+	padding: 0px 0px;
 }
 .title-head h3 {
 	font-family: Inter;
@@ -2117,6 +2125,7 @@ span.obg {
 .top-right {
 	display: flex;
 	justify-content: flex-end;
+	align-items: center;
 }
 .top-btn-notify {
 	position: relative;
