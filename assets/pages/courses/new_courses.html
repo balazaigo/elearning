@@ -7,10 +7,10 @@
   <form method="post" class="pop-form" enctype="application/x-www-form-urlencoded">
     <div class="row">
       <div class="col-md-12 mb-3">
-        <input type="text" id="coursesName" class="form-control" placeholder="Name of the Course">
+        <input type="text" id="coursesName" class="form-control cm-capitalize" placeholder="Name of the Course">
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="coursesID" class="form-control" placeholder="Course ID Prefix">
+        <input type="text" id="coursesID" class="form-control cm-uppercase" placeholder="Course ID Prefix">
       </div>
       <div class="col-md-12 mb-3 selectParent">
         <div class="dropdown-select">
@@ -63,7 +63,52 @@
 </div>
 <script type="text/javascript">
 var subCategory = {};
+
+$.fn.extend({
+	caps: function(str){
+		"use strict";
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	},
+  capitalize: function(){
+		"use strict";
+		return this.each(function() {
+			var $field = $(this);
+			$field.on('keyup change', function() {
+				$field.val(function(i, old) {
+					if (old.indexOf(' ') > -1) {
+						var words = old.split(' ');
+						for (i = 0; i < words.length; i++) {
+							words[i] = $.fn.caps(words[i]);
+						}
+						return words.join(' ');
+					} else {
+						return $.fn.caps(old);
+					}
+				});
+			});
+		});
+	},
+  upperCase: function() {
+    "use strict";
+    $(this).css('text-transform', 'uppercase').bind('blur change', function(){
+      this.value = this.value.toUpperCase();
+    });
+  },
+});
+
 $( document ).ready(function() {
+
+  $('.cm-capitalize').each(function() { $(this).capitalize(); });
+  $('.cm-uppercase').each(function() { $(this).upperCase(); });  
+
+  $("#coursesName").on("blur", function(){
+    if($("#coursesID").val().length === 0) {
+      var str = $(this).val();
+      var acpref = str.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'')
+      $("#coursesID").val(acpref.toUpperCase());
+    }
+  });
+    
   //load the category data
   $.ajax({
     url: API_BASE_URL + '/category/',
