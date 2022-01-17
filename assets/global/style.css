@@ -3291,3 +3291,61 @@ form#multiple {
 .gwhite textarea {
     height: 160px;
 }
+
+
+/******** File upload css Starts *************/
+.dropzonenew {
+	background-color: #ccc;
+	border: 3px dashed #888;
+	width: 350px;
+	height: 150px;
+	border-radius: 25px;
+	font-size: 20px;
+	color: #777;
+	padding-top: 50px;
+	text-align: center;
+}
+.dropzonenew.over {
+	opacity: .7;
+	border-style: solid;
+}
+#dropzone .dropzonenew {
+	margin-top: 25px;
+	padding-top: 60px;
+}
+#multiple button {
+	background: #fff;
+	width: 100%;
+	color: #333;
+	padding: 30px;
+	border: 2px dashed #A6A5B8;
+	font-size: 25px;
+	color: #A6A5B8;
+}
+.fileup-file {
+	background-color: #F5F5F5;
+	border: 1px solid #DBDBDB;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font-size: 12px;
+	margin-bottom: 5px;
+	max-width: 300px!important;
+	padding: 10px;
+	position: relative;
+	overflow: hidden;
+	float: left;
+	margin-right: 10px;
+}
+.fileup-preview img {
+	width: 100%;
+	border-radius: 3px;
+	object-fit: cover;
+	height: 100px;
+}
+.queue {
+	clear: both;
+	float: left;
+	width: 100%;
+}
+/************** File upload css Ends****************/

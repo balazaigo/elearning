@@ -108,11 +108,16 @@ async function getCoursesListPage() {
   );
 }
 
-async function getCoursesListInnerPage() {
+async function getCoursesListInnerPage(e) {
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistinner.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
+        var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner']");
+        course_flinkto_elem.forEach(el=>{
+          el.setAttribute("data-cid", e.target.dataset.cid);
+          el.setAttribute("data-cname", e.target.dataset.cname);
+        });
       } else {
         console.log("Something error happend");
       }
@@ -120,11 +125,17 @@ async function getCoursesListInnerPage() {
   );
 }
 
-async function getCoursesListLevelPage() {
+async function getCoursesListLevelPage(e) {
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
+        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/fileUpCourse.js`, function() {});
+        var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner']");
+        course_flinkto_elem.forEach(el=>{
+          el.setAttribute("data-cid", e.target.dataset.cid);
+          el.setAttribute("data-cname", e.target.dataset.cname);
+        });
       } else {
         console.log("Something error happend");
       }
@@ -227,7 +238,7 @@ async function getCoursePage(e) {
   course_head += "<div class='wrapper'>";
   course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
   course_head += "<div class='course_head'>";
-  course_head += "<h4 class='header_content' data-flinkto='courseslistinner'>"+cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
+  course_head += "<h4 class='header_content' data-flinkto='courseslistinner' data-cname='"+e.target.dataset.cname+"' data-cid='"+e.target.dataset.cid+"'>"+cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
   course_head += "<h4 class='header_breadcrumbs'>Breadcumbs1 / Breadcumbs2</h4>";
   course_head += "</div>";
   course_head += "<div class='save_drft_btn'>";
@@ -400,11 +411,11 @@ function handleTopMenuClick(e) {
       break;
 
     case "courseslistinner":
-      getCoursesListInnerPage();
+      getCoursesListInnerPage(e);
       break;
 
     case "courseslistlevel":
-      getCoursesListLevelPage();
+      getCoursesListLevelPage(e);
       break;
 	  
 	 case "courseseditor":

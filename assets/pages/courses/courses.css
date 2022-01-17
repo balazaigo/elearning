@@ -36,3 +36,21 @@
 .pagination a:hover:not(.active) {
 	background-color: #ddd;
 }
+
+
+.wrapper .left_icon .arrow_icon{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.wrapper .course_head{
+    margin-left: -25px;
+    margin-top: -12px;
+}
+.wrapper .course_head .header_content{
+	cursor: pointer;
+}
+.wrapper .save_drft_btn{
+	margin-top: -50px;
+} 

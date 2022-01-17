@@ -1,6 +1,6 @@
 //  Get Members - For Member List Page
 function getMembers() {
-  getRolesOptions("#member-role-list");
+  getRolesOptions(".member-role-list");
   $("#member-loader").css("display", "block");
   $("#memberListContainer").css("display", "none");
   //adding below code for testing - since no API available
