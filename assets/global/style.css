@@ -3324,27 +3324,6 @@ form#multiple {
 	font-size: 25px;
 	color: #A6A5B8;
 }
-.fileup-file {
-	background-color: #F5F5F5;
-	border: 1px solid #DBDBDB;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	font-size: 12px;
-	margin-bottom: 5px;
-	max-width: 300px!important;
-	padding: 10px;
-	position: relative;
-	overflow: hidden;
-	float: left;
-	margin-right: 10px;
-}
-.fileup-preview img {
-	width: 100%;
-	border-radius: 3px;
-	object-fit: cover;
-	height: 100px;
-}
 .queue {
 	clear: both;
 	float: left;
