@@ -4,36 +4,36 @@
 </div>
 <div class="modal-body">    
 
-  <form method="get" class="pop-form">
+  <form method="post" class="pop-form" enctype="application/x-www-form-urlencoded">
     <div class="row">
       <div class="col-md-12 mb-3">
-        <input type="text" id="" class="form-control" placeholder="Name of the Course">
+        <input type="text" id="coursesName" class="form-control" placeholder="Name of the Course">
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="" class="form-control" placeholder="Course ID Prefix">
+        <input type="text" id="coursesID" class="form-control" placeholder="Course ID Prefix">
       </div>
       <div class="col-md-12 mb-3 selectParent">
-              <div class="dropdown-select">
-                <select class="sort-select">
-                  <option value="Category1">Category1</option>
-                  <option value="Category2">Category2</option>
-                  <option value="Category3">Category3</option>
-                  <option value="Category4">Category4</option>
-                </select>
-              </div>
+        <div class="dropdown-select">
+          <select class="sort-select" id="category">
+            <option value="Category1">Category1</option>
+            <option value="Category2">Category2</option>
+            <option value="Category3">Category3</option>
+            <option value="Category4">Category4</option>
+          </select>
+        </div>
       </div>
       <div class="col-md-12 mb-3 selectParent">
-             <div class="dropdown-select">
-                <select class="sort-select">
-                  <option value="Category1">Sub Category1</option>
-                  <option value="Category2">Sub Category2</option>
-                  <option value="Category3">Sub Category3</option>
-                  <option value="Category4">Sub Category4</option>
-                </select>
-              </div>
+       <div class="dropdown-select">
+          <select class="sort-select" id="subCategory">
+            <option value="Category1">Sub Category1</option>
+            <option value="Category2">Sub Category2</option>
+            <option value="Category3">Sub Category3</option>
+            <option value="Category4">Sub Category4</option>
+          </select>
+        </div>
       </div>
       <div class="col-md-12 mb-3">
-        <input type="file" id="" class="form-control" placeholder="import a file">
+        <input type="file" id="courseFile" class="form-control" placeholder="import a file">
       </div>
     </div>
     <div class="row">
@@ -46,20 +46,20 @@
     </div>
     <div class="row">
       <div class="col-md-12 mb-3 selectParent">
-             <div class="dropdown-select">
-                <select class="sort-select">
-                  <option value="Membery1">Member1</option>
-                  <option value="Member2">Member2</option>
-                  <option value="Member3">Membery3</option>
-                  <option value="Member4">Member4</option>
-                </select>
-              </div>
+       <div class="dropdown-select">
+          <select class="sort-select" id="member">
+            <option value="Membery1">Member1</option>
+            <option value="Member2">Member2</option>
+            <option value="Member3">Membery3</option>
+            <option value="Member4">Member4</option>
+          </select>
+        </div>
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="tag-input1" class="form-control" placeholder="Tag">
+        <input type="text" id="tags" class="form-control" placeholder="Tag">
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="" class="form-control" placeholder="One line description">
+        <input type="text" id="desc" class="form-control" placeholder="One line description">
       </div>
     </div>
   </form>
@@ -67,6 +67,14 @@
 </div>
 <div class="modal-footer">
   <span class="orange-btn nbtn">
-    <button type="button" class="btn btn-primary" id="saveCourse">Save</button>
+    <button type="button" class="btn btn-primary" id="saveCourses">Save</button>
   </span>
 </div>
+<script type="text/javascript">
+$( document ).ready(function() {
+  $("#saveCourses").on("click", function() {
+    alert("save");
+  });
+});
+
+</script>
