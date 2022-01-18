@@ -110,6 +110,7 @@
     </div>
     
     <script>
+      var trackPath = true;
       var tinyContentData;
       var tinyMCE = $('textarea#tiny').tinymce({
         height: 600,
@@ -123,7 +124,7 @@
           'searchreplace visualblocks code fullscreen',
           'insertdatetime media table paste code help wordcount imagetools'
         ],
-        toolbar: 'undo redo | link image media | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent charmap | removeformat | code',
+        toolbar: 'undo redo | link image media | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent charmap | removeformat | code | trackpath',
         imagetools_cors_hosts: ['localhost', 'eicit.sa'],
         imagetools_proxy: 'proxy.php',
         extended_valid_elements : "video[controls|preload|width|height|data-setup],source[src|type]",
@@ -138,6 +139,32 @@
         setup:function(ed) {
           ed.on('init', function (e) {
             loadextData(ed);
+          });
+          ed.ui.registry.addButton('trackpath', {
+            icon: 'insert-time',
+            tooltip: 'Toggle Track',
+            onAction: function (_) {
+              // ed.insertContent(toTimeHtml(new Date()));
+              console.log("Before Button : " + window.trackPath);
+              if(window.trackPath) {
+                window.trackPath = false;
+                $(".trackBGColor").hide().prev("div").removeClass("col-8").addClass("col-12");
+              } else{
+                window.trackPath = true;
+                $(".trackBGColor").show().prev("div").removeClass("col-12").addClass("col-8");
+              }
+              console.log("After Button : " + window.trackPath);
+            },
+            onSetup: function (buttonApi) {
+              var editorEventCallback = function (eventApi) {
+                // buttonApi.setDisabled(window.trackPath === false);
+              };
+              ed.on('NodeChange', editorEventCallback);
+              /* onSetup should always return the unbind handlers */
+              return function (buttonApi) {
+                ed.off('NodeChange', editorEventCallback);
+              };
+            },
           });
         }
       });
