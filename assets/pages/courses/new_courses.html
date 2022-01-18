@@ -35,6 +35,7 @@ em.error.help-block {
 <div class="modal-body">    
 
   <form method="post" class="pop-form" id="frmNewCourses" name="frmNewCourses" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="platform_name" id="platform_name" value="Medvarsity" >
     <div class="row">
       <div class="col-md-12 mb-3">
         <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize" placeholder="Name of the Course">
@@ -166,8 +167,8 @@ $( document ).ready(function() {
 
   var frmvalidatorfrm = $("#frmNewCourses").validate({
     rules: {
-      coursesName: {required: true, minlength: 2},
-      coursesID: {required: true },
+      coursesName: {required: true, minlength: 1, maxlength: 256},
+      coursesID: {required: true, minlength: 1, maxlength: 20},
       category: {required: true },
       subCategory: {required: true },
       courseFile: {required: true },
@@ -178,9 +179,13 @@ $( document ).ready(function() {
     messages: {
       coursesName: {
         required: "Please enter a Course Name",
-        minlength: "Your course name must consist of at least 2 characters"
+        minlength: "Your course name must consist of at least 1 characters",
+        maxlength: "Your course name must consist of max of 256 characters",
       },      
-      coursesID: { required: "Please enter a Course ID Prefix" },      
+      coursesID: { required: "Please enter a Course ID Prefix",
+        minlength: "Course ID Prefix must consist of at least 1 characters",
+        maxlength: "Course ID Prefix must consist of max of 20 characters",
+      },      
       category: {required: "Please select the category" },      
       subCategory: {required: "Please select the subcategory" },      
       courseFile: {required: "Please upload attachment" },      
@@ -289,9 +294,36 @@ $( document ).ready(function() {
   
   $("#saveCourses").on("click", function() {
     var isValidForm = frmvalidatorfrm.form();
-    console.log(isValidForm);
     if(isValidForm){
-      alert("save");
+      //check for file
+      var postData = {
+        "course_id_prefix" : $("#coursesID").val(),
+        "name" : $("#coursesName").val(),
+        "description" : $("#description").val(),
+        "category_name" : $("#category").find("option:selected").text(),
+        "sub_category_name" : $("#subCategory").find("option:selected").text(),
+        "start_date" : $("#start_date").val(),
+        "end_date" : $("#end_date").val(),
+        "member" : $("#member").find("option:selected").text(),
+        "platform_name" : $("#platform_name").val(),
+        "status" : 1,
+        "MCStatus" : 1,
+      };
+      $.ajax({
+        url: 'https://elearningcontent.zaigoinfotech.com/course/',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(postData),
+        contentType: "application/json",
+        success:function(response){
+          toastr.success("New course information was successfully saved.");
+          $('#addCourses').modal('hide');
+        },
+        error: function (err) {
+          console.log(err);
+          toastr.error("Error: " + err);
+        }
+      });
     }
   });
 });
