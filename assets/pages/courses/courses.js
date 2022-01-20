@@ -154,3 +154,54 @@ function pagination(data, courses) {
     }
 }
 
+
+//below is for pagination button function
+// load data and style for active page
+function active_page(element, rows, req_per_page) {
+    var current_page = document.getElementsByClassName('active');
+    var next_link = document.getElementById('next_link');
+    var prev_link = document.getElementById('prev_link');
+    var next_tab = current_page[0].nextSibling; 
+    var prev_tab = current_page[0].previousSibling;
+    current_page[0].className = current_page[0].className.replace("active", "");
+    if (element === "next") {
+        if (parseInt(next_tab.text).toString() === 'NaN') {
+            next_tab.previousSibling.className += " active";
+            next_tab.setAttribute("onclick", "return false");
+        } else {
+            next_tab.className += " active"
+            render_table_rows(rows, parseInt(req_per_page), parseInt(next_tab.text));
+            if (prev_link.getAttribute("onclick") === "return false") {
+                prev_link.setAttribute("onclick", `active_page('prev',\"${rows}\",${req_per_page})`);
+            }
+            if (next_tab.style.display === "none") {
+                next_tab.style.display = "block";
+                hide_from_beginning(prev_link.nextSibling)
+            }
+        }
+    } else if (element === "prev") {
+        if (parseInt(prev_tab.text).toString() === 'NaN') {
+            prev_tab.nextSibling.className += " active";
+            prev_tab.setAttribute("onclick", "return false");
+        } else {
+            prev_tab.className += " active";
+            render_table_rows(rows, parseInt(req_per_page), parseInt(prev_tab.text));
+            if (next_link.getAttribute("onclick") === "return false") {
+                next_link.setAttribute("onclick", `active_page('next',\"${rows}\",${req_per_page})`);
+            }
+            if (prev_tab.style.display === "none") {
+                prev_tab.style.display = "block";
+                hide_from_end(next_link.previousSibling)
+            }
+        }
+    } else {
+        element.className += "active";
+        render_table_rows(rows, parseInt(req_per_page), parseInt(element.text));
+        if (prev_link.getAttribute("onclick") === "return false") {
+            prev_link.setAttribute("onclick", `active_page('prev',\"${rows}\",${req_per_page})`);
+        }
+        if (next_link.getAttribute("onclick") === "return false") {
+            next_link.setAttribute("onclick", `active_page('next',\"${rows}\",${req_per_page})`);
+        }
+    }
+}
