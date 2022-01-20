@@ -46,11 +46,11 @@
 }
 .wrapper .course_head{
     margin-left: -25px;
-    margin-top: -12px;
+    margin-top: 0px;
 }
 .wrapper .course_head .header_content{
 	cursor: pointer;
 }
 .wrapper .save_drft_btn{
-	margin-top: -50px;
+	margin-top: 0px;
 } 

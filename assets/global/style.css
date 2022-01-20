@@ -3247,12 +3247,16 @@ form#multiple {
 	grid-gap: 10px;
 	grid-auto-rows: minmax(60px, auto);
 }
-.course_details .wrapper .left_icon{
-    grid-column: span 1;
+.course_details .wrapper .left_icon {
+	grid-column: span 1;
+	display: flex;
+	align-items: center;
 }
 .course_details .wrapper .course_head {
 	grid-column: span 9;
 	margin-left: 0;
+	display: flex;
+	align-items: center;
 }
 .course_details .wrapper .save_drft_btn {
     grid-column: span 2;

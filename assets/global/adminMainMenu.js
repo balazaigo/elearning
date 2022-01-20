@@ -236,7 +236,7 @@ async function getCoursesPage() {
 /*************** Get Cource Page Starts Here********************/
 async function getCoursePage(e) {
   var cname = e.target.dataset.cname.length > 30 ? e.target.dataset.cname.substring(0,30)+"..." : e.target.dataset.cname;
-  var course_head = "<div class='container-fluid course_details'>";
+  var course_head = "<div class='container-fluid course_details mb-3'>";
   course_head += "<div class='wrapper'>";
   course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
   course_head += "<div class='course_head'>";
