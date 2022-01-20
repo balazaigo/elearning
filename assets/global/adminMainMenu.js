@@ -244,7 +244,7 @@ async function getCoursePage(e) {
   course_head += "<h4 class='header_breadcrumbs'>Breadcumbs1 / Breadcumbs2</h4>";
   course_head += "</div>";
   course_head += "<div class='save_drft_btn'>";
-  course_head += "<span class='orange-btn nbtn'><a href='#add-course'>";
+  course_head += "<span class='border-btn nbtn'><a href='#add-course'>";
   course_head += "<button id='add-courses'>Save Draft</button>";
   course_head += "</a></span>";
   course_head += "</div>";
