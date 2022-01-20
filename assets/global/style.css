@@ -3354,3 +3354,9 @@ form#multiple {
 .breadcrumb {
 	display: none;
 }
+.paginationjs .paginationjs-pages li.active > a {
+	height: 30px;
+	line-height: 30px;
+	background: #20204F;
+	color: #fff;
+}
