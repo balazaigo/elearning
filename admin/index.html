@@ -145,9 +145,9 @@
                       </div>
                     </div>
                     <ul>
-                      <li class="nlist">                        
+                      <li class="Myid1">                        
                         <div class="ntext">
-                          <h4><img src="../assets/images/member1.png" alt="" /> george bluth</h4>
+                          <h4><img src="../assets/images/member1.png" alt="" /> George Bluth1</h4>
                           <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                               2 minutes ago
@@ -158,11 +158,11 @@
                             </ul>
                           </div>
                         </div>
-                        <i class="far fa-times-circle" style="font-size: 20px;"></i>
+                        <i id="Myid1" onclick="closeText(this)" class="far fa-times-circle" style="font-size: 20px;"></i>
                       </li>
-                      <li class="nlist">                        
+                      <li class="Myid2">                        
                         <div class="ntext">
-                          <h4><img src="../assets/images/member1.png" alt="" /> george bluth</h4>
+                          <h4><img src="../assets/images/member1.png" alt="" /> George Bluth2</h4>
                           <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                               2 minutes ago
@@ -173,11 +173,11 @@
                             </ul>
                           </div>
                         </div>
-                        <i class="far fa-times-circle" style="font-size: 20px;"></i>
+                        <i id="Myid2" onclick="closeText(this)" class="far fa-times-circle" style="font-size: 20px;"></i>
                       </li>
-                      <li class="nlist">                        
+                      <li class="Myid3">                        
                         <div class="ntext">
-                          <h4><img src="../assets/images/member1.png" alt="" /> george bluth</h4>
+                          <h4><img src="../assets/images/member1.png" alt="" /> George Bluth3</h4>
                           <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                               2 minutes ago
@@ -188,11 +188,11 @@
                             </ul>
                           </div>
                         </div>
-                        <i class="far fa-times-circle" style="font-size: 20px;"></i>
+                        <i id="Myid3" onclick="closeText(this)" class="far fa-times-circle" style="font-size: 20px;"></i>
                       </li>
-                      <li class="nlist">                        
+                      <li class="Myid4">                        
                         <div class="ntext">
-                          <h4><img src="../assets/images/member1.png" alt="" /> george bluth</h4>
+                          <h4><img src="../assets/images/member1.png" alt="" /> George Bluth4</h4>
                           <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                               2 minutes ago
@@ -203,7 +203,7 @@
                             </ul>
                           </div>
                         </div>
-                        <i class="far fa-times-circle" style="font-size: 20px;"></i>
+                        <i id="Myid4" onclick="closeText(this)" class="far fa-times-circle" style="font-size: 20px;"></i>
                       </li>
                     </ul>
                     <div class="notify-link">
@@ -306,5 +306,11 @@
         getDashboardPage();
       });
     </script>
+    <script>
+      function closeText(_this){
+        const target = _this.id;
+        document.querySelector("." + target).style.display = "none";
+      }
+      </script>
   </body>
 </html>
