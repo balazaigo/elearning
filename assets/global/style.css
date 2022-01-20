@@ -481,7 +481,7 @@ dfn {
 	position: relative;
 	line-height: 0;
 	display: inline-table;
-	display: none;
+	display: none !important;
 }
 dfn::after {
 	content: attr(data-info);
