@@ -266,12 +266,12 @@ input[type="checkbox"]:checked + label::before {
 	margin-left: 250px;
 }
 .active-nav #menu-btn {
-	background-color: #20204F;
+	background-color: transparent;
 	color: #fff;
 	margin-left: -5px;
 	position: absolute;
 	top: 75px;
-	right: -40px;
+	right: 0px;
 	border-radius: 0;
 }
 #menu-btn {
@@ -3444,4 +3444,7 @@ form#multiple {
 }
 .notify-link p a {
 	color: #20204f;
+}
+.title-head .vmore {
+	display: none;
 }
