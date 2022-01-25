@@ -82,8 +82,6 @@ em.error.help-block {
       </div>
       <div class="col-md-12 mb-3">
         <select class="form-control tags" id="tags" name="tags[]" required multiple="multiple" style="width:100%">
-          <option value="Cardiology">Cardiology</option>
-          <option value="Test">Test</option>
         </select>      
       </div>
       <div class="col-md-12 mb-3">
@@ -139,6 +137,15 @@ $( document ).ready(function() {
   $('.tags').select2({
     dropdownParent: $('#addCourses'),
     placeholder: "Add a tag",
+    tags: true,
+    maximumSelectionLength: 64,
+    formatSelectionTooBig: function (limit) {
+      return "Too many selected items, Only 64 tags allowed."
+    },
+    formatNoMatches: "add new tag and hit ENTER-KEY",
+    escapeMarkup: function (markup) {
+      return markup;
+    }    
   });
 
   $('.cm-capitalize').each(function() { $(this).capitalize(); });
@@ -152,6 +159,7 @@ $( document ).ready(function() {
   
   $("input:file").change(function (){
     var fileName = $(this).val();
+    console.log(fileName);
     $(".filename").html(fileName.replace("C:\\fakepath\\", ''));
   });
 
