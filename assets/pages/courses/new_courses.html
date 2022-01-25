@@ -34,7 +34,7 @@ em.error.help-block {
 </div>
 <div class="modal-body">    
 
-  <form method="post" class="pop-form" id="frmNewCourses" name="frmNewCourses" enctype="application/x-www-form-urlencoded">
+  <form method="post" class="pop-form" id="frmNewCourses" name="frmNewCourses" enctype="multipart/form-data">
     <input type="hidden" name="platform_id" id="platform_id" value="1e4758ac-8077-42e6-b9d9-11b0de0df37d" >
     <div class="row">
       <div class="col-md-12 mb-3">
@@ -145,11 +145,9 @@ $( document ).ready(function() {
   $('.cm-uppercase').each(function() { $(this).upperCase(); });  
 
   $("#coursesName").on("blur", function(){
-    if($("#coursesID").val().length === 0) {
-      var str = $(this).val();
-      var acpref = str.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'')
-      $("#coursesID").val(acpref.toUpperCase());
-    }
+    var str = $(this).val();
+    var acpref = str.substring(0, 4);
+    $("#coursesID").val(acpref.toUpperCase());
   });
   
   $("input:file").change(function (){
@@ -317,31 +315,30 @@ $( document ).ready(function() {
       formData.append("category_name", $("#category").find("option:selected").text());
       formData.append("sub_category_name", $("#subCategory").find("option:selected").text());
       $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
-          formData.append("attachments["+i+"]", file);
+        formData.append("attachments["+i+"]", file, file.name);
       });
-      var settings = {
-        "url": "https://elearningcontent.zaigoinfotech.com/course/",
-        "method": "POST",
-        "timeout": 0,
-        "mimeType": "multipart/form-data",
-        "processData": false,
-        "contentType": false,
-        "data": formData
-      };
-      
       for (var pair of formData.entries()) {      
         console.log(pair);
       }
       
-      $.ajax(settings).done(function (response) {
-        toastr.success("New course information was successfully saved.");
-        $('#addCourses').modal('hide');
-        console.log(response);
-        console.log(response.id);
-      }).fail(function (error) {
-        console.log(error);
-        toastr.error("Error: " + error);
-      });      
+      $.ajax({
+        url: "https://elearningcontent.zaigoinfotech.com/course/",
+        method: "POST",
+        type: 'POST', // For jQuery < 1.9
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: function(response){
+          //$('#addCourses').modal('hide');
+          toastr.success("New course information was successfully saved.");
+          console.log(response.id);
+          console.log(response);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
     }
   });
 });
