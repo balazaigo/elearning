@@ -9,11 +9,18 @@
   font-size: 17px;
   color: #9e9e9e;
 }
-.custom-file span {
+.custom-file span.filename {
   cursor:pointer;
   border: 1px solid #ccc;
   padding: 8px;
   border-radius: 8px;
+}
+span.name {
+  margin: 8px;
+  padding: 4px;
+  font-size: 14px;
+  color: #607d8b;
+  border-radius: 0px;
 }
 input[type="file"] {
   display: none;
@@ -158,9 +165,19 @@ $( document ).ready(function() {
   });
   
   $("input:file").change(function (){
-    var fileName = $(this).val();
-    console.log(fileName);
-    $(".filename").html(fileName.replace("C:\\fakepath\\", ''));
+    var fappend = '';
+    for(var i = 0 ; i < this.files.length ; i++){
+      var fileName = this.files[i].name;
+      fappend += '<span class="name">' + fileName.replace("C:\\fakepath\\", '') + '</span>';
+    }
+    if(i > 4) {
+      $(".filename").html("Import a file");
+      alert("Only 5 files accepted!");
+      $("#courseFile").val(null);
+      return false;
+    } else {
+      $(".filename").html(fappend);
+    }
   });
 
   $.validator.addMethod("pattern", function( value, element, param ) {
