@@ -35,7 +35,7 @@ em.error.help-block {
 <div class="modal-body">    
 
   <form method="post" class="pop-form" id="frmNewCourses" name="frmNewCourses" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="platform_name" id="platform_name" value="Medvarsity" >
+    <input type="hidden" name="platform_id" id="platform_id" value="1e4758ac-8077-42e6-b9d9-11b0de0df37d" >
     <div class="row">
       <div class="col-md-12 mb-3">
         <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize" placeholder="Name of the Course">
@@ -59,7 +59,7 @@ em.error.help-block {
       </div>
       <div class="col-md-12 mb-3">
         <label class="custom-file">
-          <input type="file" id="courseFile" name="courseFile" class="form-control" placeholder="import a file">
+          <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="import a file">
           <span class="filename">Import a file</span>
         </label>
       </div>
@@ -83,7 +83,7 @@ em.error.help-block {
       <div class="col-md-12 mb-3">
         <select class="form-control tags" id="tags" name="tags[]" required multiple="multiple" style="width:100%">
           <option value="Cardiology">Cardiology</option>
-          <option value="WY">Wyoming</option>
+          <option value="Test">Test</option>
         </select>      
       </div>
       <div class="col-md-12 mb-3">
@@ -239,13 +239,13 @@ $( document ).ready(function() {
   });
 
   $.ajax({
-    url: API_BASE_URL + '/members/',
+    url: API_BASE_URL + '/member/',
     type: 'get',
     dataType: 'json',
     success:function(response){
       $("#member").empty();
       $("#member").append("<option value=''>Select Member</option>");
-      $.each( response, function( i, val ) {
+      $.each( response.results, function( i, val ) {
         $("#member").append("<option value='"+val.id+"'>"+val.first_name+" " + val.last_name+"</option>");
       });
     }
@@ -295,35 +295,53 @@ $( document ).ready(function() {
   $("#saveCourses").on("click", function() {
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
-      //check for file
-      var postData = {
-        "course_id_prefix" : $("#coursesID").val(),
-        "name" : $("#coursesName").val(),
-        "description" : $("#description").val(),
-        "category_name" : $("#category").find("option:selected").text(),
-        "sub_category_name" : $("#subCategory").find("option:selected").text(),
-        "start_date" : $("#start_date").val(),
-        "end_date" : $("#end_date").val(),
-        "member" : $("#member").find("option:selected").text(),
-        "platform_name" : $("#platform_name").val(),
-        "status" : 1,
-        "MCStatus" : 1,
-      };
-      $.ajax({
-        url: 'https://elearningcontent.zaigoinfotech.com/course/',
-        type: 'POST',
-        dataType: 'json',
-        data: JSON.stringify(postData),
-        contentType: "application/json",
-        success:function(response){
-          toastr.success("New course information was successfully saved.");
-          $('#addCourses').modal('hide');
-        },
-        error: function (err) {
-          console.log(err);
-          toastr.error("Error: " + err);
-        }
+      if($("#tags").val().length === 0) {
+        alert("Tags field cannot empty please choice tags!");
+        return false;
+      }
+      var tags = $("#tags").val().join(",");
+      
+      var formData = new FormData();
+      formData.append("course_id_prefix", $("#coursesID").val());
+      formData.append("name", $("#coursesName").val());
+      formData.append("description", $("#description").val());
+      formData.append("platform_id", $("#platform_id").val());
+      formData.append("category_id", $("#category").val());
+      formData.append("sub_category_id", $("#subCategory").val());
+      formData.append("member_id", $("#member").val());
+      formData.append("start_date",  $("#start_date").val());
+      formData.append("end_date",  $("#end_date").val());
+      formData.append("status", 1);
+      formData.append("MCStatus", 1);
+      formData.append("tags",  tags);
+      formData.append("category_name", $("#category").find("option:selected").text());
+      formData.append("sub_category_name", $("#subCategory").find("option:selected").text());
+      $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
+          formData.append("attachments["+i+"]", file);
       });
+      var settings = {
+        "url": "https://elearningcontent.zaigoinfotech.com/course/",
+        "method": "POST",
+        "timeout": 0,
+        "mimeType": "multipart/form-data",
+        "processData": false,
+        "contentType": false,
+        "data": formData
+      };
+      
+      for (var pair of formData.entries()) {      
+        console.log(pair);
+      }
+      
+      $.ajax(settings).done(function (response) {
+        toastr.success("New course information was successfully saved.");
+        $('#addCourses').modal('hide');
+        console.log(response);
+        console.log(response.id);
+      }).fail(function (error) {
+        console.log(error);
+        toastr.error("Error: " + error);
+      });      
     }
   });
 });
