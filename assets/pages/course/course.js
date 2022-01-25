@@ -203,7 +203,7 @@ function add_sub(e){
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
                 newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon'></li>";
+                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -236,7 +236,7 @@ function add_sub(e){
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li></li>";
                 newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon'></li>";
+                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -259,7 +259,7 @@ function add_sub(e){
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
                 newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon'></li>";
+                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -293,7 +293,7 @@ function add_sub_sub(e){
     newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
     newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
     newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>";
-    newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon'></li>";
+    newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
     newHTML += "</ul>";
     newHTML += "</div>";
     e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -360,4 +360,17 @@ function delete_module(e){
       });
     }
   }
+}
+function show_tag_popup(e){
+  var offsets = e.getBoundingClientRect();
+  var offset_box = document.getElementById("course_box").getBoundingClientRect();
+  var top = offsets.top + Math.max( $("html").scrollTop(), $("body").scrollTop() ) - 70;
+  //var right = offset_box.left;
+  const container = document.getElementById("popup_course_icon");
+  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+  document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
+  var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_tag.html?t=` + Math.floor(Date.now() / 1000);
+  $('.modal-content').load(url,function(result){
+    modal.toggle();
+  });
 }

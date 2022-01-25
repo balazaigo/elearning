@@ -236,7 +236,7 @@ async function getCoursesPage() {
 /*************** Get Cource Page Starts Here********************/
 async function getCoursePage(e) {
   var cname = e.target.dataset.cname.length > 30 ? e.target.dataset.cname.substring(0,30)+"..." : e.target.dataset.cname;
-  var course_head = "<div class='container-fluid course_details mb-3'>";
+  var course_head = "<div class='container-fluid course_details'>";
   course_head += "<div class='wrapper'>";
   course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
   course_head += "<div class='course_head'>";
@@ -244,13 +244,19 @@ async function getCoursePage(e) {
   course_head += "<h4 class='header_breadcrumbs'>Breadcumbs1 / Breadcumbs2</h4>";
   course_head += "</div>";
   course_head += "<div class='save_drft_btn'>";
-  course_head += "<span class='border-btn nbtn'><a href='#add-course'>";
+  course_head += "<span class='orange-btn nbtn'><a href='#add-course'>";
   course_head += "<button id='add-courses'>Save Draft</button>";
   course_head += "</a></span>";
   course_head += "</div>";
   course_head += "</div>";
   course_head += "<input type='hidden' value='"+e.target.dataset.cid+"' name='course_id' id='course_id'>";
   course_head += "</div>";
+
+  course_popup = '<div class="modal fade" id="popup_course_icon" data-bs-backdrop="static">';
+  course_popup += '<div class="modal-dialog modal-lg">';
+  course_popup += '<div class="modal-content" id="content-courseModule"></div>';
+  course_popup += '</div>';
+  course_popup += '</div>';
   var newDIV = $("<div class='course' id='course_box'></div>");
   var outerHtml = '';
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/nested2.json`;
@@ -272,13 +278,13 @@ async function getCoursePage(e) {
     newUl2.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
     newUl2.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>");
     newUl2.append("<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li>");
-    newUl2.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon'></li>");
+    newUl2.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");
     newDiv2.append(newUl2);
     newDIV.append(newDiv2);
     var outerHtml = newDIV.prop('outerHTML');
     if(outerHtml !== ''){
       //getcoursesPageHtml(course_head, outerHtml);
-      document.getElementById("app-admin").innerHTML = course_head+outerHtml;
+      document.getElementById("app-admin").innerHTML = course_head+outerHtml+course_popup;
       $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/course/course.js`, function() {});
     }
   })
@@ -316,7 +322,7 @@ function get_list( a, $parent , level_count_inc) {
               newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
               newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li></li>");
               newUl.append("<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li>");
-              newUl.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon'></li>");
+              newUl.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");
           }else{
                 var class_name = $parent.parent().prop('className').split(" ");
                 var first_five_char_class = class_name[1].substring(0,5);
@@ -327,7 +333,7 @@ function get_list( a, $parent , level_count_inc) {
                 }
               var n = a[i].module_name.lastIndexOf('/');
               var input_value = a[i].module_name.substring(n + 1);
-              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_none' id='"+levels+"' style='width:95%;margin-right: -2px;'>");
+              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='width:95%;margin-right: -2px;'>");
               newUl = $("<ul class='sub_module'></ul>");
               newUl.append("<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"'>"+input_value+"</p></li>");
@@ -338,7 +344,7 @@ function get_list( a, $parent , level_count_inc) {
               newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
               newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>");
               newUl.append("<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>");
-              newUl.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon'></li>");
+              newUl.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");
           }
           if(level_count === 0){  
             newDIV.append(newUl);

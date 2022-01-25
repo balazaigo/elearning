@@ -1,0 +1,83 @@
+<ul class="acnav__list wbg br-10"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <li class="has-children">
+    <div class="acnav__label acnav__label--level2">
+      <div class="accordionlist">
+        <div class="row">
+          <div class="col-md-12 p-3 mtag">
+            <div class="tag__container">
+              <input type="text" class="tag__input" placeholder="+ Add Tag">
+              <ul class="tag__List content hideContent" id="tag__List_append">
+                
+              </ul>
+              <div class="show-more showmore">More >></div>
+              <input type="hidden" class="tag__values" value="tag1,tag2"/>
+           </div>
+          </div>                                   
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+<script type="text/javascript">
+  var course_tags = [
+  {
+    "module_id": "e1ce2b1e-ef1d-4c2c-bdcc-4f9a0a0a0b80",
+    "tag_name": "test1",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f6",
+    "tag_name": "test2",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f6",
+    "tag_name": "test3",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f2",
+    "tag_name": "test4",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f3",
+    "tag_name": "test5",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f4",
+    "tag_name": "test6",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f5",
+    "tag_name": "test7",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f6",
+    "tag_name": "test8",
+  },
+  {
+    "module_id": "e5f695d4-ed05-4655-8eab-d9db7576e8f7",
+    "tag_name": "test9",
+  }
+  ];
+console.log(course_tags.length);
+var tag_list ="";
+    for(var i = 0; i < course_tags.length; i++){
+      tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__remove" data-tag="'+course_tags[i].tag_name+'">×</span></li>';
+    }
+    document.getElementById("tag__List_append").innerHTML = tag_list;
+
+$(".show-more").on("click", function() {
+    var $this = $(this); 
+    var $content = $this.prev("ul.content");
+    var linkText = $this.text().toUpperCase();   
+    if(linkText === "MORE >>"){
+        linkText = "<< Less";
+        $content.switchClass("hideContent", "showContent", 400);
+        $this.switchClass("showmore", "showless", 1);
+    } else {
+        linkText = "More >>";
+        $content.switchClass("showContent", "hideContent", 400);
+        $this.switchClass("showless", "showmore", 1);
+    };
+
+    $this.text(linkText);
+});
+</script>

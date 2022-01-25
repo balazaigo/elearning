@@ -75,8 +75,9 @@ function render_table_rows(rows, req_per_page, page_no) {
             var id = element.id;
             var due_date = element.due_date !== undefined ? element.due_date : "0";
             var progress = element.progress !== undefined ? element.progress : "0";
+            var course_id_prefix = element.course_id_prefix !== undefined ? element.course_id_prefix : "No-ID";
             var td = "<div class='col-md-4'><div class='role-content mb-4' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'><div class='row'>";
-                td +="<div class='col-6 cleft tbtn' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'> <a href='#' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>STB-23</a> </div>";
+                td +="<div class='col-6 cleft tbtn' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'> <a href='#' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>"+course_id_prefix+"</a> </div>";
                 td +="<div class='col-6 cright'>";
 				td +="<div class='dropdown ahide'>";
 				td +="<button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button>";

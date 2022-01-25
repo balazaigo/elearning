@@ -266,12 +266,12 @@ input[type="checkbox"]:checked + label::before {
 	margin-left: 250px;
 }
 .active-nav #menu-btn {
-	background-color: transparent;
+	background-color: #20204F;
 	color: #fff;
 	margin-left: -5px;
 	position: absolute;
 	top: 75px;
-	right: 0px;
+	right: -40px;
 	border-radius: 0;
 }
 #menu-btn {
@@ -481,7 +481,7 @@ dfn {
 	position: relative;
 	line-height: 0;
 	display: inline-table;
-	display: none !important;
+	display: none;
 }
 dfn::after {
 	content: attr(data-info);
@@ -2158,24 +2158,19 @@ span.obg {
 	position: absolute;
 	right: 0;
 	z-index: 9;
-	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.08);
 }
 .top-btn-notify ul {
-	padding: 0 10px;
+	padding: 10px;
 	list-style: none;
 	width: 300px;
 	background: #fff;
-	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.08);
-	margin: 0;
-	max-height: 215px;
-	overflow-y: scroll;
+	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.05);
 }
 .top-btn-notify li {
 	display: flex;
 	align-items: center;
 	padding: 5px 0;
 	border-bottom: 1px solid #eee;
-	position: relative;
 }
 .top-btn-notify img {
 	margin-right: 5px;
@@ -3252,16 +3247,12 @@ form#multiple {
 	grid-gap: 10px;
 	grid-auto-rows: minmax(60px, auto);
 }
-.course_details .wrapper .left_icon {
-	grid-column: span 1;
-	display: flex;
-	align-items: center;
+.course_details .wrapper .left_icon{
+    grid-column: span 1;
 }
 .course_details .wrapper .course_head {
 	grid-column: span 9;
 	margin-left: 0;
-	display: flex;
-	align-items: center;
 }
 .course_details .wrapper .save_drft_btn {
     grid-column: span 2;
@@ -3290,7 +3281,7 @@ form#multiple {
     padding: 20px;
     display: block;
     overflow: auto;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
 }
 
 /*************courses new css end****************/
@@ -3357,94 +3348,5 @@ form#multiple {
 /************** File upload css Ends****************/
 
 .breadcrumb {
-	display: none;
-}
-.paginationjs .paginationjs-pages li.active > a {
-	height: 30px;
-	line-height: 30px;
-	background: #20204F;
-	color: #fff;
-}
-.notify {
-	background: #20204F;
-	padding: 15px;
-}
-.notify h4 {
-	color: #fff;
-	font-size: 16px;
-	margin: 0;
-}
-.notify p {
-	margin: 0;
-}
-.top-btn-notify li i {
-	position: absolute;
-	right: 0;
-	color: red;
-}
-.ntext h4 {
-	font-size: 16px;
-	color: #1e223c;
-}
-.ntext button {
-	color: #bdc5d1;
-	background: none;
-	border: none;
-	padding: 0;
-	font-size: 14px;
-}
-.ntext button:hover {
-	color: #333;
-	background-color: transparent;
-	border-color: transparent;
-}
-.ntext .btn-secondary:focus {
-	color: #333;
-	background-color: transparent;
-	border-color: transparent;
-	box-shadow: none;
-  }
-.ntext .dropdown-toggle::after {
-	display: none;
-	margin-left: .255em;
-	vertical-align: .255em;
-	content: "";
-	border-top: .3em solid;
-	border-right: .3em solid transparent;
-	border-bottom: 0;
-	border-left: .3em solid transparent;
-}
-.ntext .dropdown-menu {
-	padding: 0 !important;
-	width: 100%;
-	height: auto;
-}
-.ntext .dropdown-menu li {
-	padding: 0;
-}
-.ntext .dropdown-menu .dropdown-item {
-	color: #555;
-}
-.n-new {
-	text-align: right;
-}
-.n-new a {
-	background: #fff;
-	color: #333;
-	font-size: 14px;
-	padding: 5px;
-	border-radius: 5px;
-}
-.notify-link {
-	background: #fff;
-}
-.notify-link p {
-	margin: 0;
-	padding: 10px 0;
-}
-.notify-link p a {
-	color: #20204f;
-}
-.title-head .vmore {
 	display: none;
 }

@@ -46,11 +46,19 @@
 }
 .wrapper .course_head{
     margin-left: -25px;
-    margin-top: 0px;
+    margin-top: -12px;
 }
 .wrapper .course_head .header_content{
 	cursor: pointer;
 }
 .wrapper .save_drft_btn{
-	margin-top: 0px;
+	margin-top: -50px;
 } 
+#course-box  h6{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 52px;
+}
