@@ -317,10 +317,6 @@ $( document ).ready(function() {
       $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
         formData.append("attachments["+i+"]", file, file.name);
       });
-      for (var pair of formData.entries()) {      
-        console.log(pair);
-      }
-      
       $.ajax({
         url: "https://elearningcontent.zaigoinfotech.com/course/",
         method: "POST",
@@ -330,12 +326,12 @@ $( document ).ready(function() {
         processData: false,
         data: formData,
         success: function(response){
-          //$('#addCourses').modal('hide');
+          $('#addCourses').modal('hide');
           toastr.success("New course information was successfully saved.");
-          console.log(response.id);
           console.log(response);
         },
         error: function(error) {
+          toastr.error("Response Error: " + error.message);
           console.log(error);
         }
       });
