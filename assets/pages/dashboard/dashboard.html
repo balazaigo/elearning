@@ -16,17 +16,21 @@
     <div class="container-fluid p-0">
       <div class="col-12 p-3 pb-0">
       <div class="row">
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-4 col-md-4">
           <div class="searchbar">
             <h4>List of Tasks </h4>
           </div>
         </div>
-        <div class="col-lg-6 col-md-6 top-btn">
+        <div class="col-lg-8 col-md-8 top-btn">
           <div class="row">
-            <div class="col-lg-5 col-md-5">
+            <div class="col-lg-2 col-md-2 p-0">
+              <a class="btn btn-sm btn-danger btnReset d-none" style="position:relative;top:2px;">Reset</a>
+            </div>
+            <div class="col-lg-4 col-md-4">
               <div class="topsearch relative">
                 <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search" id="searchText">
-                <i class="fas fa-search"></i> </div>
+                <i class="fas fa-search"></i> 
+              </div>
             </div>
             <div class="col-lg-3 col-md-3">
               <div class="dropdown-select">
@@ -35,7 +39,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-3 col-md-3">
               <div class="dropdown-select">
                 <select class="form-control sort-select" id="status">
                   <option value="">Status</option>
@@ -121,7 +125,7 @@
 <script type="text/javascript">
 
 function doSearch(){
-
+  $(".btnReset").removeClass("d-none");
   $('.btnRadio').each(function(index, element) {
     if($(element).prop("checked")) {
       if($(element).prop("id") == "tabone") {
@@ -135,12 +139,18 @@ function doSearch(){
   
 
 $( document ).ready(function() {
+  $(".btnReset").on("click", function(){
+    $("#status, #courses_list, #searchText").val(null);
+    doSearch();
+    $(".btnReset").addClass("d-none");
+  });
   $(".fa-search").on("click", function(){ 
     console.log("searchText");
     doSearch(); 
   });
   $("#status, #courses_list").on("change", function(){ doSearch(); });
   $('.btnRadio').click(function(){ doSearch(); });
+  
   //load the courses list
   $.ajax({
     url: 'https://elearningcontent.zaigoinfotech.com/course_list/',
