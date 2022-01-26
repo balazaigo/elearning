@@ -29,10 +29,10 @@
         <div class="tab p-0">
           <div class="editor-section">
              <div class="row">
-                <div class="col-8">
+                <div class="col-12">
                   <textarea id="tiny"></textarea>
                 </div>
-                <div class="col-4 trackBGColor">
+                <div class="col-4 trackBGColor" style="display:none">
                   <div class="m-1 clearfix">
                     <span class="fs-4 float-start">Track Changes</span>
                     <button class="btn btn-sm btn-primary float-end" id="save-content">Save</button>
@@ -110,7 +110,7 @@
     </div>
     
     <script>
-      var trackPath = true;
+      var trackPath = false;
       var tinyContentData;
       var tinyMCE = $('textarea#tiny').tinymce({
         height: 600,
