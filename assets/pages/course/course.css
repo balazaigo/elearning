@@ -170,15 +170,15 @@
 }
 .progress_btn .status_new, #course-box .status_new{
     background-color: rgb(240,220,250);
-    color: rgb(200,81,255);
+    color: rgb(180 39 245);
 }
 .progress_btn .status_inprogress, #course-box .status_inprogress{
     background-color: rgb(242,247,255);
-    color: rgb(149,162,246);
+    color: rgb(50 77 249);
 }
 .progress_btn .status_onhold, #course-box .status_onhold{
     background-color: rgb(254,249,233);
-    color: rgb(243,187,27);
+    color: rgb(255 189 0);
 }
 .progress_btn .status_completed, #course-box .status_completed{
     background-color: rgb(236,249,236);
@@ -219,7 +219,7 @@
     border-radius: 20px;
     width: 100px;
     text-align: center;
-    height: 25px;
-    padding: 2px;
+    height: 30px;
+    padding: 5px;
     float: right;
 }

@@ -1,4 +1,4 @@
-var course_details = "";
+/*var course_details = "";
 var course_details_url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_details.json`;
 var course_assignee = "";
 var course_assignee_url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_assignee.json`;
@@ -220,23 +220,24 @@ function active_page(element, rows, req_per_page) {
             next_link.setAttribute("onclick", `active_page('next',\"${rows}\",${req_per_page})`);
         }
     }
-}
-/*
+}*/
+
 $( document ).ready(function() {
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
       dataSource: 'https://elearningcontent.zaigoinfotech.com/course/',
       locator: 'data',
-      totalNumberLocator: function(response) {console.log(response);
+      totalNumberLocator: function(response) {
         return response.total;
       },
       alias: {
         pageNumber: 'page',
+        pageSize: 'per_page',
       },  
+      pageSize: 6,
       ajax: {
-        beforeSend: function() {
-          //Loading Message
-          //$('#data-assignedTo').html('<tr><td class="text-center" colspan="3">Loading data from Fake Json...</td></tr>');
+        beforeSend: function(request) {
+          request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
         },
         complete: function(jqXHR, textStatus) {
           if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
@@ -248,7 +249,7 @@ $( document ).ready(function() {
           }
         },    
       },
-      callback: function(data, pagination) {console.log(data);
+      callback: function(data, pagination) {
         var html = template(data);
         $('#data-assignedTo').html(html);
         $('#data-assignedBy').html(html);
@@ -261,9 +262,9 @@ function template(data){
     $('#course-box').empty();
     data.forEach(function (element, index) {
         if (Object.keys(element).length > 0) {
-            var course_name = element.course_name;
+            var course_name = element.name;
             var id = element.id;
-            var due_date = element.due_date !== undefined ? element.due_date : "0";
+            var due_date = element.due_in_days !== undefined ? element.due_in_days : "0";
             var progress = element.progress !== undefined ? element.progress : "0";
             var status_class = "";
             var status_text = "";
@@ -271,14 +272,14 @@ function template(data){
               status_class = "status_new";
               status_text = "New";
             }else if(element.status == 1){
+              status_class = "status_inprogress";
+              status_text = "Active";
+            }else if(element.status == 2){
               status_class = "status_onhold";
               status_text = "On Hold";
-            }else if(element.status == 2){
+            }else if(element.status == 4){
               status_class = "status_completed";
               status_text = "Completed";
-            }else if(element.status == 3){
-              status_class = "status_inprogress";
-              status_text = "In Progress";
             }
             var course_id_prefix = element.course_id_prefix !== undefined ? element.course_id_prefix : "No-ID";
             var td = "<div class='col-md-4'><div class='role-content mb-4' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'><div class='row'>";
@@ -297,7 +298,7 @@ function template(data){
                 td +="<div class='row' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
                 td +="<div class='col-12'>";
                 td +="<h6 data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>"+course_name+"</h6>";
-                td +="<p data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'> <span class='c-comment'><i class='far fa-comment'></i> 01</span> <span class='c-comment'><i class='fas fa-paperclip'></i> 08</span> </p>";
+                td +="<p data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'> <span class='c-comment'><i class='far fa-comment'></i> "+element.comments_count+"</span> <span class='c-comment'><i class='fas fa-paperclip'></i> "+element.attachments_count+"</span> </p>";
                 td +="</div>";
                 td +="</div>";
                 td +="<div class='row' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
@@ -329,4 +330,4 @@ function template(data){
              $('#course-box').append(td);
         }
     });
-}*/
+}

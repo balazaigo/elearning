@@ -77,3 +77,13 @@
     right: 5px;
     top: 22px;
 }
+.uploaded_display .fileup-file{
+    margin: 5px;
+    float: left;
+    width: 48%;
+}
+.uploaded_display .fileup-description{
+    height: 29px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
