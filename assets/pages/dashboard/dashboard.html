@@ -30,11 +30,8 @@
             </div>
             <div class="col-lg-3 col-md-3">
               <div class="dropdown-select">
-                <select class="sort-select">
-                  <option value="Course1">Course</option>
-                  <option value="Course2">Course1</option>
-                  <option value="Course3">Course2</option>
-                  <option value="Course4">Course3</option>
+                <select class="sort-select" id="courses_list" name="courses_list">
+                  <option value="">Select Courses</option>
                 </select>
               </div>
             </div>
@@ -113,6 +110,21 @@
 </div>
 <script type="text/javascript">
 $( document ).ready(function() {
+  
+  //load the courses list
+  $.ajax({
+    url: 'https://elearningcontent.zaigoinfotech.com/course_list/',
+    type: 'get',
+    dataType: 'json',
+    success:function(response){
+      $("#courses_list").empty();
+      $("#courses_list").append("<option value=''>Select Courses</option>");
+      $.each( response, function( i, val ) {
+        $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
+      });
+    }
+  });
+  
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
       dataSource: 'https://reqres.in/api/users',
