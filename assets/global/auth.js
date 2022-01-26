@@ -18,6 +18,7 @@ class Auth {
     localStorage.removeItem("auth");
     localStorage.removeItem("auth_type");
     localStorage.removeItem("auth_user");
+    localStorage.removeItem("auth_data");
     window.location.replace(SITE_URL_PROTOCOL);
   }
 }
@@ -27,4 +28,16 @@ if (logoutTag !== null) {
   logoutTag.addEventListener("click", (e) => {
     auth.logOut();
   });    
+}
+
+function getUserInfo(){
+  const authData = localStorage.getItem("auth_data");
+  return JSON.parse(authData);
+}
+
+function setUserInfo(authData){
+  if(authData !== null) {
+    $("#dropdownMenuButton1").html('<span>' + authData.name + '</span>' + '<span class="user-role">' + authData.role + '</span>');
+    $(".fullname").html(authData.name);
+  }
 }

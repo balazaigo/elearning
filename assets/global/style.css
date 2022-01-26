@@ -694,6 +694,7 @@ dfn i {
 }
 .top-btn .dropdown-toggle::after {
 	opacity: 0;
+  display:none;
 }
 .title-head .top-btn .dropdown {
 	border-left: 0px solid #ccc;
@@ -3357,4 +3358,10 @@ form#multiple {
     line-height: 1.3em;
     width: 50%;
     float: left;
+}
+
+/* Dashboard CSS */
+span.user-role {
+  display:flex;
+  font-size:11px;
 }

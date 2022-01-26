@@ -111,19 +111,12 @@
   };
   function attachSignin(element) {
     auth2.attachClickHandler(element, {}, function(googleUser) {
-      console.log(googleUser.getBasicProfile());
-      toastr.success("Welcome : " + googleUser.getBasicProfile().getEmail());
-      //validated the email from backend
-      localStorage.setItem("auth", 1);
-      localStorage.setItem("auth_type", "social");
-      localStorage.setItem("auth_user", googleUser.getBasicProfile().getEmail());
-      setTimeout(function() {
-        window.location.href = `${SITE_URL_PROTOCOL}admin/`;
-      }, 2000);
+      postGoogleLogin(googleUser);
     }, function(error) {
       toastr.error(error.error);
     });
   }
+
   startApp();
   
   /* Process for OTP */
@@ -229,6 +222,40 @@
     if(first.value.length){
       document.getElementById(last).focus();
     }
+  }
+  
+  function postGoogleLogin(googleUser){
+      //https://elearningadmin.zaigoinfotech.com/login/
+      var access_token = googleUser.getAuthResponse().access_token;
+      var email_id = googleUser.getBasicProfile().getEmail();
+      //validated the email from backend
+      $.ajax({
+        url: "https://elearningadmin.zaigoinfotech.com/login/",
+        method: "POST",
+        type: 'POST', // For jQuery < 1.9
+        cache: false,
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify({
+          "email_id": email_id,
+          "google_token": access_token
+        }),
+        success: function(response){
+          localStorage.setItem("auth", 1);
+          localStorage.setItem("auth_type", "social");
+          localStorage.setItem("auth_user", email_id);
+          localStorage.setItem("auth_token", access_token);
+          localStorage.setItem("auth_data", JSON.stringify(response));
+          toastr.success("Welcome : " + email_id);
+          setTimeout(function() {
+            window.location.href = `${SITE_URL_PROTOCOL}admin/`;
+          }, 1500);
+        },
+        error: function(error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
   }
   
 </script>

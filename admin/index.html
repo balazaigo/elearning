@@ -305,6 +305,9 @@
         $('a[href="#"]').click( function(e) { e.preventDefault(); });
         getDashboardPage();
       });
+      $(document).ajaxSuccess(function(event, xhr, ajaxOptions, data) {
+        setUserInfo ( window.getUserInfo() );
+      });
     </script>
     <script>
       function closeText(_this){
