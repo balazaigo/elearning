@@ -188,17 +188,16 @@ function add_sub(e){
                 var index = classList[1].lastIndexOf("_");
                 var result = Number(classList[1].substr(index+1));
                 if(e.parentElement.parentElement.childNodes[0].nodeName == '#text'){
-                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(20);
+                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(18);
                 }else{
-                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(9);
+                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(8);
                 }
                 newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>Level "+result+"</p></li>";
-                newHTML += "<li class='delete_img_icon disp_in_block flt_right'><i class='far fa-trash-alt' onclick='delete_sub_module(this);'></i></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
-                newHTML += "<li class='progress_btn disp_in_block flt_right'><p>In progress</p></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+                newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
@@ -220,18 +219,14 @@ function add_sub(e){
             }
             if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
                 var index = classList[1].lastIndexOf("_");
-                console.log(e.parentElement.parentElement.parentElement.parentElement.childNodes);
                 var result = Number(classList[1].substr(index+1));
-                console.log(e.parentElement.parentElement.parentElement.parentElement.childNodes.length);
                 var result = Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length) + Number(1);
-                console.log(result);
                 newHTML = "<div class='module module_"+result+" main_mod_empty' style='opacity:0.5;'>";
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+result+"'>Add Module Name</p></li>";
-                newHTML += "<li class='delete_img_icon disp_in_block flt_right'><i class='far fa-trash-alt' onclick='delete_module(this);'></i></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
-                newHTML += "<li class='progress_btn disp_in_block flt_right'><p>In progress</p></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+                newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li></li>";
@@ -252,9 +247,8 @@ function add_sub(e){
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);'>Level "+result+"</p></li>";
-                newHTML += "<li class='delete_img_icon disp_in_block flt_right'><i class='far fa-trash-alt' onclick='delete_sub_module(this);'></i></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
-                newHTML += "<li class='progress_btn disp_in_block flt_right'><p>In progress</p></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+                newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
@@ -281,14 +275,14 @@ function add_sub_sub(e){
     var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
     var index = classList[1].lastIndexOf("_");
     var res_1 = Number(classList[1].substr(index+1));
-    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 9);
+    console.log(e.parentElement.parentElement.childNodes.length);
+    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
     newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
     newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>Level "+result+"</p></li>";
-    newHTML += "<li class='delete_img_icon disp_in_block flt_right'><i class='far fa-trash-alt' onclick='delete_sub_module(this);'></i></li>";
-    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
-    newHTML += "<li class='progress_btn disp_in_block flt_right'><p>In progress</p></li>";
+    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+    newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
     newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
     newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
     newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";

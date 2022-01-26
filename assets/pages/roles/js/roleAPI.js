@@ -20,20 +20,30 @@ function getRoles() {
 
 function renderRoleList(roles) {
   let html = "";
-
   $.each(roles, function (index, role) {
+    var dots = "";
+    if(role.description.length > 75){
+      dots = "...";
+    }
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
     html += `<h4 data-flinkto="userroles">${role.name}</h4>`;
-    html += `<p>${role.description}</p>`;
-    html += `<div class="members">
+    html += `<p>${role.description.substring(0, 75)+dots}</p>`;
+    if(role.rights.length > 0){
+      html += `<div class="member_rights"><span>Rights</span><ul class="list-unstyled">`;
+      $.each(role.rights, function (index_rights, role_rights) {
+        html += `<li class="d-inline"><i class="far fa-check-square"></i> ${role_rights.name}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+    /*html += `<div class="members">
       <span><img src="../assets/images/member1.png"></span>
       <span><img src="../assets/images/member2.png"></span>
       <span><img src="../assets/images/member3.png"></span>
       <span><img src="../assets/images/member4.png"></span>
       <span><img src="../assets/images/member5.png"></span>
       <span class="mlast">+6</span>
-      </div>`;
+      </div>`;*/
     html += `</div>`;
     html += `</div>`;
   });

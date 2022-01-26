@@ -62,3 +62,18 @@
     text-overflow: ellipsis;
     height: 52px;
 }
+#course_box .user_img_icon, #course_box .message_img_icon, #course_box .attach_img_icon{
+	position: relative;
+}
+#course_box .icon_counts{
+    position: absolute;
+    background-color: black;
+    color: white;
+    font-size: 11px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    right: 5px;
+    top: 22px;
+}

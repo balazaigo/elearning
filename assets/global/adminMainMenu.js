@@ -127,6 +127,7 @@ async function getCoursesListInnerPage(e) {
 }
 
 async function getCoursesListLevelPage(e) {
+  console.log(e.target.dataset);
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.html`,
     function (resp, status, xhr) {
@@ -135,7 +136,7 @@ async function getCoursesListLevelPage(e) {
         var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner']");
         course_flinkto_elem.forEach(el=>{
           el.setAttribute("data-cid", e.target.dataset.cid);
-          el.setAttribute("data-cname", e.target.dataset.cname);
+          el.setAttribute("data-module_id", e.target.dataset.module_id);
         });
       } else {
         console.log("Something error happend");
@@ -235,12 +236,12 @@ async function getCoursesPage() {
 
 /*************** Get Cource Page Starts Here********************/
 async function getCoursePage(e) {
-  var cname = e.target.dataset.cname.length > 30 ? e.target.dataset.cname.substring(0,30)+"..." : e.target.dataset.cname;
+  //var cname = e.target.dataset.cname.length > 30 ? e.target.dataset.cname.substring(0,30)+"..." : e.target.dataset.cname;
   var course_head = "<div class='container-fluid course_details'>";
   course_head += "<div class='wrapper'>";
   course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
   course_head += "<div class='course_head'>";
-  course_head += "<h4 class='header_content' data-flinkto='courseslistinner' data-cname='"+e.target.dataset.cname+"' data-cid='"+e.target.dataset.cid+"'>"+cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
+  course_head += "<h4 class='header_content' id='course_header'><dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
   course_head += "<h4 class='header_breadcrumbs'>Breadcumbs1 / Breadcumbs2</h4>";
   course_head += "</div>";
   course_head += "<div class='save_drft_btn'>";
@@ -271,9 +272,8 @@ async function getCoursePage(e) {
     newUl2 = $("<ul class='main_module module_opacity'>");
     newUl2.append("<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
     newUl2.append("<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='' onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);'  id='module_module_"+(data.children.length+Number(1))+"'>Add Module Name</p></li>");
-    newUl2.append("<li class='delete_img_icon disp_in_block flt_right'><i class='far fa-trash-alt' onclick='delete_module(this);'></i></li>");
-    newUl2.append("<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>");
-    newUl2.append("<li class='progress_btn disp_in_block flt_right'><p>In progress</p></li>");
+    newUl2.append("<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>");
+    newUl2.append("<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>");
     newUl2.append("<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>");
     newUl2.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
     newUl2.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>");
@@ -285,6 +285,8 @@ async function getCoursePage(e) {
     if(outerHtml !== ''){
       //getcoursesPageHtml(course_head, outerHtml);
       document.getElementById("app-admin").innerHTML = course_head+outerHtml+course_popup;
+      var cname = data.course_name.length > 30 ? data.course_name.substring(0,30)+"..." : data.course_name;
+      document.getElementById("course_header").innerHTML = cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn>";
       $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/course/course.js`, function() {});
     }
   })
@@ -311,16 +313,42 @@ function get_list( a, $parent , level_count_inc) {
       if (a[i]) {
           var level_count = a[i].module_name.split("/").length - 1;
           if(level_count == 0){
+            var status_class = "";
+            var status_text = "";
+            if(a[i].status == 0){
+              status_class = "status_new";
+              status_text = "New";
+            }else if(a[i].status == 1){
+              status_class = "status_onhold";
+              status_text = "On Hold";
+            }else if(a[i].status == 2){
+              status_class = "status_completed";
+              status_text = "Completed";
+            }else if(a[i].status == 3){
+              status_class = "status_inprogress";
+              status_text = "In Progress";
+            }
             newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
             newUl = $("<ul class='main_module module_opacity' style='opacity:1'></ul>");
             newUl.append("<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+level_count_inc+"'>"+a[i].module_name+"</p></li>");
-              newUl.append("<li class='delete_img_icon disp_in_block flt_right'><i class='far fa-trash-alt' onclick='delete_module(this);'></i></li>");
-              newUl.append("<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>");
-              newUl.append("<li class='progress_btn disp_in_block flt_right'><p>In progress</p></li>");
-              newUl.append("<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>");
-              newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
-              newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li></li>");
+              newUl.append("<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>");
+              newUl.append("<li class='progress_btn disp_in_block flt_right'><p class='"+status_class+"'>"+status_text+"</p></li>");
+              if(a[i].attachment_count > 0){
+                newUl.append("<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+              }else{
+                newUl.append("<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>");
+              }
+              if(a[i].comment_count > 0){
+                newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+              }else{
+                newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
+              }
+              if(a[i].assign_count > 0){
+                newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+              }else{
+                newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li></li>");
+              }
               newUl.append("<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li>");
               newUl.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");
           }else{
@@ -331,18 +359,44 @@ function get_list( a, $parent , level_count_inc) {
                 }else{
                   var levels = $parent.parent().attr('id')+"."+a[i].level;
                 }
+                var status_class = "";
+                var status_text = "";
+                if(a[i].status == 0){
+                  status_class = "status_new";
+                  status_text = "New";
+                }else if(a[i].status == 1){
+                  status_class = "status_onhold";
+                  status_text = "On Hold";
+                }else if(a[i].status == 2){
+                  status_class = "status_completed";
+                  status_text = "Completed";
+                }else if(a[i].status == 3){
+                  status_class = "status_inprogress";
+                  status_text = "In Progress";
+                }
               var n = a[i].module_name.lastIndexOf('/');
               var input_value = a[i].module_name.substring(n + 1);
               newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='width:95%;margin-right: -2px;'>");
               newUl = $("<ul class='sub_module'></ul>");
               newUl.append("<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"'>"+input_value+"</p></li>");
-              newUl.append("<li class='delete_img_icon disp_in_block flt_right'><i class='far fa-trash-alt' onclick='delete_sub_module(this);'></i></li>");
-              newUl.append("<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>");
-              newUl.append("<li class='progress_btn disp_in_block flt_right'><p>In progress</p></li>");
-              newUl.append("<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>");
-              newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
-              newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>");
+              newUl.append("<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>");
+              newUl.append("<li class='progress_btn disp_in_block flt_right'><p class='"+status_class+"'>"+status_text+"</p></li>");
+              if(a[i].attachment_count > 0){
+                newUl.append("<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+              }else{
+                newUl.append("<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>");
+              }
+              if(a[i].comment_count > 0){
+                newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+              }else{
+                newUl.append("<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>");
+              }
+              if(a[i].assign_count > 0){
+                newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+              }else{
+                newUl.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li></li>");
+              }
               newUl.append("<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>");
               newUl.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");
           }

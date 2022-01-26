@@ -615,7 +615,7 @@ dfn i {
 	line-height: 20px;
 	color: #787895;
 	word-wrap: break-word;
-	min-height: 100px;
+	min-height: 40px;
 }
 #course-box .role-content p {
 	min-height: auto;
@@ -3349,4 +3349,12 @@ form#multiple {
 
 .breadcrumb {
 	display: none;
+}
+.member_rights ul{
+    height: 100px;
+}
+.member_rights li{
+    line-height: 1.3em;
+    width: 50%;
+    float: left;
 }
