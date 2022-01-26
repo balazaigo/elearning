@@ -187,7 +187,7 @@ async function getTaskCalendarPage() {
 
 async function getMembersPage() {
   $("#app-admin").load(
-    `${SITE_URL_PROTOCOL}/assets/pages/members/members.html`,
+    `${SITE_URL_PROTOCOL}/assets/pages/members/members.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
         getMembers();
