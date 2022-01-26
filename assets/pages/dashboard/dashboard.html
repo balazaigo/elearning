@@ -25,7 +25,7 @@
           <div class="row">
             <div class="col-lg-6 col-md-6">
               <div class="topsearch relative">
-                <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search">
+                <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search" id="searchText">
                 <i class="fas fa-search"></i> </div>
             </div>
             <div class="col-lg-3 col-md-3">
@@ -153,6 +153,11 @@ $( document ).ready(function() {
 
 function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
   var queryPara = '?self=' + selfPart;
+  //check for search field
+  if($("#searchText").val()) {
+    queryPara += "&search=" + $("#searchText").val();
+  }
+
   $('#' + tagID).pagination({
     dataSource: 'https://elearningcontent.zaigoinfotech.com/task/' + queryPara,
     locator: 'data',
@@ -204,7 +209,7 @@ function template(data, tagTOBY) {
     </td>
     `;
     html += '<td><span class="badge bg-success gridTaskID">#'+ item.id +'</span></td>';
-    html += '<td>'+ item.name.substring(0, 15) +'...</td>';
+    html += '<td class="wrap">'+ item.name +'</td>';
     html += '<td>'+ item['assigned_to'] +'</td>';
     html += '<td>'+ item.end_date +'</td>';
     html += '<td>'+ getStatus(item.status) +'</td>';

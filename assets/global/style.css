@@ -3364,7 +3364,5 @@ form#multiple {
 }
 
 /* Dashboard CSS */
-span.user-role {
-  display:flex;
-  font-size:11px;
-}
+span.user-role {display:flex;font-size:11px;}
+table td.wrap {word-wrap:break-word;}
