@@ -221,20 +221,18 @@ function active_page(element, rows, req_per_page) {
         }
     }
 }
-/*$( document ).ready(function() {
+/*
+$( document ).ready(function() {
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
       dataSource: 'https://elearningcontent.zaigoinfotech.com/course/',
       locator: 'data',
-      totalNumberLocator: function(response) {
+      totalNumberLocator: function(response) {console.log(response);
         return response.total;
       },
       alias: {
-        pageNumber: 'current_page',
-        pageSize: 'per_page'
+        pageNumber: 'page',
       },  
-      page: 'current_page',
-      pageSize: 10,
       ajax: {
         beforeSend: function() {
           //Loading Message

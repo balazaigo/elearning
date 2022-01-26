@@ -68,7 +68,13 @@ function totext(e){
       var class_module_level = e.parentElement.parentElement.parentElement.classList[1];
       var first_five_char_class = class_module_level.substring(0,5);
       var get_submodule_level_values = '';
-      var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+      if(e.dataset.module_id !== undefined){
+        var url = 'https://elearningcontent.zaigoinfotech.com/course_module/'+e.dataset.module_id+'/';
+        var method = "PUT";
+      }else{
+        var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+        var method = "POST";
+      }
       if(first_five_char_class === "modul"){
         var level_number = class_module_level.split('_')[1];
         var get_submodule_level_values = {
@@ -82,7 +88,7 @@ function totext(e){
         get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value);
       }
       if(get_submodule_level_values != ''){
-        post_json_dat(url, get_submodule_level_values);
+        post_json_dat(url, get_submodule_level_values, method, e);
       }
     }
     e.nextSibling.innerHTML = e.value; 
@@ -127,15 +133,27 @@ function get_submodule_level_val(class_module_main_level, class_module_sub_level
   return data_course_module;
 }
 
-function post_json_dat(url, data){
-  //console.log(data);
+function post_json_dat(url, data, call_method, e){
   fetch(url, {
-    method: "POST",
+    method: call_method,
     body: JSON.stringify(data),
     headers: {"Content-type": "application/json; charset=UTF-8"}
   })
   .then((response) => response.json())
-  .then((json) => console.log(json))
+  .then((json) => {
+    /*console.log(json); 
+    console.log(e.parentElement.nextSibling);
+    console.log(e.parentElement.nextSibling.childNodes);
+    console.log(e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild);
+    console.log(e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild);
+    console.log(e.parentElement.childNodes);*/
+    if(json.module_id != undefined || json.module_id != null){
+      e.setAttribute("data-module_id", json.module_id);
+    }
+    if(json.course_id != undefined || json.course_id != null){
+      e.setAttribute("data-cid", json.course_id);
+    }
+  })
   .catch(function (error) {
     console.log("Requestfailed", error);
   });
@@ -210,11 +228,11 @@ function add_sub(e){
                 var class_module_main_level = main_mod_level;
                 var class_module_sub_level = "sub_"+result;
                 var input_val = "Level "+result;
-                var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-                var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
-                if(get_submodule_level_values != ''){
+                //var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
+                //var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+                //if(get_submodule_level_values != ''){
                   //post_json_dat(url, get_submodule_level_values);
-                }
+                //}
                 return;
             }
             if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
@@ -294,11 +312,11 @@ function add_sub_sub(e){
     var class_module_main_level = main_mod_level;
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
-    var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-    var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
-    if(get_submodule_level_values != ''){
+    //var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
+    //var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+    //if(get_submodule_level_values != ''){
       //post_json_dat(url, get_submodule_level_values);
-    }
+    //}
    }
 }
 
@@ -323,7 +341,7 @@ function toggle_collapse_expand(e){
 }
 /******* Expand and collapse main and sub module Levels Ends **************/
 function delete_module(e){
-  var x =e.parentElement.parentElement.childNodes;
+  var x =e.parentElement.parentElement.parentElement.parentElement.childNodes;
   if(x[0].nodeName == "#text"){
       var inp_val = x[3].childNodes[1].innerHTML;
   }else{
@@ -331,15 +349,18 @@ function delete_module(e){
   }
   if(inp_val != '' && inp_val != "Add Module Name"){
 
+      var url = 'https://elearningcontent.zaigoinfotech.com/course_module/'+e.dataset.module_id+'/';
+      var method = "DELETE";
     var result = [],
-    node = e.parentNode.parentNode.parentNode.parentNode.firstChild;
+    node = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild;
     while ( node ) {
         if (node.nodeType === Node.ELEMENT_NODE ) 
           result.push( node );
         node = node.nextElementSibling || node.nextSibling;
     }
     if(result.length > 1){
-      e.parentNode.parentNode.parentNode.remove();
+      e.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
+      post_json_dat(url, null, method);
       var result2 = [],
       node2 = document.getElementById('course_box').firstChild;
       while ( node2 ) {
@@ -367,4 +388,20 @@ function show_tag_popup(e){
   $('.modal-content').load(url,function(result){
     modal.toggle();
   });
+}
+function delete_sub_module(e){
+
+      var url = 'https://elearningcontent.zaigoinfotech.com/course_module/'+e.dataset.module_id+'/';
+      var method = "DELETE";
+    var result = [],
+    node = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild;
+    while ( node ) {
+        if (node.nodeType === Node.ELEMENT_NODE ) 
+          result.push( node );
+        node = node.nextElementSibling || node.nextSibling;
+    }
+    if(result.length > 1){
+      e.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
+      post_json_dat(url, null, method);
+    }
 }
