@@ -5,9 +5,7 @@ function getRoles() {
   axios
     .get(`${API_BASE_URL}/roles/`)
     .then((res) => {
-      if (res.data && res.data.length > 0) {
-        renderRoleList(res.data);
-      }
+      renderRoleList(res.data.results);
     })
     .catch((error) => {
       console.error("There was an error!", error.response);
@@ -29,6 +27,10 @@ function renderRoleList(roles) {
     html += `<div class="role-content mb-4">`;
     html += `<h4 data-flinkto="userroles">${role.name}</h4>`;
     html += `<p>${role.description.substring(0, 75)+dots}</p>`;
+    /*
+    // ******************************************** /
+    // Commnet out for later use
+    // ******************************************** /
     if(role.rights.length > 0){
       html += `<div class="member_rights"><span>Rights</span><ul class="list-unstyled">`;
       $.each(role.rights, function (index_rights, role_rights) {
@@ -36,6 +38,7 @@ function renderRoleList(roles) {
       });
       html += `</ul></div>`;
     }
+    */
     /*html += `<div class="members">
       <span><img src="../assets/images/member1.png"></span>
       <span><img src="../assets/images/member2.png"></span>

@@ -135,11 +135,9 @@ function doSearch(){
   
 
 $( document ).ready(function() {
-  
   $(".fa-search").on("click", function(){ doSearch(); });
   $("#status, #courses_list").on("change", function(){ doSearch(); });
   $('.btnRadio').click(function(){ doSearch(); });
-  
   //load the courses list
   $.ajax({
     url: 'https://elearningcontent.zaigoinfotech.com/course_list/',
@@ -203,6 +201,7 @@ function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
     callback: function(data, pagination) {
       var html = template(data, assignTOBY);
       $('#' + htmlID).html(html);
+      loadAlertModal();
     }
   });
 }
@@ -237,8 +236,13 @@ function template(data, tagTOBY) {
           <i class="fas fa-ellipsis-v"></i></button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
           <li><a class="dropdown-item green" href="#taskdetails">Edit</a></li>
-          <li><a class="dropdown-item red" href="#">Disable</a></li>
-          <li><a class="dropdown-item red" href="#delete">Delete</a></li>
+          <li>
+            <a id="disabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>
+          </li>
+          <li>
+            <a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.name+`" data-url="`+item.id+`/"
+               class="dropdown-item red">&nbsp;Delete</a>
+          </li>
         </ul>
       </div>
       </td>
@@ -278,8 +282,82 @@ function getStatus(sCode){
       break;
   }
 }
-</script>
 
+function loadAlertModal(){
+  console.log("init Delete Modal...");
+  $('#mAlert').on('shown.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipientID = button.data('url');
+    var name = button.data('name');
+    var modal = $(this);
+    modal.find('.modal-content input').val(recipientID);
+    modal.find('.modal-content #mAlertName').html(name);
+    $("#mAlertCancel").focus();
+    //mAlertDelete
+    $(document).on('click', '#mAlertDelete', function() {
+      var url = $("#mAlertURL").val();
+      $.ajax({
+        url: 'https://elearningcontent.zaigoinfotech.com/task/' + url,
+        type: 'PATCH',
+        data: JSON.stringify({
+          "status": 3
+        }),
+        headers: {
+          "Authorization": "Bearer " + getUserInfo().access_token,
+          "Content-Type": "application/json"
+        },
+        success:function(response){
+          $("#mAlertCancel").click();
+          doSearch();
+        },
+        error: function(error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
+    });
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+    });
+    
+  });
+  
+  //hidden.bs.modal	
+  $('#mAlert').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
+  
+  $(".mDisabled").on("click", function(){
+    var url = $(this).data("url");
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/task/' + url + '/',
+      type: 'PATCH',
+      data: JSON.stringify({
+        "status": 2
+      }),
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        doSearch();
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  });
+  
+}
+
+</script>
 
 <div id="taskdetails" class="overlay">
   <div class="popup extra-popup p-0"> <a class="close" href="#">&times;</a>
@@ -411,26 +489,6 @@ function getStatus(sCode){
   </div>
 </div>
 
-<div id="delete" class="overlay">
-  <div class="popup"> <a class="close" href="#">×</a>
-    <form method="get" class="pop-form">
-      <div class="row">
-        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png"> </div>
-        <div class="col-md-12 text-center mb-2">
-          <p>Are you sure you want to delete it </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 pt-3 pb-3 wauto text-center"> <span class="dborder-btn nbtn"><a href="#">
-          <button>Cancel</button>
-          </a></span> <span class="danger-btn nbtn"><a href="#">
-          <button>Delete</button>
-          </a></span> </div>
-      </div>
-    </form>
-  </div>
-</div>
-
 <script>
   $(".default_option").click(function () {
     $(this).parent().toggleClass("active");
@@ -475,3 +533,27 @@ function getStatus(sCode){
  /* End */        
  }); 
  </script>
+ 
+<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title"><span id="mAlertName"></span></h6>
+        <a class="close" data-bs-dismiss="modal">×</a>
+      </div>
+      <div class="modal-body text-center">
+        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" alt="Delete"> </div>
+        <input type="hidden" id="mAlertURL" value="" />
+        <p>Are you sure you want to delete it?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <span class="dborder-btn nbtn">
+          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        </span>
+        <span class="danger-btn nbtn">
+          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
