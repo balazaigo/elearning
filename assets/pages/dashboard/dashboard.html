@@ -140,7 +140,7 @@ $( document ).ready(function() {
           }
         },    
       },
-      callback: function(data, pagination) {console.log(data);
+      callback: function(data, pagination) {
         var html = template(data);
         $('#data-assignedTo').html(html);
         $('#data-assignedBy').html(html);
