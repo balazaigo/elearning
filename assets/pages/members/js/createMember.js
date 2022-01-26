@@ -90,7 +90,7 @@ $(document).on("submit", "#member-create-form", function (e) {
       cache: false,
       contentType: false,
       processData: false,
-      data: formData,
+      data: JSON.stringify(formData),
       headers: {
         "Authorization" : "Bearer " + getUserInfo().access_token,
         "Content-Type": "application/json"
@@ -349,13 +349,18 @@ function ajaxValidationMailID(mailID){
       "Content-Type": "application/json"
     },
     success: function(response){
-      $("#member-fName, #member-lName, #member-phoneNo, #member-role").val("");
-      $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
-      $("#member-fName").focus();
+      if(response.is_valid) {
+        $("#member-fName, #member-lName, #member-phoneNo, #member-role").val("");
+        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
+        $("#member-fName").focus();
+      } else {
+        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+        toastr.error("Response: record already exisit!" );
+      }
     },
     error: function(error) {
       $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
-      toastr.error("Response Error: " + error.responseText);
+      toastr.error("Response: record already exisit!" );
     }
   });
 }
