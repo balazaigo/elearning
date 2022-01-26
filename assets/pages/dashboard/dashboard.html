@@ -23,7 +23,7 @@
         </div>
         <div class="col-lg-6 col-md-6 top-btn">
           <div class="row">
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-5 col-md-5">
               <div class="topsearch relative">
                 <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search" id="searchText">
                 <i class="fas fa-search"></i> </div>
@@ -35,7 +35,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-lg-3 col-md-3">
+            <div class="col-lg-4 col-md-4">
               <div class="dropdown-select">
                 <select class="form-control sort-select" id="status">
                   <option value="">Status</option>
@@ -135,7 +135,10 @@ function doSearch(){
   
 
 $( document ).ready(function() {
-  $(".fa-search").on("click", function(){ doSearch(); });
+  $(".fa-search").on("click", function(){ 
+    console.log("searchText");
+    doSearch(); 
+  });
   $("#status, #courses_list").on("change", function(){ doSearch(); });
   $('.btnRadio').click(function(){ doSearch(); });
   //load the courses list
