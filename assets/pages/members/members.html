@@ -25,7 +25,6 @@
       </div>
     </div>
   </div>
-  <div class="row loader" id="member-loader"><span>Loading Members</span></div>
   <div id="memberListContainer">
     <div class="container-fluid p-0">
     <div class="row">
@@ -35,10 +34,7 @@
             <div class="row">
               <div class="col-lg-4 col-md-4">
                 <div class="searchbar">
-                  <h4> List of Members <dfn
-                      data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."
-                      ><i class="fas fa-info-circle"></i
-                    ></dfn> </h4>
+                  <h4> List of Members <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> </h4>
                 </div>
               </div>
               <div class="col-lg-8 col-md-8 top-btn">
@@ -50,22 +46,23 @@
                         type="text"
                         placeholder="Search Here"
                         aria-label="Search"
+                        id="searchText"
                       />
                       <i class="fas fa-search"></i> </div>
                   </div>
                   <div class="col-lg-3 col-md-3">
                     <div class="dropdown-select">
-                      <select class="sort-select member-role-list">
+                      <select class="sort-select member-role-list" id="role_list">
                         <option value="" selected disabled>Select Role</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-lg-3 col-md-3">
                     <div class="dropdown-select">
-                      <select class="sort-select">
-                        <option value="" selected disabled> Select Status </option>
-                        <option value="">Active</option>
-                        <option value="">InActive</option>
+                      <select class="form-control sort-select" id="status">
+                        <option value="">Status</option>
+                        <option value="1">Active</option>
+                        <option value="2">InActive</option>
                       </select>
                     </div>
                   </div>
@@ -105,8 +102,14 @@
                   </thead>
                   <tbody id="memberListDataContainer">
                     <!-- HTML snippet will be dynamically appended-->
+                    <tr>
+                      <td colspan="7">
+                        <div class="alert text-center">Loading...</div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
+                <div id="pagination-container"></div>
               </div>
             </div>
           </div>
@@ -114,33 +117,6 @@
       </div>
     </div>
   </div>
-  </div>
-  <div class="pagination mt-5">
-    <div class="container-fluid p-0">
-      <div class="row">
-        <div class="col-md-6 align-left">
-          <ul>
-            <li class="previous"><a href="#">&lt;</a></li>
-            <li><a href="#" class="active">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">6</a></li>
-            <li class="next"><a href="#">&gt;</a></li>
-          </ul>
-        </div>
-        <div class="col-md-6 align-right">
-          <ul>
-            <li class="previous">Go to page</li>
-            <li>
-              <input type="text" />
-            </li>
-            <li class=""><a href="#">Go &gt;</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 <!-- Member Create Form Start -->
@@ -369,3 +345,272 @@ $(document).on('click','.fa-lg.closeBtn',function(){
 		$(this).parent('.fileuploads').remove();	
 });
 </script> 
+
+<script type="application/javascript">
+var roleList = '';
+function doSearch(){
+  gridMembers("pagination-container", "memberListDataContainer");
+}
+$( document ).ready(function() {
+  
+  $.ajax({
+    url: 'https://elearningadmin.zaigoinfotech.com/roles/',
+    type: 'get',
+    dataType: 'json',
+    success:function(response){
+      roleList = response;
+      $("#role_list").empty();
+      $("#role_list").append("<option value=''>Select Role</option>");
+      $.each( response, function( i, val ) {
+        $("#role_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
+      });
+    }
+  });
+  
+  
+  doSearch();
+  
+});
+
+
+function gridMembers(tagID, htmlID, assignTOBY){
+  var queryPara = '?p=0';
+  //check for search field
+  if($("#searchText").val()) {
+    queryPara += "&search=" + $("#searchText").val();
+  }
+  //courses_list
+  if($("#role_list").val()) {
+    queryPara += "&role_list=" + $("#courses_list").val();
+  }
+  //status
+  if($("#status").val()) {
+    queryPara += "&status=" + $("#status").val();
+  }
+
+  $('#' + tagID).pagination({
+    dataSource: 'https://elearningadmin.zaigoinfotech.com/member/' + queryPara,
+    locator: 'data',
+    totalNumberLocator: function(response) {
+      return response.total;
+    },
+    alias: {
+      pageNumber: 'page',
+      pageSize: 'per_page'
+    },  
+    pageSize: 5,
+    ajax: {
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
+      },
+      complete: function(jqXHR, textStatus) {
+        if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
+          return false; // do nothing
+        } else if (jqXHR && jqXHR.status === 403) {
+          window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+        } else {
+          alert('error');
+        }
+      },    
+    },
+    callback: function(data, pagination) {
+      var html = template(data);
+      $('#' + htmlID).html(html);
+      loadAlertModal();
+    }
+  });
+}
+
+function template(data, tagTOBY) {
+  var html = '';
+  $.each(data, function(index, item) {
+    html += '<tr>';
+    
+    html += `
+    <td>
+      <div class="form-check">
+        <input class="form-check-input" name="chk" type="checkbox" value="`+ item.id +`" id="chk_`+ item.id +`">
+        <label class="form-check-label" for="chk_`+ item.id +`"> </label>
+      </div>
+    </td>
+    `;
+    html += '<td><span class="">'+ (index + 1) +'</span></td>';
+    html += '<td class="wrap">'+ item.first_name + ' ' + item.last_name +'</td>';
+    html += '<td>'+ item.email_id +'</td>';
+    html += '<td>'+ item.phone_number +'</td>';
+    html += '<td>'+ getRoleName(item.roles_name) +'</td>';
+    html += `
+      <td class="text-center">
+      <div class="dropdown ahide">
+        <button class="btn dropdown-toggle dbtn btn-light" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-ellipsis-v"></i></button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
+
+    if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
+      html += `<li><a class="dropdown-item green" href="#taskdetails">&nbsp;Edit</a></li>`;
+    } else {
+      html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
+    }
+
+    html += `<li>`;
+
+    if(item.status == '0' || item.status == '1') {
+      html += `<a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>`;
+    } else if(item.status == '2') {
+      html += `<a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enabled</a>`;
+    } else {
+      html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
+    }
+
+    html += `</li><li>`;
+    
+    if(item.status == '2' || item.status == '3') {
+      html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
+    } else {
+      html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.first_name+ ` ` +item.last_name+`" data-url="`+item.id+`/"
+                 class="dropdown-item red">&nbsp;Delete</a>`;
+    }
+    html += `</li>
+        </ul>
+      </div>
+      </td>
+    `;
+    html += '</tr>';
+  });
+  html += '';
+  return html;
+}
+
+function getRoleName(name){
+  var selName = '';
+  $.each(roleList, function (index, role) {
+    if(role.id === name) {
+      selName = role.name;
+    }
+  });
+  return '<span class="green-shade"><a href="#">'+selName+'</a></span>';
+}
+
+
+function loadAlertModal(){
+  console.log("init Delete Modal...");
+  $('#mAlert').on('shown.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipientID = button.data('url');
+    var name = button.data('name');
+    var modal = $(this);
+    modal.find('.modal-content input').val(recipientID);
+    modal.find('.modal-content #mAlertName').html(name);
+    $("#mAlertCancel").focus();
+    //mAlertDelete
+    $(document).on('click', '#mAlertDelete', function() {
+      var url = $("#mAlertURL").val();
+      $.ajax({
+        url: 'https://elearningadmin.zaigoinfotech.com/member/' + url,
+        type: 'PATCH',
+        data: JSON.stringify({
+          "status": 3
+        }),
+        headers: {
+          "Authorization": "Bearer " + getUserInfo().access_token,
+          "Content-Type": "application/json"
+        },
+        success:function(response){
+          $("#mAlertCancel").click();
+          doSearch();
+        },
+        error: function(error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
+    });
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+    });
+    
+  });
+  
+  //hidden.bs.modal	
+  $('#mAlert').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
+  
+  $(".mDisabled").on("click", function(){
+    var url = $(this).data("url");
+    $.ajax({
+      url: 'https://elearningadmin.zaigoinfotech.com/member/' + url + '/',
+      type: 'PATCH',
+      data: JSON.stringify({
+        "status": 2
+      }),
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        doSearch();
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  });
+  
+  //mEnabled
+  $(".mEnabled").on("click", function(){
+    var url = $(this).data("url");
+    $.ajax({
+      url: 'https://elearningadmin.zaigoinfotech.com/member/' + url + '/',
+      type: 'PATCH',
+      data: JSON.stringify({
+        "status": 1
+      }),
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        doSearch();
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  });
+
+}
+
+</script>
+
+<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title"><span id="mAlertName"></span></h6>
+        <a class="close" data-bs-dismiss="modal">×</a>
+      </div>
+      <div class="modal-body text-center">
+        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" alt="Delete"> </div>
+        <input type="hidden" id="mAlertURL" value="" />
+        <p>Are you sure you want to delete it?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <span class="dborder-btn nbtn">
+          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        </span>
+        <span class="danger-btn nbtn">
+          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
