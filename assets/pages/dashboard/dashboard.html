@@ -37,7 +37,7 @@
             </div>
             <div class="col-lg-3 col-md-3">
               <div class="dropdown-select">
-                <select class="form-control sort-select">
+                <select class="form-control sort-select" id="status">
                   <option value="">Status</option>
                   <option value="0">New</option>
                   <option value="1">Active</option>
@@ -156,6 +156,14 @@ function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
   //check for search field
   if($("#searchText").val()) {
     queryPara += "&search=" + $("#searchText").val();
+  }
+  //courses_list
+  if($("#courses_list").val()) {
+    queryPara += "&course_id=" + $("#courses_list").val();
+  }
+  //status
+  if($("#status").val()) {
+    queryPara += "&status=" + $("#status").val();
   }
 
   $('#' + tagID).pagination({
