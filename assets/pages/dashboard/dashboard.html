@@ -38,11 +38,12 @@
             <div class="col-lg-3 col-md-3">
               <div class="dropdown-select">
                 <select class="form-control sort-select">
-                  <option value="Recent">Status</option>
-                  <option value="New">New</option>
-                  <option value="Active">Active</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Onhold">Onhold</option>
+                  <option value="">Status</option>
+                  <option value="0">New</option>
+                  <option value="1">Active</option>
+                  <option value="2">InActive</option>
+                  <option value="3">Delete</option>
+                  <option value="4">Completed</option>
                 </select>
               </div>
             </div>
@@ -127,7 +128,7 @@ $( document ).ready(function() {
   
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
-      dataSource: 'https://reqres.in/api/users',
+      dataSource: 'https://elearningcontent.zaigoinfotech.com/task/',
       locator: 'data',
       totalNumberLocator: function(response) {
         return response.total;
@@ -138,9 +139,8 @@ $( document ).ready(function() {
       },  
       pageSize: 5,
       ajax: {
-        beforeSend: function() {
-          //Loading Message
-          //$('#data-assignedTo').html('<tr><td class="text-center" colspan="3">Loading data from Fake Json...</td></tr>');
+        beforeSend: function(request) {
+          request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
         },
         complete: function(jqXHR, textStatus) {
           if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
@@ -179,10 +179,10 @@ function template(data) {
     </td>
     `;
     html += '<td><span class="badge bg-success gridTaskID">#'+ item.id +'</span></td>';
-    html += '<td>'+ item.email +'</td>';
-    html += '<td>'+ item.first_name + ' ' + item.last_name +'</td>';
-    html += '<td>'+ (randomDate(new Date(2012, 0, 1), new Date())) +'</td>';
-    html += '<td>'+ randomStatus() +'</td>';
+    html += '<td>'+ item.name.substring(0, 15) +'...</td>';
+    html += '<td>'+ item.assigned_to +'</td>';
+    html += '<td>'+ item.end_date +'</td>';
+    html += '<td>'+ getStatus(item.status) +'</td>';
     html += `
       <td class="text-center">
       <div class="dropdown ahide">
@@ -202,19 +202,42 @@ function template(data) {
   return html;
 }
 
+function getStatus(sCode){
+  /*
+		0 - New
+		1 - Active
+		2 - Inactive
+		3 - Delete
+		4 - completed
+  */
+  switch(sCode) {
+    case 0:
+      return '<span class="badge bg-primary">New</span>';    
+      break;
+    case 1:
+      return '<span class="badge bg-success">Active</span>';
+      break;
+    case 2:
+      return '<span class="badge bg-warning">InActive</span>';    
+      break;
+    case 3:
+      return '<span class="badge bg-danger">Delete</span>';    
+      break;
+    case 4:
+      return '<span class="badge bg-success">Completed</span>';    
+      break;
+    default:
+      return '<span class="badge bg-primary">None</span>';    
+      break;
+  }
+}
+
 /*====================================================================================*/
 /* FOR TESTING PURPOSE DO NOT USE BELOW CODE FOR PRODUCTION*/
 /*====================================================================================*/
 function randomDate(start, end) {
   //randomDate(new Date(2012, 0, 1), new Date())
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toISOString().slice(0, 10);
-}
-function randomStatus(){
-  var statusCode = Math.floor(Math.random() * 2);
-  if(statusCode == 0) {
-    return '<span class="badge bg-warning">On Hold</span>';
-  }
-  return '<span class="badge bg-success">Active</span>';
 }
 /*====================================================================================*/
 /*====================================================================================*/

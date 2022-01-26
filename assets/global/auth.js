@@ -11,6 +11,7 @@ class Auth {
         window.location.replace(SITE_URL_PROTOCOL);
       } else {
         document.querySelector("body").style.display = "block";
+        setUserInfo ( window.getUserInfo() );
       }
   }
   // will remove the localStorage item and redirect to login  screen
@@ -37,7 +38,7 @@ function getUserInfo(){
 
 function setUserInfo(authData){
   if(authData !== null) {
-    console.log(authData.rights);
+    //console.log(authData.rights);
     $("#dropdownMenuButton1").html('<span>' + authData.name.substring(0, 15) + '</span>' + '<span class="user-role">' + authData.role + '</span>');
     $(".fullname").html(authData.name);
   }
