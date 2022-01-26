@@ -5,7 +5,7 @@ function getRoles() {
   axios
     .get(`${API_BASE_URL}/roles/`)
     .then((res) => {
-      renderRoleList(res.data.results);
+      renderRoleList(res.data);
     })
     .catch((error) => {
       console.error("There was an error!", error.response);
