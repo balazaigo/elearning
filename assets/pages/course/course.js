@@ -141,17 +141,33 @@ function post_json_dat(url, data, call_method, e){
   })
   .then((response) => response.json())
   .then((json) => {
-    /*console.log(json); 
-    console.log(e.parentElement.nextSibling);
-    console.log(e.parentElement.nextSibling.childNodes);
-    console.log(e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild);
-    console.log(e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild);
-    console.log(e.parentElement.childNodes);*/
+    el_1 = e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild;//edit
+    el_2 = e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild;//delete
+    el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
+    el_4 = e.parentElement.parentElement.childNodes[3].firstChild;//progress
+    el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
+    el_6 = e.parentElement.parentElement.childNodes[5].firstChild;//comment
+    el_7 = e.parentElement.parentElement.childNodes[6].firstChild;//assign
+    el_1.setAttribute("data-flinkto", "courseslistlevel");
     if(json.module_id != undefined || json.module_id != null){
       e.setAttribute("data-module_id", json.module_id);
+      el_1.setAttribute("data-module_id", json.module_id);
+      el_2.setAttribute("data-module_id", json.module_id);
+      el_3.setAttribute("data-module_id", json.module_id);
+      el_4.setAttribute("data-module_id", json.module_id);
+      el_5.setAttribute("data-module_id", json.module_id);
+      el_6.setAttribute("data-module_id", json.module_id);
+      el_7.setAttribute("data-module_id", json.module_id);
     }
     if(json.course_id != undefined || json.course_id != null){
       e.setAttribute("data-cid", json.course_id);
+      el_1.setAttribute("data-cid", json.course_id);
+      el_2.setAttribute("data-cid", json.course_id);
+      el_3.setAttribute("data-cid", json.course_id);
+      el_4.setAttribute("data-cid", json.course_id);
+      el_5.setAttribute("data-cid", json.course_id);
+      el_6.setAttribute("data-cid", json.course_id);
+      el_7.setAttribute("data-cid", json.course_id);
     }
   })
   .catch(function (error) {
@@ -386,6 +402,8 @@ function show_tag_popup(e){
   document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_tag.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
+    document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
     modal.toggle();
   });
 }
