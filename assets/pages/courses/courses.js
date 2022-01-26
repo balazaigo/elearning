@@ -222,10 +222,54 @@ function active_page(element, rows, req_per_page) {
     }
 }*/
 
+function searchParam(){
+    var search_param = "";
+    var search_inp_val = document.getElementById("search_data").value;
+    console.log(search_inp_val);
+    if(search_inp_val !== ''){
+        search_param += "?search="+search_inp_val;
+    }
+    var courses_list_val = document.getElementById("courses_list").value;
+    if(courses_list_val !== ""){
+        if(search_param == ""){
+            search_param += "?id="+courses_list_val;
+        }else{
+            search_param += "&id="+courses_list_val;
+        }
+    }
+    var sort_recent_val = document.getElementById("sort_recent").value;
+    if(sort_recent_val !== ""){
+        if(search_param == ""){
+            search_param += "?status="+sort_recent_val;
+        }else{
+            search_param += "&status="+sort_recent_val;
+        }
+    }
+    get_pagination(search_param);
+}
 $( document ).ready(function() {
+
+  //load the courses list
+  $.ajax({
+    url: 'https://elearningcontent.zaigoinfotech.com/course_list/',
+    type: 'get',
+    dataType: 'json',
+    success:function(response){
+      $("#courses_list").empty();
+      $("#courses_list").append("<option value=''>Select Courses</option>");
+      $.each( response, function( i, val ) {
+        $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
+      });
+    }
+  });
+  var parameter = "";
+  get_pagination(parameter);
+});
+function get_pagination(parameter){
+    console.log(parameter);
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
-      dataSource: 'https://elearningcontent.zaigoinfotech.com/course/',
+      dataSource: 'https://elearningcontent.zaigoinfotech.com/course/'+parameter,
       locator: 'data',
       totalNumberLocator: function(response) {
         return response.total;
@@ -256,8 +300,7 @@ $( document ).ready(function() {
       }
     });
   }
-});
-
+}
 function template(data){
     $('#course-box').empty();
     data.forEach(function (element, index) {
