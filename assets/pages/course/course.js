@@ -77,15 +77,18 @@ function totext(e){
       }
       if(first_five_char_class === "modul"){
         var level_number = class_module_level.split('_')[1];
+      console.log(level_number);
         var get_submodule_level_values = {
           module_name: String(e.value),
           level: parseInt(level_number), 
-          course_id:String(document.getElementById("course_id").value)
+          course_id:String(document.getElementById("course_id").value),
+          parent_id:null
         }
       }else if(first_five_char_class === "sub_m"){
         var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
         var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
-        get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value);
+        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-module_id");
+        get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
       if(get_submodule_level_values != ''){
         post_json_dat(url, get_submodule_level_values, method, e);
@@ -96,11 +99,11 @@ function totext(e){
     e.nextSibling.setAttribute("style","display:block");
     e.nextSibling.focus();
 }
-function get_submodule_level_val(class_module_main_level, class_module_sub_level, ele_val){
+function get_submodule_level_val(class_module_main_level, class_module_sub_level, ele_val, parent_id_val){
   var data_course_module = "";
   if(class_module_sub_level.indexOf('.') !== -1){
      //console.log("Found . in str")
-      var module_name_list = document.getElementById("module_"+class_module_main_level).innerHTML;
+      /*var module_name_list = document.getElementById("module_"+class_module_main_level).innerHTML;
       var count = (class_module_sub_level.split(".").length - 1);
       var str_array = class_module_sub_level.split('.');
       var sting_concat = '';
@@ -112,22 +115,26 @@ function get_submodule_level_val(class_module_main_level, class_module_sub_level
         }
         module_name_list += "/"+document.getElementById(sting_concat+"_"+class_module_main_level).innerHTML;
       }
-      module_name_list += "/"+ele_val;
+      module_name_list += "/"+ele_val;*/
       var level_number = (class_module_sub_level.split("_module")[0]).split(".")[class_module_sub_level.split(".").length-1];
+      console.log(level_number);
       data_course_module = {
-        module_name: String(module_name_list),
+        module_name: String(ele_val),
         level: parseInt(level_number), 
-        course_id:String(document.getElementById("course_id").value)
+        course_id:String(document.getElementById("course_id").value),
+        parent_id: parent_id_val
       }
 
   }else{
       //console.log("Not Found . in str")
-      var module_name_list = document.getElementById("module_"+class_module_main_level).innerHTML+"/"+ele_val;
+      //var module_name_list = document.getElementById("module_"+class_module_main_level).innerHTML+"/"+ele_val;
       var level_number = class_module_sub_level.split('_')[1];
+      console.log(level_number);
       data_course_module = {
-        module_name: String(module_name_list),
+        module_name: String(ele_val),
         level: parseInt(level_number), 
-        course_id:String(document.getElementById("course_id").value)
+        course_id:String(document.getElementById("course_id").value),
+        parent_id: parent_id_val
       }
   }
   return data_course_module;

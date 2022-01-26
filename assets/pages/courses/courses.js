@@ -225,7 +225,6 @@ function active_page(element, rows, req_per_page) {
 function searchParam(){
     var search_param = "";
     var search_inp_val = document.getElementById("search_data").value;
-    console.log(search_inp_val);
     if(search_inp_val !== ''){
         search_param += "?search="+search_inp_val;
     }
@@ -266,7 +265,6 @@ $( document ).ready(function() {
   get_pagination(parameter);
 });
 function get_pagination(parameter){
-    console.log(parameter);
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
       dataSource: 'https://elearningcontent.zaigoinfotech.com/course/'+parameter,

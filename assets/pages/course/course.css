@@ -184,7 +184,7 @@
     background-color: rgb(236,249,236);
     color: rgb(55,154,73);
 }
-.admin_course .tag__inputs{
+.admin_course .tag__inputs, .tag_cont_box .tag__inputs{
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
     color: #455a64;
@@ -198,7 +198,7 @@
     transition: 0.5s all;
     border-radius: 30px;
 }
-.admin_course .tag__List li > span.tag__removes {
+.admin_course .tag__List li > span.tag__removes, .tag_cont_box .tag__List li > span.tag__removes{
     position: absolute;
     margin: 0.25rem;
     top: 0;

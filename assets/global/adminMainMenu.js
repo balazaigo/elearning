@@ -127,13 +127,12 @@ async function getCoursesListInnerPage(e) {
 }
 
 async function getCoursesListLevelPage(e) {
-  console.log(e.target.dataset);
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
         $.getScript(`${SITE_URL_PROTOCOL}/assets/global/custom.js`, function() {});
-        var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner']");
+        var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner'], [data-flinkto='courseseditor']");
         course_flinkto_elem.forEach(el=>{
           el.setAttribute("data-cid", e.target.dataset.cid);
           el.setAttribute("data-module_id", e.target.dataset.module_id);
@@ -145,11 +144,16 @@ async function getCoursesListLevelPage(e) {
   );
 }
 
-async function getCoursesEditorPage() {
+async function getCoursesEditorPage(e) {
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseseditor.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
+        var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner'], [data-flinkto='courseseditor']");
+        course_flinkto_elem.forEach(el=>{
+          el.setAttribute("data-cid", e.target.dataset.cid);
+          el.setAttribute("data-module_id", e.target.dataset.module_id);
+        });
       } else {
         console.log("Something error happend");
       }
@@ -260,14 +264,16 @@ async function getCoursePage(e) {
   course_popup += '</div>';
   var newDIV = $("<div class='course' id='course_box'></div>");
   var outerHtml = '';
-  var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/nested2.json`;
+  //var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/nested2.json`;
+  var url = `https://elearningcontent.zaigoinfotech.com/course_module/?course_id=`+e.target.dataset.cid;
   fetch(url, {
     method: "GET",
     headers: {"Content-type": "application/json; charset=UTF-8"}
   })
   .then((response) => response.json())
   .then((data) => {
-    //get_list( data.children, newDIV, 1);
+    console.log(data);
+    get_list( data.children, newDIV, 1);
     newDiv2 = $("<div class='module module_"+(data.children.length+Number(1))+" main_mod_empty'></div>");
     newUl2 = $("<ul class='main_module module_opacity'>");
     newUl2.append("<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
@@ -312,7 +318,7 @@ function get_list( a, $parent , level_count_inc) {
   for (var i = 0; i < a.length; i++) {
       if (a[i]) {
           var level_count = a[i].module_name.split("/").length - 1;
-          if(level_count == 0){
+          if(a[i].parent_id == null){
             var status_class = "";
             var status_text = "";
             if(a[i].status == 0){
@@ -484,7 +490,7 @@ function handleTopMenuClick(e) {
       break;
 	  
 	 case "courseseditor":
-      getCoursesEditorPage();
+      getCoursesEditorPage(e);
       break; 
 
     case "task":

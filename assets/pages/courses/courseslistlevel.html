@@ -18,7 +18,7 @@
                   <button>Preview</button>
                   </a></span> </li>
                 <li> <span class="orange-btn"><a href="#">
-                  <button>Submit</button>
+                  <button onclick="submit_data()">Submit</button>
                   </a></span> </li>
               </ul>
             </div>
@@ -71,14 +71,13 @@
                                           </form>
                                         </div>
                                       </div>
-                                      <div class="col-md-12 p-3 mtag">
+                                      <div class="col-md-12 p-3 mtag tag_cont_box">
                                         <div class="tag__container">
-                                      <input type="text" class="tag__input" placeholder="+ Add Tag">
-                                      <ul class="tag__List">
-                                        <li>tag1<span class="tag__remove" data-tag="tag1">×</span></li>
-                                        <li>tag2<span class="tag__remove" data-tag="tag2">×</span></li>
-                                      </ul>
-                                      <input type="hidden" class="tag__values" value="tag1,tag2"/>
+                                          <input type="text" class="tag__inputs" placeholder="+ Add Tag" >
+                                          <ul class="tag__List content hideContent" id="tag__List_append">
+                                          </ul>
+                                          <div class="show-more showmore">More >></div>
+                                          <input type="hidden" class="tag__values" id="tag__values" value=""/>
                                        </div>
                                       </div>
                                       <div class="col-md-12 p-3 b-btn" data-flinkto="courseseditor">
@@ -741,26 +740,57 @@
 
 <script>
   setTimeout(function(){
-    console.log(document.getElementById("course_module_id"));
    let cid = document.getElementById("course_module_id").getAttribute("data-cid");
    let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
     get_module_details(cid, module_id);
   }, 0);
   function get_module_details(cid, module_id){
-    $.ajax({
+    /*$.ajax({
       url: 'https://elearningcontent.zaigoinfotech.com/course_module/'+module_id,
       type: 'get',
       dataType: 'json',
       success:function(response){
-        console.log(response);
         document.getElementById("course_module_name").innerHTML= response.module_name;
+      }
+    });*/
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id,
+      type: 'get',
+      dataType: 'json',
+      success:function(response){
+        console.log(response);
+        var course_tags = response;
+        var tag_list ="";
+        var tag_list_str = "";
+            for(var i = 0; i < course_tags.length; i++){
+              tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes" data-tag="'+course_tags[i].tag_name+'">×</span></li>';
+              tag_list_str += course_tags[i].tag_name+",";
+            }
+            document.getElementById("tag__List_append").innerHTML = tag_list;
+            document.getElementById("tag__values").value = tag_list_str;
       }
     });
   }
+
+$(".show-more").on("click", function() {
+  var $this = $(this); 
+  var $content = $this.prev("ul.content");
+  var linkText = $this.text().toUpperCase();   
+  if(linkText === "MORE >>"){
+      linkText = "<< Less";
+      $content.switchClass("hideContent", "showContent", 400);
+      $this.switchClass("showmore", "showless", 1);
+  } else {
+      linkText = "More >>";
+      $content.switchClass("showContent", "hideContent", 400);
+      $this.switchClass("showless", "showmore", 1);
+  };
+
+  $this.text(linkText);
+});  
 $('ul.tab-s li').click(function(){
     var $this = $(this);
     var $theTab = $(this).attr('id');
-    console.log($theTab);
     if($this.hasClass('active')){
       // do nothing
     } else{
@@ -769,6 +799,70 @@ $('ul.tab-s li').click(function(){
     }
     
   });
-
   
+/*******************multiple tag list************************/
+document.addEventListener("keyup", function(e){
+    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs")) {
+    const currentTag = e.target.value;
+    if(currentTag){
+      const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInputOldValue = hiddenInput.value;
+      
+      const existingTags = getExistingTagAsArray(hiddenInputOldValue);
+      const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
+      
+      if(isTagExistAlready){ return; }
+      
+      if(hiddenInputOldValue){
+        hiddenInput.value = hiddenInputOldValue + "," + currentTag;
+      }else{
+        hiddenInput.value = currentTag;       
+      }
+      
+      const newTag = ` <li>${currentTag}<span class="tag__removes" data-tag=${currentTag}>×</span></li>`;
+      e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+      e.target.value = "";
+    }
+    }
+});
+
+document.addEventListener("click", function(e){
+    if (e.target.classList.contains("tag__removes")) {
+    const currentTag = e.target.dataset.tag;
+    const hiddenInput = e.target.parentElement.parentElement.nextElementSibling.nextElementSibling;  
+    const hiddenInputOldValue = hiddenInput.value;
+    
+    const existingTags = getExistingTagAsArray(hiddenInputOldValue);
+    const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
+    
+    if(isTagExistAlready){
+      const updatedInputValueAsArray = existingTags.filter((tag) => {
+        return tag != currentTag 
+      });
+      const updatedInputValue = updatedInputValueAsArray.join(",");
+      
+      hiddenInput.value = updatedInputValue;
+    }
+      
+    e.target.parentElement.remove();
+  }
+});
+
+const getExistingTagAsArray = (allTags) => {
+  let existingTagsAsArray = [];
+  
+  if(allTags.includes(",")){
+    existingTagsAsArray = allTags.split(",");
+  }
+  
+  return existingTagsAsArray;
+}
+
+const checkIfTagExistAlready = (allTags, currentTag) => {
+  if(allTags.includes(currentTag)){ 
+    return true;
+  }else{
+    return false;
+  }
+}
 </script>
