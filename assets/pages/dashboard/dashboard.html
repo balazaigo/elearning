@@ -127,8 +127,10 @@ $( document ).ready(function() {
   });
   
   if($( "#pagination-container-to" ).length > 0) {
+    var queryPara = '';
+    
     $('#pagination-container-to').pagination({
-      dataSource: 'https://elearningcontent.zaigoinfotech.com/task/',
+      dataSource: 'https://elearningcontent.zaigoinfotech.com/task/' + queryPara,
       locator: 'data',
       totalNumberLocator: function(response) {
         return response.total;
