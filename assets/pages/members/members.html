@@ -39,7 +39,10 @@
               </div>
               <div class="col-lg-8 col-md-8 top-btn">
                 <div class="row">
-                  <div class="col-lg-6 col-md-6">
+                  <div class="col-lg-2 col-md-2 p-0">
+                    <a class="btn btn-sm btn-danger btnReset d-none" style="position:relative;top:2px;">Reset</a>
+                  </div>
+                  <div class="col-lg-4 col-md-4">
                     <div class="topsearch relative">
                       <input
                         class="form-control form-control-dark w-100"
@@ -367,7 +370,21 @@ $( document ).ready(function() {
     }
   });
   
-  
+  $(".btnReset").on("click", function(){
+    $("#status, #role_list, #searchText").val(null);
+    doSearch();
+    setTimeout(function() {
+      $(".btnReset").addClass("d-none");
+    }, 500);
+  });
+
+  $(".fa-search").on("click", function(){ 
+    $(".btnReset").removeClass("d-none");
+    doSearch(); 
+  });
+  $("#status, #role_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
+  $('.btnRadio').click(function(){ doSearch(); });
+
   doSearch();
   
 });
@@ -379,9 +396,9 @@ function gridMembers(tagID, htmlID, assignTOBY){
   if($("#searchText").val()) {
     queryPara += "&search=" + $("#searchText").val();
   }
-  //courses_list
+  //role_list
   if($("#role_list").val()) {
-    queryPara += "&role_list=" + $("#courses_list").val();
+    queryPara += "&roles_name=" + $("#role_list").val();
   }
   //status
   if($("#status").val()) {
@@ -493,7 +510,6 @@ function getRoleName(name){
 
 
 function loadAlertModal(){
-  console.log("init Delete Modal...");
   $('#mAlert').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var recipientID = button.data('url');
