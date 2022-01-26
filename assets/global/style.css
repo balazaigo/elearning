@@ -268,10 +268,10 @@ input[type="checkbox"]:checked + label::before {
 .active-nav #menu-btn {
 	background-color: #20204F;
 	color: #fff;
-	margin-left: -5px;
+	/*margin-left: -5px;*/
 	position: absolute;
 	top: 75px;
-	right: -40px;
+	right:0px;
 	border-radius: 0;
 }
 #menu-btn {
