@@ -190,7 +190,7 @@ async function getMembersPage() {
     `${SITE_URL_PROTOCOL}/assets/pages/members/members.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
-        getMembers();
+        // getMembers();
       } else {
         console.log("Something error happend");
       }
