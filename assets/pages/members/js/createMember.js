@@ -33,15 +33,10 @@ $(document).on("change", "#member-email", function () {
   const hasEmailError = _validateMemberEmail(el, value, true);
 
   if (!hasEmailError) {
-    $("#member-fName").val("");
-    $("#member-lName").val("");
-    $("#member-phoneNo").val("");
-    $("#member-role").val("");
+  
+    console.log("CHECKED");
+    ajaxValidationMailID(value);
 
-    $("#member-fName").prop("disabled", false);
-    $("#member-lName").prop("disabled", false);
-    $("#member-phoneNo").prop("disabled", false);
-    $("#member-role").prop("disabled", false);
   }
 });
 
@@ -87,6 +82,30 @@ $(document).on("submit", "#member-create-form", function (e) {
 
   //If no field error - proceed submit
   if (!formHasError) {
+    //SAVE TO SERVER
+    $.ajax({
+      url: "https://elearningadmin.zaigoinfotech.com/member/",
+      method: "POST",
+      type: 'POST', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: {
+        "Authorization" : "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success: function(response){
+        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+        toastr.success("New member record successfully saved!");
+        $(".cancel-member-create-form").click();
+        doSearch();
+      },
+      error: function(error) {
+        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
+        toastr.error("Response Error: " + error.responseText);
+      }
+    });
     console.log(formData);
   }
 });
@@ -311,4 +330,32 @@ function _validateMemberRole(el, fieldValue) {
   }
 
   return hasError;
+}
+
+function ajaxValidationMailID(mailID){
+  //    //https://elearningadmin.zaigoinfotech.com/email_login/
+  $.ajax({
+    url: "https://elearningadmin.zaigoinfotech.com/email_login/",
+    method: "POST",
+    type: 'POST', // For jQuery < 1.9
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: JSON.stringify({
+      "email_id": mailID
+    }),
+    headers: {
+      "Authorization" : "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
+    success: function(response){
+      $("#member-fName, #member-lName, #member-phoneNo, #member-role").val("");
+      $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
+      $("#member-fName").focus();
+    },
+    error: function(error) {
+      $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+      toastr.error("Response Error: " + error.responseText);
+    }
+  });
 }

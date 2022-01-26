@@ -51,7 +51,7 @@
                         aria-label="Search"
                         id="searchText"
                       />
-                      <i class="fas fa-search"></i> </div>
+                      <i class="fas fa-search btnSearch"></i> </div>
                   </div>
                   <div class="col-lg-3 col-md-3">
                     <div class="dropdown-select">
@@ -378,7 +378,7 @@ $( document ).ready(function() {
     }, 500);
   });
 
-  $(".fa-search").on("click", function(){ 
+  $(".btnSearch").on("click", function(){ 
     $(".btnReset").removeClass("d-none");
     doSearch(); 
   });
@@ -388,7 +388,6 @@ $( document ).ready(function() {
   doSearch();
   
 });
-
 
 function gridMembers(tagID, htmlID, assignTOBY){
   var queryPara = '?p=0';
@@ -507,7 +506,6 @@ function getRoleName(name){
   });
   return '<span class="green-shade"><a href="#">'+selName+'</a></span>';
 }
-
 
 function loadAlertModal(){
   $('#mAlert').on('shown.bs.modal', function (event) {
