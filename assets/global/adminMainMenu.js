@@ -244,11 +244,11 @@ async function getCoursePage(e) {
   course_head += "<h4 class='header_content' id='course_header'><dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
   course_head += "<h4 class='header_breadcrumbs'>Breadcumbs1 / Breadcumbs2</h4>";
   course_head += "</div>";
-  course_head += "<div class='save_drft_btn'>";
-  course_head += "<span class='orange-btn nbtn'><a href='#add-course'>";
-  course_head += "<button id='add-courses'>Save Draft</button>";
-  course_head += "</a></span>";
-  course_head += "</div>";
+  //course_head += "<div class='save_drft_btn'>";
+  //course_head += "<span class='orange-btn nbtn'><a href='#add-course'>";
+  //course_head += "<button id='add-courses'>Save Draft</button>";
+  //course_head += "</a></span>";
+  //course_head += "</div>";
   course_head += "</div>";
   course_head += "<input type='hidden' value='"+e.target.dataset.cid+"' name='course_id' id='course_id'>";
   course_head += "</div>";
@@ -267,7 +267,7 @@ async function getCoursePage(e) {
   })
   .then((response) => response.json())
   .then((data) => {
-    get_list( data.children, newDIV, 1);
+    //get_list( data.children, newDIV, 1);
     newDiv2 = $("<div class='module module_"+(data.children.length+Number(1))+" main_mod_empty'></div>");
     newUl2 = $("<ul class='main_module module_opacity'>");
     newUl2.append("<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
