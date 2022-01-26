@@ -119,17 +119,26 @@
   </div>
 </div>
 <script type="text/javascript">
-$( document ).ready(function() {
-  
-  $('.btnRadio').click(function(){
-    if($(this).prop("checked")) {
-      if($(this).prop("id") == "tabone") {
+
+function doSearch(){
+
+  $('.btnRadio').each(function(index, element) {
+    if($(element).prop("checked")) {
+      if($(element).prop("id") == "tabone") {
         gridAssigned("pagination-container-to", "data-assignedTo", "assigned_to", "true");
       } else {
         gridAssigned("pagination-container-by", "data-assignedBy", "assigned_by", "false");        
       }
     }
-  });
+	});
+}
+  
+
+$( document ).ready(function() {
+  
+  $(".fa-search").on("click", function(){ doSearch(); });
+  $("#status, #courses_list").on("change", function(){ doSearch(); });
+  $('.btnRadio').click(function(){ doSearch(); });
   
   //load the courses list
   $.ajax({
