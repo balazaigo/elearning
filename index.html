@@ -191,11 +191,7 @@
     const auth_type = localStorage.getItem("auth_type");
     if(auth_type === 'mail') {
       const auth_user = localStorage.getItem("auth_user");
-      toastr.success("Welcome : " + auth_user);
-      localStorage.setItem("auth", 1);
-      setTimeout(function() {
-        window.location.href = `${SITE_URL_PROTOCOL}admin/`;
-      }, 2000);
+      postEmailLogin(auth_user);
       return;
     }
     confirmationResult
@@ -243,6 +239,41 @@
         success: function(response){
           localStorage.setItem("auth", 1);
           localStorage.setItem("auth_type", "social");
+          localStorage.setItem("auth_user", email_id);
+          localStorage.setItem("auth_token", access_token);
+          localStorage.setItem("auth_data", JSON.stringify(response));
+          toastr.success("Welcome : " + email_id);
+          setTimeout(function() {
+            window.location.href = `${SITE_URL_PROTOCOL}admin/`;
+          }, 1500);
+        },
+        error: function(error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
+  }
+
+
+  function postEmailLogin(mailID){
+      //https://elearningadmin.zaigoinfotech.com/login/
+      var access_token = "";
+      var email_id = mailID;
+      //validated the email from backend
+      $.ajax({
+        url: "https://elearningadmin.zaigoinfotech.com/login/",
+        method: "POST",
+        type: 'POST', // For jQuery < 1.9
+        cache: false,
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify({
+          "email_id": email_id,
+          "google_token": access_token
+        }),
+        success: function(response){
+          localStorage.setItem("auth", 1);
+          localStorage.setItem("auth_type", "mail");
           localStorage.setItem("auth_user", email_id);
           localStorage.setItem("auth_token", access_token);
           localStorage.setItem("auth_data", JSON.stringify(response));
