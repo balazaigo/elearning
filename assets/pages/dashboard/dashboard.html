@@ -52,7 +52,7 @@
       </div>
       </div>
       <div class="tabs white-bg p-3 mt-3">
-        <input type="radio" name="tabs" id="tabone" checked="checked">
+        <input type="radio" class="btnRadio" name="tabs" id="tabone" checked="checked">
         <label for="tabone">Assigned To</label>
         <div class="tab p-0">
           <div class="table-section">
@@ -74,13 +74,17 @@
                 </tr>
               </thead>
               <tbody id="data-assignedTo">
-
-             </tbody>
+                <tr>
+                  <td colspan="7">
+                    <div class="alert text-center">Loading...</div>
+                  </td>
+                </tr>
+              </tbody>
             </table>
             <div id="pagination-container-to"></div>
           </div>
         </div>
-        <input type="radio" name="tabs" id="tabtwo">
+        <input type="radio" class="btnRadio" name="tabs" id="tabtwo">
         <label for="tabtwo">Assigned By</label>
         <div class="tab p-0">
           <div class="table-section">
@@ -100,9 +104,14 @@
                 </tr>
               </thead>
               <tbody id="data-assignedBy">
-
+                <tr>
+                  <td colspan="7">
+                    <div class="alert text-center">Loading...</div>
+                  </td>
+                </tr>
               </tbody>
             </table>
+            <div id="pagination-container-by"></div>
           </div>
         </div>
       </div>
@@ -111,6 +120,16 @@
 </div>
 <script type="text/javascript">
 $( document ).ready(function() {
+  
+  $('.btnRadio').click(function(){
+    if($(this).prop("checked")) {
+      if($(this).prop("id") == "tabone") {
+        gridAssigned("pagination-container-to", "data-assignedTo", "assigned_to", "true");
+      } else {
+        gridAssigned("pagination-container-by", "data-assignedBy", "assigned_by", "false");        
+      }
+    }
+  });
   
   //load the courses list
   $.ajax({
@@ -127,47 +146,51 @@ $( document ).ready(function() {
   });
   
   if($( "#pagination-container-to" ).length > 0) {
-    var queryPara = '';
-    
-    $('#pagination-container-to').pagination({
-      dataSource: 'https://elearningcontent.zaigoinfotech.com/task/' + queryPara,
-      locator: 'data',
-      totalNumberLocator: function(response) {
-        return response.total;
-      },
-      alias: {
-        pageNumber: 'page',
-        pageSize: 'per_page'
-      },  
-      pageSize: 5,
-      ajax: {
-        beforeSend: function(request) {
-          request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
-        },
-        complete: function(jqXHR, textStatus) {
-          if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
-            return false; // do nothing
-          } else if (jqXHR && jqXHR.status === 403) {
-            window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
-          } else {
-            alert('error');
-          }
-        },    
-      },
-      callback: function(data, pagination) {
-        var html = template(data);
-        $('#data-assignedTo').html(html);
-        $('#data-assignedBy').html(html);
-      }
-    });
+    gridAssigned("pagination-container-to", "data-assignedTo", "assigned_to", "true");
   }
+
 });
+
+function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
+  var queryPara = '?self=' + selfPart;
+  $('#' + tagID).pagination({
+    dataSource: 'https://elearningcontent.zaigoinfotech.com/task/' + queryPara,
+    locator: 'data',
+    totalNumberLocator: function(response) {
+      return response.total;
+    },
+    alias: {
+      pageNumber: 'page',
+      pageSize: 'per_page'
+    },  
+    pageSize: 5,
+    ajax: {
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
+      },
+      complete: function(jqXHR, textStatus) {
+        if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
+          return false; // do nothing
+        } else if (jqXHR && jqXHR.status === 403) {
+          window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+        } else {
+          alert('error');
+        }
+      },    
+    },
+    callback: function(data, pagination) {
+      var html = template(data, assignTOBY);
+      $('#' + htmlID).html(html);
+    }
+  });
+}
+
 /* 
   Pagination 
   Function: pagination->template
   Description: on fly change the appearance  
 */
-function template(data) {
+function template(data, tagTOBY) {
   var html = '';
   $.each(data, function(index, item) {
     html += '<tr>';
@@ -182,7 +205,7 @@ function template(data) {
     `;
     html += '<td><span class="badge bg-success gridTaskID">#'+ item.id +'</span></td>';
     html += '<td>'+ item.name.substring(0, 15) +'...</td>';
-    html += '<td>'+ item.assigned_to +'</td>';
+    html += '<td>'+ item['assigned_to'] +'</td>';
     html += '<td>'+ item.end_date +'</td>';
     html += '<td>'+ getStatus(item.status) +'</td>';
     html += `
@@ -233,18 +256,7 @@ function getStatus(sCode){
       break;
   }
 }
-
-/*====================================================================================*/
-/* FOR TESTING PURPOSE DO NOT USE BELOW CODE FOR PRODUCTION*/
-/*====================================================================================*/
-function randomDate(start, end) {
-  //randomDate(new Date(2012, 0, 1), new Date())
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toISOString().slice(0, 10);
-}
-/*====================================================================================*/
-/*====================================================================================*/
 </script>
-
 
 
 <div id="taskdetails" class="overlay">

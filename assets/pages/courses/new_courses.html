@@ -350,6 +350,9 @@ $( document ).ready(function() {
         contentType: false,
         processData: false,
         data: formData,
+        headers: {
+          "Authorization" : "Bearer " + getUserInfo().access_token
+        },
         success: function(response){
           $('#addCourses').modal('hide');
           toastr.success("New course information was successfully saved.");
