@@ -696,6 +696,9 @@ dfn i {
 	opacity: 0;
   display:none;
 }
+.top-btn .dropdown-toggle {
+  padding:.375rem 1.75rem;
+}
 .title-head .top-btn .dropdown {
 	border-left: 0px solid #ccc;
 	background: url(../images/arrow-back.png) no-repeat;

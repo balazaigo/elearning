@@ -37,7 +37,8 @@ function getUserInfo(){
 
 function setUserInfo(authData){
   if(authData !== null) {
-    $("#dropdownMenuButton1").html('<span>' + authData.name + '</span>' + '<span class="user-role">' + authData.role + '</span>');
+    console.log(authData.rights);
+    $("#dropdownMenuButton1").html('<span>' + authData.name.substring(0, 15) + '</span>' + '<span class="user-role">' + authData.role + '</span>');
     $(".fullname").html(authData.name);
   }
 }
