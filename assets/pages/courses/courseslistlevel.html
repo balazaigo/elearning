@@ -18,7 +18,7 @@
                   <button>Preview</button>
                   </a></span> </li>
                 <li> <span class="orange-btn"><a href="#">
-                  <button onclick="submit_data()">Submit</button>
+                  <button  id="saveCourses">Submit</button>
                   </a></span> </li>
               </ul>
             </div>
@@ -61,22 +61,52 @@
                                     <div class="row">
                                       <div class="col-md-12 p-3">
                                         <div class="wrapper course_module_content">
-                                          <form id="multiple" enctype="multipart/form-data">
-<!--<input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="import a file">
-        <label class="custom-file">
-                        <button type="button" class="btn btn-success fileup-btn">
-                                            Drag and drop files
-          <input type="file" id="course_module_file1" name="course_module_file1[]" multiple  placeholder="import a file">
-                                            </button>
-        </label>-->
+                                        <div id="dropzone">
+                                          <form id="demo-upload" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
 
-                                            <button type="button" class="btn btn-success fileup-btn">
+                                            <!--<button type="button" class="btn btn-success fileup-btn">
                                             Drag and drop files
-                                            <input type="file" id="upload-1" class="fileupload_module" name="course_module_file1s" multiple>
+                                            <input type="file" id="upload-1" name="courseFile_module[]" class="fileupload_module" multiple>
                                             </button>
+
+                                            <span class="filename">Import a file</span>-->
                                             <div id="upload-1-queue" class="queue pt-3 uploaded_display"></div>
                                             <div id="upload-1-dropzone"></div>
+
+                                            <DIV id="preview-template" style="display: none;">
+                                            <DIV class="dz-preview dz-file-preview">
+                                            <DIV class="dz-image"><IMG data-dz-thumbnail=""></DIV>
+                                            <DIV class="dz-details">
+                                            <DIV class="dz-size"><SPAN data-dz-size=""></SPAN></DIV>
+                                            <DIV class="dz-filename"><SPAN data-dz-name=""></SPAN></DIV></DIV>
+                                            <DIV class="dz-progress"><SPAN class="dz-upload" 
+                                            data-dz-uploadprogress=""></SPAN></DIV>
+                                            <DIV class="dz-error-message"><SPAN data-dz-errormessage=""></SPAN></DIV>
+                                            <div class="dz-success-mark">
+                                              <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                                                <title>Check</title>
+                                                <desc>Created with Sketch.</desc>
+                                                <defs></defs>
+                                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                                                    <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" id="Oval-2" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                                                </g>
+                                              </svg>
+                                            </div>
+                                            <div class="dz-error-mark">
+                                              <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                                                  <title>error</title>
+                                                  <desc>Created with Sketch.</desc>
+                                                  <defs></defs>
+                                                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                                                      <g id="Check-+-Oval-2" sketch:type="MSLayerGroup" stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">
+                                                          <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" id="Oval-2" sketch:type="MSShapeGroup"></path>
+                                                      </g>
+                                                  </g>
+                                              </svg>
+                                            </div>
+
                                           </form>
+                                        </div>
                                         </div>
                                       </div>
                                       <div class="col-md-12 p-3 mtag tag_cont_box">
@@ -746,6 +776,7 @@
       </div>
     </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>
 <script>
   setTimeout(function(){
    let cid = document.getElementById("course_module_id").getAttribute("data-cid");
@@ -897,117 +928,140 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
     return false;
   }
 }
+  setTimeout(function(){
+  var dropzone = new Dropzone('#demo-upload', {
+  previewTemplate: document.querySelector('#preview-template').innerHTML,
+  parallelUploads: 2,
+  thumbnailHeight: 120,
+  thumbnailWidth: 120,
+  maxFilesize: 3,
+  filesizeBase: 1000,
+  thumbnail: function(file, dataUrl) {
+    if (file.previewElement) {
+      file.previewElement.classList.remove("dz-file-preview");
+      var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+      for (var i = 0; i < images.length; i++) {
+        var thumbnailElement = images[i];
+        thumbnailElement.alt = file.name;
+        thumbnailElement.src = dataUrl;
+      }
+      setTimeout(function() { file.previewElement.classList.add("dz-image-preview"); }, 1);
+    }
+  }
+
+});
+
+// Now fake the file upload, since GitHub does not handle file uploads
+// and returns a 404
+
+var minSteps = 6,
+    maxSteps = 60,
+    timeBetweenSteps = 100,
+    bytesPerStep = 100000;
+
+dropzone.uploadFiles = function(files) {
+  var self = this;
+
+   var cid = document.getElementById("course_module_id").getAttribute("data-cid");
+   var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+  var formData = new FormData();
+  var todayDate = new Date().toISOString().slice(0, 10);
+  for (var i = 0; i < files.length; i++) {
+
+    var file = files[i];
+
+        formData.append("attachment", file);
+        formData.append("attachment_type", file.type);
+        formData.append("attachment_name", file.name);
+        formData.append("created_date", todayDate);
+        formData.append("status", 0);
+        formData.append("module_id", module_id);
+        formData.append("course_id", cid);
+        $.ajax({
+          url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+          method: "POST",
+          type: 'POST', // For jQuery < 1.9
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          headers: {
+            "Authorization" : "Bearer " + getUserInfo().access_token
+          },
+          success: function(response){
+            $('#addCourses').modal('hide');
+            toastr.success("New course information was successfully saved.");
+            console.log(response);
+          },
+          error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+    totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+
+    for (var step = 0; step < totalSteps; step++) {
+      var duration = timeBetweenSteps * (step + 1);
+      setTimeout(function(file, totalSteps, step) {
+        return function() {
+          file.upload = {
+            progress: 100 * (step + 1) / totalSteps,
+            total: file.size,
+            bytesSent: (step + 1) * file.size / totalSteps
+          };
+
+          self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+          if (file.upload.progress == 100) {
+            file.status = Dropzone.SUCCESS;
+            self.emit("success", file, 'success', null);
+            self.emit("complete", file);
+            self.processQueue();
+            //document.getElementsByClassName("dz-success-mark").style.opacity = "1";
+          }
+        };
+      }(file, totalSteps, step), duration);
+    }
+  }
+}
+
+  }, 1000);
   /*$("#saveCourses").on("click", function() {
-   let cid = document.getElementById("course_module_id").getAttribute("data-cid");
-   let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
-   //$('#multiple').submit();
-
-var data = new FormData();
-$.each($('#course_module_file1')[0].files, function(i, file) {
-    data.append('file-'+i, file);
-});
-console.log('asdad');
-//console.log(data);
+       let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+       let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
       var formData = new FormData();
-      formData.append("module_id", module_id);
-      formData.append("course_id",cid);
-      $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
-        formData.append("attachment["+i+"]", file, file.name);
+      var todayDate = new Date().toISOString().slice(0, 10);
+      $.each($('input[name^="courseFile_module"]')[0].files, function(i, file) {
+        formData.append("attachment", file);
+        formData.append("attachment_type", file.type);
+        formData.append("attachment_name", file.name);
+        formData.append("created_date", todayDate);
+        formData.append("status", 0);
+        formData.append("module_id", module_id);
+        formData.append("course_id", cid);
+        $.ajax({
+          url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+          method: "POST",
+          type: 'POST', // For jQuery < 1.9
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          headers: {
+            "Authorization" : "Bearer " + getUserInfo().access_token
+          },
+          success: function(response){
+            $('#addCourses').modal('hide');
+            toastr.success("New course information was successfully saved.");
+            console.log(response);
+          },
+          error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
       });
-      console.log(formData.attachment);
-       $.ajax({
-        url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
-        method: "POST",
-        type: 'POST', // For jQuery < 1.9
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: formData,
-        headers: {
-          "Authorization" : "Bearer " + getUserInfo().access_token
-        },
-        success:function(response){
-          console.log(response);
-        },
-        error: function(error) {
-          console.log(error);
-        }
-      });
-});*/
-$(document).on('click', '.fileupload_module', function () {
-    var upload_id = this.id;
-    var unique_id = this.id+'-queue';
-    var dropzoneID = this.id+'-dropzone';
-   let cid = document.getElementById("course_module_id").getAttribute("data-cid");
-   let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
-    $.fileup({
-        url: `${SITE_URL_PROTOCOL}/assets/pages/courses`,
-        inputID: upload_id,
-        queueID: unique_id,
-        dropzoneID: dropzoneID,
-        autostart: true,
-        onSelect: function(file) {
-            $('#dropzonenew .control-button').show();
-        },
-        onRemove: function(file, total) {
-            if (file === '*' || total === 1) {
-                $('#dropzonenew .control-button').hide();
-            }
-        },
-        onSuccess: function(response, file_number, file) {
-            console.log(file);
-            console.log(file.name);
-            var todayDate = new Date().toISOString().slice(0, 10);
-            var attach = SITE_URL_PROTOCOL+"/assets/pages/courses/"+file.name;
-            var file_data = {
-                "module_id": module_id,
-                "course_id": cid,
-                "attachment_name": file.name,
-                "attachment_type": "",
-                "attachment": "",
-                "status": "0",
-                "created_date": todayDate,
-                "attachment" : attach
-            }
-            console.log(file_data);
-          $.ajax({
-                  url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
-                  method: "POST",
-                  type: 'POST', // For jQuery < 1.9
-                  data: JSON.stringify(),
-                  dataType: 'jsonp',
-                  success: function(response){
-                    console.log(response );
-                  },
-                  error: function(error) {
-                    //toastr.error("Response Error: " + error.message);
-                    console.log(error);
-                  }
-                });
-          $.ajax({
-        url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
-        type: 'POST',
-        data: JSON.stringify(file_data),
-        contentType: "application/json; charset=utf-8",
-        success:function(response){
-          console.log(response);
-        }
-      });
-
-            //$.growl.notice({ title: "Upload success!", message: file.name });
-        },
-        onError: function(event, file, file_number) {
-            //$.growl.error({ message: "Upload error!" });
-        },
-        onDragEnter: function(event) {
-            $(event.target).addClass('over');
-        },
-        onDragLeave: function(event) {
-            $(event.target).removeClass('over');
-        },
-        onDragEnd: function(event) {
-            $(event.target).removeClass('over');
-        }
-    });
-});
+      //for (var pair of formData.entries()) {
+       //   console.log(pair[0]+ ', ' + pair[1]); 
+     // }
+    });*/
 </script>
