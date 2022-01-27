@@ -87,3 +87,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.course_module_content .fileup-remove{
+    display: none;
+}

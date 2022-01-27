@@ -272,7 +272,6 @@ async function getCoursePage(e) {
   })
   .then((response) => response.json())
   .then((data) => {
-    console.log(data);
     get_list( data.children, newDIV, 1);
     newDiv2 = $("<div class='module module_"+(data.children.length+Number(1))+" main_mod_empty'></div>");
     newUl2 = $("<ul class='main_module module_opacity'>");
@@ -291,7 +290,8 @@ async function getCoursePage(e) {
     if(outerHtml !== ''){
       //getcoursesPageHtml(course_head, outerHtml);
       document.getElementById("app-admin").innerHTML = course_head+outerHtml+course_popup;
-      var cname = data.course_name.length > 30 ? data.course_name.substring(0,30)+"..." : data.course_name;
+      //var cname = data.course_name.length > 30 ? data.course_name.substring(0,30)+"..." : data.course_name;
+      var cname = data.course_name;
       document.getElementById("course_header").innerHTML = cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn>";
       $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/course/course.js`, function() {});
     }

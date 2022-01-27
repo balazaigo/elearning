@@ -60,11 +60,19 @@
                                   <div class="accordionlist">
                                     <div class="row">
                                       <div class="col-md-12 p-3">
-                                        <div class="wrapper">
-                                          <form id="multiple">
+                                        <div class="wrapper course_module_content">
+                                          <form id="multiple" enctype="multipart/form-data">
+<!--<input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="import a file">
+        <label class="custom-file">
+                        <button type="button" class="btn btn-success fileup-btn">
+                                            Drag and drop files
+          <input type="file" id="course_module_file1" name="course_module_file1[]" multiple  placeholder="import a file">
+                                            </button>
+        </label>-->
+
                                             <button type="button" class="btn btn-success fileup-btn">
                                             Drag and drop files
-                                            <input type="file" id="upload-1" class="fileupload" multiple>
+                                            <input type="file" id="upload-1" class="fileupload_module" name="course_module_file1s" multiple>
                                             </button>
                                             <div id="upload-1-queue" class="queue pt-3 uploaded_display"></div>
                                             <div id="upload-1-dropzone"></div>
@@ -73,7 +81,7 @@
                                       </div>
                                       <div class="col-md-12 p-3 mtag tag_cont_box">
                                         <div class="tag__container">
-                                          <input type="text" class="tag__inputs" placeholder="+ Add Tag" >
+                                          <input type="text" class="tag__inputs tag__inputs2" placeholder="+ Add Tag">
                                           <ul class="tag__List content hideContent" id="tag__List_append">
                                           </ul>
                                           <div class="show-more showmore">More >></div>
@@ -763,7 +771,7 @@
         var tag_list ="";
         var tag_list_str = "";
             for(var i = 0; i < course_tags.length; i++){
-              tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes" data-tag="'+course_tags[i].tag_name+'">×</span></li>';
+              tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes tag__removes2" data-tag="'+course_tags[i].tag_name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
               tag_list_str += course_tags[i].tag_name+",";
             }
             document.getElementById("tag__List_append").innerHTML = tag_list;
@@ -802,7 +810,7 @@ $('ul.tab-s li').click(function(){
   
 /*******************multiple tag list************************/
 document.addEventListener("keyup", function(e){
-    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs")) {
+    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs2")) {
     const currentTag = e.target.value;
     if(currentTag){
       const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -819,15 +827,30 @@ document.addEventListener("keyup", function(e){
         hiddenInput.value = currentTag;       
       }
       
-      const newTag = ` <li>${currentTag}<span class="tag__removes" data-tag=${currentTag}>×</span></li>`;
-      e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
-      e.target.value = "";
+     let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+     let module_id_val = document.getElementById("course_module_id").getAttribute("data-module_id");
+      var tag_data = {
+          "tag_name": currentTag,
+          "module_id": module_id_val,
+          "course_id": cid
+      }
+      $.ajax({
+        url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id_val,
+        type: 'POST',
+        data: JSON.stringify(tag_data),
+        contentType: "application/json; charset=utf-8",
+        success:function(response){
+          const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes2" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
+          e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.target.value = "";
+        }
+      });
     }
     }
 });
 
 document.addEventListener("click", function(e){
-    if (e.target.classList.contains("tag__removes")) {
+    if (e.target.classList.contains("tag__removes2")) {
     const currentTag = e.target.dataset.tag;
     const hiddenInput = e.target.parentElement.parentElement.nextElementSibling.nextElementSibling;  
     const hiddenInputOldValue = hiddenInput.value;
@@ -842,9 +865,18 @@ document.addEventListener("click", function(e){
       const updatedInputValue = updatedInputValueAsArray.join(",");
       
       hiddenInput.value = updatedInputValue;
+      var tag_id = e.target.dataset.tagid;
+      if(tag_id !== ''){
+        $.ajax({
+          url: 'https://elearningcontent.zaigoinfotech.com/course_tags/'+tag_id+'/',
+          type: 'DELETE',
+          contentType: "application/json; charset=utf-8",
+          success:function(response){
+            e.target.parentElement.remove();
+          }
+        });
+      }
     }
-      
-    e.target.parentElement.remove();
   }
 });
 
@@ -865,4 +897,117 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
     return false;
   }
 }
+  /*$("#saveCourses").on("click", function() {
+   let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+   let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+   //$('#multiple').submit();
+
+var data = new FormData();
+$.each($('#course_module_file1')[0].files, function(i, file) {
+    data.append('file-'+i, file);
+});
+console.log('asdad');
+//console.log(data);
+      var formData = new FormData();
+      formData.append("module_id", module_id);
+      formData.append("course_id",cid);
+      $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
+        formData.append("attachment["+i+"]", file, file.name);
+      });
+      console.log(formData.attachment);
+       $.ajax({
+        url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+        method: "POST",
+        type: 'POST', // For jQuery < 1.9
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        headers: {
+          "Authorization" : "Bearer " + getUserInfo().access_token
+        },
+        success:function(response){
+          console.log(response);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+});*/
+$(document).on('click', '.fileupload_module', function () {
+    var upload_id = this.id;
+    var unique_id = this.id+'-queue';
+    var dropzoneID = this.id+'-dropzone';
+   let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+   let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    $.fileup({
+        url: `${SITE_URL_PROTOCOL}/assets/pages/courses`,
+        inputID: upload_id,
+        queueID: unique_id,
+        dropzoneID: dropzoneID,
+        autostart: true,
+        onSelect: function(file) {
+            $('#dropzonenew .control-button').show();
+        },
+        onRemove: function(file, total) {
+            if (file === '*' || total === 1) {
+                $('#dropzonenew .control-button').hide();
+            }
+        },
+        onSuccess: function(response, file_number, file) {
+            console.log(file);
+            console.log(file.name);
+            var todayDate = new Date().toISOString().slice(0, 10);
+            var attach = SITE_URL_PROTOCOL+"/assets/pages/courses/"+file.name;
+            var file_data = {
+                "module_id": module_id,
+                "course_id": cid,
+                "attachment_name": file.name,
+                "attachment_type": "",
+                "attachment": "",
+                "status": "0",
+                "created_date": todayDate,
+                "attachment" : attach
+            }
+            console.log(file_data);
+          $.ajax({
+                  url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+                  method: "POST",
+                  type: 'POST', // For jQuery < 1.9
+                  data: JSON.stringify(),
+                  dataType: 'jsonp',
+                  success: function(response){
+                    console.log(response );
+                  },
+                  error: function(error) {
+                    //toastr.error("Response Error: " + error.message);
+                    console.log(error);
+                  }
+                });
+          $.ajax({
+        url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+        type: 'POST',
+        data: JSON.stringify(file_data),
+        contentType: "application/json; charset=utf-8",
+        success:function(response){
+          console.log(response);
+        }
+      });
+
+            //$.growl.notice({ title: "Upload success!", message: file.name });
+        },
+        onError: function(event, file, file_number) {
+            //$.growl.error({ message: "Upload error!" });
+        },
+        onDragEnter: function(event) {
+            $(event.target).addClass('over');
+        },
+        onDragLeave: function(event) {
+            $(event.target).removeClass('over');
+        },
+        onDragEnd: function(event) {
+            $(event.target).removeClass('over');
+        }
+    });
+});
 </script>

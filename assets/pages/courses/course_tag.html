@@ -68,12 +68,11 @@
       type: 'get',
       dataType: 'json',
       success:function(response){
-        console.log(response);
         var course_tags = response;
         var tag_list ="";
         var tag_list_str = "";
             for(var i = 0; i < course_tags.length; i++){
-              tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes" data-tag="'+course_tags[i].tag_name+'">×</span></li>';
+              tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes" data-tag="'+course_tags[i].tag_name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
               tag_list_str += course_tags[i].tag_name+",";
             }
             document.getElementById("tag__List_append").innerHTML = tag_list;
@@ -119,18 +118,17 @@ document.addEventListener("keyup", function(e){
      let cid = document.getElementById("course_param").getAttribute("data-cid");
      let module_id_val = document.getElementById("course_param").getAttribute("data-module_id");
       var tag_data = {
-        tag_name: currentTag,
-        module_id: module_id_val, 
-        course_id:cid
+          "tag_name": currentTag,
+          "module_id": module_id_val,
+          "course_id": cid
       }
-      console.log(tag_data);
       $.ajax({
         url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id_val,
         type: 'POST',
         data: JSON.stringify(tag_data),
         contentType: "application/json; charset=utf-8",
         success:function(response){
-          const newTag = ` <li>${currentTag}<span class="tag__removes" data-tag=${currentTag}>×</span></li>`;
+          const newTag = ` <li>${currentTag}<span class="tag__removes" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
         }
@@ -156,8 +154,17 @@ document.addEventListener("click", function(e){
       
       hiddenInput.value = updatedInputValue;
     }
-      
-    e.target.parentElement.remove();
+      var tag_id = e.target.dataset.tagid;
+      if(tag_id !== ''){
+        $.ajax({
+          url: 'https://elearningcontent.zaigoinfotech.com/course_tags/'+tag_id+'/',
+          type: 'DELETE',
+          contentType: "application/json; charset=utf-8",
+          success:function(response){
+            e.target.parentElement.remove();
+          }
+        });
+      }
   }
 });
 
