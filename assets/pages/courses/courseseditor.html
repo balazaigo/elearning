@@ -3,7 +3,7 @@
         <div class="col-12 title-head mb-3">
           <div class="row w-100">
             <div class="col-md-6">
-              <h2><span class="back"><a href="#" data-flinkto="courseslistlevel"><i class="fas fa-arrow-left"></i></a></span> Courses Editor  <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
+              <h2><span class="back" data-flinkto="courseslistlevel"><a href="#" data-flinkto="courseslistlevel"><i class="fas fa-arrow-left" data-flinkto="courseslistlevel"></i></a></span> Courses Editor  <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
                  <span><nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Case Study List</a></li>
@@ -25,12 +25,13 @@
       <div class="container-fluid p-0">
       <div class="tabs white-bg p-3 mt-3">
         <input type="radio" name="tabs" id="tabone" checked="checked">
-        <label for="tabone">Case Study Builder</label>
+        <label for="tabone">Builder</label>
         <div class="tab p-0">
           <div class="editor-section">
              <div class="row">
                 <div class="col-12">
                   <textarea id="tiny"></textarea>
+                    <button class="btn btn-sm btn-primary float-end" id="save-content_mod">Save</button>
                 </div>
                 <div class="col-4 trackBGColor" style="display:none">
                   <div class="m-1 clearfix">
@@ -45,7 +46,7 @@
           </div>
         </div>
         <input type="radio" name="tabs" id="tabtwo">
-        <label for="tabtwo">Case Study Settings</label>
+        <!--<label for="tabtwo">Case Study Settings</label>-->
         <div class="tab p-0">
           <div class="case-section">
                   <form class="p-4">
@@ -107,12 +108,15 @@
       </div>
   
 </div>
+<input type="hidden" id="course_module_id" data-flinkto="courseslistlevel"/>
     </div>
     
     <script>
       var trackPath = false;
       var tinyContentData;
-      var tinyMCE = $('textarea#tiny').tinymce({
+      tinymce.remove("#tiny");
+      tinyMCE.init({
+        selector: "#tiny",
         height: 600,
         width: "100%",
         menubar: false,
@@ -138,7 +142,7 @@
         },        
         setup:function(ed) {
           ed.on('init', function (e) {
-            loadextData(ed);
+            //loadextData(ed);
           });
           ed.ui.registry.addButton('trackpath', {
             icon: 'insert-time',
@@ -200,14 +204,41 @@
       }
       
       $( document ).ready(function() {
-        $("#save-content").on("click", function() {
+        /*$("#save-content").on("click", function() {
           var newData = tinymce.activeEditor.getContent();
-          $.post('savejson.php', {
+          $.post('../assets/pages/courses/savejson.php', {
             newData: newData
           }, function(response){
             // response could contain the url of the newly saved file
             loadextData(tinymce.activeEditor);
           })          
+        });*/
+        $("#save-content_mod").on("click", function() {
+        let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+        let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+          var newData = tinymce.activeEditor.getContent();
+          if(newData !== ''){
+            var content_data = {
+              "course_id": cid,
+              "module_id": module_id,
+              "content": newData,
+              "revision_label":""
+            }
+            $.ajax({
+              url: 'https://elearningcontent.zaigoinfotech.com/course_content/',
+              type: 'POST',
+              data: JSON.stringify(content_data),
+              contentType: "application/json; charset=utf-8",
+              success:function(response){
+                toastr.success("Content has been saved.");
+                console.log(response);
+              }
+            });
+          }else{
+            toastr.error("Please Write a Content.");
+            console.log(response);
+          }
+          //loadextData(tinymce.activeEditor);
         });
       });
       
