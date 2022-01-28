@@ -205,10 +205,13 @@ function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
       complete: function(jqXHR, textStatus) {
         if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
           return false; // do nothing
-        } else if (jqXHR && jqXHR.status === 403) {
-          window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+        } else if (jqXHR && (jqXHR.status === 403)) {
+          window.location.href = SITE_URL_PROTOCOL;
+        } else if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          window.location.href = SITE_URL_PROTOCOL;
         } else {
-          alert('error');
+          alert($.parseJSON(jqXHR.responseText).detail);
         }
       },    
     },
@@ -316,7 +319,6 @@ function getStatus(sCode){
 }
 
 function loadAlertModal(){
-  console.log("init Delete Modal...");
   $('#mAlert').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var recipientID = button.data('url');

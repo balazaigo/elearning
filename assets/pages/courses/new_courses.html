@@ -1,4 +1,32 @@
 <style type="text/css">
+label.tags-label {
+  color:#9A9A9A;
+  opacity:0.65;  
+  transform:scale(.85);
+}
+.select2Font {
+  font-size:14px;
+  color:#9A9A9A;
+}
+.select2-selection__rendered li {
+  font-size:14px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  padding:0 10px;
+  color:#9A9A9A;
+}
+.select2-container--default .select2-selection--multiple {
+  border:1px solid #ced4da;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border-color:#ced4da;
+}
+.select2-container--open .select2-dropdown--below {
+  border-color:#ced4da;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  color:#757575;
+}
 .custom-file {
   width: 100%;
   height: 60px;
@@ -34,36 +62,67 @@ em.error.help-block {
   color: red;
   font-size: 12px;
 }
+.form-floating>label {
+  color:#9A9A9A;
+}
+input[type=date]::-webkit-datetime-edit {
+  color: #9A9A9A;
+}
+input[type=date].hasdate::-webkit-datetime-edit {
+  color: #161515;
+}
+.charcounter {
+  width: 100%;
+  display: block;
+  font-size: 12px;
+  color: #9e9e9e;
+  text-align: right;
+  padding-right: 4px;
+}
+.form-select {
+  color:#212529 !important;
+}
+
 </style>
 <div class="modal-header">
   <h5 class="modal-title">Add a new course</h5>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<div class="modal-body">    
+<div class="modal-body">
 
-  <form method="post" class="pop-form" id="frmNewCourses" name="frmNewCourses" enctype="multipart/form-data">
+  <form method="post" class="" id="frmNewCourses" name="frmNewCourses" enctype="multipart/form-data">
     <input type="hidden" name="platform_id" id="platform_id" value="1e4758ac-8077-42e6-b9d9-11b0de0df37d" >
     <div class="row">
       <div class="col-md-12 mb-3">
-        <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize" placeholder="Name of the Course">
+        <div class="form-floating">
+          <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize" placeholder="Name of the course">
+          <label for="coursesName">Name of the course</label>
+        </div>
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="coursesID" name="coursesID" class="form-control" placeholder="Course ID Prefix">
-      </div>
-      <div class="col-md-12 mb-3 selectParent">
-        <div class="dropdown-select">
-          <select class="sort-select" id="category" name="category">
-            <option value="">Select Category</option>
-          </select>
+        <div class="form-floating">
+          <input type="text" id="coursesID" name="coursesID" class="form-control" placeholder="Course ID Prefix">
+          <label for="coursesID">Course ID Prefix</label>
         </div>
       </div>
-      <div class="col-md-12 mb-3 selectParent">
-       <div class="dropdown-select">
-          <select class="sort-select" id="subCategory" name="subCategory">
-            <option value="">Select Sub Category</option>
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <select class="sort-select form-select" id="category" name="category">
+            <option value="">Category</option>
           </select>
+          <label for="category">Select</label>
         </div>
       </div>
+
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <select class="sort-select form-select" id="subCategory" name="subCategory">
+            <option value="">Sub Category</option>
+          </select>
+          <label for="subCategory">Select</label>
+        </div>
+      </div>
+
       <div class="col-md-12 mb-3">
         <label class="custom-file">
           <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="import a file">
@@ -73,26 +132,42 @@ em.error.help-block {
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date">
-      </div>
-      <div class="col-md-6 mb-3">
-        <input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 mb-3 selectParent">
-       <div class="dropdown-select">
-          <select class="sort-select" id="member" name="member">
-            <option value="">Assign to</option>
-          </select>
+        <div class="form-floating">
+          <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date" 
+            onblur="if(this.value!==''){this.className='form-control hasdate'}">
+          <label for="start_date">Start Date</label>
         </div>
       </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-floating">
+          <input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date"
+            onblur="if(this.value!==''){this.className='form-control hasdate'}">
+          <label for="end_date">End Date</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+    
       <div class="col-md-12 mb-3">
-        <select class="form-control tags" id="tags" name="tags[]" required multiple="multiple" style="width:100%">
-        </select>      
+        <div class="form-floating">
+          <select class="sort-select form-select" id="member" name="member">
+            <option value="">Members</option>
+          </select>
+          <label for="member">Assign</label>
+        </div>
+      </div>
+    
+      <div class="col-md-12 mb-3">
+        <label for="tags" class="tags-label d-none">Add a tags</label>
+        <select class="form-control tags" id="tags" name="tags[]" multiple="multiple" style="width:100%"></select>      
       </div>
       <div class="col-md-12 mb-3">
-        <input type="text" id="description" name="description" class="form-control" placeholder="One line description">
+        <div class="form-floating">
+          <input type="text" id="description" name="description" class="form-control counter" placeholder="One line description" />
+          <span class="charcounter">0 Char</span>
+          <label for="description">One line description</label>
+        </div>
       </div>
     </div>
   </form>
@@ -141,9 +216,15 @@ $.fn.extend({
 
 $( document ).ready(function() {
   
+  $('.counter').keyup(function () {
+    var cuChar = $(this).val().length;
+    $(this).next("span.charcounter").html(cuChar + " Char");
+  });
+  
   $('.tags').select2({
     dropdownParent: $('#addCourses'),
     placeholder: "Add a tag",
+    dropdownCssClass: "select2Font",
     tags: true,
     maximumSelectionLength: 64,
     formatSelectionTooBig: function (limit) {
@@ -193,7 +274,6 @@ $( document ).ready(function() {
       coursesName: {required: true, minlength: 1, maxlength: 256},
       coursesID: {required: true, minlength: 1, maxlength: 20},
       category: {required: true },
-      subCategory: {required: true },
       courseFile: {required: true },
       start_date: {required: true },
       end_date: {required: true },
@@ -210,7 +290,6 @@ $( document ).ready(function() {
         maxlength: "Course ID Prefix must consist of max of 20 characters",
       },      
       category: {required: "Please select the category" },      
-      subCategory: {required: "Please select the subcategory" },      
       courseFile: {required: "Please upload attachment" },      
       start_date: {required: "Please select starting date" },      
       end_date: {required: "Please select ending date" },      
@@ -226,10 +305,12 @@ $( document ).ready(function() {
       }
     },
     highlight: function ( element, errorClass, validClass ) {
-      $( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
+      //$( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
+      $(element).addClass("is-invalid");
     },
     unhighlight: function (element, errorClass, validClass) {
-      $( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
+     //$( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
+     $(element).removeClass("is-invalid");
     }
   });
     
@@ -240,7 +321,7 @@ $( document ).ready(function() {
     dataType: 'json',
     success:function(response){
       $("#category").empty();
-      $("#category").append("<option value=''>Select Category</option>");
+      $("#category").append("<option value=''>Category</option>");
       $.each( response, function( i, val ) {
         $("#category").append("<option value='"+val.id+"'>"+val.name+"</option>");
       });
@@ -267,8 +348,8 @@ $( document ).ready(function() {
     dataType: 'json',
     success:function(response){
       $("#member").empty();
-      $("#member").append("<option value=''>Select Member</option>");
-      $.each( response.results, function( i, val ) {
+      $("#member").append("<option value=''>Member</option>");
+      $.each( response.data, function( i, val ) {
         $("#member").append("<option value='"+val.id+"'>"+val.first_name+" " + val.last_name+"</option>");
       });
     }
@@ -276,9 +357,9 @@ $( document ).ready(function() {
   
   $("#category").on("change", function() {
     $("#subCategory").empty();
+    $("#subCategory").append("<option value=''>Sub Category</option>");
     if($(this).val()) {
       var resp = subCategory[$(this).val()];
-      $("#subCategory").append("<option value=''>Select Sub Category</option>");
       if(typeof(resp) === "undefined") {
         console.log("subcategory not found: " + $(this).find("option:selected").text() );
       } else {
