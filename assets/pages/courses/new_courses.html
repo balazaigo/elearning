@@ -270,12 +270,15 @@ $( document ).ready(function() {
     multiple: true,
     allowClear: true,
     ajax: {
-      url: function (params) {
-        return URL + params.term;
-      },
+      url: URL,
       dataType: 'json',
       type: "GET",
       quietMillis: 50,
+      data: function (params) {
+        return {
+          term: $.trim(params.term)
+        };        
+      },
       processResults: function (data) {
         return {
           results: $.map(data, function (item) {
