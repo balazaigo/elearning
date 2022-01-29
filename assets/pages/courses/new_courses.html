@@ -1,4 +1,8 @@
 <style type="text/css">
+.custom-btn button {
+	padding: 8px 20px;
+	border-radius: 30px;
+}
 label.tags-label {
   color:#9A9A9A;
   opacity:0.65;  
@@ -103,7 +107,7 @@ option:not(:first-of-type) {
       </div>
       <div class="col-md-12 mb-3">
         <div class="form-floating">
-          <input type="text" id="coursesID" name="coursesID" class="form-control" placeholder="Course ID Prefix">
+          <input type="text" id="coursesID" name="coursesID" class="form-control cm-replaceSpace" placeholder="Course ID Prefix">
           <label for="coursesID">Course ID Prefix</label>
         </div>
       </div>
@@ -176,14 +180,21 @@ option:not(:first-of-type) {
 
 </div>
 <div class="modal-footer">
+  <span class="custom-btn nbtn">
+    <button type="button" class="btn btn-success" id="saveCoursesNew">Save & New</button>
+  </span>
   <span class="orange-btn nbtn">
-    <button type="button" class="btn btn-primary" id="saveCourses">Save</button>
+    <button type="button" class="btn btn-primary" id="saveCoursesClose">Save & Close</button>
   </span>
 </div>
 <script type="text/javascript">
 var subCategory = {};
 var frmvalidatorfrm;
 
+String.prototype.str_replace = function(src, dst){
+	"use strict";
+	return this.toString().split(src).join(dst);
+};
 $.fn.extend({
 	caps: function(str){
 		"use strict";
@@ -214,10 +225,20 @@ $.fn.extend({
       this.value = this.value.toUpperCase();
     });
   },
+	replaceSpace: function(){
+    "use strict";
+    $(this).bind('blur change', function(){
+      this.value = this.value.str_replace(' ', '-');
+    });
+	},
 });
 
 $( document ).ready(function() {
   
+  $('.cm-capitalize').each(function() { $(this).capitalize(); });
+  $('.cm-uppercase').each(function() { $(this).upperCase(); });  
+  $('.cm-replaceSpace').each(function() { $(this).replaceSpace(); });
+
   $(".form-select").each(function(index, element) {
     const $this = $(this);
     $this.on("change", (event) => {
@@ -229,10 +250,14 @@ $( document ).ready(function() {
       }
     });
 	});
-  
   $('.counter').keyup(function () {
     var cuChar = $(this).val().length;
     $(this).next("span.charcounter").html(cuChar + " Char");
+  });
+  $("#coursesName").on("blur", function(){
+    var str = $(this).val();
+    var acpref = str.substring(0, 4);
+    $("#coursesID").val(acpref.str_replace(' ', '-').toUpperCase());
   });
   
   var URL = "https://elearningcontent.zaigoinfotech.com/tags/";
@@ -240,28 +265,42 @@ $( document ).ready(function() {
     dropdownParent: $('#addCourses'),
     placeholder: "Add a tag",
     dropdownCssClass: "select2Font",
+    tokenSeparators: [','],
     tags: true,
+    multiple: true,
+    allowClear: true,
     ajax: {
       url: URL,
       dataType: 'json',
       type: "GET",
       quietMillis: 50,
       data: function (params) {
-        var queryParameters = {
-          term: params.term
-        }
-        return queryParameters;
+        return {
+          q: $.trim(params.term)
+        };        
       },
       processResults: function (data) {
         return {
-            results: $.map(data, function (item) {
-              return {
-                text: item,
-                id: item
-              }
-            })
-          };
-        }
+          results: $.map(data, function (item) {
+            return {
+              text: item,
+              id: item
+            }
+          })
+        };
+      },
+      cache: true,
+    },
+    createTag: function (params) {
+      var term = $.trim(params.term);
+      if (term === '') {
+        return null;
+      }
+      return {
+        id: term,
+        text: term,
+        newTag: true
+      };      
     },
     maximumSelectionLength: 64,
     minimumInputLength: 3,
@@ -274,15 +313,6 @@ $( document ).ready(function() {
     }    
   });
 
-  $('.cm-capitalize').each(function() { $(this).capitalize(); });
-  $('.cm-uppercase').each(function() { $(this).upperCase(); });  
-
-  $("#coursesName").on("blur", function(){
-    var str = $(this).val();
-    var acpref = str.substring(0, 4);
-    $("#coursesID").val(acpref.toUpperCase());
-  });
-  
   $("input:file").change(function (){
     var fappend = 'Design documents';
     for(var i = 0 ; i < this.files.length ; i++){
@@ -299,59 +329,6 @@ $( document ).ready(function() {
     }
   });
 
-  $.validator.addMethod("pattern", function( value, element, param ) {
-    if ( this.optional( element ) ) { return true; }
-    if ( typeof param === "string" ) {
-      param = new RegExp( "^(?:" + param + ")$" );
-    }
-    return param.test( value );
-  }, "Check your inputs" );
-
-  var frmvalidatorfrm = $("#frmNewCourses").validate({
-    rules: {
-      coursesName: {required: true, minlength: 1, maxlength: 256},
-      coursesID: {required: true, minlength: 1, maxlength: 20},
-      category: {required: true },
-      courseFile: {required: true },
-      start_date: {required: true },
-      end_date: {required: true },
-      member: {required: true },
-    },
-    messages: {
-      coursesName: {
-        required: "Please enter a Course Name",
-        minlength: "Your course name must consist of at least 1 characters",
-        maxlength: "Your course name must consist of max of 256 characters",
-      },      
-      coursesID: { required: "Please enter a Course ID Prefix",
-        minlength: "Course ID Prefix must consist of at least 1 characters",
-        maxlength: "Course ID Prefix must consist of max of 20 characters",
-      },      
-      category: {required: "Please select the category" },      
-      courseFile: {required: "Please upload attachment" },      
-      start_date: {required: "Please select starting date" },      
-      end_date: {required: "Please select ending date" },      
-      member: {required: "Please selct a member" },      
-    },
-    errorElement: "em",
-    errorPlacement: function ( error, element ) {
-      error.addClass( "help-block" );
-      if ( element.prop( "type" ) === "checkbox" ) {
-        error.insertAfter( element.parent( "label" ) );
-      } else {
-        error.insertAfter( element );
-      }
-    },
-    highlight: function ( element, errorClass, validClass ) {
-      //$( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
-      $(element).addClass("is-invalid");
-    },
-    unhighlight: function (element, errorClass, validClass) {
-     //$( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
-     $(element).removeClass("is-invalid");
-    }
-  });
-    
   //load the category data
   $.ajax({
     url: API_BASE_URL + '/category/',
@@ -435,7 +412,59 @@ $( document ).ready(function() {
   /* ============================================================ */
   //subCategory
   
-  $("#saveCourses").on("click", function() {
+  $.validator.addMethod("pattern", function( value, element, param ) {
+    if ( this.optional( element ) ) { return true; }
+    if ( typeof param === "string" ) {
+      param = new RegExp( "^(?:" + param + ")$" );
+    }
+    return param.test( value );
+  }, "Check your inputs" );
+  var frmvalidatorfrm = $("#frmNewCourses").validate({
+    rules: {
+      coursesName: {required: true, minlength: 1, maxlength: 256},
+      coursesID: {required: true, minlength: 1, maxlength: 20},
+      category: {required: true },
+      courseFile: {required: true },
+      start_date: {required: true },
+      end_date: {required: true },
+      member: {required: true },
+    },
+    messages: {
+      coursesName: {
+        required: "Please enter a Course Name",
+        minlength: "Your course name must consist of at least 1 characters",
+        maxlength: "Your course name must consist of max of 256 characters",
+      },      
+      coursesID: { required: "Please enter a Course ID Prefix",
+        minlength: "Course ID Prefix must consist of at least 1 characters",
+        maxlength: "Course ID Prefix must consist of max of 20 characters",
+      },      
+      category: {required: "Please select the category" },      
+      courseFile: {required: "Please upload attachment" },      
+      start_date: {required: "Please select starting date" },      
+      end_date: {required: "Please select ending date" },      
+      member: {required: "Please selct a member" },      
+    },
+    errorElement: "em",
+    errorPlacement: function ( error, element ) {
+      error.addClass( "help-block" );
+      if ( element.prop( "type" ) === "checkbox" ) {
+        error.insertAfter( element.parent( "label" ) );
+      } else {
+        error.insertAfter( element );
+      }
+    },
+    highlight: function ( element, errorClass, validClass ) {
+      //$( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
+      $(element).addClass("is-invalid");
+    },
+    unhighlight: function (element, errorClass, validClass) {
+     //$( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
+     $(element).removeClass("is-invalid");
+    }
+  });
+
+  $("#saveCoursesClose, #saveCoursesNew").on("click", function() {
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
       if($("#tags").val().length === 0) {
@@ -462,29 +491,45 @@ $( document ).ready(function() {
       $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
         formData.append("attachments["+i+"]", file, file.name);
       });
-      $.ajax({
-        url: "https://elearningcontent.zaigoinfotech.com/course/",
-        method: "POST",
-        type: 'POST', // For jQuery < 1.9
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: formData,
-        headers: {
-          "Authorization" : "Bearer " + getUserInfo().access_token
-        },
-        success: function(response){
-          $('#addCourses').modal('hide');
-          toastr.success("New course information was successfully saved.");
-          console.log(response);
-        },
-        error: function(error) {
-          toastr.error("Response Error: " + error.message);
-          console.log(error);
-        }
-      });
+      if($(this).prop("id") === "saveCoursesClose") {
+        ajaxSaveCourse(formData, false);
+      } else {
+        ajaxSaveCourse(formData, true);
+      }
     }
   });
+
 });
+
+function ajaxSaveCourse(formData, openNew){
+  $.ajax({
+    url: "https://elearningcontent.zaigoinfotech.com/course/",
+    method: "POST",
+    type: 'POST', // For jQuery < 1.9
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: formData,
+    headers: {
+      "Authorization" : "Bearer " + getUserInfo().access_token
+    },
+    success: function(response){
+      toastr.success("New course information was successfully saved.");
+      $('#addCourses').modal('hide');
+      if(openNew) {
+        const container = document.getElementById("addCourses");
+        const modal = new bootstrap.Modal(container);
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          modal.show();
+        });
+      }
+    },
+    error: function(error) {
+      toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+}
 
 </script>
