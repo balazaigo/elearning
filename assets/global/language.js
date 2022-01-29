@@ -15,5 +15,4 @@ var language = {
   "lbl_login": "Login",
   "error_invalid_number": "Error: Invalid Number",
   "error_invalid_otp": "Error: Invalid OTP",
-  "": "",
 };
