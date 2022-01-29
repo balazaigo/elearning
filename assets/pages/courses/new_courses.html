@@ -80,9 +80,11 @@ input[type=date].hasdate::-webkit-datetime-edit {
   padding-right: 4px;
 }
 .form-select {
-  color:#212529 !important;
+  color: #9A9A9A;
 }
-
+option:not(:first-of-type) {
+  color: #212529;
+}
 </style>
 <div class="modal-header">
   <h5 class="modal-title">Add a new course</h5>
@@ -110,7 +112,7 @@ input[type=date].hasdate::-webkit-datetime-edit {
           <select class="sort-select form-select" id="category" name="category">
             <option value="">Category</option>
           </select>
-          <label for="category">Select</label>
+          <label for="category" data-title="Select category" data-caption="Select">Select</label>
         </div>
       </div>
 
@@ -119,14 +121,14 @@ input[type=date].hasdate::-webkit-datetime-edit {
           <select class="sort-select form-select" id="subCategory" name="subCategory">
             <option value="">Sub Category</option>
           </select>
-          <label for="subCategory">Select</label>
+          <label for="subCategory" data-title="Select subcategory" data-caption="Select">Select</label>
         </div>
       </div>
 
       <div class="col-md-12 mb-3">
         <label class="custom-file">
-          <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="import a file">
-          <span class="filename">Import a file</span>
+          <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="Design documents">
+          <span class="filename">Design documents</span>
         </label>
       </div>
     </div>
@@ -152,9 +154,9 @@ input[type=date].hasdate::-webkit-datetime-edit {
       <div class="col-md-12 mb-3">
         <div class="form-floating">
           <select class="sort-select form-select" id="member" name="member">
-            <option value="">Members</option>
+            <option value="">Member</option>
           </select>
-          <label for="member">Assign</label>
+          <label for="member" data-title="Assign Member" data-caption="Assign">Assign</label>
         </div>
       </div>
     
@@ -216,17 +218,53 @@ $.fn.extend({
 
 $( document ).ready(function() {
   
+  $(".form-select").each(function(index, element) {
+    const $this = $(this);
+    $this.on("change", (event) => {
+      const $this = $(event.currentTarget);
+      if ($this.val()) {
+        $this.next("label").html($this.next("label").data("title"));
+      } else {
+        $this.next("label").html($this.next("label").data("caption"));
+      }
+    });
+	});
+  
   $('.counter').keyup(function () {
     var cuChar = $(this).val().length;
     $(this).next("span.charcounter").html(cuChar + " Char");
   });
   
+  var URL = "https://elearningcontent.zaigoinfotech.com/tags/";
   $('.tags').select2({
     dropdownParent: $('#addCourses'),
     placeholder: "Add a tag",
     dropdownCssClass: "select2Font",
     tags: true,
+    ajax: {
+      url: URL,
+      dataType: 'json',
+      type: "GET",
+      quietMillis: 50,
+      data: function (params) {
+        var queryParameters = {
+          term: params.term
+        }
+        return queryParameters;
+      },
+      processResults: function (data) {
+        return {
+            results: $.map(data, function (item) {
+              return {
+                text: item,
+                id: item
+              }
+            })
+          };
+        }
+    },
     maximumSelectionLength: 64,
+    minimumInputLength: 3,
     formatSelectionTooBig: function (limit) {
       return "Too many selected items, Only 64 tags allowed."
     },
@@ -246,13 +284,13 @@ $( document ).ready(function() {
   });
   
   $("input:file").change(function (){
-    var fappend = '';
+    var fappend = 'Design documents';
     for(var i = 0 ; i < this.files.length ; i++){
       var fileName = this.files[i].name;
       fappend += '<span class="name">' + fileName.replace("C:\\fakepath\\", '') + '</span>';
     }
     if(i > 4) {
-      $(".filename").html("Import a file");
+      $(".filename").html("Design documents");
       alert("Only 5 files accepted!");
       $("#courseFile").val(null);
       return false;
@@ -358,6 +396,7 @@ $( document ).ready(function() {
   $("#category").on("change", function() {
     $("#subCategory").empty();
     $("#subCategory").append("<option value=''>Sub Category</option>");
+    $("#subCategory").next("label").html(  $("#subCategory").next("label").data("caption") );
     if($(this).val()) {
       var resp = subCategory[$(this).val()];
       if(typeof(resp) === "undefined") {
