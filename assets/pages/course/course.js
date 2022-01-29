@@ -77,7 +77,6 @@ function totext(e){
       }
       if(first_five_char_class === "modul"){
         var level_number = class_module_level.split('_')[1];
-      console.log(level_number);
         var get_submodule_level_values = {
           module_name: String(e.value),
           level: parseInt(level_number), 
@@ -117,7 +116,6 @@ function get_submodule_level_val(class_module_main_level, class_module_sub_level
       }
       module_name_list += "/"+ele_val;*/
       var level_number = (class_module_sub_level.split("_module")[0]).split(".")[class_module_sub_level.split(".").length-1];
-      console.log(level_number);
       data_course_module = {
         module_name: String(ele_val),
         level: parseInt(level_number), 
@@ -129,7 +127,6 @@ function get_submodule_level_val(class_module_main_level, class_module_sub_level
       //console.log("Not Found . in str")
       //var module_name_list = document.getElementById("module_"+class_module_main_level).innerHTML+"/"+ele_val;
       var level_number = class_module_sub_level.split('_')[1];
-      console.log(level_number);
       data_course_module = {
         module_name: String(ele_val),
         level: parseInt(level_number), 
@@ -236,7 +233,7 @@ function add_sub(e){
                 newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>Level "+result+"</p></li>";
+                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>"+result+". Chapter</p></li>";
                 newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
@@ -276,7 +273,8 @@ function add_sub(e){
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
-            }else{
+            }
+            /*else{
                 var index = classList[1].lastIndexOf("_");
                 var result = Number(classList[1].substr(index+1));
                 if(e.parentElement.parentElement.childNodes[0].nodeName == '#text'){
@@ -298,7 +296,7 @@ function add_sub(e){
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
-            }
+            }*/
         }
     }
 }
@@ -316,12 +314,21 @@ function add_sub_sub(e){
     var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
     var index = classList[1].lastIndexOf("_");
     var res_1 = Number(classList[1].substr(index+1));
-    console.log(e.parentElement.parentElement.childNodes.length);
     var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
+    var num = String(result).match(/\./g).length;
+    if(num === 1){
+      var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Lesson";
+    }else if(num === 2){
+      var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Topic";
+    }else if(num === 3){
+      var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Sub Topic";
+    }else{
+      var result_text = "Level "+result;
+    }
     newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-    newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>Level "+result+"</p></li>";
+    newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>"+result_text+"</p></li>";
     newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
     newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
     newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";

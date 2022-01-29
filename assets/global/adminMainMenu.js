@@ -242,23 +242,7 @@ async function getCoursesPage() {
 /*************** Get Cource Page Starts Here********************/
 async function getCoursePage(e) {
   //var cname = e.target.dataset.cname.length > 30 ? e.target.dataset.cname.substring(0,30)+"..." : e.target.dataset.cname;
-  var course_head = "<div class='container-fluid course_details'>";
-  course_head += "<div class='wrapper'>";
-  course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
-  course_head += "<div class='course_head'>";
-  course_head += "<h4 class='header_content' id='course_header'><dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
-  course_head += "<h4 class='header_breadcrumbs'>Breadcumbs1 / Breadcumbs2</h4>";
-  course_head += "</div>";
-  //course_head += "<div class='save_drft_btn'>";
-  //course_head += "<span class='orange-btn nbtn'><a href='#add-course'>";
-  //course_head += "<button id='add-courses'>Save Draft</button>";
-  //course_head += "</a></span>";
-  //course_head += "</div>";
-  course_head += "</div>";
-  course_head += "<input type='hidden' value='"+e.target.dataset.cid+"' name='course_id' id='course_id'>";
-  course_head += "</div>";
-
-  course_popup = '<div class="modal fade" id="popup_course_icon" data-bs-backdrop="static">';
+  var course_popup = '<div class="modal fade" id="popup_course_icon" data-bs-backdrop="static">';
   course_popup += '<div class="modal-dialog modal-lg">';
   course_popup += '<div class="modal-content" id="content-courseModule"></div>';
   course_popup += '</div>';
@@ -289,11 +273,26 @@ async function getCoursePage(e) {
     newDIV.append(newDiv2);
     var outerHtml = newDIV.prop('outerHTML');
     if(outerHtml !== ''){
+      console.log(data);
+      var course_head = "<div class='container-fluid course_details'>";
+      course_head += "<div class='wrapper'>";
+      course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
+      course_head += "<div class='course_head'>";
+      course_head += "<h4 class='header_content' id='course_header'>"+data.course_name+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
+      course_head += "<h4 class='header_breadcrumbs'>"+data.description+"</h4>";
+      course_head += "</div>";
+      course_head += "<div class='course_head_right'>";
+      course_head += "<h4 class='header_breadcrumbs'>"+data.course_id+"</h4>";
+      course_head += "<div class='header_breadcrumbs'><p>Started Date:</p><span>"+data.start_date+"</span</div>";
+      course_head += "</div>";
+      course_head += "</div>";
+      course_head += "<input type='hidden' value='"+e.target.dataset.cid+"' name='course_id' id='course_id'>";
+      course_head += "</div>";
       //getcoursesPageHtml(course_head, outerHtml);
       document.getElementById("app-admin").innerHTML = course_head+outerHtml+course_popup;
       //var cname = data.course_name.length > 30 ? data.course_name.substring(0,30)+"..." : data.course_name;
-      var cname = data.course_name;
-      document.getElementById("course_header").innerHTML = cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn>";
+      //var cname = data.course_name;
+      //document.getElementById("course_header").innerHTML = cname+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn>";
       $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/course/course.js`, function() {});
     }
   })
@@ -422,8 +421,8 @@ function get_list( a, $parent , level_count_inc) {
               get_list( a[i].children, newUl, level_count_inc);
           }
       }
+    $parent.append(newDIV);
   }
-$parent.append(newDIV);
 }
 /***************Course Modules Get Json and assign Tree structured format and Design Ends Here*************/
 

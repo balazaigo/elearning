@@ -3247,15 +3247,15 @@ form#multiple {
 }
 .course_details .wrapper {
 	display: grid;
-	grid-template-columns: repeat(12, 1fr);
+	grid-template-columns: repeat(20, 1fr);
 	grid-gap: 10px;
-	grid-auto-rows: minmax(60px, auto);
+	grid-auto-rows: minmax(80px, auto);
 }
 .course_details .wrapper .left_icon{
     grid-column: span 1;
 }
 .course_details .wrapper .course_head {
-	grid-column: span 9;
+	grid-column: span 12;
 	margin-left: 0;
 }
 .course_details .wrapper .save_drft_btn {
@@ -3274,7 +3274,8 @@ form#multiple {
 	color: #97a5ba;
 	font-size: 18px;
 	font-weight: 400;
-	margin-top: 10px; display: none;
+	margin-top: 10px; 
+	display: block;
 }
 .course{
 	width: 100%;
@@ -3288,6 +3289,25 @@ form#multiple {
     margin-bottom: 100px;
 }
 
+.course_details .wrapper .course_head_right .header_breadcrumbs {
+	color: #97a5ba;
+	font-size: 18px;
+	font-weight: 400;
+	margin-top: 10px; 
+	display: block;
+}
+.course_details .wrapper .course_head_right {
+    grid-column: span 7;
+    margin-left: 0;
+    margin-top: -12px;
+}
+.course_details .wrapper .course_head_right p{
+    width: fit-content;
+    float: left;
+}
+.course_details .wrapper .course_head_right p span{
+    margin-left: 10px;
+}
 /*************courses new css end****************/
 
 /* round button */
