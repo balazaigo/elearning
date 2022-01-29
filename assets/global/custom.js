@@ -206,3 +206,23 @@ function selects() {
 }
 
 /**************select and deselect checkbox*************/
+
+document.addEventListener('DOMContentLoaded', getLanguage);
+
+function getLanguage(){
+  const l = document.getElementsByTagName("*");
+  for(i = 0;  i<l.length; i++) {
+    //Label / Text
+    if( typeof(l[i].dataset.lang) !== "undefined" ) {
+      if(typeof(window.language[l[i].dataset.lang]) !== "undefined") {
+        l[i].innerHTML = window.language[l[i].dataset.lang];
+      }
+    }
+    //placeholder
+    if( typeof(l[i].dataset.placeholder) !== "undefined" ) {
+      if(typeof(window.language[l[i].dataset.placeholder]) !== "undefined") {
+        l[i].placeholder = window.language[l[i].dataset.placeholder];
+      }
+    }
+  }
+}

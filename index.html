@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Login</title>
+<title data-lang="login_title">Login</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet" />
 <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet" />
@@ -14,6 +14,7 @@
 <!-- Toastr -->
 <link href="./assets/global/toastr/toastr.min.css" rel="stylesheet" />
 <!-- EOF Toastr -->
+<script src="./assets/global/language.js"></script>
 </head>
 <body>
 <div id="app-login">
@@ -27,36 +28,37 @@
           <div class="form-section h-100 d-flex align-items-center p-5">
             <div>
               <div class="login-logo mb-3"><img src="images/logo.svg" alt=""></div>
-              <h3 class="mb-4">Welcome To</h3>
-              <h2>Exper</h2>
+              <h3 class="mb-4" data-lang="welcome_to">Welcome</h3>
+              <h2 data-lang="exper">Exper</h2>
               <form>
                 <div id="areaPhone">
                   <div class="mb-3 relative">
-                    <label for="phoneNumber" class="form-label">EMail Id / Mobile Number</label>
-                    <input type="text" class="form-control user" id="phoneNumber" placeholder="Enter Your EMail Id / Mobile Number Here" title="+919908XXXXXX" tabindex="1">
+                    <label for="phoneNumber" class="form-label" data-lang="lbl_emailmobile">EMail Id / Mobile Number</label>
+                    <input type="text" class="form-control user" id="phoneNumber"  data-placeholder="placeholder_emailmobile" 
+                    placeholder="Enter Your EMail Id / Mobile Number Here" title="+919908XXXXXX" tabindex="1">
                   </div>
                   <div class="mb-3 relative">
                     <input type="checkbox" class="form-check-input" id="remember" tabindex="3">
-                    <label for="remember" class="form-label">Remember Me</label>
+                    <label for="remember" class="form-label" data-lang="lbl_rememberme">Remember Me</label>
                   </div>
-                  <a class="login-btn" onClick="submitPhoneNumberAuth()" href="#" tabindex="2">Get OTP<!--<input type="submit" value="Get OTP" >--></a>
+                  <a class="login-btn" onClick="submitPhoneNumberAuth()" href="#" tabindex="2" data-lang="lbl_getotp">Get OTP</a>
                   <div class="mb-4 mt-4 relative or">
-                    <p>OR</p>
+                    <p data-lang="lbl_or">OR</p>
                   </div>
                   <div class="mb-3 relative">
                     <div class="google-btn" id="my-signin2">
                       <div class="google-icon-wrapper">
                         <img class="google-icon" alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
                       </div>
-                      <p class="btn-text">Sign in with google</p>
+                      <p class="btn-text" data-lang="lbl_sign_google">Sign in with google</p>
                     </div>                
                   </div>
                 </div>
                 
                 <div id="areaCode" style="display:none">
-                  <h4 class="mt-2 mb-2">Enter One Time Password(OTP)</h4>
+                  <h4 class="mt-2 mb-2" data-lang="lbl_enter_one_time_password">Enter One Time Password(OTP)</h4>
                   <div class="mb-3 relative">
-                    <label for="" class="form-label">Enter OTP</label>
+                    <label for="" class="form-label" data-lang="lbl_enter_otp">Enter OTP</label>
                     <div class="otp" id="otpCode"> <span>
                       <input type="text" class="form-control" maxlength="1" id="o1" onFocus="this.select();" onkeyup="clickEvent(this,'o2')" >
                       </span> <span>
@@ -72,9 +74,9 @@
                       </span> </div>
                   </div>
                   <div class="mb-4 mt-4 relative code">
-                    <p>Don't receive code? <strong><a href="#">Resend OTP</a></strong></p>
+                    <p><span data-lang="lbl_dont_code">Don't receive code?</span> <strong><a href="#" data-lang="lbl_resend_otp">Resend OTP</a></strong></p>
                   </div>
-                  <a class="login-btn" href="#" onClick="submitPhoneNumberAuthCode()">Login<!--<input type="submit" value="Login" >--></a>
+                  <a class="login-btn" href="#" onClick="submitPhoneNumberAuthCode()" data-lang="lbl_login">Login</a>
                 </div>
               </form>
             </div>
@@ -147,7 +149,7 @@
         .signInWithPhoneNumber(phoneNumber, appVerifier)
         .then(function(confirmationResult) {
           console.log("confirmationResult", confirmationResult);
-          toastr.info("Enter One Time Password(OTP)");
+          toastr.info(language.lbl_enter_one_time_password);
           window.confirmationResult = confirmationResult;
           $("#areaPhone").hide();
           $("#areaCode").show();
@@ -157,7 +159,7 @@
             toastr.error("Server Response: " + error.message);
             return false; 
           }
-          toastr.info("Enter One Time Password(OTP)");
+          toastr.info(language.lbl_enter_one_time_password);
           console.log(error);
           $("#areaPhone").hide();
           $("#areaCode").show();
@@ -165,10 +167,10 @@
         });
     } else {
       if(phoneNumber.match(pattern) == null) {
-        toastr.error("Error: Invalid Number");
+        toastr.error(language.error_invalid_number);
         document.getElementById("phoneNumber").focus();
       } else {
-        toastr.info("Enter One Time Password(OTP)");
+        toastr.info(language.lbl_enter_one_time_password);
         localStorage.setItem("auth_type", "mail");
         localStorage.setItem("auth_user", phoneNumber);
         $("#areaPhone").hide();
@@ -185,7 +187,7 @@
        values += input.value
     }
     if(values.length <= 5) {
-      toastr.error("Error: Invalid OTP");
+      toastr.error(language.error_invalid_otp);
       return false;
     }
     const auth_type = localStorage.getItem("auth_type");
