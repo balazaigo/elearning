@@ -3247,7 +3247,7 @@ form#multiple {
 }
 .course_details .wrapper {
 	display: grid;
-	grid-template-columns: repeat(20, 1fr);
+	grid-template-columns: repeat(25, 1fr);
 	grid-gap: 10px;
 	grid-auto-rows: minmax(80px, auto);
 }
@@ -3255,7 +3255,7 @@ form#multiple {
     grid-column: span 1;
 }
 .course_details .wrapper .course_head {
-	grid-column: span 12;
+	grid-column: span 17;
 	margin-left: 0;
 }
 .course_details .wrapper .save_drft_btn {
