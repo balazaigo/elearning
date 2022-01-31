@@ -168,6 +168,24 @@
     right: -35px;
     color: rgb(243,106,16);
 }
+.course_module_content .tag__container .showmore{
+    width: 25%;
+    float: right;
+    height: auto;
+    position: relative;
+    bottom: 40px;
+    right: 0px;
+    color: rgb(243,106,16);
+}
+.course_module_content .tag__container .showless{
+    width: 100%;
+    float: left;
+    height: auto;
+    position: relative;
+    bottom: 10px;
+    right: -35px;
+    color: rgb(243,106,16);
+}
 .progress_btn .status_new, #course-box .status_new{
     background-color: rgb(240,220,250);
     color: rgb(180 39 245);

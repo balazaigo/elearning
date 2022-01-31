@@ -23,6 +23,8 @@ $(document).ready(function(){
         }
 
     });
+    get_breadcrumbs();
+    setTimeout(get_content_details(), 1000);
     get_module_details();
     var minSteps = 6,
         maxSteps = 60,
@@ -109,6 +111,48 @@ $(document).ready(function(){
       }
     });*/
 });
+function get_breadcrumbs(){
+    var cid = document.getElementById("course_module_id").getAttribute("data-cid");
+    var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/breadcrumbs/'+cid+'/'+module_id,
+      type: 'GET',
+      dataType: 'json',
+      success:function(data){
+        var breadcrumbs_data = data.breadcrumbs_order;
+        document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
+        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="course" data-cid="${data.course_id}"><a href="#" data-flinkto="course" data-cid="${data.course_id}">${data.course_name}</a></li>`;
+        if(breadcrumbs_data.length > 0){
+            breadcrumbs_data.forEach(function (elements, index) {
+              brd_crumbs += `<li class="breadcrumb-item" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}"><a href="#" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
+              if(index == breadcrumbs_data.length - 1){
+                  document.getElementById("course_header_module").innerHTML = elements.module_name;
+              }
+            });
+        }
+        document.getElementById("module_breadcrumbs").innerHTML = brd_crumbs;
+      }
+    });
+}
+function get_content_details(){
+    var cid = document.getElementById("course_module_id").getAttribute("data-cid");
+    var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/module/'+module_id,
+      type: 'get',
+      dataType: 'json',
+      success:function(response){
+        var module_content = '';
+        console.log(response.module_content);
+        if(response.module_content.length > 0){
+          module_content = response.module_content[0].content;
+          module_content_id = response.module_content[0].id;
+          document.getElementById("saveCourses").setAttribute("data-module_content_id", module_content_id);
+        }
+        tinymce.activeEditor.setContent(module_content);
+      }
+    });
+}
 function get_module_details(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
     var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
@@ -117,7 +161,6 @@ function get_module_details(){
       type: 'get',
       dataType: 'json',
       success:function(response){
-        console.log(response);
         var module_content = response.module_content;
         var module_attachments = response.module_attachments;
         var module_tags = response.module_tags;
@@ -125,9 +168,21 @@ function get_module_details(){
         var module_attachments_html = "";
         var module_tags_html = "";
         if(module_content.length > 0){
-          module_content.forEach(function (element, index) {
-            module_content_html +=`
-                                    <li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10"><li class="has-children mb-3">
+            console.log(module_content[0].content);
+            module_content_html +=`<li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10"><li class="has-children mb-3">
+                                <div class="acnav__label acnav__label--level2">
+                                  <div class="accordionlist">
+                                    <div class="row">
+                                      <div class="col-md-12 acc-text">
+                                        ${module_content[0].content}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li></ul>`;
+          /*module_content.forEach(function (element, index) {
+            console.log(element);
+            module_content_html +=`<li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10"><li class="has-children mb-3">
                                 <div class="acnav__label acnav__label--level2">
                                   <div class="accordionlist">
                                     <div class="row">
@@ -138,7 +193,7 @@ function get_module_details(){
                                   </div>
                                 </div>
                               </li></ul>`;
-          });
+          });*/
         }
         if(module_attachments.length > 0){
             module_attachments.forEach(function (element, index) {
@@ -166,6 +221,8 @@ function get_module_details(){
                         module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
                         module_attachments_html +=`<audio controls><source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                    }else if(element.attachment_type.split('/')[0] === 'pdf'){
+                        module_attachments_html +=`<object data="../assets/images/sample.pdf" type="application/pdf" class="course_module_pdf" width="100%" height="100%"><p>Alternative text - include a link <a href="../assets/images/sample.pdf">to the PDF!</a></p></object>`;
                     }
                     /*else if(element.attachment_type.split('/')[0] === 'text'){
                         module_attachments_html +=``;
@@ -206,6 +263,10 @@ function get_module_details(){
         }
         document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
 
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
       }
     });
 }
@@ -473,6 +534,14 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         let cid = document.getElementById("course_module_id").getAttribute("data-cid");
         let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
           var newData = tinymce.activeEditor.getContent();
+
+          var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
+          console.log(module_content_id);
+          var method_type = "POST";
+          var URL  = 'https://elearningcontent.zaigoinfotech.com/course_content/'+module_content_id+'/';
+          if(module_content_id){
+            method_type = "PUT";
+          }
           if(newData !== ''){
             var content_data = {
               "course_id": cid,
@@ -481,8 +550,8 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
               "revision_label":""
             }
             $.ajax({
-              url: 'https://elearningcontent.zaigoinfotech.com/course_content/',
-              type: 'POST',
+              url: URL,
+              type: method_type,
               data: JSON.stringify(content_data),
               contentType: "application/json; charset=utf-8",
               success:function(response){

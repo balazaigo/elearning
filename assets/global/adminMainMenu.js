@@ -131,7 +131,6 @@ async function getCoursesListLevelPage(e) {
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
-        $.getScript(`${SITE_URL_PROTOCOL}/assets/global/custom.js`, function() {});
         $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.js`, function() {});
         var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner'], [data-flinkto='courseseditor']");
         course_flinkto_elem.forEach(el=>{
@@ -282,8 +281,8 @@ async function getCoursePage(e) {
       course_head += "<h4 class='header_breadcrumbs'>"+data.description+"</h4>";
       course_head += "</div>";
       course_head += "<div class='course_head_right'>";
-      course_head += "<h4 class='header_breadcrumbs'>"+data.course_id+"</h4>";
-      course_head += "<div class='header_breadcrumbs'><p>Started Date:</p><span>"+data.start_date+"</span</div>";
+      course_head += "<h4 class='header_breadcrumbs'><div class='col-6 cleft tbtn' data-flinkto='course' > <a href='#'' data-flinkto='course'>"+data.course_id_prefix+"</a> </div></h4>";
+      course_head += "<div class='header_breadcrumbs'><p>Start Date:</p><span>"+data.start_date+"</span</div>";
       course_head += "</div>";
       course_head += "</div>";
       course_head += "<input type='hidden' value='"+e.target.dataset.cid+"' name='course_id' id='course_id'>";
