@@ -538,9 +538,10 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
           var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
           console.log(module_content_id);
           var method_type = "POST";
-          var URL  = 'https://elearningcontent.zaigoinfotech.com/course_content/'+module_content_id+'/';
-          if(module_content_id){
+          var URL  = 'https://elearningcontent.zaigoinfotech.com/course_content/';
+          if(module_content_id && module_content_id !== null){
             method_type = "PUT";
+            URL  = 'https://elearningcontent.zaigoinfotech.com/course_content/'+module_content_id+'/';
           }
           if(newData !== ''){
             var content_data = {
