@@ -23,9 +23,11 @@ $(document).ready(function(){
         }
 
     });
+
     get_breadcrumbs();
     setTimeout(get_content_details(), 1000);
     get_module_details();
+    get_search_details();
     var minSteps = 6,
         maxSteps = 60,
         timeBetweenSteps = 100,
@@ -110,7 +112,140 @@ $(document).ready(function(){
             document.getElementById("tag__values").value = tag_list_str;
       }
     });*/
+
+$("#global_search_module").keyup(function() { 
+    get_search_details();
+ });
+
+ $("#global_search_module").on("search", function() { 
+    get_search_details();
+ });
 });
+function get_search_details(){
+    var tagName = $("#global_search_module").val();
+    console.log(tagName);
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/global_search/?tag_name='+tagName,
+      type: 'GET',
+      dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      success:function(data){
+        $('#global_search_module_content').empty();
+        var attachment_all = $('<div class="tab_content active" data-tab="tab4"></div>');
+        var attachment_video = ``;
+        var attachment_audio = `<h5>Audio (${data.audio_attachment.length})</h5><div class="row">`;
+        var attachment_text = `<h5>Text (${data.text_attachment.length})</h5><div class="row">`;
+        var attachment_slide = "";
+        var video_attachemnt_count = 1;
+        var audio_attachemnt_count = 1;
+        var image_attachemnt_count = 1;
+        if(data.all_attachments.length > 0){
+            data.all_attachments.forEach(function (element, index) {
+              if(element.attachment_type){
+                if(element.attachment_type.split('/')[0] === 'video'){
+                    if(video_attachemnt_count  % 2 !== 0){
+                      attachment_video += `<div class="row">`;
+                    }
+                      attachment_video+= `<div class="col-6 mb-3">
+                                            <div class="tab-video relative">
+                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                            </div>
+                                          </div>`;
+                    if(video_attachemnt_count  % 2 === 0){
+                      attachment_video += `</div>`;
+                    }
+                    video_attachemnt_count++;
+                }else if(element.attachment_type.split('/')[0] === 'image'){
+                    if(image_attachemnt_count  % 3 == 0){
+                      attachment_slide += `<div class="row">`;
+                    }
+                      attachment_slide+= `<div class="col-4 mb-3">
+                                            <div class="tab-video relative">
+                                              <img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">
+                                            </div>
+                                          </div>`;
+                    if(image_attachemnt_count  % 3 == 2){
+                      attachment_slide += `</div>`;
+                    }
+                    image_attachemnt_count++;
+                }else if(element.attachment_type.split('/')[0] === 'audio'){
+                      attachment_audio+= `<div class="col-12 mb-3">
+                                            <div class="tab-audio relative">
+                                              <audio controls>
+                                                <source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">
+                                                  Your browser does not support the audio element. 
+                                              </audio>
+                                            </div>
+                                          </div>`;
+                   
+                }
+                //else if(element.attachment_type.split('/')[0] === 'application'){
+                  //if(element.attachment_name.split('.')[1] === "pptx" || element.attachment_name.split('.')[1] === "ppt" ){
+                    //attachment_slide +=`<div class="col-12 mb-3"><div class="tab-slide relative"> 
+                                         // <iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&output=embed' width='100%' height='100%' frameborder='1'></iframe>
+                                       // </div></div>`;
+                  //}else if(element.attachment_name.split('.')[1] === "pdf" ){
+                    /*attachment_slide +=`<div class="col-12 mb-3"><div class="tab-slide relative"> 
+                                          <iframe id="${element.id}" src="https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true" style="width:600px; height:100%;" frameborder="0"></iframe>
+                                        </div></div>`;*/
+                  //}
+
+                //}
+              }else if(element.content){
+                attachment_text +=`<div class="col-12 mb-3 content_text"><div class="tab-slide relative mb-3 image_content"> 
+                                  ${element.content}
+                                </div></div>`;
+              }
+            });
+
+            attachment_audio +=`</div>`;
+            attachment_text +=`</div><div class="show-more_content_text">Show more >></div>`;
+            attachment_slide_count = `<h5>Slides (${image_attachemnt_count-1})</h5>`;
+            attachment_video_count = `<h5>Videos (${video_attachemnt_count-1})</h5>`;
+            attachment_all.append(attachment_text);
+            attachment_all.append(attachment_video_count);
+            attachment_all.append(attachment_video);
+            attachment_all.append(attachment_audio);
+            attachment_all.append(attachment_slide_count);
+            attachment_all.append(attachment_slide);
+
+            var attachment_videos = $('<div class="tab_content active" data-tab="tab5"></div>');
+            attachment_videos.append(attachment_video_count);
+            attachment_videos.append(attachment_video);
+
+            var attachment_slides = $('<div class="tab_content active" data-tab="tab6"></div>');
+            attachment_slides.append(attachment_slide_count);
+            attachment_slides.append(attachment_slide);
+
+            var attachment_audios = $('<div class="tab_content active" data-tab="tab7"></div>');
+            attachment_audios.append(attachment_audio);
+
+            var attachment_texts = $('<div class="tab_content active" data-tab="tab8"></div>');
+            attachment_texts.append(attachment_text);
+
+            $("#global_search_module_content").append(attachment_all);
+            $("#global_search_module_content").append(attachment_videos);
+            $("#global_search_module_content").append(attachment_slides);
+            $("#global_search_module_content").append(attachment_audios);
+            $("#global_search_module_content").append(attachment_texts);
+
+             if ($('.active > .row > .content_text').length > 3) {
+              $('.active > .row > .content_text:gt(2)').hide();
+              $('.show-more_content_text').show();
+            }
+
+            $('.show-more_content_text').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.active > .row > .content_text:gt(2)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });
+              //document.getElementById("global_search_module_content").innerHTML = attachment_slide + attachment_text + attachment_video + attachment_audio;
+        }
+        
+      }
+    });
+}
 function get_breadcrumbs(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
     var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
@@ -118,6 +253,7 @@ function get_breadcrumbs(){
       url: 'https://elearningcontent.zaigoinfotech.com/breadcrumbs/'+cid+'/'+module_id,
       type: 'GET',
       dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(data){
         var breadcrumbs_data = data.breadcrumbs_order;
         document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
@@ -141,9 +277,9 @@ function get_content_details(){
       url: 'https://elearningcontent.zaigoinfotech.com/module/'+module_id,
       type: 'get',
       dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(response){
         var module_content = '';
-        console.log(response.module_content);
         if(response.module_content.length > 0){
           module_content = response.module_content[0].content;
           module_content_id = response.module_content[0].id;
@@ -160,7 +296,8 @@ function get_module_details(){
       url: 'https://elearningcontent.zaigoinfotech.com/module/'+module_id,
       type: 'get',
       dataType: 'json',
-      success:function(response){
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      success:function(response){console.log(response);
         var module_content = response.module_content;
         var module_attachments = response.module_attachments;
         var module_tags = response.module_tags;
@@ -168,7 +305,6 @@ function get_module_details(){
         var module_attachments_html = "";
         var module_tags_html = "";
         if(module_content.length > 0){
-            console.log(module_content[0].content);
             module_content_html +=`<li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10"><li class="has-children mb-3">
                                 <div class="acnav__label acnav__label--level2">
                                   <div class="accordionlist">
@@ -198,7 +334,7 @@ function get_module_details(){
         if(module_attachments.length > 0){
             module_attachments.forEach(function (element, index) {
                 var file_type = element.attachment_type.split('/')[0];
-                if(file_type === 'image' || file_type === 'video' || file_type === 'audio'){
+                if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
                     module_attachments_html += `<li class="has-children is-open">
                                     <div class="acnav__label">
                                       <div class="accordionlist">
@@ -221,8 +357,10 @@ function get_module_details(){
                         module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
                         module_attachments_html +=`<audio controls><source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
-                    }else if(element.attachment_type.split('/')[0] === 'pdf'){
-                        module_attachments_html +=`<object data="../assets/images/sample.pdf" type="application/pdf" class="course_module_pdf" width="100%" height="100%"><p>Alternative text - include a link <a href="../assets/images/sample.pdf">to the PDF!</a></p></object>`;
+                    }else if(element.attachment_type.split('/')[0] === 'application'){
+                      //if(element.attachment_name.split('.')[1] === "pptx" || element.attachment_name.split('.')[1] === "ppt" || element.attachment_name.split('.')[1] === "pdf" ){
+                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true' width='100%' height='500px' frameborder='1'></iframe>`;
+                      //}
                     }
                     /*else if(element.attachment_type.split('/')[0] === 'text'){
                         module_attachments_html +=``;
@@ -329,7 +467,7 @@ document.addEventListener("keyup", function(e){
         url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id_val,
         type: 'POST',
         data: JSON.stringify(tag_data),
-        contentType: "application/json; charset=utf-8",
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
         success:function(response){
           const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes2" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
@@ -361,7 +499,7 @@ document.addEventListener("click", function(e){
         $.ajax({
           url: 'https://elearningcontent.zaigoinfotech.com/course_tags/'+tag_id+'/',
           type: 'DELETE',
-          contentType: "application/json; charset=utf-8",
+          headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
           success:function(response){
             e.target.parentElement.remove();
           }
@@ -536,13 +674,8 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
           var newData = tinymce.activeEditor.getContent();
 
           var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
-          console.log(module_content_id);
           var method_type = "POST";
           var URL  = 'https://elearningcontent.zaigoinfotech.com/course_content/';
-          if(module_content_id && module_content_id !== null){
-            method_type = "PUT";
-            URL  = 'https://elearningcontent.zaigoinfotech.com/course_content/'+module_content_id+'/';
-          }
           if(newData !== ''){
             var content_data = {
               "course_id": cid,
@@ -554,7 +687,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
               url: URL,
               type: method_type,
               data: JSON.stringify(content_data),
-              contentType: "application/json; charset=utf-8",
+              headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
               success:function(response){
                 toastr.success("Content has been saved.");
                 console.log(response);

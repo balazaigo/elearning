@@ -29,6 +29,7 @@ $( document ).ready(function() {
     url: 'https://elearningcontent.zaigoinfotech.com/course_list/',
     type: 'get',
     dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
       $("#courses_list").empty();
       $("#courses_list").append("<option value=''>Select Courses</option>");

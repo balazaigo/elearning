@@ -187,3 +187,12 @@
 .course_module_details .course_head_right ul{
   float: right;
 }
+.image_content img{
+  width: 100%;
+}
+.show-more_content_text{
+    width: 100%;
+    text-align: right;
+    display: none;
+    cursor: pointer;
+}

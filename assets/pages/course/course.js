@@ -141,7 +141,7 @@ function post_json_dat(url, data, call_method, e){
   fetch(url, {
     method: call_method,
     body: JSON.stringify(data),
-    headers: {"Content-type": "application/json; charset=UTF-8"}
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
   })
   .then((response) => response.json())
   .then((json) => {

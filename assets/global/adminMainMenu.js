@@ -131,7 +131,7 @@ async function getCoursesListLevelPage(e) {
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
-        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.js`, function() {});
+        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.js`, function() {}); 
         var course_flinkto_elem = document.querySelectorAll("[data-flinkto='course'], [data-flinkto='courseslistlevel'], [data-flinkto='courseslistinner'], [data-flinkto='courseseditor']");
         course_flinkto_elem.forEach(el=>{
           el.setAttribute("data-cid", e.target.dataset.cid);
@@ -252,7 +252,7 @@ async function getCoursePage(e) {
   var url = `https://elearningcontent.zaigoinfotech.com/course_module/?course_id=`+e.target.dataset.cid;
   fetch(url, {
     method: "GET",
-    headers: {"Content-type": "application/json; charset=UTF-8"}
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
   })
   .then((response) => response.json())
   .then((data) => {
