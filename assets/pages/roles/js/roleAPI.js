@@ -1,9 +1,12 @@
 //  Get Roles - For Role List Page
+const headers = {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token};
 function getRoles() {
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
   axios
-    .get(`${API_BASE_URL}/roles/`)
+    .get(`${API_BASE_URL}/roles/`,{
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
     .then((res) => {
       renderRoleList(res.data);
     })
@@ -57,7 +60,9 @@ function renderRoleList(roles) {
 //  Get Role Rights - For Role Create
 function getRoleRights() {
   axios
-    .get(`${API_BASE_URL}/rights/`)
+    .get(`${API_BASE_URL}/rights/`,{
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
     .then((res) => {
       if (res.data && res.data.length > 0) {
         renderRoleRights(res.data);
@@ -94,7 +99,9 @@ function renderRoleRights(roleRights) {
 //Save Role
 function saveRole(data) {
   axios
-    .post(`${API_BASE_URL}/roles/`, data)
+    .post(`${API_BASE_URL}/roles/`, data,{
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
     .then((response) => {
       getRolesPage();
     })

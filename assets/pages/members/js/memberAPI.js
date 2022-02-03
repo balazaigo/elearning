@@ -5,7 +5,9 @@ function getMembers() {
   $("#memberListContainer").css("display", "none");
   //adding below code for testing - since no API available
   axios
-    .get(`${API_BASE_URL}/roles/`)
+    .get(`${API_BASE_URL}/roles/`,{
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
     .then((res1) => {
       //once the API is available, rename "res1" to "res" & remove the variable "res" added below
       let html = "";
@@ -118,7 +120,9 @@ function renderMemberList(members) {
 //  Get Roles - For Member Create Page & Member List Page
 function getRolesOptions(target) {
   axios
-    .get(`${API_BASE_URL}/roles/`)
+    .get(`${API_BASE_URL}/roles/`,{
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
     .then((res) => {
       if (res.data && res.data.length > 0) {
         renderRoleOptions(res.data, target);
