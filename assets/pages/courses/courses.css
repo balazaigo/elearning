@@ -137,6 +137,7 @@
     float: left;
     padding-left: 6px;
     padding-bottom: 6px;
+    padding-top: 6px;
 }
 .dz-image img{
     width: 100px;
@@ -190,9 +191,13 @@
 .image_content img{
   width: 100%;
 }
-.show-more_content_text{
+.show-more_content_text, .show-more_content_text_ind, .show-more_audio_content, .show-more_audio_content_ind
+, .show-more_video_content, .show-more_video_content_ind, .show-more_slide_content, .show-more_slide_content_ind{
     width: 100%;
     text-align: right;
     display: none;
     cursor: pointer;
+}
+.dz-filename span{
+  word-break: break-word;
 }

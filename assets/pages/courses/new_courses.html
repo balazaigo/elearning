@@ -274,6 +274,7 @@ $( document ).ready(function() {
       url: URL,
       dataType: 'json',
       type: "GET",
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       quietMillis: 50,
       data: function (params) {
         return {
@@ -335,6 +336,7 @@ $( document ).ready(function() {
     url: API_BASE_URL + '/category/',
     type: 'get',
     dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
       $("#category").empty();
       $("#category").append("<option value=''>Category</option>");
@@ -348,6 +350,7 @@ $( document ).ready(function() {
     url: API_BASE_URL + '/sub_category/',
     type: 'get',
     dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
       $.each( response, function( i, val ) {
         if(typeof (subCategory[val.category_id]) === "undefined") {
@@ -362,6 +365,7 @@ $( document ).ready(function() {
     url: API_BASE_URL + '/member/',
     type: 'get',
     dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
       $("#member").empty();
       $("#member").append("<option value=''>Member</option>");
@@ -492,6 +496,8 @@ $( document ).ready(function() {
       $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
         formData.append("attachments["+i+"]", file, file.name);
       });
+      var parameter = "";
+      get_pagination(parameter);
       if($(this).prop("id") === "saveCoursesClose") {
         ajaxSaveCourse(formData, false);
       } else {
@@ -499,7 +505,7 @@ $( document ).ready(function() {
       }
     }
   });
-
+  
 });
 
 function ajaxSaveCourse(formData, openNew){
@@ -538,6 +544,7 @@ function getTagSuggest(qString){
     url: encodeURI('https://elearningcontent.zaigoinfotech.com/suggest/tags/?term=' + qString),
     type: 'get',
     dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
       var tags = response.tags;
       if(tags) {

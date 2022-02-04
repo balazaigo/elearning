@@ -1,3 +1,5 @@
+<div class="row loader" id="role-loader"><span>Loading Content</span></div>
+<div class="row" id="rolebox">
 <div class="container-fluid course_details course_module_details">
       <div class="row">
         <div class="col-12 title-head mb-3">
@@ -22,39 +24,18 @@
             </div>
             <input type="hidden" value="6d164cf4-b76d-48a7-8094-2b8ac4482805" name="course_id" id="course_id"></div>
             <input type="hidden" data-flinkto="course" id="course_module_id" onload="get_course_module(this);" />
-
-          <!--<div class="row w-100">
-            <div class="col-md-6">
-              <h2><span class="back"><a href="#" data-flinkto="course"><i class="fas fa-arrow-left" data-flinkto="course"></i></a></span> <div id="course_module_name"></div> <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> 
-                <input type="hidden" data-flinkto="course" id="course_module_id" onload="get_course_module(this);" />
-                <span><nav aria-label="breadcrumb">
-                  <ol class="breadcrumb" id="module_breadcrumbs">
-                    <li class="breadcrumb-item"><a href="#">Breadcrumb 1</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Breadcrumb 2</li>
-                  </ol>
-                </nav></span></h2>
-            </div>
-            <div class="col-md-6 p-0 side-btn">
-              <ul>
-                <li> <span class="border-btn"><a href="#">
-                  <button>Preview</button>
-                  </a></span> </li>
-                <li> <span class="orange-btn"><a href="#">
-                  <button  id="saveCourses">Submit</button>
-                  </a></span> </li>
-              </ul>
-            </div>
-          </div>-->
         </div>
+
       </div>
-      <div class="container-fluid p-0">
-        <div class="tabs p-0 mt-3">
+      <div class="row">
+      <div class="col-lg-8 col-md-8">
+        <div class="tabs p-0 mt-3 ">
           <input type="radio" name="tabs" id="tabone" checked="checked">
           <label for="tabone">Create</label>
           <div class="tab p-0">
             <div class="table-section">
               <div class="row">
-                <div class="col-lg-8 col-md-8">
+                <div class="">
                   <div class="white-bg br-5 p-3">
                     <section class="nav-wrap course-inner"> 
                       
@@ -110,28 +91,6 @@
                                             <DIV class="dz-progress"><SPAN class="dz-upload" 
                                             data-dz-uploadprogress=""></SPAN></DIV>
                                             <DIV class="dz-error-message"><SPAN data-dz-errormessage=""></SPAN></DIV>
-                                            <div class="dz-success-mark">
-                                              <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                                                <title>Check</title>
-                                                <desc>Created with Sketch.</desc>
-                                                <defs></defs>
-                                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-                                                    <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" id="Oval-2" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
-                                                </g>
-                                              </svg>
-                                            </div>
-                                            <div class="dz-error-mark">
-                                              <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                                                  <title>error</title>
-                                                  <desc>Created with Sketch.</desc>
-                                                  <defs></defs>
-                                                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-                                                      <g id="Check-+-Oval-2" sketch:type="MSLayerGroup" stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">
-                                                          <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" id="Oval-2" sketch:type="MSShapeGroup"></path>
-                                                      </g>
-                                                  </g>
-                                              </svg>
-                                            </div>
 
                                           </form>
                                         </div>
@@ -163,7 +122,35 @@
                     </section>
                   </div>
                 </div>
-                <div class="col-lg-4 col-md-4">
+              </div>
+            </div>
+          </div>
+          <input type="radio" name="tabs" id="tabtwo">
+          <label for="tabtwo" onclick="get_module_details();">Preview</label>
+          <div class="tab p-0">
+            <div class="table-section">
+              <div class="row">
+                <div class="">
+                  <div class="white-bg col-md-12 p-3 br-5">
+                    <section class="nav-wrap course-inner"> 
+                      <nav class="acnav" role="navigation"> 
+                        <ul class="acnav__list acnav__list--level1"id="course_module_content">
+                        </ul> 
+                      </nav>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-4 mt-5">
+
+              <div class="mt-4">
+
+                <div>
                   <div class="recent-text white-bg br-5 p-3">
                     <h4 class="mb-4">Search </h4>
                     <div class="tabs_wrapper">
@@ -184,199 +171,8 @@
                               <li id="tab7"><i class="fas fa-music"></i></li>
                               <li id="tab8"><i class="fas fa-file-alt"></i></li>
                             </ul>
-                            <div class="tabs_container" id="global_search_module_content">
+                            <div class="tabs_container global_search_module_content" id="global_search_module_content">
                             </div>
-                            <!--<div class="tabs_container">
-                              <div class="tab_content active" data-tab="tab4">
-                                <h5>Text (10)</h5>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy" onclick="withJquery();"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <h5>Videos (10)</h5>
-                                <div class="row">
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                      <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                      <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <h5>Audio (10)</h5>
-                                <div class="row">
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                       <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <h5>Slides (10)</h5>
-                                <div class="row">
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab5">
-                                <h5>Videos (9)</h5>
-                                <div class="row">
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                      <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                      <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                      <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                      <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab6">
-                                <h5>Slides (10)</h5>
-                                <div class="row">
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab7">
-                                <h5>Audio (10)</h5>
-                                <div class="row">
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab8">
-                                <h5>Text (11)</h5>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy" onclick="withJquery();"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy" onclick="withJquery();"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy" onclick="withJquery();"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                              </div>
-                            </div>-->
                           </div>
                         </div>
                         <div class="tab_content" data-tab="tab-2">
@@ -410,389 +206,76 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <input type="radio" name="tabs" id="tabtwo">
-          <label for="tabtwo" onclick="get_module_details();">Preview</label>
-          <div class="tab p-0">
-            <div class="table-section">
-              <div class="row">
-                <div class="col-lg-8 col-md-8">
-                  <div class="white-bg col-md-12 p-3 br-5">
-                    <section class="nav-wrap course-inner"> 
-                      
-                      <!-- start accordion nav block -->
-                      <nav class="acnav" role="navigation"> 
-                        <!-- start level 1 -->
-                        <ul class="acnav__list acnav__list--level1"id="course_module_content">
-                          <!--<li class="has-children is-open">
-                            <div class="acnav__label">
-                              <div class="accordionlist">
-                                <div class="row">
-                                  <div class="col-md-12 acc-head">
-                                    <h6>Name of the file</h6>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <ul class="acnav__list acnav__list--level2 wbg br-10" id="course_module_content">
-                              <li class="has-children">
-                                <div class="acnav__label acnav__label--level2">
-                                  <div class="accordionlist">
-                                    <div class="row">
-                                      <div class="col-md-12 acc-text">
-                                        <h4>Cardiac Health</h4>
-                                        <p>Being physically active is a major step toward good heart health. It's one of your most effective tools for strengthening 
-                                          the heart muscle, keeping your weight under control and warding off the artery damage from high cholesterol, 
-                                          high blood sugar and high blood pressure that can lead to heart attack or stroke.</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </li>-->
-                          <!-- end group 1 --> 
-                          
-                          <!-- start group 1 -->
-                          <!--<li class="has-children is-open">
-                            <div class="acnav__label">
-                              <div class="accordionlist">
-                                <div class="row">
-                                  <div class="col-md-12 acc-head">
-                                    <h6>Name of the file</h6>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <ul class="acnav__list acnav__list--level2 wbg br-10">
-                              <li class="has-children">
-                                <div class="acnav__label acnav__label--level2">
-                                  <div class="accordionlist">
-                                    <div class="row">
-                                      <div class="col-md-12 acc-text">
-                                        <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                        <div class="col-md-12 p-3 mtag">
-                                          <div class="tag__container">
-                                      <input type="text" class="tag__input" placeholder="+ Add Tag">
-                                      <ul class="tag__List">
-                                        <li>tag1<span class="tag__remove" data-tag="tag1">×</span></li>
-                                        <li>tag2<span class="tag__remove" data-tag="tag2">×</span></li>
-                                      </ul>
-                                      <input type="hidden" class="tag__values" value="tag1,tag2"/>
-                                    </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </li>-->
-                          <!-- end group 1 --> 
-                          
-                          <!-- start group 1 -->
-                          <!--<li class="has-children is-open">
-                            <div class="acnav__label">
-                              <div class="accordionlist">
-                                <div class="row">
-                                  <div class="col-md-12 acc-head">
-                                    <h6>Name of the file</h6>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <ul class="acnav__list acnav__list--level2 wbg br-10">
-                              <li class="has-children">
-                                <div class="acnav__label acnav__label--level2">
-                                  <div class="accordionlist">
-                                    <div class="row">
-                                      <div class="col-md-12 acc-text">
-                                        <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                      </div>
-                                      <div class="col-md-12 p-3 mtag">
-                                        <div class="tag__container">
-                                          <input type="text" class="tag__input" placeholder="+ Add Tag">
-                                          <ul class="tag__List">
-                                            <li>tag1<span class="tag__remove" data-tag="tag1">×</span></li>
-                                            <li>tag2<span class="tag__remove" data-tag="tag2">×</span></li>
-                                          </ul>
-                                          <input type="hidden" class="tag__values" value="tag1,tag2">
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </li>-->
-                          <!-- end group 1 -->
-                          
-                        </ul>
-                        <!-- end level 1 --> 
-                      </nav>
-                      <!-- end accordion nav block --> 
-                      
-                    </section>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                  <div class="recent-text white-bg br-5 p-3">
-                    <h4 class="mb-4">Search </h4>
-                    <div class="tabs_wrapper">
-                      <!--<ul class="tab-s">
-                        <li class="active" id="tab1">Global Resources </li>
-                        <li id="tab2">Feedback (20)</li>
-                      </ul>-->
-                      <div class="tsearch mt-3 mb-3"><i class="fas fa-search"></i>
-                        <input type="search" placeholder="Search here">
-                      </div>
-                      <div class="tabs_container">
-                        <div class="tab_content active" data-tab="tab1">
-                          <div class="tabs_wrapper" style="margin-top:50px;">
-                           <!-- <ul class="tab-s">
-                              <li class="active" id="tab10">All </li>
-                              <li id="tab11"><i class="fas fa-video"></i></li>
-                              <li id="tab12"><i class="fas fa-chart-pie"></i></li>
-                              <li id="tab13"><i class="fas fa-music"></i></li>
-                              <li id="tab14"><i class="fas fa-file-alt"></i></li>
-                            </ul>-->
-                            <!--<div class="tabs_container">
-                              <div class="tab_content active" data-tab="tab10">
-                                <h5>Text (10)</h5>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <h5>Videos (10)</h5>
-                                <div class="row">
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                        <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                        <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <h5>Audio (10)</h5>
-                                <div class="row">
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <h5>Slides (10)</h5>
-                                <div class="row">
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab11">
-                                <h5>Videos (9)</h5>
-                                <div class="row">
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                        <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                        <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                        <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <div class="tab-video relative">
-                                        <video id='video' controls preload='none' width="600" poster="../assets/images/video.jpg">
-                                          <source id='mp4' src="../assets/images/medical.mp4" type='video/mp4' />
-                                          <p>Your user agent does not support the HTML5 Video element.</p>
-                                        </video>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab12">
-                                <h5>Slides (10)</h5>
-                                <div class="row">
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <div class="col-4">
-                                    <div class="tab-slide"> <img src="../assets/images/profile.png" alt="" /> </div>
-                                  </div>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab13">
-                                <h5>Audio (10)</h5>
-                                <div class="row">
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 mb-3">
-                                    <div class="tab-audio relative">
-                                      <audio controls>
-                                          <source src="../assets/images/medical.mp3" type="audio/mpeg">
-                                          Your browser does not support the audio element. 
-                                       </audio>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="tab_content" data-tab="tab14">
-                                <h5>Text (11)</h5>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                                <div class="tab-text relative mb-3"> <a href="#" class="copy"><i class="fas fa-copy"></i></a>
-                                  <h6>Nutrition</h6>
-                                  <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                                  <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                                    ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                                  </p>
-                                  <p class="vmore"><a href="#">viewmore ></a></p>
-                                </div>
-                              </div>
-                            </div>-->
-                          </div>
-                        </div>
-                        <div class="tab_content" data-tab="tab2">
-                          <h5>Text (20)</h5>
-                          <div class="tab-text relative mb-3"> <a href="#" class="copy"><i class="fas fa-copy"></i></a>
-                            <h6>Nutrition</h6>
-                            <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                            <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                              ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                            </p>
-                            <p class="vmore"><a href="#">viewmore ></a></p>
-                          </div>
-                          <div class="tab-text relative mb-3"> <a href="#" class="copy"><i class="fas fa-copy"></i></a>
-                            <h6>Nutrition</h6>
-                            <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                            <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                              ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                            </p>
-                            <p class="vmore"><a href="#">viewmore ></a></p>
-                          </div>
-                          <div class="tab-text relative mb-3"> <a href="#" class="copy"><i class="fas fa-copy"></i></a>
-                            <h6>Nutrition</h6>
-                            <div class="tab-breadcrumb"> <span><a href="#">Nutrition</a></span> <span><a href="#">Health</a></span> <span><a href="#">Diet</a></span> </div>
-                            <p id="copyText1">Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes 
-                              ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.                                  
-                            </p>
-                            <p class="vmore"><a href="#">viewmore ></a></p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
+    </div>
+</div>
 
+<!-- Attachments Create Form Start -->
+<div id="attachment-form-container" class="overlay">
+  <div class="popup pop-medium">
+    <h4 class="mb-3">Attach File</h4>
+    <span class="close cancel-role-create-form">&times;</span>
+    <form class="pop-form" id="role-create-form">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <input
+            type="text"
+            id="role-name"
+            name="name"
+            class="form-control field-input"
+            placeholder="Role Name"
+          />
+        </div>
+        <div class="col-md-12 mb-3">
+          <textarea
+            class="form-control field-input"
+            id="role-description"
+            name="description"
+            rows="3"
+            placeholder="Role Description"
+          ></textarea>
+        </div>
+        <div class="col-md-12 mb-3">
+          <div class="dropdown-select">
+            <select
+              class="sort-select field-input"
+              name="level"
+              id="role-level"
+            >
+              <option selected disabled value="">Select Role Level</option>
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+              <option value="6">Level 6</option>
+              <option value="7">Level 7</option>
+              <option value="8">Level 8</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-12 mb-3">
+          <div class="role-rights">
+            <!-- HTML snippet will be dynamically appended-->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 pt-3 pb-3 wauto">
+          <span class="border-btn nbtn">
+            <button class="cancel-role-create-form" type="button">
+              Cancel
+            </button>
+          </span>
+          <span class="orange-btn nbtn">
+            <button id="save-role-create-form" type="submit">Save</button>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Role Create Form End -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>

@@ -1,5 +1,4 @@
 //  Get Roles - For Role List Page
-const headers = {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token};
 function getRoles() {
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");

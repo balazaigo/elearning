@@ -1,4 +1,7 @@
 $(document).ready(function(){
+
+  $("#role-loader").css("display", "block");
+  $("#rolebox").css("display", "none");
     let cid = document.getElementById("course_module_id").getAttribute("data-cid");
     let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
     var dropzone = new Dropzone('#demo-upload', {
@@ -25,8 +28,7 @@ $(document).ready(function(){
     });
 
     get_breadcrumbs();
-    setTimeout(get_content_details(), 1000);
-    get_module_details();
+    //setTimeout(, 1000);
     get_search_details();
     var minSteps = 6,
         maxSteps = 60,
@@ -41,7 +43,26 @@ $(document).ready(function(){
         var todayDate = new Date().toISOString().slice(0, 10);
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
+            var ext = file.name.split('.').pop();
+            if(file.type.split('/')[0] !== 'image' && file.type.split('/')[0] !== 'video')
 
+            if(ext=="pdf" || ext=="docx" || ext=="doc" || ext=="rtf" || ext=="odp" || ext=="ods" || ext=="odt" || ext=="ppt" || ext=="xls" || ext=="xlsx"){
+              if (ext == "pdf") {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/pdf-thumbnail.png`);
+              } else if (ext.indexOf("doc") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/doc-thumbnail.png`);
+              } else if (ext.indexOf("docx") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/doc-thumbnail.png`);
+              } else if (ext.indexOf("xls") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/excel-thumbnail.png`);
+              } else if (ext.indexOf("ppt") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/ppt-thumbnail.png`);
+              } else if (ext.indexOf("rtf") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/rtf-thumbnail.png`);
+              } else{
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/doc-thumbnail.png`);
+              }
+            }
             formData.append("attachment", file);
             formData.append("attachment_type", file.type);
             formData.append("attachment_name", file.name);
@@ -62,7 +83,7 @@ $(document).ready(function(){
               },
               success: function(response){
                 $('#addCourses').modal('hide');
-                toastr.success("New course information was successfully saved.");
+                toastr.success("File uploaded successfully.");
                 console.log(response);
               },
               error: function(error) {
@@ -95,7 +116,7 @@ $(document).ready(function(){
         }
     }
 
-    /*$.ajax({
+    $.ajax({
       url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id,
       type: 'get',
       dataType: 'json',
@@ -111,7 +132,7 @@ $(document).ready(function(){
             document.getElementById("tag__List_append").innerHTML = tag_list;
             document.getElementById("tag__values").value = tag_list_str;
       }
-    });*/
+    });
 
 $("#global_search_module").keyup(function() { 
     get_search_details();
@@ -120,56 +141,78 @@ $("#global_search_module").keyup(function() {
  $("#global_search_module").on("search", function() { 
     get_search_details();
  });
+
+$("#role-loader").css("display", "none");
+$("#rolebox").css("display", "flex");
 });
 function get_search_details(){
     var tagName = $("#global_search_module").val();
-    console.log(tagName);
+    var active_tab_type = $("#active_li li.active").attr('id');
     $.ajax({
       url: 'https://elearningcontent.zaigoinfotech.com/global_search/?tag_name='+tagName,
       type: 'GET',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(data){
-        $('#global_search_module_content').empty();
-        var attachment_all = $('<div class="tab_content active" data-tab="tab4"></div>');
+        $('.global_search_module_content').empty();
+        var tab4_active = (active_tab_type == "tab4") ? "active" : "";
+        var attachment_all = $('<div class="tab_content '+tab4_active+'" data-tab="tab4"></div>');
         var attachment_video = ``;
+        var attachment_video_ind = ``;
         var attachment_audio = `<h5>Audio (${data.audio_attachment.length})</h5><div class="row">`;
+        var attachment_audio_ind = `<h5>Audio (${data.audio_attachment.length})</h5><div class="row">`;
         var attachment_text = `<h5>Text (${data.text_attachment.length})</h5><div class="row">`;
+        var attachment_text_ind = `<h5>Text (${data.text_attachment.length})</h5><div class="row">`;
         var attachment_slide = "";
+        var attachment_slide_ind = "";
         var video_attachemnt_count = 1;
         var audio_attachemnt_count = 1;
-        var image_attachemnt_count = 1;
+        var image_attachemnt_count = 0;
         if(data.all_attachments.length > 0){
             data.all_attachments.forEach(function (element, index) {
               if(element.attachment_type){
                 if(element.attachment_type.split('/')[0] === 'video'){
                     if(video_attachemnt_count  % 2 !== 0){
-                      attachment_video += `<div class="row">`;
+                      attachment_video += `<div class="row video_content">`;
+                      attachment_video_ind += `<div class="row video_content_ind">`;
                     }
-                      attachment_video+= `<div class="col-6 mb-3">
+                      attachment_video += `<div class="col-6 mb-3">
+                                            <div class="tab-video relative">
+                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                            </div>
+                                          </div>`;
+                      attachment_video_ind += `<div class="col-6 mb-3">
                                             <div class="tab-video relative">
                                               <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                             </div>
                                           </div>`;
                     if(video_attachemnt_count  % 2 === 0){
                       attachment_video += `</div>`;
+                      attachment_video_ind += `</div>`;
                     }
                     video_attachemnt_count++;
                 }else if(element.attachment_type.split('/')[0] === 'image'){
                     if(image_attachemnt_count  % 3 == 0){
-                      attachment_slide += `<div class="row">`;
+                      attachment_slide += `<div class="row slide_content">`;
+                      attachment_slide_ind += `<div class="row slide_content_ind">`;
                     }
-                      attachment_slide+= `<div class="col-4 mb-3">
+                    attachment_slide += `<div class="col-4 mb-3">
+                                          <div class="tab-video relative">
+                                            <img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">
+                                          </div>
+                                        </div>`;
+                    attachment_slide_ind += `<div class="col-4 mb-3">
                                             <div class="tab-video relative">
                                               <img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">
                                             </div>
                                           </div>`;
                     if(image_attachemnt_count  % 3 == 2){
                       attachment_slide += `</div>`;
+                      attachment_slide_ind += `</div>`;
                     }
                     image_attachemnt_count++;
                 }else if(element.attachment_type.split('/')[0] === 'audio'){
-                      attachment_audio+= `<div class="col-12 mb-3">
+                      attachment_audio += `<div class="col-12 mb-3 audio_content">
                                             <div class="tab-audio relative">
                                               <audio controls>
                                                 <source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">
@@ -177,29 +220,43 @@ function get_search_details(){
                                               </audio>
                                             </div>
                                           </div>`;
+                      
+                      attachment_audio_ind += `<div class="col-12 mb-3 audio_content_ind">
+                                            <div class="tab-audio relative">
+                                              <audio controls>
+                                                <source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">
+                                                  Your browser does not support the audio element. 
+                                              </audio>
+                                            </div>
+                                          </div>`;                                          
                    
                 }
-                //else if(element.attachment_type.split('/')[0] === 'application'){
-                  //if(element.attachment_name.split('.')[1] === "pptx" || element.attachment_name.split('.')[1] === "ppt" ){
-                    //attachment_slide +=`<div class="col-12 mb-3"><div class="tab-slide relative"> 
-                                         // <iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&output=embed' width='100%' height='100%' frameborder='1'></iframe>
-                                       // </div></div>`;
-                  //}else if(element.attachment_name.split('.')[1] === "pdf" ){
-                    /*attachment_slide +=`<div class="col-12 mb-3"><div class="tab-slide relative"> 
-                                          <iframe id="${element.id}" src="https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true" style="width:600px; height:100%;" frameborder="0"></iframe>
-                                        </div></div>`;*/
-                  //}
-
-                //}
               }else if(element.content){
                 attachment_text +=`<div class="col-12 mb-3 content_text"><div class="tab-slide relative mb-3 image_content"> 
+                                  ${element.content}
+                                </div></div>`;
+                attachment_text_ind +=`<div class="col-12 mb-3 content_text_ind"><div class="tab-slide relative mb-3 image_content"> 
                                   ${element.content}
                                 </div></div>`;
               }
             });
 
-            attachment_audio +=`</div>`;
+            if (attachment_slide.substr(-12) != '</div></div>') {
+              attachment_slide += '</div>';
+              attachment_slide_ind += '</div>';
+            }
+            if (attachment_video.substr(-12) != '</div></div>') {
+              attachment_video += '</div>';
+              attachment_video_ind += '</div>';
+            }
+            attachment_audio +=`</div><div class="show-more_audio_content">Show more >></div>`;
+            attachment_audio_ind +=`</div><div class="show-more_audio_content_ind">Show more >></div>`;
             attachment_text +=`</div><div class="show-more_content_text">Show more >></div>`;
+            attachment_text_ind +=`</div><div class="show-more_content_text_ind">Show more >></div>`;
+            attachment_slide +=`<div class="show-more_slide_content">Show more >></div>`;
+            attachment_slide_ind +=`<div class="show-more_slide_content_ind">Show more >></div>`;
+            attachment_video +=`<div class="show-more_video_content">Show more >></div>`;
+            attachment_video_ind +=`<div class="show-more_video_content_ind">Show more >></div>`;
             attachment_slide_count = `<h5>Slides (${image_attachemnt_count-1})</h5>`;
             attachment_video_count = `<h5>Videos (${video_attachemnt_count-1})</h5>`;
             attachment_all.append(attachment_text);
@@ -209,38 +266,121 @@ function get_search_details(){
             attachment_all.append(attachment_slide_count);
             attachment_all.append(attachment_slide);
 
-            var attachment_videos = $('<div class="tab_content active" data-tab="tab5"></div>');
+            var tab5_active = (active_tab_type == "tab5") ? "active" : "";
+            var attachment_videos = $('<div class="tab_content '+tab5_active+'" data-tab="tab5"></div>');
             attachment_videos.append(attachment_video_count);
-            attachment_videos.append(attachment_video);
+            attachment_videos.append(attachment_video_ind);
 
-            var attachment_slides = $('<div class="tab_content active" data-tab="tab6"></div>');
+            var tab6_active = (active_tab_type == "tab6") ? "active" : "";
+            var attachment_slides = $('<div class="tab_content '+tab6_active+'" data-tab="tab6"></div>');
             attachment_slides.append(attachment_slide_count);
-            attachment_slides.append(attachment_slide);
+            attachment_slides.append(attachment_slide_ind);
 
-            var attachment_audios = $('<div class="tab_content active" data-tab="tab7"></div>');
-            attachment_audios.append(attachment_audio);
+            var tab7_active = (active_tab_type == "tab7") ? "active" : "";
+            var attachment_audios = $('<div class="tab_content '+tab7_active+'" data-tab="tab7"></div>');
+            attachment_audios.append(attachment_audio_ind);
 
-            var attachment_texts = $('<div class="tab_content active" data-tab="tab8"></div>');
-            attachment_texts.append(attachment_text);
+            var tab8_active = (active_tab_type == "tab8") ? "active" : "";
+            var attachment_texts = $('<div class="tab_content '+tab8_active+'" data-tab="tab8"></div>');
+            attachment_texts.append(attachment_text_ind);
 
-            $("#global_search_module_content").append(attachment_all);
-            $("#global_search_module_content").append(attachment_videos);
-            $("#global_search_module_content").append(attachment_slides);
-            $("#global_search_module_content").append(attachment_audios);
-            $("#global_search_module_content").append(attachment_texts);
+            $(".global_search_module_content").append(attachment_all);
+            $(".global_search_module_content").append(attachment_videos);
+            $(".global_search_module_content").append(attachment_slides);
+            $(".global_search_module_content").append(attachment_audios);
+            $(".global_search_module_content").append(attachment_texts);
 
-             if ($('.active > .row > .content_text').length > 3) {
-              $('.active > .row > .content_text:gt(2)').hide();
+            if ($('.content_text').length > 3) {
+              $('.content_text:gt(2)').hide();
               $('.show-more_content_text').show();
+            }
+            if ($('.content_text_ind').length > 3) {
+              $('.content_text_ind:gt(2)').hide();
+              $('.show-more_content_text_ind').show();
+            }
+
+            if ($('.audio_content').length > 2) {
+              $('.audio_content:gt(1)').hide();
+              $('.show-more_audio_content').show();
+            }
+            if ($('.audio_content_ind').length > 2) {
+              $('.audio_content_ind:gt(1)').hide();
+              $('.show-more_audio_content_ind').show();
+            }
+
+            if ($('.slide_content').length > 2) {
+              $('.slide_content:gt(1)').hide();
+              $('.show-more_slide_content').show();
+            }
+            if ($('.slide_content_ind').length > 2) {
+              $('.slide_content_ind:gt(1)').hide();
+              $('.show-more_slide_content_ind').show();
+            }
+
+            if ($('.video_content').length > 2) {
+              $('.video_content:gt(1)').hide();
+              $('.show-more_video_content').show();
+            }
+            if ($('.video_content_ind').length > 2) {
+              $('.video_content_ind:gt(1)').hide();
+              $('.show-more_video_content_ind').show();
             }
 
             $('.show-more_content_text').on('click', function() {
               //toggle elements with class .ty-compact-list that their index is bigger than 2
-              $('.active > .row > .content_text:gt(2)').toggle();
+              $('.content_text:gt(2)').toggle();
               //change text of show more element just for demonstration purposes to this demo
               $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
             });
-              //document.getElementById("global_search_module_content").innerHTML = attachment_slide + attachment_text + attachment_video + attachment_audio;
+
+            $('.show-more_content_text_ind').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.content_text_ind:gt(2)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });
+
+            $('.show-more_audio_content').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.audio_content:gt(1)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });
+
+            $('.show-more_audio_content_ind').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.audio_content_ind:gt(1)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });
+
+            $('.show-more_slide_content').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.slide_content:gt(1)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });
+
+            $('.show-more_slide_content_ind').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.slide_content_ind:gt(1)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });
+
+            $('.show-more_video_content').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.video_content:gt(1)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });
+
+            $('.show-more_video_content_ind').on('click', function() {
+              //toggle elements with class .ty-compact-list that their index is bigger than 2
+              $('.video_content_ind:gt(1)').toggle();
+              //change text of show more element just for demonstration purposes to this demo
+              $(this).text() === 'Show more >>' ? $(this).text('<< Show less') : $(this).text('Show more >>');
+            });            
         }
         
       }
@@ -290,6 +430,8 @@ function get_content_details(){
     });
 }
 function get_module_details(){
+  $("#role-loader").css("display", "block");
+  $("#rolebox").css("display", "none");
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
     var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
     $.ajax({
@@ -316,35 +458,12 @@ function get_module_details(){
                                   </div>
                                 </div>
                               </li></ul>`;
-          /*module_content.forEach(function (element, index) {
-            console.log(element);
-            module_content_html +=`<li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10"><li class="has-children mb-3">
-                                <div class="acnav__label acnav__label--level2">
-                                  <div class="accordionlist">
-                                    <div class="row">
-                                      <div class="col-md-12 acc-text">
-                                        ${element.content}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li></ul>`;
-          });*/
         }
         if(module_attachments.length > 0){
             module_attachments.forEach(function (element, index) {
                 var file_type = element.attachment_type.split('/')[0];
                 if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
                     module_attachments_html += `<li class="has-children is-open">
-                                    <div class="acnav__label">
-                                      <div class="accordionlist">
-                                        <div class="row">
-                                          <div class="col-md-12 acc-head">
-                                            <h6>${element.attachment_name}</h6>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
                                     <ul class="acnav__list acnav__list--level2 wbg br-10">
                                       <li class="has-children">
                                         <div class="acnav__label acnav__label--level2">
@@ -358,13 +477,9 @@ function get_module_details(){
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
                         module_attachments_html +=`<audio controls><source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
-                      //if(element.attachment_name.split('.')[1] === "pptx" || element.attachment_name.split('.')[1] === "ppt" || element.attachment_name.split('.')[1] === "pdf" ){
-                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true' width='100%' height='500px' frameborder='1'></iframe>`;
-                      //}
+                      var mathcount = Math.floor(Math.random() * 1000);
+                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe>`;
                     }
-                    /*else if(element.attachment_type.split('/')[0] === 'text'){
-                        module_attachments_html +=``;
-                    }*/
                     module_attachments_html +=`</div>
                                             </div>
                                           </div>
@@ -399,7 +514,15 @@ function get_module_details(){
                               </li>
                             </ul>`;
         }
-        document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
+
+        $("#course_module_content").empty();
+        $("#course_module_content").append(module_content_html);
+        $("#course_module_content").append(module_attachments_html);
+setTimeout(function() {
+      $("#role-loader").css("display", "none");
+      $("#rolebox").css("display", "block");
+    }, 1000);
+        //document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
 
       },
       error: function(error) {
@@ -598,6 +721,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         setup:function(ed) {
           ed.on('init', function (e) {
             //loadextData(ed);
+            get_content_details();
           });
           ed.ui.registry.addButton('trackpath', {
             icon: 'insert-time',
