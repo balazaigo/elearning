@@ -1,0 +1,255 @@
+
+<div class="row course_module_details">
+  <div class="acnav__list wbg br-10" style="background:right;width: 97%;">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="col-md-12 p-3" style="padding-top: 0rem !important;">
+    <div class="course_module_content" style="overflow-y: scroll;height: 400px;">
+    <div id="dropzone">
+      <form id="demo-upload2" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
+        <div id="upload-2-queue" class="queue pt-3 uploaded_display"></div>
+        <div id="upload-2-dropzone"></div>
+
+        <DIV id="preview-template" style="display: none;">
+        <DIV class="dz-preview dz-file-preview">
+        <DIV class="dz-image"><IMG data-dz-thumbnail=""></DIV>
+        <DIV class="dz-details">
+        <DIV class="dz-size"><SPAN data-dz-size=""></SPAN></DIV>
+        <DIV class="dz-filename"><SPAN data-dz-name=""></SPAN></DIV></DIV>
+        <DIV class="dz-progress"><SPAN class="dz-upload" 
+        data-dz-uploadprogress=""></SPAN></DIV>
+        <DIV class="dz-error-message"><SPAN data-dz-errormessage=""></SPAN></DIV>
+
+      </form>
+    </div>
+    </div>
+    <div class="tab p-0">
+      <div class="table-section">
+        <div class="row">
+          <div class="">
+            <div class="white-bg col-md-12 p-3 br-5">
+              <section class="nav-wrap course-inner"> 
+                <nav class="acnav" role="navigation"> 
+                  <div id="course_module_content" class="list-unstyled"></div>
+                </nav>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>                                    
+</div>
+<input type="hidden" id="course_param">
+<script type="text/javascript">
+  $(document).ready(function(){
+
+  setTimeout(function(){
+    var cid = document.getElementById("course_param").getAttribute("data-cid");
+    var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+    get_module_details(cid, module_id);
+  }, 0);
+  
+    var dropzone2 = new Dropzone('#demo-upload2', {
+        previewTemplate: document.querySelector('#preview-template').innerHTML,
+        parallelUploads: 2,
+        thumbnailHeight: 120,
+        thumbnailWidth: 120,
+        maxFilesize: 3,
+        filesizeBase: 1000,
+        thumbnail: function(file, dataUrl) {
+            if (file.previewElement) {
+              file.previewElement.classList.remove("dz-file-preview");
+              var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+              for (var i = 0; i < images.length; i++) {
+                  var thumbnailElement = images[i];
+                  thumbnailElement.alt = file.name;
+                  thumbnailElement.src = dataUrl;
+              }
+              file.previewElement.classList.add("dz-image-preview");
+            }
+        }
+
+    });
+    var minSteps = 6,
+        maxSteps = 60,
+        timeBetweenSteps = 100,
+        bytesPerStep = 100000;
+    dropzone2.uploadFiles = function(files) {
+        var self = this;
+        var cid = document.getElementById("course_param").getAttribute("data-cid");
+        var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+        var formData = new FormData();
+        var todayDate = new Date().toISOString().slice(0, 10);
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var ext = file.name.split('.').pop();
+            if(file.type.split('/')[0] !== 'image' && file.type.split('/')[0] !== 'video')
+
+            if(ext=="pdf" || ext=="docx" || ext=="doc" || ext=="rtf" || ext=="odp" || ext=="ods" || ext=="odt" || ext=="ppt" || ext=="xls" || ext=="xlsx"){
+              if (ext == "pdf") {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/pdf-thumbnail.png`);
+              } else if (ext.indexOf("doc") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/doc-thumbnail.png`);
+              } else if (ext.indexOf("docx") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/doc-thumbnail.png`);
+              } else if (ext.indexOf("xls") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/excel-thumbnail.png`);
+              } else if (ext.indexOf("ppt") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/ppt-thumbnail.png`);
+              } else if (ext.indexOf("rtf") != -1) {
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/rtf-thumbnail.png`);
+              } else{
+                  $(file.previewElement).find(".dz-image img").attr("src", `${SITE_URL_PROTOCOL}assets/images/doc-thumbnail.png`);
+              }
+            }
+            formData.append("attachment", file);
+            formData.append("attachment_type", file.type);
+            formData.append("attachment_name", file.name);
+            formData.append("created_date", todayDate);
+            formData.append("status", 0);
+            formData.append("module_id", module_id);
+            formData.append("course_id", cid);
+            $.ajax({
+              url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+              method: "POST",
+              type: 'POST', // For jQuery < 1.9
+              cache: false,
+              contentType: false,
+              processData: false,
+              data: formData,
+              headers: {
+                "Authorization" : "Bearer " + getUserInfo().access_token
+              },
+              success: function(response){
+                get_module_details(cid, module_id);
+                toastr.success("File uploaded successfully.");
+                console.log(response);
+              },
+              error: function(error) {
+                toastr.error("Response Error: " + error.message);
+                console.log(error);
+              }
+            });
+            totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+
+            for (var step = 0; step < totalSteps; step++) {
+                var duration = timeBetweenSteps * (step + 1);
+                setTimeout(function(file, totalSteps, step) {
+                    return function() {
+                        file.upload = {
+                            progress: 100 * (step + 1) / totalSteps,
+                            total: file.size,
+                            bytesSent: (step + 1) * file.size / totalSteps
+                        };
+                        self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+                        if (file.upload.progress == 100) {
+                            file.status = Dropzone.SUCCESS;
+                            self.emit("success", file, 'success', null);
+                            self.emit("complete", file);
+                            self.processQueue();
+                          //document.getElementsByClassName("dz-success-mark").style.opacity = "1";
+                        }
+                    };
+                }(file, totalSteps, step), duration);
+            }
+        }
+    }
+  });
+
+function get_module_details(cid, module_id){
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/module/'+module_id,
+      type: 'get',
+      dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      success:function(response){console.log(response);
+        var module_content = response.module_content;
+        var module_attachments = response.module_attachments;
+        var module_tags = response.module_tags;
+        var module_content_html = "";
+        var module_attachments_html = "";
+        var module_tags_html = "";
+        if(module_content.length > 0){
+            module_content_html +=`<li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10"><li class="has-children mb-3">
+                                <div class="acnav__label acnav__label--level2">
+                                  <div class="accordionlist">
+                                    <div class="row">
+                                      <div class="col-md-12 acc-text">
+                                        ${module_content[0].content}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li></ul>`;
+        }
+        if(module_attachments.length > 0){
+            module_attachments.forEach(function (element, index) {
+                var file_type = element.attachment_type.split('/')[0];
+                if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
+                    module_attachments_html += `<li class="has-children is-open">
+                                    <ul class="acnav__list acnav__list--level2 wbg br-10">
+                                      <li class="has-children">
+                                        <div class="acnav__label acnav__label--level2">
+                                          <div class="accordionlist">
+                                            <div class="row">
+                                              <div class="col-md-12 acc-text">`;
+                    if(element.attachment_type.split('/')[0] === 'image'){
+                          module_attachments_html +=`<img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">`;
+                    }else if(element.attachment_type.split('/')[0] === 'video'){
+                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                    }else if(element.attachment_type.split('/')[0] === 'audio'){
+                        module_attachments_html +=`<audio controls><source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                    }else if(element.attachment_type.split('/')[0] === 'application'){
+                      var mathcount = Math.floor(Math.random() * 1000);
+                       module_attachments_html +=`<object data="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'><a href="https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&ignore=${mathcount}">Download Document</a></iframe></object>
+                       <p>If this browser does not support file. Please download the File to view it: <a href="https://elearningcontent.zaigoinfotech.com${element.attachment}" target="_blank">Download File</a>.</p>`;
+                    }
+                    module_attachments_html +=`</div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </li>`;
+                }
+          });
+        }
+        if(module_tags.length > 0){
+            module_tags_html +=`<ul class="acnav__list acnav__list--level2 wbg br-10">
+                              <li class="has-children">
+                                <div class="acnav__label acnav__label--level2">
+                                  <div class="accordionlist">
+                                    <div class="row">
+                                      <div class="col-md-12 acc-text">
+                                      </div>
+                                      <div class="col-md-12 p-3 mtag">
+                                        <div class="tag__container">
+                                          <input type="text" class="tag__input" placeholder="+ Add Tag">
+                                          <ul class="tag__List">`;
+                                          module_tags.forEach(function (element, index) {
+                                            module_tags_html +=`<li>${element.tag_name}</li>`;
+                                          });
+                module_tags_html +=`</ul>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>`;
+        }
+
+        $("#course_module_content").empty();
+        $("#course_module_content").append(module_content_html);
+        $("#course_module_content").append(module_attachments_html);
+        //document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
+
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+}
+</script>

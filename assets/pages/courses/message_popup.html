@@ -1,0 +1,128 @@
+<div class="row course_module_details">
+	<div class="acnav__list wbg br-10" style="background:right;width: 97%;">
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	</div>
+	<div class="col-md-12 p-3" style="padding-top: 0rem !important;">
+		<div class="course_module_content" style="overflow-y: scroll;height: 400px;">
+			<form method="post" class="" id="frmMessage" name="frmMessage" enctype="multipart/form-data">
+		      <div class="col-md-12 mb-3">
+		        <div class="form-floating">
+		          <textarea name="message" id="message" type="text" value="" rows="7" cols="30" class="ckeditor form-control" maxlength="250" style="height: 120px"></textarea>
+		        </div>
+		      </div>
+          	</form>
+			<div class="modal-footer">
+			  <span class="custom-btn nbtn">
+			    <button type="button" class="btn btn-success" id="saveMessage">Save</button>
+			  </span>
+			</div>
+		</div>
+	</div>
+</div>
+<input type="hidden" id="course_param">
+<script type="text/javascript">
+$(document).ready(function(){
+	setTimeout(function(){
+		var cid = document.getElementById("course_param").getAttribute("data-cid");
+		var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+		get_message_details(cid, module_id);
+	}, 0);
+
+  $("#saveMessage").on("click", function() {
+	var cid = document.getElementById("course_param").getAttribute("data-cid");
+	var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+    var isValidForm = frmvalidatorfrm.form();
+    if(isValidForm){
+      
+      var formData = new FormData();
+      formData.append("course_id",  cid);
+      formData.append("module_id", module_id);
+      formData.append("comments", $("#message").val());
+
+	  $.ajax({
+		    url: "https://elearningcontent.zaigoinfotech.com/module_comments/",
+		    method: "POST",
+		    type: 'POST', // For jQuery < 1.9
+		    cache: false,
+		    contentType: false,
+		    processData: false,
+		    data: formData,
+		    headers: {
+		      	"Authorization" : "Bearer " + getUserInfo().access_token
+		    },
+		    success: function(response){
+	     		toastr.success("Member Assigned.");
+				get_message_details(cid, module_id);
+		    },
+		    error: function(error) {
+		      	toastr.error("Response Error: " + error.message);
+		      	console.log(error);
+		    }
+	  });
+    }
+  });
+});
+$.validator.addMethod("pattern", function( value, element, param ) {
+    if ( this.optional( element ) ) { return true; }
+    if ( typeof param === "string" ) {
+      param = new RegExp( "^(?:" + param + ")$" );
+    }
+    return param.test( value );
+  }, "Check your inputs" );
+  var frmvalidatorfrm = $("#frmMessage").validate({
+    rules: {
+        message: {
+            required: true
+        },
+    },
+    messages: {     
+	    message: {
+	        required: "Enter your comments"
+	    }   
+    },
+    errorElement: "em",
+    errorPlacement: function ( error, element ) {
+      error.addClass( "help-block" );
+      if ( element.prop( "type" ) === "checkbox" ) {
+        error.insertAfter( element.parent( "label" ) );
+      } else {
+        error.insertAfter( element );
+      }
+    },
+    highlight: function ( element, errorClass, validClass ) {
+      //$( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
+      $(element).addClass("is-invalid");
+    },
+    unhighlight: function (element, errorClass, validClass) {
+     //$( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
+     $(element).removeClass("is-invalid");
+    }
+  });
+function get_message_details(cid, module_id){
+	$.ajax({
+		url: 'https://elearningcontent.zaigoinfotech.com/module_comments/?module_id='+module_id,
+		type: 'get',
+		dataType: 'json',
+		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+		success:function(response){
+			console.log(response);
+			var available_assignees_temp, module_assignees_temp = "";
+			
+			/*if(response.module_assignees.length > 0){
+		      $("#assignedMember").empty();
+		      var assignee_html = '';
+		      $.each( response.module_assignees, function( i, val ) {
+				    assignee_html += '<tr>';
+				    assignee_html += '<td class="wrap">'+ val.assignee_name +'</td>';
+				    assignee_html += '<td class="wrap">'+ val.assigned_by_name +'</td>';
+				    assignee_html += '<td>'+ val.start_date +'</td>';
+				    assignee_html += '<td>'+ val.end_date +'</td>';
+				    assignee_html += '<td>'+ getStatus(val.status) +'</td>';
+				    assignee_html += '<td class="text-center"><span><i class="far fa-trash-alt" id="'+val.id+'" onclick="deleteAssigneeMember(this);"></i></span></td>'
+				    assignee_html += '</tr>';
+		      });
+		      $("#assignedMember").html(assignee_html);
+			}*/
+		}
+	});
+}

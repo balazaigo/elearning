@@ -421,6 +421,40 @@ function show_tag_popup(e){
     modal.toggle();
   });
 }
+
+function show_attachment_popup(e){
+  //var right = offset_box.left;
+  const container = document.getElementById("popup_course_icon");
+  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+  var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
+  $('.modal-content').load(url,function(result){
+    document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    modal.toggle();
+  });
+}
+function show_message_popup(e){
+  //var right = offset_box.left;
+  const container = document.getElementById("popup_course_icon");
+  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+  var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/message_popup.html?t=` + Math.floor(Date.now() / 1000);
+  $('.modal-content').load(url,function(result){
+    document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    modal.toggle();
+  });
+}
+function show_assignee_popup(e){
+  //var right = offset_box.left;
+  const container = document.getElementById("popup_course_icon");
+  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+  var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
+  $('.modal-content').load(url,function(result){
+    document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    modal.toggle();
+  });
+}
 function delete_sub_module(e){
 
       var url = 'https://elearningcontent.zaigoinfotech.com/course_module/'+e.dataset.module_id+'/';
@@ -437,3 +471,8 @@ function delete_sub_module(e){
       post_json_dat(url, null, method);
     }
 }
+$(document).ready(function(){
+  $('#popup_course_icon').on('hidden.bs.modal', function () {
+      $('#course_id').trigger('click');
+  });
+});
