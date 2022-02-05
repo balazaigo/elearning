@@ -271,10 +271,12 @@ async function getUserMemberProfilePage() {
 
 /***************new course card and list starts*****************/
 async function getCoursesPage() {
+  /*
   if(processRights("course") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }
+  */
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courses.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
