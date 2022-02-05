@@ -46,15 +46,19 @@ function setUserInfo(authData){
   }
 }
 
+/*
+Rights function
+name: 
+  Add Audio, Add Course, Add Slide, Define Course, Add/Edit Member, Delete Member, List Course, View Member, 
+  Write Content, Add Design Instructions, Add Comments, Add Video, Delete Course, Add/Edit Role, Delete Role, 
+  Review Content, View Role
+
+*/
 function processRights(action){
   var returnStatus = false;
-  //escape for task page
   action = action.toLowerCase();
-  if(action === "task") { return true; }
+  if(action === "task") { return true; } // return user with true with action was task
   var userRights = window.getUserInfo().rights;
-
-  console.log(action + " | " + userRights);
-
   $.each(userRights, function(i, val) {
     val = val.toLowerCase();
     if(val.includes(action)) {
