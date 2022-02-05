@@ -10,7 +10,12 @@ function getRoles() {
       renderRoleList(res.data);
     })
     .catch((error) => {
-      console.error("There was an error!", error.response);
+      var res = error.response;
+      if(res.status == 403) {
+        toastr.error(res.data.detail);
+      } else {
+        console.error("There was an error!", error.response);
+      }
     })
     .finally(() => {
       $("#role-loader").css("display", "none");
@@ -68,7 +73,12 @@ function getRoleRights() {
       }
     })
     .catch((error) => {
-      console.error("There was an error!", error.response);
+      var res = error.response;
+      if(res.status == 403) {
+        toastr.error(res.data.detail);
+      } else {
+        console.error("There was an error!", error.response);
+      }
     });
 }
 
@@ -105,6 +115,12 @@ function saveRole(data) {
       getRolesPage();
     })
     .catch((error) => {
+      var res = error.response;
+      if(res.status == 403) {
+        toastr.error(res.data.detail);
+      } else {
+        console.error("There was an error!", error.response);
+      }
       // console.error("There was an error!", error.response);
       const fieldValidationErrors = error?.response?.data;
       if (fieldValidationErrors?.name?.[0]) {
