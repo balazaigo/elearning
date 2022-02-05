@@ -44,15 +44,13 @@ function setUserInfo(authData){
     $("#dropdownMenuButton1").html('<span>' + authData.name.substring(0, 15) + '</span>' + '<span class="user-role">' + authData.role + '</span>');
     $(".fullname").html(authData.name);
     //check for rights
-    if(processRights("View Role") === false) {
-      $("#navRight li").each(function(i, val){
-        if($(this).children("a").prop("rel")) {
-          if(processRights($(this).children("a").prop("rel")) === false) {
-            $(this).addClass("d-none"); //hide the menu
-          }
+    $("#navRight li").each(function(i, val){
+      if($(this).children("a").prop("rel")) {
+        if(processRights($(this).children("a").prop("rel")) === false) {
+          $(this).addClass("d-none"); //hide the menu
         }
-      });
-    }
+      }
+    });
   }
 }
 
