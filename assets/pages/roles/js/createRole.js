@@ -1,6 +1,6 @@
 //Open Role Create Form
 $(document).on("click", "#trigger-role-create-form", function () {
-  if(processRights("Add / Edit Role") === false) {
+  if(processRights("Add/Edit Role") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }

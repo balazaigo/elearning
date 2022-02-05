@@ -25,7 +25,7 @@ async function getDashboardPage() {
 
 async function getRolesPage() {
   //check for rights
-  if(processRights("role") === false) {
+  if(processRights("View Role") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }
@@ -42,7 +42,7 @@ async function getRolesPage() {
 }
 
 async function getRolesEmptyPage() {
-  if(processRights("role") === false) {
+  if(processRights("View Role") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }
@@ -58,7 +58,7 @@ async function getRolesEmptyPage() {
 }
 
 async function getUserRolesPage() {
-  if(processRights("member") === false) {
+  if(processRights("View Member") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }
