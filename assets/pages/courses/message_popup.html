@@ -3,19 +3,35 @@
 		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	</div>
 	<div class="col-md-12 p-3" style="padding-top: 0rem !important;">
-		<div class="course_module_content" style="overflow-y: scroll;height: 400px;">
-			<form method="post" class="" id="frmMessage" name="frmMessage" enctype="multipart/form-data">
+		<div class="course_module_content" style="overflow-y: scroll;height: 400px;overflow-x: hidden;">
+			<!--<form method="post" class="" id="frmMessage" name="frmMessage" enctype="multipart/form-data">
 		      <div class="col-md-12 mb-3">
 		        <div class="form-floating">
 		          <textarea name="message" id="message" type="text" value="" rows="7" cols="30" class="ckeditor form-control" maxlength="250" style="height: 120px"></textarea>
 		        </div>
 		      </div>
+          	</form>-->
+	
+        <div class="gwhite p-3">
+          <h4 class="mb-4">Comments</h4>
+          <div class="col-md-12 mb-3 comments" id="user_comments">
+            
+          </div>
+        </div>
+        <div class="white-bg box-shadow p-3">
+          <div class="col-md-12 mb-3 comments">
+             <!--<div class="add-comment"><img src="../assets/images/Ellipse10.png">-->
+			<form method="post" class="" id="frmMessage" name="frmMessage" enctype="multipart/form-data">
+              <!--<textarea name="message" id="message" type="text" value="" class="ckeditor form-control" maxlength="250" placeholder="Add a comment"></textarea>-->
+              <textarea name="message" id="message" class="form-control" placeholder="Add a comment"></textarea>
           	</form>
-			<div class="modal-footer">
-			  <span class="custom-btn nbtn">
-			    <button type="button" class="btn btn-success" id="saveMessage">Save</button>
-			  </span>
-			</div>
+            <!--</div>-->
+          </div>
+        </div>
+		<div class="modal-footer">
+		  <span class="custom-btn nbtn">
+		    <button type="button" class="btn btn-success" id="saveMessage">Save</button>
+		  </span>
 		</div>
 	</div>
 </div>
@@ -33,11 +49,13 @@ $(document).ready(function(){
 	var module_id = document.getElementById("course_param").getAttribute("data-module_id");
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
-      
+      var user_details = getUserInfo();
       var formData = new FormData();
       formData.append("course_id",  cid);
       formData.append("module_id", module_id);
       formData.append("comments", $("#message").val());
+	  //formData.append("commented_member_id", user_details.id);
+	  //formData.append("commented_member_name", user_details.name);
 
 	  $.ajax({
 		    url: "https://elearningcontent.zaigoinfotech.com/module_comments/",
@@ -51,7 +69,7 @@ $(document).ready(function(){
 		      	"Authorization" : "Bearer " + getUserInfo().access_token
 		    },
 		    success: function(response){
-	     		toastr.success("Member Assigned.");
+	     		toastr.success("Comment saved Successfully.");
 				get_message_details(cid, module_id);
 		    },
 		    error: function(error) {
@@ -106,8 +124,18 @@ function get_message_details(cid, module_id){
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
 		success:function(response){
 			console.log(response);
-			var available_assignees_temp, module_assignees_temp = "";
-			
+			if(response.length > 0){
+		      $("#user_comments").empty();
+				var member_comments_html = "";
+		      	$.each( response, function( i, val ) {
+		      		member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+								            <div class="add-comment"> 
+								              <p class="w-100" style="word-break: break-all;">${val.comments}</p>
+								            </div>`;
+		      	});
+		      $("#user_comments").html(member_comments_html);
+		      $("#message").val("");
+			}
 			/*if(response.module_assignees.length > 0){
 		      $("#assignedMember").empty();
 		      var assignee_html = '';
@@ -120,6 +148,10 @@ function get_message_details(cid, module_id){
 				    assignee_html += '<td>'+ getStatus(val.status) +'</td>';
 				    assignee_html += '<td class="text-center"><span><i class="far fa-trash-alt" id="'+val.id+'" onclick="deleteAssigneeMember(this);"></i></span></td>'
 				    assignee_html += '</tr>';
+				    <h4>Sri harsha raj kumar <span>A minute ago</span></h4>
+            <div class="add-comment"> <img src="../assets/images/Ellipse10.png">
+              <p>Lorem Ipsum Generator. Generate lorem ipsum in paragraphs, words or sentences. Italic and bold tags.Generates passages of lorem ipsum text suitable for use as placeholder copy in web pages, graphics, and more.</p>
+            </div>
 		      });
 		      $("#assignedMember").html(assignee_html);
 			}*/
