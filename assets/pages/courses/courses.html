@@ -95,7 +95,7 @@
     const modal = new bootstrap.Modal(container);
     var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
     document.getElementById("btnShow").addEventListener("click", function () {
-      if(processRights("Add Course") === false) {
+      if(processRights("Add Course") === false || processRights("Define Course") === false) {
         toastr.error(window.language.error_no_access);
         return false;
       } else {
