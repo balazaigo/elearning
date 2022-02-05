@@ -52,9 +52,11 @@ function processRights(action){
   action = action.toLowerCase();
   if(action === "task") { return true; }
   var userRights = window.getUserInfo().rights;
+
+  console.log(action + " | " + userRights);
+
   $.each(userRights, function(i, val) {
     val = val.toLowerCase();
-    //console.log(val + " , " + action + " ||| " + val.includes(action));
     if(val.includes(action)) {
       returnStatus = true;
     }
