@@ -33,7 +33,7 @@ function renderRoleList(roles) {
     }
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
-    html += `<h4 data-flinkto="userroles">${role.name}</h4>`;
+    html += `<h4 data-flinkto="userroles" data-target="${role.id}">${role.name}</h4>`;
     html += `<p>${role.description.substring(0, 75)+dots}</p>`;
     /*
     // ******************************************** /

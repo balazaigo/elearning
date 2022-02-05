@@ -1,3 +1,4 @@
+var selectedRoleID = '';
 async function getTestPage() {
   fetch(`${SITE_URL_PROTOCOL}/assets/pages/testPage/index.html`)
     .then((data) => data.text())
@@ -57,7 +58,10 @@ async function getRolesEmptyPage() {
   );
 }
 
-async function getUserRolesPage() {
+async function getUserRolesPage(roleID) {
+  if(typeof(roleID) !== "undefined") {
+    window.selectedRoleID = roleID;
+  }
   if(processRights("View Member") === false) {
     toastr.error(window.language.error_no_access);
     return false;
@@ -520,7 +524,7 @@ function handleTopMenuClick(e) {
       break;
 
     case "userroles":
-      getUserRolesPage();
+      getUserRolesPage(e.target.dataset.target);
       break;
 
     case "userrolesprofile":
