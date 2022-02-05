@@ -57,7 +57,7 @@
             ><img src="../assets/images/logo.svg" alt="Exper" />
           </a>
         </div>
-        <ul class="text-white w-100 pt-4">
+        <ul class="text-white w-100 pt-4" id="navRight">
           <li>
             <a href="#" data-flinkto="dashboard"
               ><img class="menuicon" src="../assets/images/dash.svg" alt="Dashboard" />
@@ -65,30 +65,30 @@
             >
           </li>
           <li>
-            <a href="#" data-flinkto="roles"
+            <a href="#" data-flinkto="roles" rel="View Role"
               ><img class="menuicon" src="../assets/images/roles.svg" alt="roles" />
               <span class="mx-2" data-flinkto="roles">Roles</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="courses"
+            <a href="#" data-flinkto="courses" rel="course"
               ><img class="menuicon" src="../assets/images/course.svg" alt="course" />
               <span class="mx-2" data-flinkto="courses">Courses</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="task"
+            <a href="#" data-flinkto="task" rel="task"
               ><img class="menuicon" src="../assets/images/task.svg" alt="task" />
               <span class="mx-2" data-flinkto="task">Task</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="members"
+            <a href="#" data-flinkto="members" rel="View Member"
               ><img class="menuicon" src="../assets/images/roles.svg" alt="members" />
               <span class="mx-2" data-flinkto="members">Members</span></a
             >
           </li>
-          <li class="sub-menu">
+          <li class="sub-menu d-none">
             <a href="#"
               ><img class="menuicon" src="../assets/images/setting.svg" alt="settings" />
               <span class="mx-2">Settings</span>
@@ -132,7 +132,7 @@
                 <div class="top-btn-notify">
                   <i
                     id="reveal-click"
-                    onClick="reveal()"
+                    
                     class="fas fa-bell"
                   ></i>
                   <div id="hidden-div">
@@ -220,8 +220,8 @@
                     <!-- <img src="../assets/images/user.png" alt="" /> -->
                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="#">View Profile</a></li>
-                      <li><a class="dropdown-item" href="#">Company Profile</a></li>
+                      <li><a class="dropdown-item disabled" href="#">View Profile</a></li>
+                      <li><a class="dropdown-item disabled" href="#">Company Profile</a></li>
                       <li><a class="dropdown-item logout" href="#">Sign Out</a></li>
                     </ul>
                   </div>

@@ -43,6 +43,16 @@ function setUserInfo(authData){
     //console.log(authData.rights);
     $("#dropdownMenuButton1").html('<span>' + authData.name.substring(0, 15) + '</span>' + '<span class="user-role">' + authData.role + '</span>');
     $(".fullname").html(authData.name);
+    //check for rights
+    if(processRights("View Role") === false) {
+      $("#navRight li").each(function(i, val){
+        if($(this).children("a").prop("rel")) {
+          if(processRights($(this).children("a").prop("rel")) === false) {
+            $(this).addClass("d-none"); //hide the menu
+          }
+        }
+      });
+    }
   }
 }
 
@@ -58,10 +68,11 @@ function processRights(action){
   var returnStatus = false;
   action = action.toLowerCase();
   if(action === "task") { return true; } // return user with true with action was task
+  if(action === "course") { return true; } // return user with true with action was task
   var userRights = window.getUserInfo().rights;
   $.each(userRights, function(i, val) {
     val = val.toLowerCase();
-    if(val.includes(action)) {
+    if(val === action) {
       returnStatus = true;
     }
   });

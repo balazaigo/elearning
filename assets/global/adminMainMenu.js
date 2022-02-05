@@ -219,7 +219,7 @@ async function getTaskCalendarPage() {
 }
 
 async function getMembersPage() {
-  if(processRights("member") === false) {
+  if(processRights("View Member") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }
@@ -236,7 +236,7 @@ async function getMembersPage() {
 }
 
 async function getMembersTabPage() {
-  if(processRights("member") === false) {
+  if(processRights("View Member") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }
@@ -252,7 +252,7 @@ async function getMembersTabPage() {
 }
 
 async function getUserMemberProfilePage() {
-  if(processRights("member") === false) {
+  if(processRights("View Member") === false) {
     toastr.error(window.language.error_no_access);
     return false;
   }
