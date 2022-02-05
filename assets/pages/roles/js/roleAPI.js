@@ -39,14 +39,15 @@ function renderRoleList(roles) {
     // ******************************************** /
     // Commnet out for later use
     // ******************************************** /
+    */
     if(role.rights.length > 0){
       html += `<div class="member_rights"><span>Rights</span><ul class="list-unstyled">`;
       $.each(role.rights, function (index_rights, role_rights) {
-        html += `<li class="d-inline"><i class="far fa-check-square"></i> ${role_rights.name}</li>`;
+        html += `<li class="d-inline"><i class="fas fa-check"></i> ${role_rights.name}</li>`;
       });
       html += `</ul></div>`;
     }
-    */
+    
     /*html += `<div class="members">
       <span><img src="../assets/images/member1.png"></span>
       <span><img src="../assets/images/member2.png"></span>

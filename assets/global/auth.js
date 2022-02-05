@@ -51,6 +51,12 @@ function setUserInfo(authData){
         }
       }
     });
+    //Process rights - Add/Edit Role
+    if( $("#trigger-role-create-form").length > 0) {
+      if(processRights("Add/Edit Role") === false) {
+        $("#trigger-role-create-form").remove();
+      }
+    }
   }
 }
 

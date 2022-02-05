@@ -13,6 +13,7 @@ var language = {
   "lbl_dont_code": "Don't receive code?",
   "lbl_resend_otp": "Resend OTP",
   "lbl_login": "Login",
+  "error_invalid_number_mail": "Error: Invalid mobile number or email address!",
   "error_invalid_number": "Error: Invalid Number",
   "error_invalid_otp": "Error: Invalid OTP",
   "error_no_access": "You do not have permission to perform this action.",

@@ -143,28 +143,34 @@
     let pattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i;
     var phoneNumber = document.getElementById("phoneNumber").value;
     if(phoneNumber && phoneNumber.match(pattern) == null) {
-      var appVerifier = window.recaptchaVerifier;
-      firebase
-        .auth()
-        .signInWithPhoneNumber(phoneNumber, appVerifier)
-        .then(function(confirmationResult) {
-          console.log("confirmationResult", confirmationResult);
-          toastr.info(language.lbl_enter_one_time_password);
-          window.confirmationResult = confirmationResult;
-          $("#areaPhone").hide();
-          $("#areaCode").show();
-          $("#o1").focus();
-        }).catch(function(error) {
-          if(error.code === "auth/invalid-phone-number") {
-            toastr.error("Server Response: " + error.message);
-            return false; 
-          }
-          toastr.info(language.lbl_enter_one_time_password);
-          console.log(error);
-          $("#areaPhone").hide();
-          $("#areaCode").show();
-          $("#o1").focus();
-        });
+      var _regNumber = /^[0-9-+()]*$/;
+      if(_regNumber.test(phoneNumber)) {
+        var appVerifier = window.recaptchaVerifier;
+        firebase
+          .auth()
+          .signInWithPhoneNumber(phoneNumber, appVerifier)
+          .then(function(confirmationResult) {
+            console.log("confirmationResult", confirmationResult);
+            toastr.info(language.lbl_enter_one_time_password);
+            window.confirmationResult = confirmationResult;
+            $("#areaPhone").hide();
+            $("#areaCode").show();
+            $("#o1").focus();
+          }).catch(function(error) {
+            if(error.code === "auth/invalid-phone-number") {
+              toastr.error("Server Response: " + error.message);
+              return false; 
+            }
+            toastr.info(language.lbl_enter_one_time_password);
+            console.log(error);
+            $("#areaPhone").hide();
+            $("#areaCode").show();
+            $("#o1").focus();
+          });
+      } else {
+        toastr.error(language.error_invalid_number_mail);
+        document.getElementById("phoneNumber").focus();
+      }
     } else {
       if(phoneNumber.match(pattern) == null) {
         toastr.error(language.error_invalid_number);

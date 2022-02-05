@@ -3378,15 +3378,20 @@ form#multiple {
 	display: none;
 }
 .member_rights ul{
-    height: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-x: scroll;
 }
 .member_rights li{
-    line-height: 1.3em;
-    width: 50%;
-    float: left;
+  line-height: 1.6em;
+  font-size: 13px;
 }
-
-/* Dashboard CSS */
+.member_rights li i.fas.fa-check {
+  font-size: 12px;
+  color: green;
+}/* Dashboard CSS */
 span.user-role {display:flex;font-size:11px;}
 table td.wrap {word-wrap:break-word;}
 
