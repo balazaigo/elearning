@@ -57,6 +57,14 @@ function setUserInfo(authData){
         $("#trigger-role-create-form").remove();
       }
     }
+    //Process rights - Add/Edit Member
+    if( $("#member-add").length > 0) {
+      if(processRights("Add/Edit Member") === false) {
+        $("#member-add").remove();
+        // Bulk Upload - Button needs to be hide as for now.
+        //$("#member-bulk-upload, #addusers").remove();
+      }
+    }
   }
 }
 

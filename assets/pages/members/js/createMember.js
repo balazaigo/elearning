@@ -1,5 +1,9 @@
 //Open Member Create Form
 $(document).on("click", "#trigger-member-create-form", function () {
+  if(processRights("Add/Edit Member") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   getRolesOptions("#member-role");
   $("#member-create-form-container").css({ visibility: "visible", opacity: 1 });
 });

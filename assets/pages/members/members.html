@@ -11,14 +11,10 @@
           </div>
           <div class="col-md-6 p-0 side-btn">
             <ul>
-              <li> <span class="border-btn"
-                  ><a href="#addusers">
-                <button><i class="fas fa-plus"></i> Bulk Upload</button>
-                </a></span
-                > </li>
-              <li> <span class="orange-btn">
-                <button id="trigger-member-create-form"> <i class="fas fa-plus"></i> Add Member </button>
-                </span> </li>
+              <!--
+              <li id="member-bulk-upload"> <span class="border-btn"><a href="#addusers"><button><i class="fas fa-plus"></i> Bulk Upload</button></a></span></li>
+              -->
+              <li id="member-add"> <span class="orange-btn"><button id="trigger-member-create-form"> <i class="fas fa-plus"></i> Add Member </button></span> </li>
             </ul>
           </div>
         </div>
@@ -204,6 +200,7 @@
   </div>
 </div>
 <!-- Member Create Form End -->
+<!--
 <div id="addusers" class="overlay">
   <div class="popup defaultopen">
     <h4>Bulk Upload Members</h4>
@@ -229,6 +226,7 @@
       > </div>
   </div>
 </div>
+-->
 <div id="delete" class="overlay">
   <div class="popup"> <a class="close" href="#">×</a>
     <form method="get" class="pop-form">
@@ -258,90 +256,88 @@ $(function () {
     var dropZoneId = "drop-zone";
     var buttonId = "clickHere";
     var mouseOverClass = "mouse-over";
-
     var dropZone = $("#" + dropZoneId);
-    var ooleft = dropZone.offset().left;
-    var ooright = dropZone.outerWidth() + ooleft;
-    var ootop = dropZone.offset().top;
-    var oobottom = dropZone.outerHeight() + ootop;
-    var inputFile = dropZone.find("input");
-    document.getElementById(dropZoneId).addEventListener("dragover", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.addClass(mouseOverClass);
-        var x = e.pageX;
-        var y = e.pageY;
-
-        if (!(x < ooleft || x > ooright || y < ootop || y > oobottom)) {
-            inputFile.offset({
-                top: y - 15,
-                left: x - 100
-            });
-        } else {
-            inputFile.offset({
-                top: -400,
-                left: -400
-            });
+    
+    if(dropZone.length > 0) {
+      var ooleft = dropZone.offset().left;
+      var ooright = dropZone.outerWidth() + ooleft;
+      var ootop = dropZone.offset().top;
+      var oobottom = dropZone.outerHeight() + ootop;
+      var inputFile = dropZone.find("input");
+      document.getElementById(dropZoneId).addEventListener("dragover", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.addClass(mouseOverClass);
+          var x = e.pageX;
+          var y = e.pageY;
+  
+          if (!(x < ooleft || x > ooright || y < ootop || y > oobottom)) {
+              inputFile.offset({
+                  top: y - 15,
+                  left: x - 100
+              });
+          } else {
+              inputFile.offset({
+                  top: -400,
+                  left: -400
+              });
+          }
+  
+      }, true);
+      if (buttonId != "") {
+          var clickZone = $("#" + buttonId);
+  
+          var oleft = clickZone.offset().left;
+          var oright = clickZone.outerWidth() + oleft;
+          var otop = clickZone.offset().top;
+          var obottom = clickZone.outerHeight() + otop;
+  
+          $("#" + buttonId).mousemove(function (e) {
+              var x = e.pageX;
+              var y = e.pageY;
+              if (!(x < oleft || x > oright || y < otop || y > obottom)) {
+                  inputFile.offset({
+                      top: y - 15,
+                      left: x - 160
+                  });
+              } else {
+                  inputFile.offset({
+                      top: -400,
+                      left: -400
+                  });
+              }
+          });
+      }
+      document.getElementById(dropZoneId).addEventListener("drop", function (e) {
+          $("#" + dropZoneId).removeClass(mouseOverClass);
+      }, true);
+      inputFile.on('change', function (e) {
+          $('#filename').html("");
+          var fileNum = this.files.length,
+              initial = 0,
+              counter = 0;
+      var filenamenew = '';
+          for (initial; initial < fileNum; initial++) {
+              counter = counter + 1;
+        var filename = this.files[initial].name;
+        if(filename){
+          console.log(filename);
+          splitfilename = filename.split(".");
+          console.log(filename);
+          if(splitfilename[0]){
+          filenamenew = splitfilename[0].substring(0, 10);
+          filenamenew = filenamenew.replace(/[\/-]+/g, '');
+          //filenamenew.replace('-', '');
+          //filenamenew.replace('/','');
+          filenamenew = filenamenew +'.'+splitfilename[1];
+          }
         }
-
-    }, true);
-
-    if (buttonId != "") {
-        var clickZone = $("#" + buttonId);
-
-        var oleft = clickZone.offset().left;
-        var oright = clickZone.outerWidth() + oleft;
-        var otop = clickZone.offset().top;
-        var obottom = clickZone.outerHeight() + otop;
-
-        $("#" + buttonId).mousemove(function (e) {
-            var x = e.pageX;
-            var y = e.pageY;
-            if (!(x < oleft || x > oright || y < otop || y > obottom)) {
-                inputFile.offset({
-                    top: y - 15,
-                    left: x - 160
-                });
-            } else {
-                inputFile.offset({
-                    top: -400,
-                    left: -400
-                });
-            }
-        });
+          
+        
+              $('#filename').append('<div class="fileuploads"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="" style="color:#FFF; font-size:12px; margin-top:2px;">'+ counter + '</strong></span> ' + filenamenew + '&nbsp;&nbsp;<span class="fa fa-times-circle fa-lg closeBtn" title="remove"></span><br></div>');
+          }
+      });
     }
-
-    document.getElementById(dropZoneId).addEventListener("drop", function (e) {
-        $("#" + dropZoneId).removeClass(mouseOverClass);
-    }, true);
-
-    inputFile.on('change', function (e) {
-        $('#filename').html("");
-        var fileNum = this.files.length,
-            initial = 0,
-            counter = 0;
-		var filenamenew = '';
-        for (initial; initial < fileNum; initial++) {
-            counter = counter + 1;
-			var filename = this.files[initial].name;
-			if(filename){
-			  console.log(filename);
-			  splitfilename = filename.split(".");
-			  console.log(filename);
-			  if(splitfilename[0]){
-				filenamenew = splitfilename[0].substring(0, 10);
-				filenamenew = filenamenew.replace(/[\/-]+/g, '');
-				//filenamenew.replace('-', '');
-				//filenamenew.replace('/','');
-				filenamenew = filenamenew +'.'+splitfilename[1];
-			  }
-			}
-			  
-			
-            $('#filename').append('<div class="fileuploads"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="" style="color:#FFF; font-size:12px; margin-top:2px;">'+ counter + '</strong></span> ' + filenamenew + '&nbsp;&nbsp;<span class="fa fa-times-circle fa-lg closeBtn" title="remove"></span><br></div>');
-        }
-    });
-	
 })
 $(document).on('click','.fa-lg.closeBtn',function(){
 		console.log('earwr');
@@ -415,7 +411,7 @@ function gridMembers(tagID, htmlID, assignTOBY){
       pageNumber: 'page',
       pageSize: 'per_page'
     },  
-    pageSize: 5,
+    pageSize: 6,
     ajax: {
       beforeSend: function(request) {
         request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
@@ -465,7 +461,7 @@ function template(data, tagTOBY) {
     html += '<td class="wrap">'+ item.first_name + ' ' + item.last_name +'</td>';
     html += '<td>'+ item.email_id +'</td>';
     html += '<td>'+ item.phone_number +'</td>';
-    html += '<td>'+ getRoleName(item.roles_name) +'</td>';
+    html += '<td><span class="green-shade"><a href="#">'+ item.role_name +'</a></span></td>';
     html += `
       <td class="text-center">
       <div class="dropdown ahide">
@@ -474,19 +470,28 @@ function template(data, tagTOBY) {
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
 
     if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
-      html += `<li><a class="dropdown-item green" href="#taskdetails">&nbsp;Edit</a></li>`;
+      //Add/Edit Member
+      if(processRights("Add/Edit Member") === false) {
+        html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
+      } else {
+        html += `<li><a class="dropdown-item green" href="#taskdetails">&nbsp;Edit</a></li>`;
+      }
     } else {
       html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
     }
 
     html += `<li>`;
-
-    if(item.status == '0' || item.status == '1') {
-      html += `<a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>`;
-    } else if(item.status == '2') {
-      html += `<a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enabled</a>`;
-    } else {
+    
+    if(processRights("Delete Member") === false) {
       html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
+    } else {
+      if(item.status == '0' || item.status == '1') {
+        html += `<a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>`;
+      } else if(item.status == '2') {
+        html += `<a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enabled</a>`;
+      } else {
+        html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
+      }
     }
 
     html += `</li><li>`;
@@ -494,8 +499,11 @@ function template(data, tagTOBY) {
     if(item.status == '2' || item.status == '3') {
       html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
     } else {
-      html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.first_name+ ` ` +item.last_name+`" data-url="`+item.id+`/"
-                 class="dropdown-item red">&nbsp;Delete</a>`;
+      if(processRights("Delete Member") === false) {
+        html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
+      } else {
+        html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.first_name+ ` ` +item.last_name+`" data-url="`+item.id+`/" class="dropdown-item red">&nbsp;Delete</a>`;
+      }
     }
     html += `</li>
         </ul>
@@ -506,16 +514,6 @@ function template(data, tagTOBY) {
   });
   html += '';
   return html;
-}
-
-function getRoleName(name){
-  var selName = '';
-  $.each(roleList, function (index, role) {
-    if(role.id === name) {
-      selName = role.name;
-    }
-  });
-  return '<span class="green-shade"><a href="#">'+selName+'</a></span>';
 }
 
 function loadAlertModal(){

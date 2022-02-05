@@ -106,9 +106,12 @@ function template(data){
                 td +="<div class='dropdown ahide'>";
                 td +="<button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button>";
                 td +="<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'>";
-                td +="<li><a class='dropdown-item green' href='#'>Edit</a></li>";
-                td +="<li><a class='dropdown-item red' href='#'>Disable</a></li>";
-                td +="<li><a class='dropdown-item red' href='#'>Delete</a></li>";
+                td +="<li><a class='dropdown-item green' href='#' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>Edit</a></li>";
+                /*
+                  EXCEL: 8. Course Card - Edit, Disable, Delete menu should be hidden as for now. 
+                */
+                //td +="<li><a class='dropdown-item red' href='#'>Disable</a></li>";
+                //td +="<li><a class='dropdown-item red' href='#'>Delete</a></li>";
                 td +="</ul>";
                 td +="</div>";
                 td +="</div>";
