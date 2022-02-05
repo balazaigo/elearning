@@ -12,6 +12,7 @@ class Auth {
       } else {
         document.querySelector("body").style.display = "block";
         setUserInfo ( window.getUserInfo() );
+        // processRights(null);
       }
   }
   // will remove the localStorage item and redirect to login  screen
@@ -20,6 +21,7 @@ class Auth {
     localStorage.removeItem("auth_type");
     localStorage.removeItem("auth_user");
     localStorage.removeItem("auth_data");
+    localStorage.removeItem("system_rights");
     window.location.replace(SITE_URL_PROTOCOL);
   }
 }
@@ -42,4 +44,20 @@ function setUserInfo(authData){
     $("#dropdownMenuButton1").html('<span>' + authData.name.substring(0, 15) + '</span>' + '<span class="user-role">' + authData.role + '</span>');
     $(".fullname").html(authData.name);
   }
+}
+
+function processRights(action){
+  var returnStatus = false;
+  //escape for task page
+  action = action.toLowerCase();
+  if(action === "task") { return true; }
+  var userRights = window.getUserInfo().rights;
+  $.each(userRights, function(i, val) {
+    val = val.toLowerCase();
+    //console.log(val + " , " + action + " ||| " + val.includes(action));
+    if(val.includes(action)) {
+      returnStatus = true;
+    }
+  });
+  return returnStatus;
 }

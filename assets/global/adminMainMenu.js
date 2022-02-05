@@ -24,6 +24,11 @@ async function getDashboardPage() {
 }
 
 async function getRolesPage() {
+  //check for rights
+  if(processRights("role") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/roles/roles.html`,
     function (resp, status, xhr) {
@@ -37,6 +42,10 @@ async function getRolesPage() {
 }
 
 async function getRolesEmptyPage() {
+  if(processRights("role") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/roles/rolesempty.html`,
     function (resp, status, xhr) {
@@ -49,6 +58,10 @@ async function getRolesEmptyPage() {
 }
 
 async function getUserRolesPage() {
+  if(processRights("member") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/members/members.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
@@ -61,6 +74,10 @@ async function getUserRolesPage() {
 }
 
 async function getUserRolesProfilePage() {
+  if(processRights("profile") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/roles/userrolesprofile.html`,
     function (resp, status, xhr) {
@@ -72,19 +89,11 @@ async function getUserRolesProfilePage() {
   );
 }
 
-//async function getCoursesPage() {
-//  $("#app-admin").load(
-//    `${SITE_URL_PROTOCOL}/assets/pages/courses/courses.html`,
-//    function (resp, status, xhr) {
-//      if (status == "success" && xhr.status == 200) {
-//      } else {
-//        console.log("Something error happend");
-//      }
-//    }
-//  );
-//}
-
 async function getCoursesEmptyPage() {
+  if(processRights("course") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/coursesempty.html`,
     function (resp, status, xhr) {
@@ -97,6 +106,10 @@ async function getCoursesEmptyPage() {
 }
 
 async function getCoursesListPage() {
+  if(processRights("course") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslist.html`,
     function (resp, status, xhr) {
@@ -109,6 +122,10 @@ async function getCoursesListPage() {
 }
 
 async function getCoursesListInnerPage(e) {
+  if(processRights("course") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistinner.html`,
     function (resp, status, xhr) {
@@ -127,6 +144,10 @@ async function getCoursesListInnerPage(e) {
 }
 
 async function getCoursesListLevelPage(e) {
+  if(processRights("course") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.html`,
     function (resp, status, xhr) {
@@ -145,6 +166,10 @@ async function getCoursesListLevelPage(e) {
 }
 
 async function getCoursesEditorPage(e) {
+  if(processRights("course") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courseseditor.html`,
     function (resp, status, xhr) {
@@ -162,6 +187,10 @@ async function getCoursesEditorPage(e) {
 }
 
 async function getTaskPage() {
+  if(processRights("task") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/task/task.html`,
     function (resp, status, xhr) {
@@ -174,6 +203,10 @@ async function getTaskPage() {
 }
 
 async function getTaskCalendarPage() {
+  if(processRights("task") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/task/taskcalendar.html`,
     function (resp, status, xhr) {
@@ -186,6 +219,10 @@ async function getTaskCalendarPage() {
 }
 
 async function getMembersPage() {
+  if(processRights("member") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/members/members.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
@@ -199,6 +236,10 @@ async function getMembersPage() {
 }
 
 async function getMembersTabPage() {
+  if(processRights("member") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/members/memberstab.html`,
     function (resp, status, xhr) {
@@ -211,6 +252,10 @@ async function getMembersTabPage() {
 }
 
 async function getUserMemberProfilePage() {
+  if(processRights("member") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/members/usermemberprofile.html`,
     function (resp, status, xhr) {
@@ -226,6 +271,10 @@ async function getUserMemberProfilePage() {
 
 /***************new course card and list starts*****************/
 async function getCoursesPage() {
+  if(processRights("course") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/courses/courses.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
@@ -477,6 +526,10 @@ function handleTopMenuClick(e) {
       break;
 
     case "course":
+      if(processRights("course") === false) {
+        toastr.error(window.language.error_no_access);
+        return false;
+      }
       getCoursePage(e);
       break;
 
