@@ -207,6 +207,7 @@
       .then(function(result) {
         var user = result.user;
         console.log(user);
+        processRememberMe();
         toastr.success("Welcome : " + user.uid);
         //Get the user.email from backend
         localStorage.setItem("auth", 1);
@@ -245,15 +246,22 @@
           "google_token": access_token
         }),
         success: function(response){
-          localStorage.setItem("auth", 1);
-          localStorage.setItem("auth_type", "social");
-          localStorage.setItem("auth_user", email_id);
-          localStorage.setItem("auth_token", access_token);
-          localStorage.setItem("auth_data", JSON.stringify(response));
-          toastr.success("Welcome : " + email_id);
-          setTimeout(function() {
-            window.location.href = `${SITE_URL_PROTOCOL}admin/`;
-          }, 1500);
+          if(typeof(response['message']) !== 'undefined') {
+            toastr.error(response.message);
+            $("#areaPhone").show();
+            $("#areaCode").hide();
+          } else {
+            localStorage.setItem("auth", 1);
+            localStorage.setItem("auth_type", "social");
+            localStorage.setItem("auth_user", email_id);
+            localStorage.setItem("auth_token", access_token);
+            localStorage.setItem("auth_data", JSON.stringify(response));
+            toastr.success("Welcome : " + email_id);
+            processRememberMe();
+            setTimeout(function() {
+              window.location.href = `${SITE_URL_PROTOCOL}admin/`;
+            }, 1500);
+          }
         },
         error: function(error) {
           toastr.error("Response Error: " + error.message);
@@ -261,7 +269,6 @@
         }
       });
   }
-
 
   function postEmailLogin(mailID){
       //https://elearningadmin.zaigoinfotech.com/login/
@@ -280,15 +287,26 @@
           "google_token": access_token
         }),
         success: function(response){
-          localStorage.setItem("auth", 1);
-          localStorage.setItem("auth_type", "mail");
-          localStorage.setItem("auth_user", email_id);
-          localStorage.setItem("auth_token", access_token);
-          localStorage.setItem("auth_data", JSON.stringify(response));
-          toastr.success("Welcome : " + email_id);
-          setTimeout(function() {
-            window.location.href = `${SITE_URL_PROTOCOL}admin/`;
-          }, 1500);
+          if(typeof(response['message']) !== 'undefined') {
+            toastr.error(response.message);
+            $("#areaPhone").show();
+            $("#areaCode").hide();
+            var inputs = document.getElementById("otpCode").querySelectorAll('input');
+            for (const input of inputs){
+               $("#" + input.id).val("");
+            }
+          } else {
+            localStorage.setItem("auth", 1);
+            localStorage.setItem("auth_type", "mail");
+            localStorage.setItem("auth_user", email_id);
+            localStorage.setItem("auth_token", access_token);
+            localStorage.setItem("auth_data", JSON.stringify(response));
+            toastr.success("Welcome : " + email_id);
+            processRememberMe();
+            setTimeout(function() {
+              window.location.href = `${SITE_URL_PROTOCOL}admin/`;
+            }, 1500);
+          }
         },
         error: function(error) {
           toastr.error("Response Error: " + error.message);
@@ -296,6 +314,23 @@
         }
       });
   }
+  
+  function processRememberMe(){
+    if($("#remember").is(':checked')) {
+      //store to cookies
+      localStorage.setItem("rememberMailPhone", $("#phoneNumber").val());
+    } else {
+      localStorage.removeItem("rememberMailPhone");
+    }
+  }
+  
+  $( document ).ready(function() {
+    const rememberMailPhone = localStorage.getItem("rememberMailPhone");
+    if(rememberMailPhone) {
+      $("#phoneNumber").val(rememberMailPhone);
+      $("#remember").attr("checked", true);
+    }
+  });
   
 </script>
 </body>
