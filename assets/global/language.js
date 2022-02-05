@@ -16,4 +16,5 @@ var language = {
   "error_invalid_number": "Error: Invalid Number",
   "error_invalid_otp": "Error: Invalid OTP",
   "error_no_access": "You do not have permission to perform this action.",
+  "no_record_found": "No Records Found!",
 };

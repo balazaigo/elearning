@@ -156,9 +156,8 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
 /*******************multiple tag list************************/
 
 /**************Drag and Drop*************/
-$(init);
-
 function init() {
+  console.log("init");
   $('a[href="#"]').click( function(e) { e.preventDefault(); });
   if($( ".droppable-area1" ).length > 0) {
     $(".droppable-area1")
@@ -226,3 +225,50 @@ function getLanguage(){
     }
   }
 }
+
+String.prototype.str_replace = function(src, dst){
+	"use strict";
+	return this.toString().split(src).join(dst);
+};
+$.fn.extend({
+	caps: function(str){
+		"use strict";
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	},
+  capitalize: function(){
+		"use strict";
+		return this.each(function() {
+			var $field = $(this);
+			$field.on('keyup change', function() {
+				$field.val(function(i, old) {
+					if (old.indexOf(' ') > -1) {
+						var words = old.split(' ');
+						for (i = 0; i < words.length; i++) {
+							words[i] = $.fn.caps(words[i]);
+						}
+						return words.join(' ');
+					} else {
+						return $.fn.caps(old);
+					}
+				});
+			});
+		});
+	},
+  upperCase: function() {
+    "use strict";
+    $(this).css('text-transform', 'uppercase').bind('blur change', function(){
+      this.value = this.value.toUpperCase();
+    });
+  },
+	replaceSpace: function(){
+    "use strict";
+    $(this).bind('blur change', function(){
+      this.value = this.value.str_replace(' ', '-');
+    });
+	},
+});
+
+$( document ).ready(function() {
+	"use strict";
+  $(init);
+});
