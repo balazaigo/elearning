@@ -13,6 +13,7 @@ function getRoles() {
       var res = error.response;
       if(res.status == 403) {
         toastr.error(res.data.detail);
+        get403Page();
       } else {
         console.error("There was an error!", error.response);
       }

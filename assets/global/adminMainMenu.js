@@ -441,6 +441,18 @@ document.addEventListener("click", function (e) {
   }
 });
 
+async function get403Page() {
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/errors/error_403.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
+
 function handleTopMenuClick(e) {
   console.log(e.target.dataset.flinkto);
   switch (e.target.dataset.flinkto) {
