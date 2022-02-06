@@ -133,7 +133,7 @@ function doSearch(){
         gridAssigned("pagination-container-by", "data-assignedBy", "assigned_by", "false");        
       }
     }
-	});
+  });
 }
   
 
@@ -262,7 +262,7 @@ function template(data, tagTOBY) {
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
   
       if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
-        html += `<li><a class="dropdown-item green" href="#taskdetails">&nbsp;Edit</a></li>`;
+        html += `<li><a class="dropdown-item green" href="#taskdetails" onClick="getTaskDetails(${item.id})">&nbsp;Edit</a></li>`;
       } else {
         html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
       }
@@ -375,7 +375,7 @@ function loadAlertModal(){
     
   });
   
-  //hidden.bs.modal	
+  //hidden.bs.modal 
   $('#mAlert').on('hidden.bs.modal', function (event) {
     $(document).off('click', '#mAlertCancel');
     $(document).off('click', '#mAlertDelete');
@@ -430,137 +430,242 @@ function loadAlertModal(){
   });
 
 }
+function checkdate(){
+  var start_date = $("#start_date_task").val();
+  var end_date   = $("#end_date_task").val();
+  console.log(start_date);
+  console.log(end_date);
+  if(start_date !== '' && end_date !== ''){
+    var sdate = new Date(start_date[2], start_date[1] - 1, start_date[0]);
+    var edate = new Date(end_date[2], end_date[1] - 1, end_date[0]);
+    if (start_date > end_date){
+        $("#end_date_task").val("");
+          toastr.error("End Date should be greater than start date");
+    }
+  }
+}
+function getStatusTask(sCode){
+  /*
+    1 - Active
+    2 - On hold
+    3 - Done
+  */
+  switch(sCode) {
+    case 1:
+      return '<span class="s-active"><a href="#" style="background: #2C5AAC;color: #fff;">Active</a></span><span class="s-onhold"><a href="#">On hold</a></span><span class="s-done"><a href="#">Done</a></span>';    
+      break;
+    case 2:
+      return '<span class="s-active"><a href="#">Active</a></span><span class="s-onhold"><a href="#" style="background: #ffc107;color: #fff;">On hold</a></span><span class="s-done"><a href="#">Done</a></span>';
+      break;
+    case 3:
+      return '<span class="s-active"><a href="#">Active</a></span><span class="s-onhold"><a href="#" >On hold</a></span><span class="s-done"><a href="#" style="background: #108842;color: #fff;">Done</a></span>';    
+      break;
+    default:
+      return '<span class="badge bg-primary">None</span>';    
+      break;
+  }
+}
+getTaskDetails('33');
+function getTaskDetails(id){
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/task/'+ id + '/',
+      type: 'get',
+      dataType: 'json',
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        console.log(response);
+        if(response.task_detail.length > 0){
+          var task_det = response.task_detail[0];
+          $("#det_task_id").text("#"+task_det.id);
+          $("#det_task_name").text(task_det.name);
+          var created_date = new Date(task_det.created_on);
+          var created_dateTime = created_date.toLocaleString([], {year: "numeric",month: "2-digit", day: "2-digit", hour: '2-digit', minute:'2-digit'});
+          $("#created_dateTime").text(created_dateTime);
+          var start_date = task_det.start_date;
+          var end_date = task_det.end_date;
+          $("#start_date_task").val(start_date);
+          $("#end_date_task").val(end_date);
+          var task_status = getStatusTask(task_det.status);
+          $("#det_task_status").html(task_status);
 
+          get_member(task_det.assigned_to, task_det.assignee);
+        }
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+}
+function get_member(assigned_to, assignee){
+  $.ajax({
+    url: API_BASE_URL + '/member/',
+    type: 'get',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    success:function(response){console.log(response);
+      $(".select-list-1").empty();
+      if(!assignee){
+        $(".drop-down .button").html('<span style="background-image:none;">Assign Member</span><a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>');
+      }
+      $.each( response.data, function( i, val ) {
+        if(assignee && assignee == val.id){
+        $(".drop-down .button").html('<span style="background-image:none;" data-member_id="'+val.id+'">'+val.first_name+' '+val.last_name+'</span><a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>');
+          $(".select-list-1").append('<li class="clsAnchor active" style="overflow: hidden; display: none;"><span value="n'+(i+1)+'" class="n'+(i+1)+'" style="background-image:none" onclick="selectUser(this);">'+val.first_name+' '+val.last_name+'</span></li>');
+        }else{
+          $(".select-list-1").append('<li class="clsAnchor" style="overflow: hidden; display: none;"><span value="n'+(i+1)+'" class="n'+(i+1)+'" style="background-image:none" onclick="selectUser(this);">'+val.first_name+' '+val.last_name+'</span></li>');
+        }
+      });
+    }
+  });
+}
+function selectUser(e){
+ var dd_text = $(e).text();   
+ var dd_val = $(e).attr('value');  
+ $('.drop-down .button').html('<span>' + dd_text + '</span>' + '<a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>');       
+ $('.drop-down .select-list-1 span').parent().removeClass('active');     
+ $(this).parent().addClass('active');      
+ $('.drop-down select[name=options]').val( dd_val );  
+ $('.drop-down .select-list-1 li').slideUp();   
+}
+$(document).ready(function(){
+  $("#UpdateTask").on("click", function() {
+
+  });
+});
 </script>
 
+<!--<div id="taskdetails" class="overlay" style="visibility: visible !important;opacity:inherit !important;">-->
 <div id="taskdetails" class="overlay">
-  <div class="popup extra-popup p-0"> <a class="close" href="#">&times;</a>
-    <div class="row">
-      <div class="col-md-8">
-        <div class="gwhite p-3">
-          <div class="tp-text mb-3"> <span class="obg">#3214</span> <span class="gborder"> <small>Charptor1</small> <small>Lesson 1.1</small> <small>Topic 1.1</small> </span> <span class="t-time">12:00AM</span> </div>
-          <h4>Name of Section</h4>
-          <div class="col-md-12 mb-3">
-            <textarea id="text" class="ckeditor form-control"  name="wysiwyg-editor"></textarea>
-          </div>
-          <div class="col-md-12 mb-3">
-            <div class="mb-3 buttonupload">
-              <label for="files" class="btn"></label>
-              <input id="files" type="file" class="form-control">
+  <form method="post" class="" id="frmTaskEdit" name="frmTaskEdit" enctype="multipart/form-data">
+    <div class="popup extra-popup p-0"> <a class="close" href="#">&times;</a>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="gwhite p-3">
+            <div class="tp-text mb-3"> <span class="obg" id="det_task_id">#3214</span> <span class="gborder"> <small>Charptor1</small> <small>Lesson 1.1</small> <small>Topic 1.1</small> </span> <span class="t-time" id="created_dateTime">12:00AM</span> </div>
+            <h4 id="det_task_name">Name of Section</h4>
+            <div class="col-md-12 mb-3">
+              <textarea id="text" class="ckeditor form-control"  name="wysiwyg-editor"></textarea>
             </div>
-          </div>
-          <h4 class="mb-4">Comments</h4>
-          <div class="col-md-12 mb-3 comments">
-            <h4>Sri harsha raj kumar <span>A minute ago</span></h4>
-            <div class="add-comment"> <img src="../assets/images/Ellipse10.png">
-              <p>Lorem Ipsum Generator. Generate lorem ipsum in paragraphs, words or sentences. Italic and bold tags.Generates passages of lorem ipsum text suitable for use as placeholder copy in web pages, graphics, and more.</p>
+            <div class="col-md-12 mb-3">
+              <div class="mb-3 buttonupload">
+                <label for="files" class="btn"></label>
+                <input id="files" type="file" class="form-control">
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="white-bg box-shadow p-3">
-          <div class="col-md-12 mb-3 comments">
-            <div class="add-comment"> <img src="../assets/images/Ellipse10.png">
-              <textarea class="form-control" placeholder="Add a comment"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="assign-details p-3 pl-0">
-          <h4>Details</h4>
-          <div class="row mb-3">
-            <div class="col-md-6 assign-user-icon">
-              <h6>Assigned To</h6>
-            </div>
-            <div class="col-md-6 assign-user">
-              <div class="drop-down">
-                <select name="options">
-                  <option class="nl" value="nl"  
-     style="background-image:url('../assets/images/member1.png');">Harsha</option>
-                  <option class="n2" value="n2" 
-     style="background-image:url('../assets/images/member2.png');">Anil</option>
-                  <option class="n3" value="n3" 
-     style="background-image:url('../assets/images/member3.png');">Vishal</option>
-                </select>
+            <h4 class="mb-4">Comments</h4>
+            <div class="col-md-12 mb-3 comments" id="user_comments">
+              <h4>Sri harsha raj kumar <span>A minute ago</span></h4>
+              <div class="add-comment"> <!--<img src="../assets/images/Ellipse10.png">-->
+                <p>Lorem Ipsum Generator. Generate lorem ipsum in paragraphs, words or sentences. Italic and bold tags.Generates passages of lorem ipsum text suitable for use as placeholder copy in web pages, graphics, and more.</p>
               </div>
             </div>
           </div>
-          <div class="row mb-3">
-            <div class="col-md-6 assign-pri-icon">
-              <h6>Periority</h6>
+          <div class="white-bg box-shadow p-3">
+            <div class="col-md-12 mb-3 comments">
+              <div class="add-comment"> <!--<img src="../assets/images/Ellipse10.png">-->
+                <textarea class="form-control" placeholder="Add a comment" id="user_message"></textarea>
+              </div>
             </div>
-            <div class="col-md-6 priority">
-              <div class="select_wrap">
-                  <ul class="default_option">
-                    <li>
-                      <div class="option high">
-                        <div class="icon"></div>
-                        <p>High</p>
-                      </div>
-                    </li>
-                  </ul>
-                  <ul class="select_ul">
-                    <li>
-                      <div class="option high">
-                        <div class="icon"></div>
-                        <p>High</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="option medium">
-                        <div class="icon"></div>
-                        <p>Medium</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="option low">
-                        <div class="icon"></div>
-                        <p>Low</p>
-                      </div>
-                    </li>                    
-                  </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="assign-details p-3 pl-0">
+            <h4>Details</h4>
+            <div class="row mb-3">
+              <div class="col-md-6 assign-user-icon">
+                <h6>Assigned To</h6>
+              </div>
+              <div class="col-md-6 assign-user">
+                <div class="drop-down">
+                  <select name="options" id="det_assignee_opt">
+                    <option class="nl" value="nl">Harsha</option>
+                    <option class="n2" value="n2">Anil</option>
+                    <option class="n3" value="n3">Vishal</option>
+                  </select>
                 </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6 assign-date-icon">
-              <h6>Start Date</h6>
-            </div>
-            <div class="col-md-6 date">
-              <div class="dropdown-date">
-                <input type="date" id="start" name="start"
-                           value="2018-07-22"
-                           min="2018-01-01" max="2018-12-31">
               </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6 assign-date-icon">
-              <h6>End Date</h6>
-            </div>
-            <div class="col-md-6 date">
-              <div class="dropdown-date">
-                <input type="date" id="start" name="end"
-                           value="2018-07-22"
-                           min="2018-01-01" max="2018-12-31">
+            <div class="row mb-3">
+              <div class="col-md-6 assign-pri-icon">
+                <h6>Priority</h6>
+              </div>
+              <div class="col-md-6 priority">
+                <div class="select_wrap">
+                    <ul class="default_option">
+                      <li>
+                        <div class="option high">
+                          <div class="icon"></div>
+                          <p>High</p>
+                        </div>
+                      </li>
+                    </ul>
+                    <ul class="select_ul">
+                      <li>
+                        <div class="option high">
+                          <div class="icon"></div>
+                          <p>High</p>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="option medium">
+                          <div class="icon"></div>
+                          <p>Medium</p>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="option low">
+                          <div class="icon"></div>
+                          <p>Low</p>
+                        </div>
+                      </li>                    
+                    </ul>
+                  </div>
               </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6 assign-status-icon">
-              <h6>Status</h6>
+            <div class="row mb-3">
+              <div class="col-md-6 assign-date-icon">
+                <h6>Start Date</h6>
+              </div>
+              <div class="col-md-6 date">
+                <div class="dropdown-date">
+                  <input type="date" id="start_date_task" name="start"
+                             value=""
+                             min="" max="" onchange="checkdate();">
+                </div>
+              </div>
             </div>
-            <div class="col-md-6 status p-0"> <span class="s-active"><a href="#">Active</a></span> <span class="s-onhold"><a href="#">On hold</a></span> <span class="s-done"><a href="#">Done</a></span> </div>
+            <div class="row mb-3">
+              <div class="col-md-6 assign-date-icon">
+                <h6>End Date</h6>
+              </div>
+              <div class="col-md-6 date">
+                <div class="dropdown-date">
+                  <input type="date" id="end_date_task" name="end"
+                             value=""
+                             min="" max=""  onchange="checkdate();">
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-4 assign-status-icon">
+                <h6>Status</h6>
+              </div>
+              <div class="col-md-8 status p-0" id="det_task_status"> <span class="s-active"><a href="#">Active</a></span> <span class="s-onhold"><a href="#">On hold</a></span> <span class="s-done"><a href="#">Done</a></span> </div>
+            </div>
+            <div class="col-12 pt-3 pb-3 wauto assign-btn"> <span class="border-btn nbtn"><a href="#">
+              <button id="add-role-cancel">Cancel</button>
+              </a></span> <span class="orange-btn nbtn"><a href="#">
+              <button id="UpdateTask">Update Task</button>
+              </a></span> </div>
           </div>
-          <div class="col-12 pt-3 pb-3 wauto assign-btn"> <span class="border-btn nbtn"><a href="#">
-            <button id="add-role-cancel">Cancel</button>
-            </a></span> <span class="orange-btn nbtn"><a href="#">
-            <button id="add-role">Update Task</button>
-            </a></span> </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </div>
 
 <script>
@@ -579,18 +684,18 @@ function loadAlertModal(){
  /* Custom select design */     
  jQuery('.drop-down').append('<div class="button"></div>');     
  jQuery('.drop-down').append('<ul class="select-list select-list-1"></ul>');     
- jQuery('.drop-down select option').each(function() {   
+ /*jQuery('.drop-down select option').each(function() {   
  var bg = jQuery(this).css('background-image');     
  jQuery('.select-list-1').append('<li class="clsAnchor"><span value="' + jQuery(this).val() + '" class="' + jQuery(this).attr('class') + '" style=background-image:' + bg + '>' + jQuery(this).text() + '</span></li>');    
- });     
- jQuery('.drop-down .button').html('<span style=background-image:' + jQuery('.drop-down select').find(':selected').css('background-image') + '>' + jQuery('.drop-down select').find(':selected').text() + '</span>' + '<a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>');    
- jQuery('.drop-down ul li').each(function() {    
+ });  */   
+ //jQuery('.drop-down .button').html('<span style=background-image:' + jQuery('.drop-down select').find(':selected').css('background-image') + '>' + jQuery('.drop-down select').find(':selected').text() + '</span>' + '<a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>');    
+ /*jQuery('.drop-down ul li').each(function() {    
  if (jQuery(this).find('span').text() == jQuery('.drop-down select').find(':selected').text()) {   
  jQuery(this).addClass('active');        
  }       
- });      
+ });   
  jQuery('.drop-down .select-list-1 span').on('click', function() 
- {           
+ {
  var dd_text = jQuery(this).text();   
  var dd_img = jQuery(this).css('background-image');  
  var dd_val = jQuery(this).attr('value');    
@@ -599,12 +704,25 @@ function loadAlertModal(){
  jQuery(this).parent().addClass('active');      
  $('.drop-down select[name=options]').val( dd_val );  
  $('.drop-down .select-list-1 li').slideUp();      
- });        
+ }); */       
  jQuery('.drop-down .button').on('click','a.select-list-link', function() 
  {       
  jQuery('.drop-down ul li').slideToggle();   
  });      
  /* End */        
+
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth();
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+
+    var maxDate = day + '-' + month + '-' + year;    
+    $('#start').attr('min', maxDate);
  }); 
  </script>
  
