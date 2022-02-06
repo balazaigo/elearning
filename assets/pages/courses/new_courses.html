@@ -5,17 +5,19 @@
 <div class="modal-body">
 
   <form method="post" class="" id="frmNewCourses" name="frmNewCourses" enctype="multipart/form-data">
-    <input type="hidden" name="platform_id" id="platform_id" value="1e4758ac-8077-42e6-b9d9-11b0de0df37d" >
+    <input type="hidden" name="platform_id" id="platform_id" value="1e4758ac-8077-42e6-b9d9-11b0de0df37d">
     <div class="row">
       <div class="col-md-12 mb-3">
         <div class="form-floating">
-          <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize" placeholder="Name of the course">
+          <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize"
+            placeholder="Name of the course">
           <label for="coursesName">Name of the course</label>
         </div>
       </div>
       <div class="col-md-12 mb-3">
         <div class="form-floating">
-          <input type="text" id="coursesID" name="coursesID" class="form-control cm-replaceSpace" placeholder="Course ID Prefix">
+          <input type="text" id="coursesID" name="coursesID" class="form-control cm-replaceSpace"
+            placeholder="Course ID Prefix">
           <label for="coursesID">Course ID Prefix</label>
         </div>
       </div>
@@ -39,7 +41,8 @@
 
       <div class="col-md-12 mb-3">
         <label class="custom-file">
-          <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="Design documents">
+          <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control"
+            placeholder="Design documents">
           <span class="filename">Design documents</span>
         </label>
       </div>
@@ -47,7 +50,7 @@
     <div class="row">
       <div class="col-md-6 mb-3">
         <div class="form-floating">
-          <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date" 
+          <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date"
             onblur="if(this.value!==''){this.className='form-control hasdate'}">
           <label for="start_date">Start Date</label>
         </div>
@@ -62,7 +65,7 @@
     </div>
 
     <div class="row">
-    
+
       <div class="col-md-12 mb-3">
         <div class="form-floating">
           <select class="sort-select form-select" id="member" name="member">
@@ -71,14 +74,15 @@
           <label for="member" data-title="Assign Member" data-caption="Assign">Assign</label>
         </div>
       </div>
-    
+
       <div class="col-md-12 mb-3">
         <label for="tags" class="tags-label d-none">Add a tags</label>
-        <select class="form-control tags" id="tags" name="tags[]" multiple="multiple" style="width:100%"></select>      
+        <select class="form-control tags" id="tags" name="tags[]" multiple="multiple" style="width:100%"></select>
       </div>
       <div class="col-md-12 mb-3">
         <div class="form-floating">
-          <input type="text" id="description" name="description" class="form-control counter" placeholder="One line description" />
+          <input type="text" id="description" name="description" class="form-control counter"
+            placeholder="One line description" />
           <span class="charcounter">0 Char</span>
           <label for="description">One line description</label>
         </div>
@@ -96,331 +100,332 @@
   </span>
 </div>
 <script type="text/javascript">
-var subCategory = {};
-var frmvalidatorfrm;
+  var subCategory = {};
+  var frmvalidatorfrm;
 
-$( document ).ready(function() {
-  
-  $('.cm-capitalize').each(function() { $(this).capitalize(); });
-  $('.cm-uppercase').each(function() { $(this).upperCase(); });  
-  $('.cm-replaceSpace').each(function() { $(this).replaceSpace(); });
+  $(document).ready(function () {
 
-  $(".form-select").each(function(index, element) {
-    const $this = $(this);
-    $this.on("change", (event) => {
-      const $this = $(event.currentTarget);
-      if ($this.val()) {
-        $this.next("label").html($this.next("label").data("title"));
-      } else {
-        $this.next("label").html($this.next("label").data("caption"));
-      }
+    $('.cm-capitalize').each(function () { $(this).capitalize(); });
+    $('.cm-uppercase').each(function () { $(this).upperCase(); });
+    $('.cm-replaceSpace').each(function () { $(this).replaceSpace(); });
+
+    $(".form-select").each(function (index, element) {
+      const $this = $(this);
+      $this.on("change", (event) => {
+        const $this = $(event.currentTarget);
+        if ($this.val()) {
+          $this.next("label").html($this.next("label").data("title"));
+        } else {
+          $this.next("label").html($this.next("label").data("caption"));
+        }
+      });
     });
-	});
-  $('.counter').keyup(function () {
-    var cuChar = $(this).val().length;
-    $(this).next("span.charcounter").html(cuChar + " Char");
-  });
-  $("#coursesName").on("blur", function(){
-    var str = $(this).val();
-    var acpref = str.substring(0, 4);
-    $("#coursesID").val(acpref.str_replace(' ', '-').toUpperCase());
-    getTagSuggest(str);
-  });
-  
-  var URL = "https://elearningcontent.zaigoinfotech.com/tags/";
-  $('.tags').select2({
-    dropdownParent: $('#addCourses'),
-    placeholder: "Add a tag",
-    dropdownCssClass: "select2Font",
-    tokenSeparators: [','],
-    tags: true,
-    multiple: true,
-    allowClear: true,
-    ajax: {
-      url: URL,
-      dataType: 'json',
-      type: "GET",
-      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-      quietMillis: 50,
-      data: function (params) {
-        return {
-          term: $.trim(params.term)
-        };        
+    $('.counter').keyup(function () {
+      var cuChar = $(this).val().length;
+      $(this).next("span.charcounter").html(cuChar + " Char");
+    });
+    $("#coursesName").on("blur", function () {
+      var str = $(this).val();
+      var acpref = str.substring(0, 4);
+      $("#coursesID").val(acpref.str_replace(' ', '-').toUpperCase());
+      getTagSuggest(str);
+    });
+
+    var URL = "https://elearningcontent.zaigoinfotech.com/tags/";
+    $('.tags').select2({
+      dropdownParent: $('#addCourses'),
+      placeholder: "Add a tag",
+      dropdownCssClass: "select2Font",
+      tokenSeparators: [','],
+      tags: true,
+      multiple: true,
+      allowClear: true,
+      ajax: {
+        url: URL,
+        dataType: 'json',
+        type: "GET",
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        quietMillis: 50,
+        data: function (params) {
+          return {
+            term: $.trim(params.term)
+          };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return {
+                text: item,
+                id: item
+              }
+            })
+          };
+        },
+        cache: true,
       },
-      processResults: function (data) {
+      createTag: function (params) {
+        var term = $.trim(params.term);
+        if (term === '') {
+          return null;
+        }
         return {
-          results: $.map(data, function (item) {
-            return {
-              text: item,
-              id: item
-            }
-          })
+          id: term,
+          text: term,
+          newTag: true
         };
       },
-      cache: true,
-    },
-    createTag: function (params) {
-      var term = $.trim(params.term);
-      if (term === '') {
-        return null;
+      maximumSelectionLength: 64,
+      minimumInputLength: 3,
+      formatSelectionTooBig: function (limit) {
+        return "Too many selected items, Only 64 tags allowed."
+      },
+      formatNoMatches: "add new tag and hit ENTER-KEY",
+      escapeMarkup: function (markup) {
+        return markup;
       }
-      return {
-        id: term,
-        text: term,
-        newTag: true
-      };      
-    },
-    maximumSelectionLength: 64,
-    minimumInputLength: 3,
-    formatSelectionTooBig: function (limit) {
-      return "Too many selected items, Only 64 tags allowed."
-    },
-    formatNoMatches: "add new tag and hit ENTER-KEY",
-    escapeMarkup: function (markup) {
-      return markup;
-    }    
-  });
+    });
 
-  $("input:file").change(function (){
-    var fappend = 'Design documents';
-    for(var i = 0 ; i < this.files.length ; i++){
-      var fileName = this.files[i].name;
-      fappend += '<span class="name">' + fileName.replace("C:\\fakepath\\", '') + '</span>';
-    }
-    if(i > 4) {
-      $(".filename").html("Design documents");
-      alert("Only 5 files accepted!");
-      $("#courseFile").val(null);
-      return false;
-    } else {
-      $(".filename").html(fappend);
-    }
-  });
-
-  //load the category data
-  $.ajax({
-    url: API_BASE_URL + '/category/',
-    type: 'get',
-    dataType: 'json',
-    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-    success:function(response){
-      $("#category").empty();
-      $("#category").append("<option value=''>Category</option>");
-      $.each( response, function( i, val ) {
-        $("#category").append("<option value='"+val.id+"'>"+val.name+"</option>");
-      });
-    }
-  });
-
-  $.ajax({
-    url: API_BASE_URL + '/sub_category/',
-    type: 'get',
-    dataType: 'json',
-    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-    success:function(response){
-      $.each( response, function( i, val ) {
-        if(typeof (subCategory[val.category_id]) === "undefined") {
-          subCategory[val.category_id] = [];
-        }
-        subCategory[val.category_id].push(val);
-      });
-    }
-  });
-
-  $.ajax({
-    url: API_BASE_URL + '/member/',
-    type: 'get',
-    dataType: 'json',
-    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-    success:function(response){
-      $("#member").empty();
-      $("#member").append("<option value=''>Member</option>");
-      $.each( response.data, function( i, val ) {
-        $("#member").append("<option value='"+val.id+"'>"+val.first_name+" " + val.last_name+"</option>");
-      });
-    }
-  });
-  
-  $("#category").on("change", function() {
-    $("#subCategory").empty();
-    $("#subCategory").append("<option value=''>Sub Category</option>");
-    $("#subCategory").next("label").html(  $("#subCategory").next("label").data("caption") );
-    if($(this).val()) {
-      var resp = subCategory[$(this).val()];
-      if(typeof(resp) === "undefined") {
-        console.log("subcategory not found: " + $(this).find("option:selected").text() );
+    $("input:file").change(function () {
+      var fappend = 'Design documents';
+      for (var i = 0; i < this.files.length; i++) {
+        var fileName = this.files[i].name;
+        fappend += '<span class="name">' + fileName.replace("C:\\fakepath\\", '') + '</span>';
+      }
+      if (i > 4) {
+        $(".filename").html("Design documents");
+        alert("Only 5 files accepted!");
+        $("#courseFile").val(null);
+        return false;
       } else {
-        $.each( resp, function( i, val ) {
-          $("#subCategory").append("<option value='"+val.id+"'>"+val.name+"</option>");
+        $(".filename").html(fappend);
+      }
+    });
+
+    //load the category data
+    $.ajax({
+      url: API_BASE_URL + '/category/',
+      type: 'get',
+      dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success: function (response) {
+        $("#category").empty();
+        $("#category").append("<option value=''>Category</option>");
+        $.each(response, function (i, val) {
+          $("#category").append("<option value='" + val.id + "'>" + val.name + "</option>");
         });
       }
-    }
-  });
-  
-  
-  /*LATER USE*/
-  /* ============================================================ */
-  /*
-  $("#category").on("change", function() {
-    $("#subCategory").empty();
-    if($(this).val()) {
-      console.log("Changes request :"  + $(this).val());
-      $.ajax({
-        url: API_BASE_URL + '/subcategory/',
-        type: 'get',
-        dataType: 'json',
-        success:function(response){
-          $("#subCategory").empty();
-          $("#subCategory").append("<option value=''>Select Sub Category</option>");
-          $.each( response, function( i, val ) {
-            $("#subCategory").append("<option value='"+val.id+"'>"+val.name+"</option>");
+    });
+
+    $.ajax({
+      url: API_BASE_URL + '/sub_category/',
+      type: 'get',
+      dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success: function (response) {
+        $.each(response, function (i, val) {
+          if (typeof (subCategory[val.category_id]) === "undefined") {
+            subCategory[val.category_id] = [];
+          }
+          subCategory[val.category_id].push(val);
+        });
+      }
+    });
+
+    $.ajax({
+      url: API_BASE_URL + '/mem_category_list/' + encodeURI("Define Course"),
+      type: 'get',
+      dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success: function (response) {
+        $("#member").empty();
+        $("#member").append("<option value=''>Member</option>");
+        $.each(response.data, function (i, val) {
+          $("#member").append("<option value='" + val.id + "'>" + val.first_name + " " + val.last_name + "</option>");
+        });
+      }
+    });
+
+    $("#category").on("change", function () {
+      $("#subCategory").empty();
+      $("#subCategory").append("<option value=''>Sub Category</option>");
+      $("#subCategory").next("label").html($("#subCategory").next("label").data("caption"));
+      if ($(this).val()) {
+        var resp = subCategory[$(this).val()];
+        if (typeof (resp) === "undefined") {
+          console.log("subcategory not found: " + $(this).find("option:selected").text());
+        } else {
+          $.each(resp, function (i, val) {
+            $("#subCategory").append("<option value='" + val.id + "'>" + val.name + "</option>");
           });
         }
-      });
-    }
-  });
-  */
-  /* ============================================================ */
-  //subCategory
-  
-  $.validator.addMethod("pattern", function( value, element, param ) {
-    if ( this.optional( element ) ) { return true; }
-    if ( typeof param === "string" ) {
-      param = new RegExp( "^(?:" + param + ")$" );
-    }
-    return param.test( value );
-  }, "Check your inputs" );
-  var frmvalidatorfrm = $("#frmNewCourses").validate({
-    rules: {
-      coursesName: {required: true, minlength: 1, maxlength: 256},
-      coursesID: {required: true, minlength: 1, maxlength: 20},
-      category: {required: true },
-      courseFile: {required: true },
-      start_date: {required: true },
-      end_date: {required: true },
-      member: {required: true },
-    },
-    messages: {
-      coursesName: {
-        required: "Please enter a Course Name",
-        minlength: "Your course name must consist of at least 1 characters",
-        maxlength: "Your course name must consist of max of 256 characters",
-      },      
-      coursesID: { required: "Please enter a Course ID Prefix",
-        minlength: "Course ID Prefix must consist of at least 1 characters",
-        maxlength: "Course ID Prefix must consist of max of 20 characters",
-      },      
-      category: {required: "Please select the category" },      
-      courseFile: {required: "Please upload attachment" },      
-      start_date: {required: "Please select starting date" },      
-      end_date: {required: "Please select ending date" },      
-      member: {required: "Please selct a member" },      
-    },
-    errorElement: "em",
-    errorPlacement: function ( error, element ) {
-      error.addClass( "help-block" );
-      if ( element.prop( "type" ) === "checkbox" ) {
-        error.insertAfter( element.parent( "label" ) );
-      } else {
-        error.insertAfter( element );
       }
-    },
-    highlight: function ( element, errorClass, validClass ) {
-      //$( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
-      $(element).addClass("is-invalid");
-    },
-    unhighlight: function (element, errorClass, validClass) {
-     //$( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
-     $(element).removeClass("is-invalid");
-    }
-  });
+    });
 
-  $("#saveCoursesClose, #saveCoursesNew").on("click", function() {
-    var isValidForm = frmvalidatorfrm.form();
-    if(isValidForm){
-      if($("#tags").val().length === 0) {
-        alert("Tags field cannot empty please choice atleast one tag!");
-        return false;
-      }
-      var tags = $("#tags").val().join(",");
-      
-      var formData = new FormData();
-      formData.append("course_id_prefix", $("#coursesID").val());
-      formData.append("name", $("#coursesName").val());
-      formData.append("description", $("#description").val());
-      formData.append("platform_id", $("#platform_id").val());
-      formData.append("category_id", $("#category").val());
-      formData.append("sub_category_id", $("#subCategory").val());
-      formData.append("member_id", $("#member").val());
-      formData.append("start_date",  $("#start_date").val());
-      formData.append("end_date",  $("#end_date").val());
-      formData.append("status", 0);
-      formData.append("MCStatus", 1);
-      formData.append("tags",  tags);
-      formData.append("category_name", $("#category").find("option:selected").text());
-      formData.append("sub_category_name", $("#subCategory").find("option:selected").text());
-      $.each($('input[name^="courseFile"]')[0].files, function(i, file) {
-        formData.append("attachments["+i+"]", file, file.name);
-      });
-      var parameter = "";
-      get_pagination(parameter);
-      if($(this).prop("id") === "saveCoursesClose") {
-        ajaxSaveCourse(formData, false);
-      } else {
-        ajaxSaveCourse(formData, true);
-      }
-    }
-  });
-  
-});
 
-function ajaxSaveCourse(formData, openNew){
-  $.ajax({
-    url: "https://elearningcontent.zaigoinfotech.com/course/",
-    method: "POST",
-    type: 'POST', // For jQuery < 1.9
-    cache: false,
-    contentType: false,
-    processData: false,
-    data: formData,
-    headers: {
-      "Authorization" : "Bearer " + getUserInfo().access_token
-    },
-    success: function(response){
-      toastr.success("New course information was successfully saved.");
-      $('#addCourses').modal('hide');
-      if(openNew) {
-        const container = document.getElementById("addCourses");
-        const modal = new bootstrap.Modal(container);
-        var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
-        $('.modal-content').load(url,function(result){
-          modal.show();
+    /*LATER USE*/
+    /* ============================================================ */
+    /*
+    $("#category").on("change", function() {
+      $("#subCategory").empty();
+      if($(this).val()) {
+        console.log("Changes request :"  + $(this).val());
+        $.ajax({
+          url: API_BASE_URL + '/subcategory/',
+          type: 'get',
+          dataType: 'json',
+          success:function(response){
+            $("#subCategory").empty();
+            $("#subCategory").append("<option value=''>Select Sub Category</option>");
+            $.each( response, function( i, val ) {
+              $("#subCategory").append("<option value='"+val.id+"'>"+val.name+"</option>");
+            });
+          }
         });
       }
-    },
-    error: function(error) {
-      toastr.error("Response Error: " + error.message);
-      console.log(error);
-    }
-  });
-}
+    });
+    */
+    /* ============================================================ */
+    //subCategory
 
-function getTagSuggest(qString){
-  $.ajax({
-    url: encodeURI('https://elearningcontent.zaigoinfotech.com/suggest/tags/?term=' + qString),
-    type: 'get',
-    dataType: 'json',
-    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-    success:function(response){
-      var tags = response.tags;
-      if(tags) {
-        $.each( tags, function( i, val ) {
-          $("#tags").append("<option value='"+val+"'>"+val+"</option>");
-        });
-        $("#tags").val(tags).change();
+    $.validator.addMethod("pattern", function (value, element, param) {
+      if (this.optional(element)) { return true; }
+      if (typeof param === "string") {
+        param = new RegExp("^(?:" + param + ")$");
       }
-    }
+      return param.test(value);
+    }, "Check your inputs");
+    var frmvalidatorfrm = $("#frmNewCourses").validate({
+      rules: {
+        coursesName: { required: true, minlength: 1, maxlength: 256 },
+        coursesID: { required: true, minlength: 1, maxlength: 20 },
+        category: { required: true },
+        courseFile: { required: true },
+        start_date: { required: true },
+        end_date: { required: true },
+        member: { required: true },
+      },
+      messages: {
+        coursesName: {
+          required: "Please enter a Course Name",
+          minlength: "Your course name must consist of at least 1 characters",
+          maxlength: "Your course name must consist of max of 256 characters",
+        },
+        coursesID: {
+          required: "Please enter a Course ID Prefix",
+          minlength: "Course ID Prefix must consist of at least 1 characters",
+          maxlength: "Course ID Prefix must consist of max of 20 characters",
+        },
+        category: { required: "Please select the category" },
+        courseFile: { required: "Please upload attachment" },
+        start_date: { required: "Please select starting date" },
+        end_date: { required: "Please select ending date" },
+        member: { required: "Please selct a member" },
+      },
+      errorElement: "em",
+      errorPlacement: function (error, element) {
+        error.addClass("help-block");
+        if (element.prop("type") === "checkbox") {
+          error.insertAfter(element.parent("label"));
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      highlight: function (element, errorClass, validClass) {
+        //$( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        //$( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
+        $(element).removeClass("is-invalid");
+      }
+    });
+
+    $("#saveCoursesClose, #saveCoursesNew").on("click", function () {
+      var isValidForm = frmvalidatorfrm.form();
+      if (isValidForm) {
+        if ($("#tags").val().length === 0) {
+          alert("Tags field cannot empty please choice atleast one tag!");
+          return false;
+        }
+        var tags = $("#tags").val().join(",");
+
+        var formData = new FormData();
+        formData.append("course_id_prefix", $("#coursesID").val());
+        formData.append("name", $("#coursesName").val());
+        formData.append("description", $("#description").val());
+        formData.append("platform_id", $("#platform_id").val());
+        formData.append("category_id", $("#category").val());
+        formData.append("sub_category_id", $("#subCategory").val());
+        formData.append("member_id", $("#member").val());
+        formData.append("start_date", $("#start_date").val());
+        formData.append("end_date", $("#end_date").val());
+        formData.append("status", 0);
+        formData.append("MCStatus", 1);
+        formData.append("tags", tags);
+        formData.append("category_name", $("#category").find("option:selected").text());
+        formData.append("sub_category_name", $("#subCategory").find("option:selected").text());
+        $.each($('input[name^="courseFile"]')[0].files, function (i, file) {
+          formData.append("attachments[" + i + "]", file, file.name);
+        });
+        var parameter = "";
+        get_pagination(parameter);
+        if ($(this).prop("id") === "saveCoursesClose") {
+          ajaxSaveCourse(formData, false);
+        } else {
+          ajaxSaveCourse(formData, true);
+        }
+      }
+    });
+
   });
-}
+
+  function ajaxSaveCourse(formData, openNew) {
+    $.ajax({
+      url: "https://elearningcontent.zaigoinfotech.com/course/",
+      method: "POST",
+      type: 'POST', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token
+      },
+      success: function (response) {
+        toastr.success("New course information was successfully saved.");
+        $('#addCourses').modal('hide');
+        if (openNew) {
+          const container = document.getElementById("addCourses");
+          const modal = new bootstrap.Modal(container);
+          var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
+          $('.modal-content').load(url, function (result) {
+            modal.show();
+          });
+        }
+      },
+      error: function (error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  }
+
+  function getTagSuggest(qString) {
+    $.ajax({
+      url: encodeURI('https://elearningcontent.zaigoinfotech.com/suggest/tags/?term=' + qString),
+      type: 'get',
+      dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success: function (response) {
+        var tags = response.tags;
+        if (tags) {
+          $.each(tags, function (i, val) {
+            $("#tags").append("<option value='" + val + "'>" + val + "</option>");
+          });
+          $("#tags").val(tags).change();
+        }
+      }
+    });
+  }
 
 </script>
