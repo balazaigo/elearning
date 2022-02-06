@@ -3300,9 +3300,18 @@ form#multiple {
 	display: block;
 }
 .course_details .wrapper .course_head_right {
-    grid-column: span 7;
+    grid-column: span 5;
     margin-left: 0;
     margin-top: -12px;
+}
+.course_details .wrapper .course_head_right_2 {
+    grid-column: span 2;
+    margin-left: 0;
+    margin-top: 0px;
+}
+.course_details .wrapper .course_head_right_2 img{
+	width: 40px;
+	cursor: pointer;
 }
 .course_details .wrapper .course_head_right p{
     width: fit-content;
@@ -3485,4 +3494,29 @@ input[type=date].hasdate::-webkit-datetime-edit {
 }
 option:not(:first-of-type) {
   color: #212529;
+}
+.overlay_target{
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+#user_comments{
+    height: 120px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#files_task{
+	display: block !important;
+}
+.select-list-1 li{
+	cursor: pointer;
+}
+.drop-down .button{
+	cursor: pointer;
+}
+.dpc-closeh{
+	border-radius: 0px !important; 
+    width: 97.2%;
+    background-color: rgb(131,152,183);
+    margin-left: 12px;
+    border-radius: 0px;
 }
