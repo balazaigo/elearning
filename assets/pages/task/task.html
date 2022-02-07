@@ -304,7 +304,7 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
     
         if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
-          html += `<li><a class="dropdown-item green" href="#taskdetails">&nbsp;Edit</a></li>`;
+          html += `<li><a class="dropdown-item green" onClick="getTaskDetails(${item.id})">&nbsp;Edit</a></li>`;
         } else {
           html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
         }
@@ -473,8 +473,563 @@
   
   }
 
+function checkdate(){
+  var start_date = $("#start_date_task").val();
+  var end_date   = $("#end_date_task").val();
+  if(start_date !== '' && end_date !== ''){
+    var sdate = new Date(start_date[2], start_date[1] - 1, start_date[0]);
+    var edate = new Date(end_date[2], end_date[1] - 1, end_date[0]);
+    if (start_date > end_date){
+        $("#end_date_task").val("");
+          toastr.error("End Date should be greater than start date");
+    }
+  }
+}
+function getStatusTask(sCode){
+  /*
+    1 - Active
+    2 - On hold
+    3 - Done
+  */
+  switch(sCode) {
+    case 1:
+      return `<span class="s-active active" data-status="1" >
+                <a onclick="change_status(this)" style="background: #2C5AAC;color: #fff;" data-status="1">Active</a>
+              </span>
+              <span class="s-onhold" data-status="2">
+                <a onclick="change_status(this)" data-status="2">On hold</a>
+              </span>
+              <span class="s-done" data-status="4">
+                <a onclick="change_status(this)" data-status="4">Done</a>
+              </span>`;    
+      break;
+    case 2:
+      return `<span class="s-active" data-status="1">
+                <a href="#" data-status="1" onclick="change_status(this)">Active</a>
+              </span>
+              <span class="s-onhold active" data-status="2">
+                <a href="#" style="background: #ffc107;color: #fff;" data-status="2" onclick="change_status(this)">On hold</a>
+              </span>
+              <span class="s-done" data-status="4">
+                <a href="#" data-status="4" onclick="change_status(this)">Done</a>
+              </span>`;
+      break;
+    case 4:
+      return `<span class="s-active" data-status="1">
+                <a href="#" data-status="1" onclick="change_status(this)">Active</a>
+              </span>
+              <span class="s-onhold" data-status="2">
+                <a href="#" data-status="2" onclick="change_status(this)">On hold</a>
+              </span>
+              <span class="s-done active" data-status="4">
+                <a href="#" style="background: #108842;color: #fff;" data-status="4" onclick="change_status(this)">Done</a>
+              </span>`;    
+      break;
+    default:
+      return '<span class="badge bg-primary">None</span>';    
+      break;
+  }
+}
+function change_status(e){
+  var task_status = getStatusTask(parseInt(e.dataset.status));
+  $("#det_task_status").empty();
+  $("#user_message").empty();
+  $("#det_task_status").html(task_status);
+}
+function getTaskDetails(id){
+  $("#content_message").val("");
+  $("#files_task").val("");
+  $("#user_message").val("");
+  $("#taskdetails").addClass("overlay_target");
+    $.ajax({
+      url: 'https://elearningcontent.zaigoinfotech.com/task/'+ id + '/',
+      type: 'get',
+      dataType: 'json',
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        //console.log(response);
+        $("#det_task_id").text("")
+        $("#det_task_name").text("");
+        $("#created_dateTime").text("");
+        $("#start_date_task").val("");
+        $("#end_date_task").val("");
+        $("#task_id").val("");
+        $("#module_id").val("");
+        $("#course_id").val("");
+        $("#det_task_status").html("");
+        $(".default_option li").empty();
+        $("#user_comments").empty();
+        $("#content_message").val("");
+        $("#user_message").val("");
+        $("#task_breadcrumb").empty();
+        var task_det = response.task_detail;
+        $("#det_task_id").text("#"+task_det.id);
+        $("#det_task_name").text(task_det.name);
+        var created_date = new Date(task_det.created_on);
+        var created_dateTime = created_date.toLocaleString([], {year: "numeric",month: "2-digit", day: "2-digit", hour: '2-digit', minute:'2-digit'});
+        $("#created_dateTime").text(created_dateTime);
+        var start_date = task_det.start_date;
+        var end_date = task_det.end_date;
+        $("#start_date_task").val(start_date);
+        $("#end_date_task").val(end_date);
+        $("#task_id").val(task_det.id);
+        if(task_det.module_id){
+          $("#module_id").val(task_det.module_id);
+        }
+        $("#course_id").val(task_det.course_id);
+        var task_status = getStatusTask(task_det.status);
+        $("#det_task_status").html(task_status);
+        var currentele = "";
+        if(task_det.priority == "0"){
+          var priority_name = "High";
+          var priority_class = "high";
+          currentele += `<div class="option ${priority_class}" data-priority="0" id="assign_priority">
+                        <div class="icon"></div>
+                        <p>${priority_name}</p>
+                      </div>`;
+        }else if(task_det.priority == "1"){
+          var priority_name = "Medium";
+          var priority_class = "medium";
+          currentele += `<div class="option ${priority_class}" data-priority="1" id="assign_priority">
+                        <div class="icon"></div>
+                        <p>${priority_name}</p>
+                      </div>`;
+        }else{
+          var priority_name = "Low";
+          var priority_class = "low";
+          currentele += `<div class="option ${priority_class}" data-priority="2" id="assign_priority">
+                        <div class="icon"></div>
+                        <p>${priority_name}</p>
+                      </div>`;
+        }
+        $(".default_option li").html(currentele);
+        if(response.available_assignees.length > 0){
+          get_member(task_det.assigned_to, task_det.assignee, response.available_assignees);
+        }
+        if(response.module_content.length > 0){
+            $("#content_message").val(response.module_content[0].content);
+        }
+        if(response.module_comments.length > 0){
+          var member_comments_html = "";
+            $.each( response.module_comments, function( i, val ) {
+              member_comments_html += `<h4>${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+                            <div class="add-comment"> 
+                              <p>${val.comments}</p>
+                            </div>`;
+            });
+          $("#user_comments").html(member_comments_html);
+        }
+        if(response.breadcrumbs.length > 0){
+          var breadcrumb_html = "";
+            $.each( response.breadcrumbs, function( i, val ) {
+              breadcrumb_html += `<small>${val}</small>`;
+            });
+          $("#task_breadcrumb").html(breadcrumb_html);
+        }
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+}
+function get_member(assigned_to, assignee, available_assignees){
+  $(".drop-down .button").empty();
+  $(".select-list-1").empty();
+   var assignee_html = "";
+      $.each( available_assignees, function( i, val ) {
+        if(assignee && assignee == val.id){
+          assignee_html +='<span style="background-image:none;" data-member_id="'+val.id+'" id="assign_member">'+val.first_name+' '+val.last_name+'</span><a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>';
+          $(".select-list-1").append('<li class="clsAnchor active" style="overflow: hidden; display: none;" data-member_id="'+val.id+'"><span value="n'+(i+1)+'" class="n'+(i+1)+'" style="background-image:none" onclick="selectUser(this);">'+val.first_name+' '+val.last_name+'</span></li>');
+        }else{
+          $(".select-list-1").append('<li class="clsAnchor" style="overflow: hidden; display: none;" data-member_id="'+val.id+'"><span value="n'+(i+1)+'" class="n'+(i+1)+'" style="background-image:none" onclick="selectUser(this);">'+val.first_name+' '+val.last_name+'</span></li>');
+        }
+      });
+      if(assignee_html == ""){
+        assignee_html += '<span style="background-image:none;" id="assign_member">Assign Member</span><a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>';
+      }
+      $(".drop-down .button").html(assignee_html);
+}
+function selectUser(e){
+ var dd_text = $(e).text();   
+ var dd_val = $(e).attr('value');
+ var member_id = $(e).parent().attr("data-member_id"); 
+ $('.drop-down .button').html('<span data-member_id="'+member_id+'" id="assign_member">' + dd_text + '</span>' + '<a href="javascript:void(0);" class="select-list-link" data-member_id="'+member_id+'"><i class="fas fa-angle-down"></i></a>');       
+ $('.drop-down .select-list-1 span').parent().removeClass('active');     
+ $(this).parent().addClass('active');      
+ $('.drop-down select[name=options]').val( dd_val );  
+ $('.drop-down .select-list-1 li').slideUp();   
+}
+$(document).ready(function(){
+
+  $("#add-role-cancel").on("click", function() {
+    $("#taskdetails").removeClass("overlay_target");
+    doSearch();
+  });
+  $( "#add-role-close").on("click", function() {
+    $("#taskdetails").removeClass("overlay_target");
+    doSearch();
+  });
+  $("#UpdateTask").on("click", function() {
+    var content_message = $("#content_message").val();
+    var user_message = $("#user_message").val();
+    var task_id = $("#task_id").val();
+    var course_id = $("#course_id").val();
+    var module_id = $("#module_id").val();
+    var start_date = $("#start_date_task").val();
+    var end_date = $("#end_date_task").val();
+    var status = $('#det_task_status span.active').attr('data-status');
+    var priority = $("#assign_priority").attr("data-priority");
+    var assign_to = $("#assign_member").attr("data-member_id");
+    var task_name = $("#det_task_name").text();
+    var todayDate = new Date().toISOString().slice(0, 10);
+    var formData = new FormData();
+    var error_status = 1;
+    if(start_date == ""){
+      toastr.error("Start Date should not be empty");
+      error_status = 0;
+    }
+    if(end_date == ""){
+      toastr.error("End Date should not be empty");
+      error_status = 0;
+    }
+    if(assign_to == "" || assign_to == undefined){
+      toastr.error("Select Assigned To");
+      error_status = 0;
+    }
+    if(user_message == ""){
+     // toastr.error("Add a Comment");
+      //error_status = 0;
+    }
+    if(error_status == 0){
+      return false;
+    }
+    if(content_message !== ''){
+      update_content(content_message, task_id, course_id, module_id);
+    }
+    if(user_message !== ''){
+      update_comments(user_message, task_id, course_id, module_id);
+    }
+    var formData_file = new FormData();
+    formData.append("assignee", assign_to);
+    formData.append("start_date", start_date);
+    formData.append("end_date", end_date);
+    formData.append("status", status);
+    formData.append("priority", priority);
+    formData.append("course_id", course_id);
+    formData.append("MCStatus", "1");
+    formData.append("assigned_by", getUserInfo().id);
+    formData.append("comment", user_message);
+    formData.append("name", task_name);
+    formData.append("id", task_id);
+    formData.append("module_id", module_id);
+    $.each($('input[name^="task_file"]')[0].files, function(i, file) {
+          formData_file.append("attachment", file);
+          formData_file.append("attachment_type", file.type);
+          formData_file.append("attachment_name", file.name);
+          formData_file.append("created_date", todayDate);
+          formData_file.append("status", 0);
+          formData_file.append("course_id", course_id);
+          formData_file.append("id", task_id);
+          formData_file.append("module_id", module_id);
+          update_attachment(formData_file);
+          formData.append("attachment", file);
+          formData.append("attachment_type", file.type);
+    });
+    $.ajax({
+        url: "https://elearningcontent.zaigoinfotech.com/task/"+task_id+"/",
+        method: "PUT",
+        type: 'PUT', // For jQuery < 1.9
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        headers: {
+            "Authorization" : "Bearer " + getUserInfo().access_token
+        },
+        success: function(response){
+          toastr.success("Task Updated successfully.");
+          doSearch();
+          $("#taskdetails").removeClass("overlay_target");
+        },
+        error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+        }
+    });
+  });
+});
+function update_attachment(formData){
+  $.ajax({
+    url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+    method: "POST",
+    type: 'POST', // For jQuery < 1.9
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: formData,
+    headers: {
+      "Authorization" : "Bearer " + getUserInfo().access_token
+    },
+    success: function(response){
+      //toastr.success("File uploaded successfully.");
+    },
+    error: function(error) {
+      toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+}
+function update_content(content_message, task_id, course_id, module_id){
+  if(module_id){
+    var content_data = {
+      "id": task_id,
+      "course_id": course_id,
+      "module_id": module_id,
+      "content": content_message,
+      "revision_label":""
+    }
+  }else{
+    var content_data = {
+      "id": task_id,
+      "course_id": course_id,
+      "content": content_message,
+      "revision_label":""
+    }
+  }
+  $.ajax({
+    url: "https://elearningcontent.zaigoinfotech.com/course_content/",
+    type: "POST",
+    data: JSON.stringify(content_data),
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    success:function(response){
+      //toastr.success("Content has been saved.");
+    }
+  });
+}
+function update_comments(user_message, task_id, course_id, module_id){
+    var formData = new FormData();
+    formData.append("course_id",  course_id);
+    if(module_id){
+      formData.append("module_id",  module_id);
+    }
+    formData.append("id", task_id);
+    formData.append("comments", user_message);
+    $.ajax({
+        url: "https://elearningcontent.zaigoinfotech.com/module_comments/",
+        type: 'POST', // For jQuery < 1.9
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        headers: {
+            "Authorization" : "Bearer " + getUserInfo().access_token
+        },
+        success: function(response){
+          //toastr.success("Comment saved Successfully.");
+        },
+        error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+        }
+    });
+}
 </script>
 
+<!--<div id="taskdetails" class="overlay" style="visibility: visible !important;opacity:inherit !important;">-->
+<div id="taskdetails" class="overlay">
+    <div class="popup extra-popup p-0"> <a class="close" href="#" id="add-role-close">&times;</a>
+      <input type="hidden" id="task_id" value="">
+      <input type="hidden" id="course_id" value="">
+      <input type="hidden" id="module_id" value="">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="gwhite p-3">
+            <div class="tp-text mb-3"> <span class="obg" id="det_task_id"></span> <span class="gborder" id="task_breadcrumb">  </span> <span class="t-time" id="created_dateTime"></span> </div>
+            <h4 id="det_task_name"></h4>
+            <div class="col-md-12 mb-3">
+              <textarea id="content_message" class="ckeditor form-control"  name="wysiwyg-editor"></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+              <div class="mb-3 buttonupload">
+                <label for="files" class="btn"></label>
+                <input id="files_task" type="file" class="form-control" name="task_file">
+              </div>
+            </div>
+            <h4 class="mb-4">Comments</h4>
+            <div class="col-md-12 mb-3 comments" id="user_comments">
+              <!--<h4>Sri harsha raj kumar <span>A minute ago</span></h4>-->
+              <!--<div class="add-comment">--> <!--<img src="../assets/images/Ellipse10.png">-->
+                <!--<p>Lorem Ipsum Generator. Generate lorem ipsum in paragraphs, words or sentences. Italic and bold tags.Generates passages of lorem ipsum text suitable for use as placeholder copy in web pages, graphics, and more.</p>
+              </div>-->
+            </div>
+          </div>
+          <div class="white-bg box-shadow p-3">
+            <div class="col-md-12 mb-3 comments">
+              <div class="add-comment"> <!--<img src="../assets/images/Ellipse10.png">-->
+                <textarea class="form-control" placeholder="Add a comment" id="user_message"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="assign-details p-3 pl-0">
+            <h4>Details</h4>
+            <div class="row mb-3">
+              <div class="col-md-6 assign-user-icon">
+                <h6>Assigned To</h6>
+              </div>
+              <div class="col-md-6 assign-user">
+                <div class="drop-down">
+                  <select name="options" id="det_assignee_opt">
+                    <option class="nl" value="nl">Harsha</option>
+                    <option class="n2" value="n2">Anil</option>
+                    <option class="n3" value="n3">Vishal</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6 assign-pri-icon">
+                <h6>Priority</h6>
+              </div>
+              <div class="col-md-6 priority">
+                <div class="select_wrap">
+                    <ul class="default_option">
+                      <li>
+                        <div class="option high" data-priority="0" id="assign_priority">
+                          <div class="icon"></div>
+                          <p>High</p>
+                        </div>
+                      </li>
+                    </ul>
+                    <ul class="select_ul">
+                      <li>
+                        <div class="option high" data-priority="0">
+                          <div class="icon"></div>
+                          <p>High</p>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="option medium" data-priority="1">
+                          <div class="icon"></div>
+                          <p>Medium</p>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="option low" data-priority="2">
+                          <div class="icon"></div>
+                          <p>Low</p>
+                        </div>
+                      </li>                    
+                    </ul>
+                  </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6 assign-date-icon">
+                <h6>Start Date</h6>
+              </div>
+              <div class="col-md-6 date">
+                <div class="dropdown-date">
+                  <input type="date" id="start_date_task" name="start"
+                             value=""
+                             min="" max="" onchange="checkdate();">
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6 assign-date-icon">
+                <h6>End Date</h6>
+              </div>
+              <div class="col-md-6 date">
+                <div class="dropdown-date">
+                  <input type="date" id="end_date_task" name="end"
+                             value=""
+                             min="" max=""  onchange="checkdate();">
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-4 assign-status-icon">
+                <h6>Status</h6>
+              </div>
+              <div class="col-md-8 status p-0" id="det_task_status"> <span class="s-active"><a href="#">Active</a></span> <span class="s-onhold"><a href="#">On hold</a></span> <span class="s-done"><a href="#">Done</a></span> </div>
+            </div>
+            <div class="col-12 pt-3 pb-3 wauto assign-btn"> <span class="border-btn nbtn"><a href="#">
+              <button id="add-role-cancel">Cancel</button>
+              </a></span> <span class="orange-btn nbtn">
+              <button id="UpdateTask">Update Task</button>
+              </span> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script>
+  $(".default_option").click(function () {
+    $(this).parent().toggleClass("active");
+  });
+  
+  $(".select_ul li").click(function () {
+    var currentele = $(this).html();
+    $(".default_option li").html(currentele);
+    var priority = $(this).find(".option").attr("data-priority");
+    $(".default_option li .option").attr("data-priority", priority);
+    $(".default_option li .option").attr("id", "assign_priority");
+    $(this).parents(".select_wrap").removeClass("active");
+  });  
+</script>
+<script>
+  jQuery().ready(function() {   
+ /* Custom select design */     
+ jQuery('.drop-down').append('<div class="button"></div>');     
+ jQuery('.drop-down').append('<ul class="select-list select-list-1"></ul>');     
+ /*jQuery('.drop-down select option').each(function() {   
+ var bg = jQuery(this).css('background-image');     
+ jQuery('.select-list-1').append('<li class="clsAnchor"><span value="' + jQuery(this).val() + '" class="' + jQuery(this).attr('class') + '" style=background-image:' + bg + '>' + jQuery(this).text() + '</span></li>');    
+ });  */   
+ //jQuery('.drop-down .button').html('<span style=background-image:' + jQuery('.drop-down select').find(':selected').css('background-image') + '>' + jQuery('.drop-down select').find(':selected').text() + '</span>' + '<a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>');    
+ /*jQuery('.drop-down ul li').each(function() {    
+ if (jQuery(this).find('span').text() == jQuery('.drop-down select').find(':selected').text()) {   
+ jQuery(this).addClass('active');        
+ }       
+ });   
+ jQuery('.drop-down .select-list-1 span').on('click', function() 
+ {
+ var dd_text = jQuery(this).text();   
+ var dd_img = jQuery(this).css('background-image');  
+ var dd_val = jQuery(this).attr('value');    
+ jQuery('.drop-down .button').html('<span style=background-image:' + dd_img + '>' + dd_text + '</span>' + '<a href="javascript:void(0);" class="select-list-link"><i class="fas fa-angle-down"></i></a>');       
+ jQuery('.drop-down .select-list-1 span').parent().removeClass('active');     
+ jQuery(this).parent().addClass('active');      
+ $('.drop-down select[name=options]').val( dd_val );  
+ $('.drop-down .select-list-1 li').slideUp();      
+ }); */       
+ jQuery('.drop-down .button').on('click','a.select-list-link', function() 
+ {       
+ jQuery('.drop-down ul li').slideToggle();   
+ });      
+ /* End */        
+
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth();
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+
+    var maxDate = day + '-' + month + '-' + year;    
+    $('#start').attr('min', maxDate);
+ }); 
+ </script>
 <div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">

@@ -517,6 +517,11 @@ function getTaskDetails(id){
         $("#module_id").val("");
         $("#course_id").val("");
         $("#det_task_status").html("");
+        $(".default_option li").empty();
+        $("#user_comments").empty();
+        $("#content_message").val("");
+        $("#user_message").val("");
+        $("#task_breadcrumb").empty();
         var task_det = response.task_detail;
         $("#det_task_id").text("#"+task_det.id);
         $("#det_task_name").text(task_det.name);
@@ -557,17 +562,14 @@ function getTaskDetails(id){
                         <p>${priority_name}</p>
                       </div>`;
         }
-        $(".default_option li").empty();
         $(".default_option li").html(currentele);
         if(response.available_assignees.length > 0){
           get_member(task_det.assigned_to, task_det.assignee, response.available_assignees);
         }
-        console.log(response);
         if(response.module_content.length > 0){
             $("#content_message").val(response.module_content[0].content);
         }
         if(response.module_comments.length > 0){
-          $("#user_comments").empty();
           var member_comments_html = "";
             $.each( response.module_comments, function( i, val ) {
               member_comments_html += `<h4>${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
@@ -576,10 +578,8 @@ function getTaskDetails(id){
                             </div>`;
             });
           $("#user_comments").html(member_comments_html);
-          $("#user_message").val("");
         }
         if(response.breadcrumbs.length > 0){
-          $("#task_breadcrumb").empty();
           var breadcrumb_html = "";
             $.each( response.breadcrumbs, function( i, val ) {
               breadcrumb_html += `<small>${val}</small>`;
