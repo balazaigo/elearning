@@ -12,7 +12,10 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
 } else if(SITE_URL_PROTOCOL === "https://localhost"){
 	SITE_URL_PROTOCOL = "https://localhost/elearning/";
 
-} else if(SITE_URL_PROTOCOL === "https://cas.exper.com/"){
+} else if(SITE_URL_PROTOCOL === "https://elearning.zaigoinfotech.com"){
+	SITE_URL_PROTOCOL = "https://elearning.zaigoinfotech.com/";
+
+} else if(SITE_URL_PROTOCOL === "https://cas.exper.com"){
 	SITE_URL_PROTOCOL = "https://cas.exper.com/";
   API_BASE_URL = "https://admin.exper.com";
   API_CONTENT_URL = "https://content.exper.com";
