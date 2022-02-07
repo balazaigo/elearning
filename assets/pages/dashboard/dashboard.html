@@ -508,6 +508,15 @@ function getTaskDetails(id){
       },
       success:function(response){
         //console.log(response);
+        $("#det_task_id").text("")
+        $("#det_task_name").text("");
+        $("#created_dateTime").text("");
+        $("#start_date_task").val("");
+        $("#end_date_task").val("");
+        $("#task_id").val("");
+        $("#module_id").val("");
+        $("#course_id").val("");
+        $("#det_task_status").html("");
         var task_det = response.task_detail;
         $("#det_task_id").text("#"+task_det.id);
         $("#det_task_name").text(task_det.name);
@@ -519,6 +528,9 @@ function getTaskDetails(id){
         $("#start_date_task").val(start_date);
         $("#end_date_task").val(end_date);
         $("#task_id").val(task_det.id);
+        if(task_det.module_id){
+          $("#module_id").val(task_det.module_id);
+        }
         $("#course_id").val(task_det.course_id);
         var task_status = getStatusTask(task_det.status);
         $("#det_task_status").html(task_status);
@@ -623,6 +635,7 @@ $(document).ready(function(){
     var user_message = $("#user_message").val();
     var task_id = $("#task_id").val();
     var course_id = $("#course_id").val();
+    var module_id = $("#module_id").val();
     var start_date = $("#start_date_task").val();
     var end_date = $("#end_date_task").val();
     var status = $('#det_task_status span.active').attr('data-status');
@@ -652,10 +665,10 @@ $(document).ready(function(){
       return false;
     }
     if(content_message !== ''){
-      update_content(content_message, task_id, course_id);
+      update_content(content_message, task_id, course_id, module_id);
     }
     if(user_message !== ''){
-      update_comments(user_message, task_id, course_id);
+      update_comments(user_message, task_id, course_id, module_id);
     }
     var formData_file = new FormData();
     formData.append("assignee", assign_to);
@@ -669,6 +682,7 @@ $(document).ready(function(){
     formData.append("comment", user_message);
     formData.append("name", task_name);
     formData.append("id", task_id);
+    formData.append("module_id", module_id);
     $.each($('input[name^="task_file"]')[0].files, function(i, file) {
           formData_file.append("attachment", file);
           formData_file.append("attachment_type", file.type);
@@ -676,6 +690,8 @@ $(document).ready(function(){
           formData_file.append("created_date", todayDate);
           formData_file.append("status", 0);
           formData_file.append("course_id", course_id);
+          formData_file.append("id", task_id);
+          formData_file.append("module_id", module_id);
           update_attachment(formData_file);
           formData.append("attachment", file);
           formData.append("attachment_type", file.type);
@@ -724,12 +740,22 @@ function update_attachment(formData){
     }
   });
 }
-function update_content(content_message, task_id, course_id){
-  var content_data = {
-    "id": task_id,
-    "course_id": course_id,
-    "content": content_message,
-    "revision_label":""
+function update_content(content_message, task_id, course_id, module_id){
+  if(module_id){
+    var content_data = {
+      "id": task_id,
+      "course_id": course_id,
+      "module_id": module_id,
+      "content": content_message,
+      "revision_label":""
+    }
+  }else{
+    var content_data = {
+      "id": task_id,
+      "course_id": course_id,
+      "content": content_message,
+      "revision_label":""
+    }
   }
   $.ajax({
     url: "https://elearningcontent.zaigoinfotech.com/course_content/",
@@ -741,9 +767,12 @@ function update_content(content_message, task_id, course_id){
     }
   });
 }
-function update_comments(user_message, task_id, course_id){
+function update_comments(user_message, task_id, course_id, module_id){
     var formData = new FormData();
     formData.append("course_id",  course_id);
+    if(module_id){
+      formData.append("module_id",  module_id);
+    }
     formData.append("id", task_id);
     formData.append("comments", user_message);
     $.ajax({
@@ -772,6 +801,7 @@ function update_comments(user_message, task_id, course_id){
     <div class="popup extra-popup p-0"> <a class="close" href="#" id="add-role-close">&times;</a>
       <input type="hidden" id="task_id" value="">
       <input type="hidden" id="course_id" value="">
+      <input type="hidden" id="module_id" value="">
       <div class="row">
         <div class="col-md-8">
           <div class="gwhite p-3">
