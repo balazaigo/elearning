@@ -300,7 +300,19 @@ async function getCoursePage(e) {
   course_popup += '<div class="modal-dialog modal-lg">';
   course_popup += '<div class="modal-content" id="content-courseModule"></div>';
   course_popup += '</div>';
-  course_popup += '</div>';
+  course_popup += `</div>
+                  <div id="desktop_preview" class="overlay">
+                    <div class="popup extra-popup p-0" style="width:88% !important;"> <a class="close" href="#" id="desktop-preview-close">&times;</a>
+                      <input type="hidden" id="dp_course_id" value="${e.target.dataset.cid}">
+                      <div id="dp_courseData"></div>
+                    </div>
+                  </div>
+                  <div id="mobile_preview" class="overlay">
+                    <div class="popup extra-popup p-0" style="width:25% !important;"> <a class="close" href="#" id="mobile-preview-close">&times;</a>
+                      <input type="hidden" id="dp_course_id" value="${e.target.dataset.cid}">
+                      <div id="mp_courseData"></div>
+                    </div>
+                  </div>`;
   var newDIV = $("<div class='course' id='course_box'></div>");
   var outerHtml = '';
   //var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/nested2.json`;
@@ -310,7 +322,7 @@ async function getCoursePage(e) {
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
   })
   .then((response) => response.json())
-  .then((data) => {
+  .then((data) => {console.log(data);
     get_list( data.children, newDIV, 1);
     newDiv2 = $("<div class='module module_"+(data.children.length+Number(1))+" main_mod_empty'></div>");
     newUl2 = $("<ul class='main_module module_opacity'>");
@@ -327,7 +339,6 @@ async function getCoursePage(e) {
     newDIV.append(newDiv2);
     var outerHtml = newDIV.prop('outerHTML');
     if(outerHtml !== ''){
-      console.log(data);
       var course_head = "<div class='container-fluid course_details'>";
       course_head += "<div class='wrapper'>";
       course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
@@ -340,6 +351,7 @@ async function getCoursePage(e) {
       course_head += "<div class='header_breadcrumbs'><p>Start Date:</p><span>"+data.start_date+"</span</div>";
       course_head += "</div>";
       course_head += "</div>";
+      course_head += `<div class='course_head_right_2'><img src='../assets/images/mobile_preview.png' onClick="moduleMobilePreview('${e.target.dataset.cid}');"/><img src='../assets/images/desktop_preview.png' onclick="moduleDesktopPreview('${e.target.dataset.cid}');"/></div>`;
       course_head += "<input type='hidden' value='"+e.target.dataset.cid+"' name='course_id' id='course_id' data-flinkto='course' data-cid='"+e.target.dataset.cid+"' data-cname='"+data.course_name+"'>";
       course_head += "</div></div>";
       //getcoursesPageHtml(course_head, outerHtml);

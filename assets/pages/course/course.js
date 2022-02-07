@@ -476,3 +476,173 @@ $(document).ready(function(){
       $('#course_id').trigger('click');
   });
 });
+function moduleMobilePreview(cid){
+
+  $("#mobile_preview").addClass("overlay_target");
+  var course_id = $("#dp_course_id").val();
+  console.log(course_id);
+    var url = `https://elearningcontent.zaigoinfotech.com/course_module_detail/?course_id=`+cid;
+    fetch(url, {
+      method: "GET",
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      var course_data_html = `<div class="course_data">
+                                <div class="row">
+                                  <div class="col-12 title-head">
+                                  <h4 class="p-3" style="margin-bottom: -20px;">${data.course_name}</h4>
+                                  </div>
+                                  <div class="col-12 title-head">
+                                  <p class="p-3" style="margin-bottom: 0rem !important;">${data.description}</p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                              </div>`;
+      var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(249,249,251);'></div>");
+      get_list_preview( data.module_detail, newDIVs, 1);
+      var outerHtml = newDIVs.prop('outerHTML');
+      document.getElementById("mp_courseData").innerHTML = course_data_html+outerHtml;
+    });
+}
+function moduleDesktopPreview(cid){
+  $("#desktop_preview").addClass("overlay_target");
+  var course_id = $("#dp_course_id").val();
+  console.log(course_id);
+    var url = `https://elearningcontent.zaigoinfotech.com/course_module_detail/?course_id=`+cid;
+    fetch(url, {
+      method: "GET",
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      var course_data_html = `<div class="course_data">
+                                <div class="row">
+                                  <div class="col-12 title-head">
+                                  <h4 class="p-3" style="margin-bottom: -20px;">${data.course_name}</h4>
+                                  </div>
+                                  <div class="col-12 title-head">
+                                  <p class="p-3" style="margin-bottom: 0rem !important;">${data.description}</p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                              </div>`;
+      var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(249,249,251);'></div>");
+      get_list_preview( data.module_detail, newDIVs, 1);
+      var outerHtml = newDIVs.prop('outerHTML');
+      document.getElementById("dp_courseData").innerHTML = course_data_html+outerHtml;
+    });
+}
+/***************Course Modules Get Json and assign Tree structured format and Design Starts Here*************/
+function get_list_preview( a, $parent , level_count_inc) {
+  var levels = '';
+  var newDIV = $("<div></div>");
+  for (var i = 0; i < a.length; i++) {
+      if (a[i]) {
+          var level_count = a[i].module_name.split("/").length - 1;
+          if(a[i].parent_id == null){
+            var n = a[i].module_name.lastIndexOf('/');
+            var input_value = a[i].module_name.substring(n + 1);
+            newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+            newUl = $("<ul class='main_module module_opacity' style='opacity:1;padding-bottom: 0px;border-style: none;'></ul>");
+            newUl.append("<li style='background-color: white;padding7px;'><p class='mb-0' style='padding:15px;'><b>"+input_value+" :</b></p></li>");
+            var module_data_html  = get_module_details_preview(a[i]);
+            newUl.append(module_data_html);
+          }else{
+            var class_name = $parent.parent().prop('className').split(" ");
+            var first_five_char_class = class_name[1].substring(0,5);
+            if(first_five_char_class === "modul"){
+              var levels = a[i].level;
+            }else{
+              var levels = $parent.parent().attr('id')+"."+a[i].level;
+            }
+            var n = a[i].module_name.lastIndexOf('/');
+            var input_value = a[i].module_name.substring(n + 1);
+            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='width:95%;'>");
+            newUl = $("<ul class='sub_module' style='padding-bottom: 0px;border-style: none;'></ul>");
+            const [module_content, module_attachments] = get_module_details_preview(a[i]);
+            newUl.append("<li style='background-color: white;padding7px;'><p class='mb-0' style='padding:15px;'><b>"+input_value+" :</b></p>"+module_content+"</li>");
+            newUl.append(module_attachments);
+          }
+          if(level_count === 0){  
+            newDIV.append(newUl);
+            $parent.append(newDIV);
+
+            level_count_inc++;
+          }else{
+            newDIV.append(newUl);
+            $parent.append(newDIV);
+          }
+          if (a[i].children){
+              get_list_preview( a[i].children, newUl, level_count_inc);
+          }
+      }
+    $parent.append(newDIV);
+  }
+}
+/***************Course Modules Get Json and assign Tree structured format and Design Ends Here*************/
+
+function get_module_details_preview(module_data){
+        var module_content = module_data.content;
+        var module_attachments = module_data.attachments;
+        var module_content_html = "";
+        var module_attachments_html = "";
+        if(module_content){
+            module_content_html +=`<li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10" style="border-left: none;padding-left: 0px;"><li class="has-children">
+                                <div class="acnav__label acnav__label--level2" style="border:none;">
+                                  <div class="accordionlist">
+                                    <div class="row">
+                                      <div class="col-md-12 acc-text">
+
+                                        ${module_content.content}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li></ul>`;
+        }
+        if(module_attachments.length > 0){
+            module_attachments.forEach(function (element, index) {
+                var file_type = element.attachment_type.split('/')[0];
+                if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
+                    module_attachments_html += `<li class="has-children is-open" style="margin-top: 10px;">
+                                    <ul class="acnav__list acnav__list--level2 wbg br-10" style="border-left: none;">
+                                      <li class="has-children">
+                                        <div class="acnav__label acnav__label--level2" style="border:none;">
+                                          <div class="accordionlist">
+                                            <div class="row">
+                                              <div class="col-md-12 acc-text">`;
+                    if(element.attachment_type.split('/')[0] === 'image'){
+                          module_attachments_html +=`<img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">`;
+                    }else if(element.attachment_type.split('/')[0] === 'video'){
+                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                    }else if(element.attachment_type.split('/')[0] === 'audio'){
+                        module_attachments_html +=`<audio controls><source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                    }else if(element.attachment_type.split('/')[0] === 'application'){
+                      var mathcount = Math.floor(Math.random() * 1000);
+                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="https://elearningcontent.zaigoinfotech.com${element.attachment}" target="_blank">Download File</a>.</p>`;
+                    }
+                    module_attachments_html +=`</div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </li>`;
+                }
+          });
+        }
+        return [module_content_html, module_attachments_html];
+
+}
+$(document).ready(function(){
+  $("#desktop-preview-close").on("click", function() {
+    $("#desktop_preview").removeClass("overlay_target");
+  });
+  $("#mobile-preview-close").on("click", function() {
+    $("#mobile_preview").removeClass("overlay_target");
+  });
+});
