@@ -131,7 +131,7 @@
       getTagSuggest(str);
     });
 
-    var URL = "https://elearningcontent.zaigoinfotech.com/tags/";
+    var URL = API_CONTENT_URL + "/tags/";
     $('.tags').select2({
       dropdownParent: $('#addCourses'),
       placeholder: "Add a tag",
@@ -381,7 +381,7 @@
 
   function ajaxSaveCourse(formData, openNew) {
     $.ajax({
-      url: "https://elearningcontent.zaigoinfotech.com/course/",
+      url: API_CONTENT_URL + "/course/",
       method: "POST",
       type: 'POST', // For jQuery < 1.9
       cache: false,
@@ -412,7 +412,7 @@
 
   function getTagSuggest(qString) {
     $.ajax({
-      url: encodeURI('https://elearningcontent.zaigoinfotech.com/suggest/tags/?term=' + qString),
+      url: encodeURI(API_CONTENT_URL + '/suggest/tags/?term=' + qString),
       type: 'get',
       dataType: 'json',
       headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },

@@ -316,7 +316,7 @@ async function getCoursePage(e) {
   var newDIV = $("<div class='course' id='course_box'></div>");
   var outerHtml = '';
   //var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/nested2.json`;
-  var url = `https://elearningcontent.zaigoinfotech.com/course_module/?course_id=`+e.target.dataset.cid;
+  var url = API_CONTENT_URL + `/course_module/?course_id=`+e.target.dataset.cid;
   fetch(url, {
     method: "GET",
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}

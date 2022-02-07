@@ -1,13 +1,22 @@
 //API_BASE_URL - Base URL for API
-const API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
+let API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
+let API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
 let SITE_URL_PROTOCOL = window.location.protocol + "//" + window.location.hostname;
 
 if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
 	SITE_URL_PROTOCOL = "http://127.0.0.1:5500/";
-}else if(SITE_URL_PROTOCOL === "http://94.177.203.98"){
+
+} else if(SITE_URL_PROTOCOL === "http://94.177.203.98"){
 	SITE_URL_PROTOCOL = "http://94.177.203.98/exper-js-new/";
-}else if(SITE_URL_PROTOCOL === "https://localhost"){
+
+} else if(SITE_URL_PROTOCOL === "https://localhost"){
 	SITE_URL_PROTOCOL = "https://localhost/elearning/";
+
+} else if(SITE_URL_PROTOCOL === "https://cas.exper.com/"){
+	SITE_URL_PROTOCOL = "https://cas.exper.com/";
+  API_BASE_URL = "https://admin.exper.com";
+  API_CONTENT_URL = "https://content.exper.com";
+
 }
 
 console.log(SITE_URL_PROTOCOL);

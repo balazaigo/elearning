@@ -26,7 +26,7 @@
   }, 0);
   function get_module_details(cid, module_id){
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id,
+      url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
       type: 'get',
       dataType: 'json',
       success:function(response){
@@ -85,7 +85,7 @@ document.addEventListener("keyup", function(e){
           "course_id": cid
       }
       $.ajax({
-        url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id_val,
+        url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id_val,
         type: 'POST',
         data: JSON.stringify(tag_data),
         contentType: "application/json; charset=utf-8",
@@ -119,7 +119,7 @@ document.addEventListener("click", function(e){
       var tag_id = e.target.dataset.tagid;
       if(tag_id !== ''){
         $.ajax({
-          url: 'https://elearningcontent.zaigoinfotech.com/course_tags/'+tag_id+'/',
+          url: API_CONTENT_URL + '/course_tags/'+tag_id+'/',
           type: 'DELETE',
           contentType: "application/json; charset=utf-8",
           success:function(response){

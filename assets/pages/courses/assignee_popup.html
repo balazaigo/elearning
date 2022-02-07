@@ -88,7 +88,7 @@ $(document).ready(function(){
       formData.append("status", 1);
 
 	  $.ajax({
-		    url: "https://elearningcontent.zaigoinfotech.com/module_assignee/",
+		    url: API_CONTENT_URL + "/module_assignee/",
 		    method: "POST",
 		    type: 'POST', // For jQuery < 1.9
 		    cache: false,
@@ -149,7 +149,7 @@ $(document).ready(function(){
   });
 function get_assignee_details(cid, module_id){
 	$.ajax({
-		url: 'https://elearningcontent.zaigoinfotech.com/available/assignees/'+module_id,
+		url: API_CONTENT_URL + '/available/assignees/'+module_id,
 		type: 'get',
 		dataType: 'json',
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -186,7 +186,7 @@ function deleteAssigneeMember(e){
 	var module_id = document.getElementById("course_param").getAttribute("data-module_id");
 	if(e.id !== null){
 		$.ajax({
-		    url: "https://elearningcontent.zaigoinfotech.com/module_assignee/"+e.id+"/",
+		    url: API_CONTENT_URL + "/module_assignee/"+e.id+"/",
 	      	type: 'DELETE',
 		    headers: {
 		      	"Authorization" : "Bearer " + getUserInfo().access_token

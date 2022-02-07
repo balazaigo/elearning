@@ -156,7 +156,7 @@
 </div>
 <script type="text/javascript">
   $.ajax({
-    url: 'https://elearningcontent.zaigoinfotech.com/task_count',
+    url: API_CONTENT_URL + '/task_count',
     type: 'get',
     dataType: 'json',
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -196,7 +196,7 @@
     
     //load the courses list
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/course_list/',
+      url: API_CONTENT_URL + '/course_list/',
       type: 'get',
       dataType: 'json',
       headers: {
@@ -237,7 +237,7 @@
     }
   
     $('#' + tagID).pagination({
-      dataSource: 'https://elearningcontent.zaigoinfotech.com/task/' + queryPara,
+      dataSource: API_CONTENT_URL + '/task/' + queryPara,
       locator: 'data',
       totalNumberLocator: function(response) {
         return response.total;
@@ -390,7 +390,7 @@
       $(document).on('click', '#mAlertDelete', function() {
         var url = $("#mAlertURL").val();
         $.ajax({
-          url: 'https://elearningcontent.zaigoinfotech.com/task/' + url,
+          url: API_CONTENT_URL + '/task/' + url,
           type: 'PATCH',
           data: JSON.stringify({
             "status": 3
@@ -429,7 +429,7 @@
     $(".mDisabled").on("click", function(){
       var url = $(this).data("url");
       $.ajax({
-        url: 'https://elearningcontent.zaigoinfotech.com/task/' + url + '/',
+        url: API_CONTENT_URL + '/task/' + url + '/',
         type: 'PATCH',
         data: JSON.stringify({
           "status": 2
@@ -452,7 +452,7 @@
     $(".mEnabled").on("click", function(){
       var url = $(this).data("url");
       $.ajax({
-        url: 'https://elearningcontent.zaigoinfotech.com/task/' + url + '/',
+        url: API_CONTENT_URL + '/task/' + url + '/',
         type: 'PATCH',
         data: JSON.stringify({
           "status": 1
@@ -542,7 +542,7 @@ function getTaskDetails(id){
   $("#user_message").val("");
   $("#taskdetails").addClass("overlay_target");
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/task/'+ id + '/',
+      url: API_CONTENT_URL + '/task/'+ id + '/',
       type: 'get',
       dataType: 'json',
       headers: {
@@ -740,7 +740,7 @@ $(document).ready(function(){
           formData.append("attachment_type", file.type);
     });
     $.ajax({
-        url: "https://elearningcontent.zaigoinfotech.com/task/"+task_id+"/",
+        url: API_CONTENT_URL + "/task/"+task_id+"/",
         method: "PUT",
         type: 'PUT', // For jQuery < 1.9
         cache: false,
@@ -764,7 +764,7 @@ $(document).ready(function(){
 });
 function update_attachment(formData){
   $.ajax({
-    url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+    url: API_CONTENT_URL + "/module_attachment/",
     method: "POST",
     type: 'POST', // For jQuery < 1.9
     cache: false,
@@ -801,7 +801,7 @@ function update_content(content_message, task_id, course_id, module_id){
     }
   }
   $.ajax({
-    url: "https://elearningcontent.zaigoinfotech.com/course_content/",
+    url: API_CONTENT_URL + "/course_content/",
     type: "POST",
     data: JSON.stringify(content_data),
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -819,7 +819,7 @@ function update_comments(user_message, task_id, course_id, module_id){
     formData.append("id", task_id);
     formData.append("comments", user_message);
     $.ajax({
-        url: "https://elearningcontent.zaigoinfotech.com/module_comments/",
+        url: API_CONTENT_URL + "/module_comments/",
         type: 'POST', // For jQuery < 1.9
         cache: false,
         contentType: false,

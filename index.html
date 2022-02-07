@@ -235,7 +235,7 @@
       var email_id = googleUser.getBasicProfile().getEmail();
       //validated the email from backend
       $.ajax({
-        url: "https://elearningadmin.zaigoinfotech.com/login/",
+        url: API_BASE_URL + "/login/",
         method: "POST",
         type: 'POST', // For jQuery < 1.9
         cache: false,
@@ -276,7 +276,7 @@
       var email_id = mailID;
       //validated the email from backend
       $.ajax({
-        url: "https://elearningadmin.zaigoinfotech.com/login/",
+        url: API_BASE_URL + "/login/",
         method: "POST",
         type: 'POST', // For jQuery < 1.9
         cache: false,

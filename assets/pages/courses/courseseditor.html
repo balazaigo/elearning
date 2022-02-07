@@ -225,7 +225,7 @@
               "revision_label":""
             }
             $.ajax({
-              url: 'https://elearningcontent.zaigoinfotech.com/course_content/',
+              url: API_CONTENT_URL + '/course_content/',
               type: 'POST',
               data: JSON.stringify(content_data),
               contentType: "application/json; charset=utf-8",

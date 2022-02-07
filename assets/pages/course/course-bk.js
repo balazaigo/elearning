@@ -68,7 +68,7 @@ function totext(e){
       var class_module_level = e.parentElement.parentElement.parentElement.classList[1];
       var first_five_char_class = class_module_level.substring(0,5);
       var get_submodule_level_values = '';
-      var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+      var url = API_CONTENT_URL + '/course_module/';
       if(first_five_char_class === "modul"){
         var level_number = class_module_level.split('_')[1];
         var get_submodule_level_values = {
@@ -212,7 +212,7 @@ function add_sub(e){
                 var class_module_sub_level = "sub_"+result;
                 var input_val = "Level "+result;
                 var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-                var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+                var url = API_CONTENT_URL + '/course_module/';
                 if(get_submodule_level_values != ''){
                   post_json_dat(url, get_submodule_level_values);
                 }
@@ -298,7 +298,7 @@ function add_sub_sub(e){
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
     var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-    var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+    var url = API_CONTENT_URL + '/course_module/';
     if(get_submodule_level_values != ''){
       post_json_dat(url, get_submodule_level_values);
     }

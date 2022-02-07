@@ -88,7 +88,7 @@ $(document).on("submit", "#member-create-form", function (e) {
   if (!formHasError) {
     //SAVE TO SERVER
     $.ajax({
-      url: "https://elearningadmin.zaigoinfotech.com/member/",
+      url: API_BASE_URL + "/member/",
       method: "POST",
       type: 'POST', // For jQuery < 1.9
       cache: false,
@@ -339,7 +339,7 @@ function _validateMemberRole(el, fieldValue) {
 function ajaxValidationMailID(mailID){
   //    //https://elearningadmin.zaigoinfotech.com/email_login/
   $.ajax({
-    url: "https://elearningadmin.zaigoinfotech.com/email_login/",
+    url: API_BASE_URL + "/email_login/",
     method: "POST",
     type: 'POST', // For jQuery < 1.9
     cache: false,

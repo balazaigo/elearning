@@ -58,7 +58,7 @@ $(document).ready(function(){
 	  //formData.append("commented_member_name", user_details.name);
 
 	  $.ajax({
-		    url: "https://elearningcontent.zaigoinfotech.com/module_comments/",
+		    url: API_CONTENT_URL + "/module_comments/",
 		    method: "POST",
 		    type: 'POST', // For jQuery < 1.9
 		    cache: false,
@@ -118,7 +118,7 @@ $.validator.addMethod("pattern", function( value, element, param ) {
   });
 function get_message_details(cid, module_id){
 	$.ajax({
-		url: 'https://elearningcontent.zaigoinfotech.com/module_comments/?module_id='+module_id,
+		url: API_CONTENT_URL + '/module_comments/?module_id='+module_id,
 		type: 'get',
 		dataType: 'json',
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},

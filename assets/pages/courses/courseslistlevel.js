@@ -71,7 +71,7 @@ $(document).ready(function(){
             formData.append("module_id", module_id);
             formData.append("course_id", cid);
             $.ajax({
-              url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+              url: API_CONTENT_URL + "/module_attachment/",
               method: "POST",
               type: 'POST', // For jQuery < 1.9
               cache: false,
@@ -117,7 +117,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id,
+      url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
       type: 'get',
       dataType: 'json',
       success:function(response){
@@ -149,7 +149,7 @@ function get_search_details(){
     var tagName = $("#global_search_module").val();
     var active_tab_type = $("#active_li li.active").attr('id');
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/global_search/?tag_name='+tagName,
+      url: API_CONTENT_URL + '/global_search/?tag_name='+tagName,
       type: 'GET',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -178,12 +178,12 @@ function get_search_details(){
                     }
                       attachment_video += `<div class="col-6 mb-3">
                                             <div class="tab-video relative">
-                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src=API_CONTENT_URL + "${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                             </div>
                                           </div>`;
                       attachment_video_ind += `<div class="col-6 mb-3">
                                             <div class="tab-video relative">
-                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src=API_CONTENT_URL + "${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                             </div>
                                           </div>`;
                     if(video_attachemnt_count  % 2 === 0){
@@ -198,12 +198,12 @@ function get_search_details(){
                     }
                     attachment_slide += `<div class="col-4 mb-3">
                                           <div class="tab-video relative">
-                                            <img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">
+                                            <img class="w-100"src=API_CONTENT_URL + "${element.attachment}" alt="${element.attachment_name}">
                                           </div>
                                         </div>`;
                     attachment_slide_ind += `<div class="col-4 mb-3">
                                             <div class="tab-video relative">
-                                              <img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">
+                                              <img class="w-100"src=API_CONTENT_URL + "${element.attachment}" alt="${element.attachment_name}">
                                             </div>
                                           </div>`;
                     if(image_attachemnt_count  % 3 == 2){
@@ -215,7 +215,7 @@ function get_search_details(){
                       attachment_audio += `<div class="col-12 mb-3 audio_content">
                                             <div class="tab-audio relative">
                                               <audio controls>
-                                                <source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">
+                                                <source src=API_CONTENT_URL + "${element.attachment}" type="audio/mpeg">
                                                   Your browser does not support the audio element. 
                                               </audio>
                                             </div>
@@ -224,7 +224,7 @@ function get_search_details(){
                       attachment_audio_ind += `<div class="col-12 mb-3 audio_content_ind">
                                             <div class="tab-audio relative">
                                               <audio controls>
-                                                <source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">
+                                                <source src=API_CONTENT_URL + "${element.attachment}" type="audio/mpeg">
                                                   Your browser does not support the audio element. 
                                               </audio>
                                             </div>
@@ -390,7 +390,7 @@ function get_breadcrumbs(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
     var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/breadcrumbs/'+cid+'/'+module_id,
+      url: API_CONTENT_URL + '/breadcrumbs/'+cid+'/'+module_id,
       type: 'GET',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -414,7 +414,7 @@ function get_content_details(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
     var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/module/'+module_id,
+      url: API_CONTENT_URL + '/module/'+module_id,
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -435,7 +435,7 @@ function get_module_details(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
     var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
     $.ajax({
-      url: 'https://elearningcontent.zaigoinfotech.com/module/'+module_id,
+      url: API_CONTENT_URL + '/module/'+module_id,
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -471,14 +471,14 @@ function get_module_details(){
                                             <div class="row">
                                               <div class="col-md-12 acc-text">`;
                     if(element.attachment_type.split('/')[0] === 'image'){
-                          module_attachments_html +=`<img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">`;
+                          module_attachments_html +=`<img class="w-100"src=API_CONTENT_URL + "${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src=API_CONTENT_URL + "${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
-                        module_attachments_html +=`<audio controls><source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        module_attachments_html +=`<audio controls><source src=API_CONTENT_URL + "${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="https://elearningcontent.zaigoinfotech.com${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url='+API_CONTENT_URL+'${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href=API_CONTENT_URL + "${element.attachment}" target="_blank">Download File</a>.</p>`;
                     }
                     module_attachments_html +=`</div>
                                             </div>
@@ -587,7 +587,7 @@ document.addEventListener("keyup", function(e){
           "course_id": cid
       }
       $.ajax({
-        url: 'https://elearningcontent.zaigoinfotech.com/course_tags/?course_id='+cid+'&module_id='+module_id_val,
+        url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id_val,
         type: 'POST',
         data: JSON.stringify(tag_data),
         headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -620,7 +620,7 @@ document.addEventListener("click", function(e){
       var tag_id = e.target.dataset.tagid;
       if(tag_id !== ''){
         $.ajax({
-          url: 'https://elearningcontent.zaigoinfotech.com/course_tags/'+tag_id+'/',
+          url: API_CONTENT_URL + '/course_tags/'+tag_id+'/',
           type: 'DELETE',
           headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
           success:function(response){
@@ -664,7 +664,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         formData.append("module_id", module_id);
         formData.append("course_id", cid);
         $.ajax({
-          url: "https://elearningcontent.zaigoinfotech.com/module_attachment/",
+          url: API_CONTENT_URL + "/module_attachment/",
           method: "POST",
           type: 'POST', // For jQuery < 1.9
           cache: false,
@@ -799,7 +799,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
 
           var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
           var method_type = "POST";
-          var URL  = 'https://elearningcontent.zaigoinfotech.com/course_content/';
+          var URL  = API_CONTENT_URL + '/course_content/';
           if(newData !== ''){
             var content_data = {
               "course_id": cid,

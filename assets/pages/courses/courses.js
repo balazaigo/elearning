@@ -26,7 +26,7 @@ $( document ).ready(function() {
 
   //load the courses list
   $.ajax({
-    url: 'https://elearningcontent.zaigoinfotech.com/course_list/',
+    url: API_CONTENT_URL + '/course_list/',
     type: 'get',
     dataType: 'json',
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -44,7 +44,7 @@ $( document ).ready(function() {
 function get_pagination(parameter){
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
-      dataSource: 'https://elearningcontent.zaigoinfotech.com/course/'+parameter,
+      dataSource: API_CONTENT_URL + '/course/'+parameter,
       locator: 'data',
       totalNumberLocator: function(response) {
         return response.total;

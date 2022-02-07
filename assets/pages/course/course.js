@@ -69,10 +69,10 @@ function totext(e){
       var first_five_char_class = class_module_level.substring(0,5);
       var get_submodule_level_values = '';
       if(e.dataset.module_id !== undefined){
-        var url = 'https://elearningcontent.zaigoinfotech.com/course_module/'+e.dataset.module_id+'/';
+        var url = API_CONTENT_URL + '/course_module/'+e.dataset.module_id+'/';
         var method = "PUT";
       }else{
-        var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+        var url = API_CONTENT_URL + '/course_module/';
         var method = "POST";
       }
       if(first_five_char_class === "modul"){
@@ -249,7 +249,7 @@ function add_sub(e){
                 var class_module_sub_level = "sub_"+result;
                 var input_val = "Level "+result;
                 //var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-                //var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+                //var url = API_CONTENT_URL + '/course_module/';
                 //if(get_submodule_level_values != ''){
                   //post_json_dat(url, get_submodule_level_values);
                 //}
@@ -343,7 +343,7 @@ function add_sub_sub(e){
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
     //var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-    //var url = 'https://elearningcontent.zaigoinfotech.com/course_module/';
+    //var url = API_CONTENT_URL + '/course_module/';
     //if(get_submodule_level_values != ''){
       //post_json_dat(url, get_submodule_level_values);
     //}
@@ -379,7 +379,7 @@ function delete_module(e){
   }
   if(inp_val != '' && inp_val != "Add Module Name"){
 
-      var url = 'https://elearningcontent.zaigoinfotech.com/course_module/'+e.dataset.module_id+'/';
+      var url = API_CONTENT_URL + '/course_module/'+e.dataset.module_id+'/';
       var method = "DELETE";
     var result = [],
     node = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild;
@@ -457,7 +457,7 @@ function show_assignee_popup(e){
 }
 function delete_sub_module(e){
 
-      var url = 'https://elearningcontent.zaigoinfotech.com/course_module/'+e.dataset.module_id+'/';
+      var url = API_CONTENT_URL + '/course_module/'+e.dataset.module_id+'/';
       var method = "DELETE";
     var result = [],
     node = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild;
@@ -481,7 +481,7 @@ function moduleMobilePreview(cid){
   $("#mobile_preview").addClass("overlay_target");
   var course_id = $("#dp_course_id").val();
   console.log(course_id);
-    var url = `https://elearningcontent.zaigoinfotech.com/course_module_detail/?course_id=`+cid;
+    var url = API_CONTENT_URL + `/course_module_detail/?course_id=`+cid;
     fetch(url, {
       method: "GET",
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
@@ -510,7 +510,7 @@ function moduleDesktopPreview(cid){
   $("#desktop_preview").addClass("overlay_target");
   var course_id = $("#dp_course_id").val();
   console.log(course_id);
-    var url = `https://elearningcontent.zaigoinfotech.com/course_module_detail/?course_id=`+cid;
+    var url = API_CONTENT_URL + `/course_module_detail/?course_id=`+cid;
     fetch(url, {
       method: "GET",
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
@@ -616,14 +616,14 @@ function get_module_details_preview(module_data){
                                             <div class="row">
                                               <div class="col-md-12 acc-text">`;
                     if(element.attachment_type.split('/')[0] === 'image'){
-                          module_attachments_html +=`<img class="w-100"src="https://elearningcontent.zaigoinfotech.com${element.attachment}" alt="${element.attachment_name}">`;
+                          module_attachments_html +=`<img class="w-100"src=API_CONTENT_URL + "${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src=API_CONTENT_URL + "${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
-                        module_attachments_html +=`<audio controls><source src="https://elearningcontent.zaigoinfotech.com${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        module_attachments_html +=`<audio controls><source src=API_CONTENT_URL + "${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=https://elearningcontent.zaigoinfotech.com${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="https://elearningcontent.zaigoinfotech.com${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url='+API_CONTENT_URL+'${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href=API_CONTENT_URL + "${element.attachment}" target="_blank">Download File</a>.</p>`;
                     }
                     module_attachments_html +=`</div>
                                             </div>
