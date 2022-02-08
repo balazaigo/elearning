@@ -3520,3 +3520,14 @@ option:not(:first-of-type) {
     margin-left: 12px;
     border-radius: 0px;
 }
+.powered_by{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+.powered_by img{
+	width: 70px;
+}
+.powered_by p{
+    margin-bottom: 0.3rem;
+}

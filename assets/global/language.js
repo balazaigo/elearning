@@ -2,6 +2,7 @@ var language = {
   "login_title" : "Exper Login",
   "welcome_to" : "Welcome To",
   "exper": "Exper",
+  "content_authoring_system": "Content Authoring System",
   "lbl_emailmobile": "EMail Id / Mobile Number",
   "placeholder_emailmobile": "Enter Your EMail Id / Mobile Number Here",
   "lbl_rememberme": "Remember Me",

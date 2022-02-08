@@ -29,7 +29,8 @@
             <div>
               <div class="login-logo mb-3"><img src="images/logo.svg" alt=""></div>
               <h3 class="mb-4" data-lang="welcome_to">Welcome</h3>
-              <h2 data-lang="exper">Exper</h2>
+              <!--<h2 data-lang="exper">Exper</h2>-->
+              <h2 data-lang="content_authoring_system">Exper</h2>
               <form>
                 <div id="areaPhone">
                   <div class="mb-3 relative">
@@ -80,6 +81,19 @@
                 </div>
               </form>
             </div>
+            <div>
+          <footer>
+            <section class="footer-section">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-6 powered_by">
+                    <p>Powered By <img src="./assets/images/experlogo.jpg" alt=""></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </footer>
+        </div>
           </div>
         </div>
       </div>
@@ -157,12 +171,13 @@
             $("#areaCode").show();
             $("#o1").focus();
           }).catch(function(error) {
+            console.log(error);
             if(error.code === "auth/invalid-phone-number") {
-              toastr.error("Server Response: " + error.message);
+              //toastr.error("Server Response: " + error.message);
+              toastr.error(language.error_invalid_number_mail);
               return false; 
             }
             toastr.info(language.lbl_enter_one_time_password);
-            console.log(error);
             $("#areaPhone").hide();
             $("#areaCode").show();
             $("#o1").focus();
