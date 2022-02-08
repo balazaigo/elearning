@@ -146,6 +146,9 @@ function renderRoleOptions(roles, target) {
   $.each(roles, function (index, role) {
     html += `<option value="${role.id}" >${role.name}</option>`;
   });
-
-  $(`${target} option`).after(html);
+  if(html == ""){
+    html += `<option value="" selected disabled>Select Role</option>`;
+  }
+  $(`${target}`).empty();
+  $(`${target}`).append(html);
 }
