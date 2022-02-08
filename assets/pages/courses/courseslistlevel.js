@@ -178,12 +178,12 @@ function get_search_details(){
                     }
                       attachment_video += `<div class="col-6 mb-3">
                                             <div class="tab-video relative">
-                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src=API_CONTENT_URL + "${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src="${API_CONTENT_URL}${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                             </div>
                                           </div>`;
                       attachment_video_ind += `<div class="col-6 mb-3">
                                             <div class="tab-video relative">
-                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src=API_CONTENT_URL + "${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                              <video id='${element.id}' controls preload='none' width="600" poster=""><source id='mp4' src="${API_CONTENT_URL}${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                             </div>
                                           </div>`;
                     if(video_attachemnt_count  % 2 === 0){
@@ -198,12 +198,12 @@ function get_search_details(){
                     }
                     attachment_slide += `<div class="col-4 mb-3">
                                           <div class="tab-video relative">
-                                            <img class="w-100"src=API_CONTENT_URL + "${element.attachment}" alt="${element.attachment_name}">
+                                            <img class="w-100"src="${API_CONTENT_URL}${element.attachment}" alt="${element.attachment_name}">
                                           </div>
                                         </div>`;
                     attachment_slide_ind += `<div class="col-4 mb-3">
                                             <div class="tab-video relative">
-                                              <img class="w-100"src=API_CONTENT_URL + "${element.attachment}" alt="${element.attachment_name}">
+                                              <img class="w-100"src="${API_CONTENT_URL}${element.attachment}" alt="${element.attachment_name}">
                                             </div>
                                           </div>`;
                     if(image_attachemnt_count  % 3 == 2){
@@ -215,7 +215,7 @@ function get_search_details(){
                       attachment_audio += `<div class="col-12 mb-3 audio_content">
                                             <div class="tab-audio relative">
                                               <audio controls>
-                                                <source src=API_CONTENT_URL + "${element.attachment}" type="audio/mpeg">
+                                                <source src="${API_CONTENT_URL}${element.attachment}" type="audio/mpeg">
                                                   Your browser does not support the audio element. 
                                               </audio>
                                             </div>
@@ -224,7 +224,7 @@ function get_search_details(){
                       attachment_audio_ind += `<div class="col-12 mb-3 audio_content_ind">
                                             <div class="tab-audio relative">
                                               <audio controls>
-                                                <source src=API_CONTENT_URL + "${element.attachment}" type="audio/mpeg">
+                                                <source src="${API_CONTENT_URL}${element.attachment}" type="audio/mpeg">
                                                   Your browser does not support the audio element. 
                                               </audio>
                                             </div>
@@ -471,14 +471,14 @@ function get_module_details(){
                                             <div class="row">
                                               <div class="col-md-12 acc-text">`;
                     if(element.attachment_type.split('/')[0] === 'image'){
-                          module_attachments_html +=`<img class="w-100"src=API_CONTENT_URL + "${element.attachment}" alt="${element.attachment_name}">`;
+                          module_attachments_html +=`<img class="w-100"src="${API_CONTENT_URL}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src=API_CONTENT_URL + "${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="${API_CONTENT_URL}${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
-                        module_attachments_html +=`<audio controls><source src=API_CONTENT_URL + "${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        module_attachments_html +=`<audio controls><source src="${API_CONTENT_URL}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url='+API_CONTENT_URL+'${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href=API_CONTENT_URL + "${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=${API_CONTENT_URL}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="${API_CONTENT_URL}${element.attachment}" target="_blank">Download File</a>.</p>`;
                     }
                     module_attachments_html +=`</div>
                                             </div>
