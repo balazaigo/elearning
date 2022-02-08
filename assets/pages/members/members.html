@@ -353,7 +353,7 @@ function doSearch(){
 $( document ).ready(function() {
   //roleID
   $.ajax({
-    url: 'https://elearningadmin.zaigoinfotech.com/roles/',
+    url: API_BASE_URL + '/roles/',
     type: 'get',
     dataType: 'json',
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -409,7 +409,7 @@ function gridMembers(tagID, htmlID, assignTOBY){
   }
 
   $('#' + tagID).pagination({
-    dataSource: 'https://elearningadmin.zaigoinfotech.com/member/' + queryPara,
+    dataSource: API_BASE_URL + '/member/' + queryPara,
     locator: 'data',
     totalNumberLocator: function(response) {
       return response.total;
@@ -536,7 +536,7 @@ function loadAlertModal(){
     $(document).on('click', '#mAlertDelete', function() {
       var url = $("#mAlertURL").val();
       $.ajax({
-        url: 'https://elearningadmin.zaigoinfotech.com/member/' + url,
+        url: API_BASE_URL + '/member/' + url,
         type: 'PATCH',
         data: JSON.stringify({
           "status": 3
@@ -575,7 +575,7 @@ function loadAlertModal(){
   $(".mDisabled").on("click", function(){
     var url = $(this).data("url");
     $.ajax({
-      url: 'https://elearningadmin.zaigoinfotech.com/member/' + url + '/',
+      url: API_BASE_URL + '/member/' + url + '/',
       type: 'PATCH',
       data: JSON.stringify({
         "status": 2
@@ -598,7 +598,7 @@ function loadAlertModal(){
   $(".mEnabled").on("click", function(){
     var url = $(this).data("url");
     $.ajax({
-      url: 'https://elearningadmin.zaigoinfotech.com/member/' + url + '/',
+      url: API_BASE_URL + '/member/' + url + '/',
       type: 'PATCH',
       data: JSON.stringify({
         "status": 1
