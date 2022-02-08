@@ -51,14 +51,14 @@
       <div class="col-md-6 mb-3">
         <div class="form-floating">
           <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date"
-            onblur="if(this.value!==''){this.className='form-control hasdate'}">
+            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
           <label for="start_date">Start Date</label>
         </div>
       </div>
       <div class="col-md-6 mb-3">
         <div class="form-floating">
           <input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date"
-            onblur="if(this.value!==''){this.className='form-control hasdate'}">
+            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
           <label for="end_date">End Date</label>
         </div>
       </div>
@@ -427,5 +427,16 @@
       }
     });
   }
-
+  function checkdate(){
+    var start_date = $("#start_date").val();
+    var end_date   = $("#end_date").val();
+    if(start_date !== '' && end_date !== ''){
+      var sdate = new Date(start_date[2], start_date[1] - 1, start_date[0]);
+      var edate = new Date(end_date[2], end_date[1] - 1, end_date[0]);
+      if (start_date > end_date){
+          $("#end_date").val("");
+            toastr.error("End Date should be greater than start date");
+      }
+    }
+  }
 </script>

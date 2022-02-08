@@ -253,6 +253,7 @@ function add_sub(e){
                 //if(get_submodule_level_values != ''){
                   //post_json_dat(url, get_submodule_level_values);
                 //}
+                toastr.success("Chapter Created.");
                 return;
             }
             if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
@@ -274,6 +275,7 @@ function add_sub(e){
                 newHTML += "</div>";
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
             }
+
             /*else{
                 var index = classList[1].lastIndexOf("_");
                 var result = Number(classList[1].substr(index+1));
@@ -318,12 +320,16 @@ function add_sub_sub(e){
     var num = String(result).match(/\./g).length;
     if(num === 1){
       var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Lesson";
+      var result_textMsg = "Lesson";
     }else if(num === 2){
       var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Topic";
+      var result_textMsg = "Topic";
     }else if(num === 3){
       var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Sub Topic";
+      var result_textMsg = "Sub Topic";
     }else{
       var result_text = "Level "+result;
+      var result_textMsg = "Level";
     }
     newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
     newHTML += "<ul class='sub_module'>";
@@ -342,6 +348,7 @@ function add_sub_sub(e){
     var class_module_main_level = main_mod_level;
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
+    toastr.success(result_textMsg+" Created.");
     //var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
     //var url = API_CONTENT_URL + '/course_module/';
     //if(get_submodule_level_values != ''){
