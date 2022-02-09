@@ -343,17 +343,17 @@ async function getCoursePage(e) {
       course_head += "<div class='wrapper'>";
       course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
       course_head += "<div class='course_head'>";
-      course_head += "<h4 class='header_content' id='course_header'>"+data.course_name+"<dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
+      course_head += "<h4 class='header_content' id='course_header'>"+data.course_name+"<span class='header_cid'><small>("+data.course_id+")</small></span><dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
       course_head += "<h4 class='header_breadcrumbs'>"+data.description+"</h4>";
       course_head += "</div>";
       course_head += "<div class='course_head_right'>";
-      course_head += "<h4 class='header_breadcrumbs'><div class='col-6 cleft tbtn' data-flinkto='course' > <a href='#'' data-flinkto='course'>"+data.course_id_prefix+"</a> </div></h4>";
-      course_head += "<div class='header_breadcrumbs'><p>Start Date:</p><span>"+data.start_date+"</span</div>";
+      course_head += `<h4 class='header_breadcrumbs'><div class='col-6 cleft tbtn course_header_box' id="course_id_prefix"> ${data.course_id_prefix}<img src='../assets/images/desktop_preview.png' onclick="moduleDesktopPreview('${e.target.dataset.cid}');"/> <img src='../assets/images/mobile_preview.png' onClick="moduleMobilePreview('${e.target.dataset.cid}');"/></div></h4>`;
+      course_head += "<div class='header_breadcrumbs' style='margin-top:-3px;display: inline-block;width:100%;'><div class='start_date_chead'><span class='percent-label'>Start Date:</span><span class='course_head_date'> "+data.start_date+"</span></div>&nbsp;&nbsp;<div class='end_date_chead'><span class='percent-label'>End Date:</span><span class='course_head_date'> "+data.end_date+"</span></div></div>";
       course_head += "</div>";
-      course_head += "</div>";
-      course_head += `<div class='course_head_right_2'><img src='../assets/images/mobile_preview.png' onClick="moduleMobilePreview('${e.target.dataset.cid}');"/><img src='../assets/images/desktop_preview.png' onclick="moduleDesktopPreview('${e.target.dataset.cid}');"/></div>`;
       course_head += "<input type='hidden' value='"+e.target.dataset.cid+"' name='course_id' id='course_id' data-flinkto='course' data-cid='"+e.target.dataset.cid+"' data-cname='"+data.course_name+"'>";
       course_head += "</div></div>";
+      course_head += "</div>";
+
       //getcoursesPageHtml(course_head, outerHtml);
       document.getElementById("app-admin").innerHTML = course_head+outerHtml+course_popup;
       //var cname = data.course_name.length > 30 ? data.course_name.substring(0,30)+"..." : data.course_name;

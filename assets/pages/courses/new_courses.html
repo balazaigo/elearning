@@ -6,6 +6,7 @@
 
   <form method="post" class="" id="frmNewCourses" name="frmNewCourses" enctype="multipart/form-data">
     <input type="hidden" name="platform_id" id="platform_id" value="1e4758ac-8077-42e6-b9d9-11b0de0df37d">
+    <input type="hidden" name="course_id" id="course_id" value="">
     <div class="row">
       <div class="col-md-12 mb-3">
         <div class="form-floating">
@@ -46,6 +47,10 @@
           <span class="filename">Design documents</span>
         </label>
       </div>
+
+      <div class="col-md-12 mb-3" id="course_attachment">
+      </div>
+
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -132,7 +137,7 @@
     });
 
     var URL = API_CONTENT_URL + "/tags/";
-    $('.tags').select2({
+    var $tagsControl = $('.tags').select2({
       dropdownParent: $('#addCourses'),
       placeholder: "Add a tag",
       dropdownCssClass: "select2Font",
@@ -202,19 +207,8 @@
     });
 
     //load the category data
-    $.ajax({
-      url: API_BASE_URL + '/category/',
-      type: 'get',
-      dataType: 'json',
-      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
-      success: function (response) {
-        $("#category").empty();
-        $("#category").append("<option value=''>Category</option>");
-        $.each(response, function (i, val) {
-          $("#category").append("<option value='" + val.id + "'>" + val.name + "</option>");
-        });
-      }
-    });
+    var SelectedCategoryId = selectedSubCategoryId = "";
+    getCategory(SelectedCategoryId, subCategory, selectedSubCategoryId);
 
     $.ajax({
       url: API_BASE_URL + '/sub_category/',
@@ -230,20 +224,8 @@
         });
       }
     });
-
-    $.ajax({
-      url: API_BASE_URL + '/mem_category_list/' + encodeURI("Define Course"),
-      type: 'get',
-      dataType: 'json',
-      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
-      success: function (response) {
-        $("#member").empty();
-        $("#member").append("<option value=''>Member</option>");
-        $.each(response.data, function (i, val) {
-          $("#member").append("<option value='" + val.id + "'>" + val.first_name + " " + val.last_name + "</option>");
-        });
-      }
-    });
+    var member_id = "";
+    getAssignMember(member_id);
 
     $("#category").on("change", function () {
       $("#subCategory").empty();
@@ -262,6 +244,120 @@
     });
 
 
+  var editCourseId = window.sharedEditCourseId;
+  if(editCourseId !== ""){
+      $("#saveCoursesNew").css("display","none");
+      $("#saveCoursesClose").text("Update & Close");
+      $("#course_id").val(editCourseId);
+      $.ajax({
+        url: API_CONTENT_URL + '/course/' + editCourseId +'/',
+        type: 'get',
+        dataType: 'json',
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        success: function (response) {
+          console.log(response);
+          if(response.id){
+            $("#start_date").val(response.start_date);
+            $("#end_date").val(response.end_date);
+            $("#coursesName").val(response.name);
+            $("#coursesID").val(response.course_id_prefix);
+            $("#description").val(response.description);
+            if(response.category_id){
+              getCategory(response.category_id, subCategory, response.sub_category_id);
+            }
+            if(response.assignee.member_id){
+              getAssignMember(response.assignee.member_id);
+            }
+            if(response.attachments.length > 0){
+                var course_attachments_html = "";
+                response.attachments.forEach(function (element, index) {
+                    var file_type = element.attachment_type.split('/')[0];
+                    if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
+                        course_attachments_html += `<li class="has-children is-open" style="list-style:none;">
+                                        <ul class="acnav__list wbg br-10">
+                                          <li class="has-children">
+                                            <div class="acnav__label acnav__label--level2">
+                                              <div class="accordionlist">
+                                                <div class="row">
+                                                  <div class="col-md-12 acc-text">`;
+                        if(element.attachment_type.split('/')[0] === 'image'){
+                              course_attachments_html +=`<img class="w-100"src="${API_CONTENT_URL}${element.attachment}" alt="${element.attachment_name}">`;
+                        }else if(element.attachment_type.split('/')[0] === 'video'){
+                            course_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="${API_CONTENT_URL}${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        }else if(element.attachment_type.split('/')[0] === 'audio'){
+                            course_attachments_html +=`<audio controls><source src="${API_CONTENT_URL}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        }else if(element.attachment_type.split('/')[0] === 'application'){
+                          var mathcount = Math.floor(Math.random() * 1000);
+                           course_attachments_html +=`<object data="${API_CONTENT_URL}${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${API_CONTENT_URL}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'><a href="${API_CONTENT_URL}${element.attachment}&embedded=true&ignore=${mathcount}">Download Document</a></iframe></object>
+                           <p>If this browser does not support file. Please download the File to view it: <a href="${API_CONTENT_URL}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                        }
+                        course_attachments_html +=`</div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </li>
+                                        </ul>
+                                      </li>`;
+                    }
+              });
+              $("#course_attachment").append(course_attachments_html);
+            }
+            if(response.tags.length > 0){
+              /*var tag_array = new Array();
+              $.each(response.tags, function (i, val) {
+                var tag_data = {
+                  "text": val.tag_name,
+                  "id": val.id
+                };
+                tag_array.push(tag_data);
+              });
+                $(".tags").select2({
+                  data : tag_array
+                });
+                console.log(tag_array);
+                setTimeout(function(){
+                var data = [];
+                var tags = $("#tags option").each(function () {
+                    data.push($(this).val());
+                });    
+                  $tagsControl.val(data).trigger("change");
+
+                }, 1000);*/
+              /*$(".tags").select2({
+                multiple:true,
+                tags: true,
+                ajax:{}}).select2({
+                "data": tag_array
+                });*/
+              /*$(".tags").select2({
+                dropdownParent: $('#addCourses'),
+                placeholder: "Add a tag",
+                dropdownCssClass: "select2Font",
+                tokenSeparators: [','],
+                tags: true,
+                multiple: true,
+                allowClear: true,
+                data : tag_array,
+                maximumSelectionLength: 64,
+                minimumInputLength: 3,
+                formatSelectionTooBig: function (limit) {
+                  return "Too many selected items, Only 64 tags allowed."
+                },
+                formatNoMatches: "add new tag and hit ENTER-KEY",
+                escapeMarkup: function (markup) {
+                  return markup;
+                }
+              }); */
+            }
+
+          }
+        },
+        error: function (error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
+  }
     /*LATER USE*/
     /* ============================================================ */
     /*
@@ -348,7 +444,6 @@
           return false;
         }
         var tags = $("#tags").val().join(",");
-
         var formData = new FormData();
         formData.append("course_id_prefix", $("#coursesID").val());
         formData.append("name", $("#coursesName").val());
@@ -368,9 +463,14 @@
           formData.append("attachments[" + i + "]", file, file.name);
         });
         var parameter = "";
-        get_pagination(parameter);
+        //get_pagination(parameter);
         if ($(this).prop("id") === "saveCoursesClose") {
-          ajaxSaveCourse(formData, false);
+          var course_id_update = $("#course_id").val();
+          if(course_id_update != ""){
+            ajaxUpdateCourse(formData, course_id_update);
+          }else{
+            ajaxSaveCourse(formData, false);
+          }
         } else {
           ajaxSaveCourse(formData, true);
         }
@@ -378,7 +478,63 @@
     });
 
   });
+  function getCategory(SelectedCategoryId, subCategory, selectedSubCategoryId){
 
+    $.ajax({
+      url: API_BASE_URL + '/category/',
+      type: 'get',
+      dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success: function (response) {
+        $("#category").empty();
+        $("#category").append("<option value=''>Category</option>");
+        $.each(response, function (i, val) {
+            $("#category").append("<option value='" + val.id + "'>" + val.name + "</option>");
+        });
+        if(SelectedCategoryId){
+          $("#category option[value='"+SelectedCategoryId+"']").prop('selected', true);
+        }
+      }
+    });
+     // $("#myselect option[data-value='" + response.val +"']").attr("selected","selected");
+    if(SelectedCategoryId){
+      setTimeout(function(){      
+        var resp = subCategory[SelectedCategoryId];
+        $("#subCategory").empty();
+        $("#subCategory").append("<option value=''>Sub Category</option>");
+        $("#subCategory").next("label").html($("#subCategory").next("label").data("caption"));
+          if (typeof (resp) === "undefined") {
+            console.log("subcategory not found: " + $("#category").find("option:selected").text());
+          } else {
+            $.each(resp, function (i, val) {
+              $("#subCategory").append("<option value='" + val.id + "'>" + val.name + "</option>");
+            });
+            if(selectedSubCategoryId){
+              $("#subCategory option[value='"+selectedSubCategoryId+"']").prop('selected', true);
+            }
+          }
+      }, 1000)
+    }
+  }
+  function getAssignMember(member_id){
+
+      $.ajax({
+        url: API_BASE_URL + '/mem_category_list/' + encodeURI("Define Course"),
+        type: 'get',
+        dataType: 'json',
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        success: function (response) {
+          $("#member").empty();
+          $("#member").append("<option value=''>Member</option>");
+          $.each(response.data, function (i, val) {
+            $("#member").append("<option value='" + val.id + "'>" + val.first_name + " " + val.last_name + "</option>");
+          });
+          if(member_id){
+              $("#member option[value='"+member_id+"']").prop('selected', true);
+          }
+        }
+      });
+  }
   function ajaxSaveCourse(formData, openNew) {
     $.ajax({
       url: API_CONTENT_URL + "/course/",
@@ -410,6 +566,28 @@
     });
   }
 
+  function ajaxUpdateCourse(formData, course_id_update) {
+    $.ajax({
+      url: API_CONTENT_URL + "/course/"+course_id_update+"/",
+      method: "PUT",
+      type: 'PUT', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token
+      },
+      success: function (response) {
+        toastr.success("Course information was successfully updated.");
+        $('#addCourses').modal('hide');
+      },
+      error: function (error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  }
   function getTagSuggest(qString) {
     $.ajax({
       url: encodeURI(API_CONTENT_URL + '/suggest/tags/?term=' + qString),

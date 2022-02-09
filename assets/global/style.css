@@ -339,7 +339,7 @@ input[type="checkbox"]:checked + label::before {
 .active-cont .top-navbar {
 	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.05);
 	background: #fff;
-	padding: 18px 15px;
+	padding: 18px 15px 3px 15px;
 }
 .top-navbar {
 	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.05);
@@ -3277,7 +3277,7 @@ form#multiple {
 	color: #97a5ba;
 	font-size: 18px;
 	font-weight: 400;
-	margin-top: 10px; 
+	margin-top: 13px; 
 	display: block;
 }
 .course{
@@ -3300,18 +3300,20 @@ form#multiple {
 	display: block;
 }
 .course_details .wrapper .course_head_right {
-    grid-column: span 5;
+    grid-column: span 7;
     margin-left: 0;
     margin-top: -12px;
 }
-.course_details .wrapper .course_head_right_2 {
-    grid-column: span 2;
-    margin-left: 0;
-    margin-top: 0px;
+.course_details .wrapper .course_header_box{
+	display: inline;
 }
-.course_details .wrapper .course_head_right_2 img{
-	width: 40px;
-	cursor: pointer;
+.course_details .wrapper .course_header_box a{
+	display: inline-block;
+}
+.course_details .wrapper .course_header_box img{
+    width: 40px;
+    float: right;
+    margin-top: -12px;
 }
 .course_details .wrapper .course_head_right p{
     width: fit-content;
@@ -3319,6 +3321,13 @@ form#multiple {
 }
 .course_details .wrapper .course_head_right p span{
     margin-left: 10px;
+}
+.course_details .wrapper .start_date_chead{
+    display: inline;
+}
+.course_details .wrapper .end_date_chead{ 
+    display: inline;
+    float: right;
 }
 /*************courses new css end****************/
 
@@ -3534,4 +3543,22 @@ option:not(:first-of-type) {
 #nodataFound_course p{
     width: 100%;
     text-align: center;
+}
+.header_cid{
+	font-size: 0.855rem;
+    color: #767693;
+}
+.course_head_date{	
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+}
+#course_id_prefix{
+	background: #cbcbcb !important;
+    color: #20204F;
+    font-size: 14px;
+    padding: 5px 15px;
+    border-radius: 30px;
 }

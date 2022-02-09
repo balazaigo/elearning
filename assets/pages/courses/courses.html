@@ -4,7 +4,7 @@
         <h2>Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
         
         <span class="orange-btn nbtn">
-          <button type="button" class="btn btn-primary" id="btnShow">
+          <button type="button" class="btn btn-primary" id="btnShow" data-course_id="">
             <i class="fas fa-plus"></i> Add Courses
           </button>
         </span>
@@ -106,10 +106,25 @@
         toastr.error(window.language.error_no_access);
         return false;
       } else {
+        window.sharedEditCourseId = "";
         $('.modal-content').load(url,function(result){
           modal.show();
         });
       }
     });
   });
+  function editCourse(e){
+    const container = document.getElementById("addCourses");
+    const modal = new bootstrap.Modal(container);
+    var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
+    if(processRights("Add Course") === false || processRights("Define Course") === false) {
+      toastr.error(window.language.error_no_access);
+      return false;
+    } else {
+      window.sharedEditCourseId = e.dataset.course_id;
+      $('.modal-content').load(url,function(result){
+        modal.show();
+      });
+    }
+  }
 </script>
