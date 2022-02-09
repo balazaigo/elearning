@@ -69,6 +69,16 @@ function get_pagination(parameter){
         },    
       },
       callback: function(data, pagination) {
+        if(pagination.totalNumber < 7){
+          $("#pagination-container-to").hide();
+        }else{
+          $("#pagination-container-to").show();
+        }
+        if(data.length === 0){
+          $("#nodataFound_course").attr("style", "display:block");
+        }else{
+          $("#nodataFound_course").attr("style", "display:none");
+        }
         var html = template(data);
         $('#data-assignedTo').html(html);
         $('#data-assignedBy').html(html);

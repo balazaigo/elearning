@@ -223,6 +223,13 @@ function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
       },    
     },
     callback: function(data, pagination) {
+        if(pagination.totalNumber < 7){
+          $("#pagination-container-to").hide();
+          $("#pagination-container-by").hide();
+        }else{
+          $("#pagination-container-to").show();
+          $("#pagination-container-by").show();
+        }
       var html = template(data, assignTOBY);
       $('#' + htmlID).html(html);
       loadAlertModal();
