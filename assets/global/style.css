@@ -3603,3 +3603,14 @@ option:not(:first-of-type) {
 #role-create-form .switch .switch--toggle{
 	background: #20204f;
 }
+.set_back_color{
+	background: #e7e7e7;
+}
+#rolebox .cleft h4{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 52px;
+}

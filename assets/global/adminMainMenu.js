@@ -503,6 +503,11 @@ document.addEventListener("click", function (e) {
     }else{
       document.getElementById("app-admin").classList.remove("admin_course");
     }
+    if(e.target.dataset.flinkto == "roles"){
+      document.getElementById("app-admin").classList.add("set_back_color");
+    }else{
+      document.getElementById("app-admin").classList.remove("set_back_color");
+    }
     e.preventDefault();
     handleTopMenuClick(e);
   }

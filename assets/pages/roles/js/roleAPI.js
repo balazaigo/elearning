@@ -34,8 +34,8 @@ function renderRoleList(roles) {
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
     html += `<div class="row">
-                <div class="col-6 cleft tbtn" > <h4 data-flinkto="userroles" data-target="${role.id}">${role.name}</h4></div>
-                <div class="col-6 cright">
+                <div class="col-10 cleft tbtn" > <h4 data-flinkto="userroles" data-target="${role.id}">${role.name}</h4></div>
+                <div class="col-2 cright">
                   <div class="dropdown ahide">
                     <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item green" href="#" data-role_id="${role.id}" id="trigger-role-edit-form">Edit</a></li></ul>
                   </div>
