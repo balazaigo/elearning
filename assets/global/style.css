@@ -3592,7 +3592,7 @@ option:not(:first-of-type) {
 #role-create-form input, #role-create-form textarea, #role-create-form select{
 	padding-top: 20px
 }
-#role-create-form label{
+#role-create-form .form-floating label{
     top: -13px;
     font-size: 13px;
     left: -1px;
