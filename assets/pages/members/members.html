@@ -121,12 +121,12 @@
 <!-- Member Create Form Start -->
 <div id="member-create-form-container" class="overlay">
   <div class="popup">
-    <h4>Add New Member</h4>
+    <h4 id="member_type_name">Add New Member</h4>
     <span class="cancel-member-create-form close" href="#">&times;</span>
     <form class="pop-form" id="member-create-form">
       <div class="row mb-3">
         <div class="col-md-12">
-          <div class="topsearch relative">
+          <div class="topsearch relative add_email_search">
             <input
               class="form-control form-control-dark w-100"
               id="member-email"
@@ -190,6 +190,7 @@
         </div>
       </div>
       <div class="row">
+        <input type="hidden" id="member-id_edit" value=""/>
         <div class="col-12 pt-3 pb-3 wauto"> <span class="border-btn nbtn">
           <button class="cancel-member-create-form" type="button"> Cancel </button>
           </span> <span class="orange-btn nbtn">
@@ -340,7 +341,6 @@ $(function () {
     }
 })
 $(document).on('click','.fa-lg.closeBtn',function(){
-		console.log('earwr');
 		$(this).parent('.fileuploads').remove();	
 });
 </script> 
@@ -391,6 +391,10 @@ $( document ).ready(function() {
     doSearch();
   }
   
+  $(".cancel-member-create-form").on("click", function() {
+    $("#member-create-form-container").removeClass("overlay_target");
+    doSearch();
+  });
 });
 
 function gridMembers(tagID, htmlID, assignTOBY){
@@ -487,7 +491,7 @@ function template(data, tagTOBY) {
         if(processRights("Add/Edit Member") === false) {
           html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
         } else {
-          html += `<li><a class="dropdown-item green" href="#taskdetails">&nbsp;Edit</a></li>`;
+          html += `<li><a class="dropdown-item green" onClick="editMembers('${item.id}');">&nbsp;Edit</a></li>`;
         }
       } else {
         html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
@@ -544,6 +548,47 @@ function template(data, tagTOBY) {
   return html;
 }
 
+function editMembers(id){
+
+  getRolesOptions("#member-role");
+  $("#member-email").val("");
+  $("#member-fName").val("");
+  $("#member-lName").val("");
+  $("#member-phoneNo").val("");
+  $("#member_type_name").text("Edit Member");
+  $("#member-email").prop('disabled', true);
+  $("#save-member-create-form").text("Update");
+    $.ajax({
+      url: API_BASE_URL + '/member/'+ id + '/',
+      type: 'get',
+      dataType: 'json',
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        $("#member-id_edit").val(id);
+        $("#member-email").val(response.email_id);
+        $("#member-fName").val(response.first_name);
+        $("#member-lName").val(response.last_name);
+        $("#member-phoneNo").val(response.phone_number);
+        $("#member-fName").prop('disabled', false);
+        $("#member-lName").prop('disabled', false);
+        $("#member-phoneNo").prop('disabled', false);
+        $("#member-create-form-container").addClass("overlay_target");
+        if(response.roles_name){
+          setTimeout(function(){
+            $("#member-role option[value='"+response.roles_name+"']").prop('selected', true);
+            $("#member-role").prop('disabled', false);
+          }, 500);
+        }
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+}
 function loadAlertModal(){
   $('#mAlert').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget);

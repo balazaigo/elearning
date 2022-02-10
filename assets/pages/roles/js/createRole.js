@@ -6,6 +6,7 @@ $(document).on("click", "#trigger-role-create-form", function () {
   }
   $("#role_id_edit").val("");
   $("#save-role-create-form").text("Save");
+  $("#role_type_name").text("Add New Role");
   getRoleRights();
   window.sharedEditCourseId = "";
   $("#role-create-form-container").css({ visibility: "visible", opacity: 1 });
@@ -17,6 +18,8 @@ $(document).on("click", "#trigger-role-edit-form", function () {
   }
   getRoleRights();
   $("#role_id_edit").val("");
+  $("#save-role-create-form").text("Update");
+  $("#role_type_name").text("Edit Role");
   //window.sharedEditCourseId = $(this).data("role_id");
   var role_id = $(this).data("role_id");
     $.ajax({
@@ -25,7 +28,6 @@ $(document).on("click", "#trigger-role-edit-form", function () {
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(response){
-            $("#save-role-create-form").text("Update");
             $("#role-name").val(response.name);
             $("#role-description").val(response.description);
             $("#role_id_edit").val(response.id);
@@ -75,7 +77,6 @@ $(document).on("submit", "#role-create-form", function (e) {
   };
 
   $.each(formInputs, function (index, fieldData) {
-    console.log(fieldData);
     if (fieldData.name.endsWith("[]")) {
       let name = fieldData.name.substring(0, fieldData.name.length - 2);
       if (!(name in formData)) {

@@ -116,7 +116,6 @@ function renderRoleRights(roleRights) {
 
 //Save Role
 function saveRole(data, role_id) {
-  console.log(role_id);
   if(role_id != ""){
     axios
     .put(`${API_BASE_URL}/roles/`+role_id+`/`, data,{

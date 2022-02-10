@@ -5,6 +5,19 @@ $(document).on("click", "#trigger-member-create-form", function () {
     return false;
   }
   getRolesOptions("#member-role");
+  $("#member-email").val("");
+  $("#member-fName").val("");
+  $("#member-lName").val("");
+  $("#member-phoneNo").val("");
+  $("#member-id_edit").val("");
+  $("#member-email").prop('disabled', false);
+  $("#member-fName").prop('disabled', true);
+  $("#member-lName").prop('disabled', true);
+  $("#member-phoneNo").prop('disabled', true);
+  $("#member-role").prop('selected', false);
+  $("#member-role").prop('disabled', true);
+  $("#member_type_name").text("Add New Member");
+  $("#save-member-create-form").text("Save");
   $("#member-create-form-container").css({ visibility: "visible", opacity: 1 });
 });
 
@@ -46,6 +59,7 @@ $(document).on("change", "#member-email", function () {
 
 //Create Form - Save Member
 $(document).on("submit", "#member-create-form", function (e) {
+  $("#member-email").prop('disabled', false);
   e.preventDefault();
 
   resetFormErrors("#member-create-form");
@@ -65,7 +79,6 @@ $(document).on("submit", "#member-create-form", function (e) {
     mc_status: 0,
     image: "",
   };
-
   $.each(formInputs, function (index, fieldData) {
     if (fieldData.name.endsWith("[]")) {
       let name = fieldData.name.substring(0, fieldData.name.length - 2);
@@ -77,7 +90,7 @@ $(document).on("submit", "#member-create-form", function (e) {
       formData[fieldData.name] = fieldData.value;
     }
   });
-
+$("#member-email").prop('disabled', true);
   //Validate field on submit
   for (const [fieldName, fieldValue] of Object.entries(formData)) {
     const fieldValidationStatus = validateFields(fieldName, fieldValue);
@@ -87,10 +100,19 @@ $(document).on("submit", "#member-create-form", function (e) {
   //If no field error - proceed submit
   if (!formHasError) {
     //SAVE TO SERVER
+    var member_edit_id = $("#member-id_edit").val();
+    var URL = API_BASE_URL + "/member/";
+    var Method = "POST";
+    var Type = "POST";
+    if(member_edit_id != ""){
+      URL = API_BASE_URL + "/member/"+member_edit_id;
+      Method = "PUT";
+      Type = "PUT";
+    }
     $.ajax({
-      url: API_BASE_URL + "/member/",
-      method: "POST",
-      type: 'POST', // For jQuery < 1.9
+      url: URL,
+      method: Method,
+      type: Type, // For jQuery < 1.9
       cache: false,
       contentType: false,
       processData: false,
@@ -110,7 +132,6 @@ $(document).on("submit", "#member-create-form", function (e) {
         toastr.error("Response Error: " + error.responseText);
       }
     });
-    console.log(formData);
   }
 });
 
