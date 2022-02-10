@@ -105,7 +105,7 @@ $("#member-email").prop('disabled', true);
     var Method = "POST";
     var Type = "POST";
     if(member_edit_id != ""){
-      URL = API_BASE_URL + "/member/"+member_edit_id;
+      URL = API_BASE_URL + "/member/"+member_edit_id+"/";
       Method = "PUT";
       Type = "PUT";
     }
