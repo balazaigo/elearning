@@ -26,32 +26,41 @@
     <form class="pop-form" id="role-create-form">
       <div class="row">
         <div class="col-md-12 mb-3">
-          <label for="name">Role Name</label>
-          <input
-            type="text"
-            id="role-name"
-            name="name"
-            class="form-control field-input"
-            placeholder="Role Name"
-          />
+          <div class="form-floating">
+            <label >Role Name</label>
+          </div>
+          <div>
+            <input
+              type="text"
+              id="role-name"
+              name="name"
+              class="form-control field-input" 
+            />
+          </div>
         </div>
         <div class="col-md-12 mb-3">
-          <textarea
-            class="form-control field-input"
-            id="role-description"
-            name="description"
-            rows="3"
-            placeholder="Role Description"
-          ></textarea>
+          <div class="form-floating">
+            <label >Role Description</label>
+          </div>
+          <div>
+            <textarea
+              class="form-control field-input"
+              id="role-description"
+              name="description"
+              rows="3"></textarea>
+          </div>
         </div>
         <div class="col-md-12 mb-3">
+          <div class="form-floating">
+            <label >Select Role Level</label>
+          </div>
           <div class="dropdown-select">
             <select
               class="sort-select field-input"
               name="level"
               id="role-level"
             >
-              <option selected disabled value="">Select Role Level</option>
+              <option selected disabled value=""></option>
               <option value="1">Level 1</option>
               <option value="2">Level 2</option>
               <option value="3">Level 3</option>
@@ -64,9 +73,12 @@
           </div>
         </div>
         <div class="col-md-12 mb-3">
+           <p> <label>Rights:</label></p>
+          <div>
           <div class="role-rights" id="role-rights-id">
             <!-- HTML snippet will be dynamically appended-->
           </div>
+         </div>
         </div>
       </div>
       <input type="hidden" value="" name="role_id_edit" id="role_id_edit"/>

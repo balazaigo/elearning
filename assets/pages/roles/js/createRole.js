@@ -90,7 +90,7 @@ $(document).on("submit", "#role-create-form", function (e) {
 
   //Validate field on submit
   for (const [fieldName, fieldValue] of Object.entries(formData)) {
-    const fieldValidationStatus = validateFields(fieldName, fieldValue);
+    const fieldValidationStatus = validateField(fieldName, fieldValue);
     formHasError = formHasError || fieldValidationStatus;
   }
 
@@ -108,7 +108,7 @@ $(document).on("submit", "#role-create-form", function (e) {
 });
 
 //Create Form - Validate Fields On Form Submit
-function validateFields(fieldName, fieldValue) {
+function validateField(fieldName, fieldValue) {
   let validationStatus = false;
 
   switch (fieldName) {

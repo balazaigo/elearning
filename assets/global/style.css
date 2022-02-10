@@ -3589,3 +3589,17 @@ option:not(:first-of-type) {
     width: auto;
     border-radius: 10px;
 }
+#role-create-form input, #role-create-form textarea, #role-create-form select{
+	padding-top: 20px
+}
+#role-create-form label{
+    top: -13px;
+    font-size: 13px;
+    left: -1px;
+}
+#role-create-form .switch{
+	background: #f36a10;
+}
+#role-create-form .switch .switch--toggle{
+	background: #20204f;
+}
