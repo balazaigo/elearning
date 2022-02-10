@@ -3562,3 +3562,30 @@ option:not(:first-of-type) {
     padding: 5px 15px;
     border-radius: 30px;
 }
+.tab_content_top{
+	/*border-top: 4px solid #20204f;
+	border-top-right-radius: 0px;
+   	border-top-left-radius: 0px;*/
+}
+.course_module_details .tabs-btn-2 label{
+    margin-left: 13px;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    margin:0px !important;
+}
+.course_module_details .tab_inner_cont{
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+}
+.search_mt{
+	margin-top: 12px;
+}
+.editor_sub-btn_cont{
+    margin-top: 10px;
+    float: right;
+}
+.editor_sub-btn{
+    padding: 8px 18px 9px 17px;
+    width: auto;
+    border-radius: 10px;
+}

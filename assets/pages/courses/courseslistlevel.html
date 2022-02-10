@@ -14,14 +14,11 @@
             </div>
             <div class="course_head_right">
               <ul>
-                <li> <div class="col-6 cleft tbtn course_header_box" id="course_id_prefix"> </div>
-                  <!--<span class="border-btn"><a href="#">
+                <!-- <li> <div class="col-6 cleft tbtn course_header_box" id="course_id_prefix"> </div>
+                 <span class="border-btn"><a href="#">
                   <button id="course_id_prefix"></button>
-                  </a></span> -->
-                </li>
-                <li> <span class="orange-btn"><a href="#">
-                  <button  id="saveCourses">Submit</button>
-                  </a></span> </li>
+                  </a></span> 
+                </li>-->
               </ul>
             </div>
             <input type="hidden" value="6d164cf4-b76d-48a7-8094-2b8ac4482805" name="course_id" id="course_id"></div>
@@ -31,14 +28,14 @@
       </div>
       <div class="row">
       <div class="col-lg-8 col-md-8">
-        <div class="tabs p-0 mt-3 ">
+        <div class="tabs p-0 mt-3 tabs-btn-2">
           <input type="radio" name="tabs" id="tabone" checked="checked">
           <label for="tabone">Create</label>
-          <div class="tab p-0">
+          <div class="tab p-0 tab_content_top">
             <div class="table-section">
               <div class="row">
                 <div class="">
-                  <div class="white-bg br-5 p-3">
+                  <div class="white-bg br-5 p-3 tab_inner_cont">
                     <section class="nav-wrap course-inner"> 
                       
                       <!-- start accordion nav block -->
@@ -67,7 +64,14 @@
                                       <div class="col-md-12 p-3">
                                         <div class="course_module_content">
                                         <div class="col-md-12 p-3 b-btn">
-                                            <textarea id="tiny"></textarea>
+                                          <textarea id="tiny"></textarea>
+                                          <div class="editor_sub-btn_cont">
+                                            <span class="orange-btn">
+                                              <a href="#">
+                                                <button  id="saveCourses" class="editor_sub-btn">Submit</button>
+                                              </a>
+                                            </span>
+                                          </div>
                                             <!--<button class="btn btn-sm btn-primary float-end" id="save-content_mod">Save</button>-->
 
                                           <!--<button data-flinkto="courseseditor">Write Content</button>-->
@@ -129,7 +133,7 @@
           </div>
           <input type="radio" name="tabs" id="tabtwo">
           <label for="tabtwo" onclick="get_module_details();">Preview</label>
-          <div class="tab p-0">
+          <div class="tab p-0 tab_content_top">
             <div class="table-section">
               <div class="row">
                 <div class="">
@@ -150,7 +154,7 @@
 
       <div class="col-lg-4 col-md-4 mt-5">
 
-              <div class="mt-4">
+              <div class="search_mt">
 
                 <div>
                   <div class="recent-text white-bg br-5 p-3">

@@ -4,10 +4,49 @@ $(document).on("click", "#trigger-role-create-form", function () {
     toastr.error(window.language.error_no_access);
     return false;
   }
+  $("#role_id_edit").val("");
+  $("#save-role-create-form").text("Save");
   getRoleRights();
+  window.sharedEditCourseId = "";
   $("#role-create-form-container").css({ visibility: "visible", opacity: 1 });
 });
-
+$(document).on("click", "#trigger-role-edit-form", function () {
+  if(processRights("Add/Edit Role") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
+  getRoleRights();
+  $("#role_id_edit").val("");
+  //window.sharedEditCourseId = $(this).data("role_id");
+  var role_id = $(this).data("role_id");
+    $.ajax({
+      url: API_BASE_URL + '/roles/'+role_id,
+      type: 'get',
+      dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      success:function(response){
+            $("#save-role-create-form").text("Update");
+            $("#role-name").val(response.name);
+            $("#role-description").val(response.description);
+            $("#role_id_edit").val(response.id);
+        if(response.level){
+          $("#role-level option[value='"+response.level+"']").prop('selected', true);
+        }
+        if(response.rights_id.length > 0){
+          setTimeout(function(){
+            $.each(response.rights_id, function(i, val){
+              $('input[value='+val+']').prop("checked", true);
+            });
+          }, 1000 );
+        }
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  $("#role-create-form-container").css({ visibility: "visible", opacity: 1 });
+});
 //Cancel(Hide) Role Create Form
 $(document).on("click", ".cancel-role-create-form", function () {
   resetFormValues("#role-create-form");
@@ -15,7 +54,6 @@ $(document).on("click", ".cancel-role-create-form", function () {
 
   $("#role-create-form-container").css({ visibility: "hidden", opacity: 0 });
 });
-
 //Create Form - Save Role
 $(document).on("submit", "#role-create-form", function (e) {
   e.preventDefault();
@@ -37,6 +75,7 @@ $(document).on("submit", "#role-create-form", function (e) {
   };
 
   $.each(formInputs, function (index, fieldData) {
+    console.log(fieldData);
     if (fieldData.name.endsWith("[]")) {
       let name = fieldData.name.substring(0, fieldData.name.length - 2);
       if (!(name in formData)) {
@@ -57,7 +96,9 @@ $(document).on("submit", "#role-create-form", function (e) {
   //If no field error - proceed submit
   if (!formHasError) {
     const { rights_id, ...rest } = formData;
-    saveRole(formData);
+
+    var role_id_edit =  $("#role_id_edit").val();
+    saveRole(formData, role_id_edit);
   }
 
   //   const newRole = `<div class="col-md-4"><div class="role-content mb-4"><h4>${roleName}</h4><p>${roleDescription}</p><div class="members"> <span><img src="images/member1.png" ></span><span><img src="images/member2.png" ></span><span><img src="images/member3.png" ></span><span><img src="images/member4.png" ></span> <span><img src="images/member5.png" ></span><span class="mlast">+6</span></div></div></div>`;

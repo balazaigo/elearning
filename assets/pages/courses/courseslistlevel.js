@@ -396,13 +396,13 @@ function get_breadcrumbs(){
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(data){
         var breadcrumbs_data = data.breadcrumbs_order;
-        document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
+        //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
         var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="course" data-cid="${data.course_id}"><a href="#" data-flinkto="course" data-cid="${data.course_id}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
               brd_crumbs += `<li class="breadcrumb-item" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}"><a href="#" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
-                  document.getElementById("course_header_module").innerHTML = elements.module_name;
+                  document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid"><small>(${data.course_id_prefix})</small></span>`;
               }
             });
         }

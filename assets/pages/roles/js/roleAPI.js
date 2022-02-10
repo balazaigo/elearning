@@ -33,7 +33,14 @@ function renderRoleList(roles) {
     }
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
-    html += `<h4 data-flinkto="userroles" data-target="${role.id}">${role.name}</h4>`;
+    html += `<div class="row">
+                <div class="col-6 cleft tbtn" > <h4 data-flinkto="userroles" data-target="${role.id}">${role.name}</h4></div>
+                <div class="col-6 cright">
+                  <div class="dropdown ahide">
+                    <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item green" href="#" data-role_id="${role.id}" id="trigger-role-edit-form">Edit</a></li></ul>
+                  </div>
+                </div>
+              </div>`;
     html += `<p>${role.description.substring(0, 75)+dots}</p>`;
     /*
     // ******************************************** /
@@ -108,7 +115,31 @@ function renderRoleRights(roleRights) {
 }
 
 //Save Role
-function saveRole(data) {
+function saveRole(data, role_id) {
+  console.log(role_id);
+  if(role_id != ""){
+    axios
+    .put(`${API_BASE_URL}/roles/`+role_id+`/`, data,{
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+    })
+    .then((response) => {
+      getRolesPage();
+    })
+    .catch((error) => {
+      var res = error.response;
+      if(res.status == 403) {
+        toastr.error(res.data.detail);
+      } else {
+        console.error("There was an error!", error.response);
+      }
+      // console.error("There was an error!", error.response);
+      const fieldValidationErrors = error?.response?.data;
+      if (fieldValidationErrors?.name?.[0]) {
+        const nameError = fieldValidationErrors.name[0];
+        $("#role-name").after(`<span class='field-error'>${nameError}</span>`);
+      }
+    });
+  }else{
   axios
     .post(`${API_BASE_URL}/roles/`, data,{
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
@@ -130,4 +161,5 @@ function saveRole(data) {
         $("#role-name").after(`<span class='field-error'>${nameError}</span>`);
       }
     });
+  }
 }
