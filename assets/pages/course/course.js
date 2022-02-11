@@ -51,18 +51,16 @@ var listItens = document.querySelectorAll('.draggable');
   addEventsDragAndDrop(item);
 });
 function toinput(e){
-    if(e.innerHTML != "Add Module Name"){
-        e.previousSibling.value = e.innerHTML; 
-    }else{
-        e.previousSibling.value = ''; 
-    } 
+    if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
+      e.previousSibling.value = ''; 
+    }
     e.setAttribute("style","display:none");
     e.previousSibling.setAttribute("style","display:block");
     e.previousSibling.focus();
 }
 function totext(e){
     if(e.value == ''){
-        e.value = "Add Module Name";
+        e.value = e.nextSibling.dataset.prev_val;
     }
     if(e.value != "" && e.value != "Add Module Name"){
       var class_module_level = e.parentElement.parentElement.parentElement.classList[1];
@@ -89,6 +87,7 @@ function totext(e){
         var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-module_id");
         get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
+      e.nextSibling.dataset.prev_val = e.value;
       if(get_submodule_level_values != ''){
         post_json_dat(url, get_submodule_level_values, method, e);
       }
@@ -233,7 +232,7 @@ function add_sub(e){
                 newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>"+result+". Chapter</p></li>";
+                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result+". Chapter'>"+result+". Chapter</p></li>";
                 newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
@@ -263,7 +262,7 @@ function add_sub(e){
                 newHTML = "<div class='module module_"+result+" main_mod_empty' style='opacity:0.5;'>";
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+result+"'>Add Module Name</p></li>";
+                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
                 newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
@@ -334,7 +333,7 @@ function add_sub_sub(e){
     newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-    newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"'>"+result_text+"</p></li>";
+    newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
     newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
     newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
     newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
