@@ -125,12 +125,22 @@ $(document).ready(function(){
         var course_tags = response;
         var tag_list ="";
         var tag_list_str = "";
-            for(var i = 0; i < course_tags.length; i++){
-              tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes tag__removes2" data-tag="'+course_tags[i].tag_name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
-              tag_list_str += course_tags[i].tag_name+",";
-            }
-            document.getElementById("tag__List_append").innerHTML = tag_list;
-            document.getElementById("tag__values").value = tag_list_str;
+        for(var i = 0; i < course_tags.length; i++){
+          tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes tag__removes2" data-tag="'+course_tags[i].tag_name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
+          tag_list_str += course_tags[i].tag_name+",";
+        }
+        document.getElementById("tag__List_append").innerHTML = tag_list;
+        document.getElementById("tag__values").value = tag_list_str;
+
+        var sum = 0;
+        $('#tag__List_append li').each(function() {
+           sum += $(this).height();
+        });
+        if(sum > 80){
+          $(".show-more").css('display','block');
+        }else{
+          $(".show-more").css('display','none');
+        }
       }
     });
 
@@ -595,6 +605,15 @@ document.addEventListener("keyup", function(e){
           const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes2" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
+          var sum = 0;
+          $('#tag__List_append li').each(function() {
+             sum += $(this).height();
+          });
+          if(sum > 80){
+            $(".show-more").css('display','block');
+          }else{
+            $(".show-more").css('display','none');
+          }
         }
       });
     }
@@ -625,6 +644,15 @@ document.addEventListener("click", function(e){
           headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
           success:function(response){
             e.target.parentElement.remove();
+            var sum = 0;
+            $('#tag__List_append li').each(function() {
+               sum += $(this).height();
+            });
+            if(sum > 80){
+              $(".show-more").css('display','block');
+            }else{
+              $(".show-more").css('display','none');
+            }
           }
         });
       }

@@ -65,6 +65,13 @@ function setUserInfo(authData){
         //$("#member-bulk-upload, #addusers").remove();
       }
     }
+    
+    if($("#btnAddCourse").length > 0) {
+      if(processRights("Add Course") === false || processRights("Define Course") === false) {
+        $("#btnAddCourse").remove();
+      }
+    }
+    
   }
 }
 
