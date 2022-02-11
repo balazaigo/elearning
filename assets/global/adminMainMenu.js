@@ -503,7 +503,7 @@ document.addEventListener("click", function (e) {
     }else{
       document.getElementById("app-admin").classList.remove("admin_course");
     }
-    if(e.target.dataset.flinkto == "roles"){
+    if(e.target.dataset.flinkto == "roles" || e.target.dataset.flinkto == "courses" ){
       document.getElementById("app-admin").classList.add("set_back_color");
     }else{
       document.getElementById("app-admin").classList.remove("set_back_color");

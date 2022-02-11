@@ -3617,3 +3617,39 @@ option:not(:first-of-type) {
     text-overflow: ellipsis;
     height: 52px;
 }
+#rolebox .cright .icon_counts{
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    right: 41px;
+    top: 5px;
+    position: absolute;
+    padding: 2px 0px 0px 0px;
+}
+.showmeonhover { display: none; }
+#rolebox .cright .icon_counts:hover .showmeonhover {
+    display: block;
+}
+#rolebox .role-content, #course-box .role-content{
+	border-top: 5px solid #20204f;
+}
+
+#role_member_count{
+    background: #e7e7e7;
+    border-radius: 19px;
+    padding: 5px;
+    font-size: 14px;
+}
+#role_member_count:hover {
+    background: #20204F;
+    color: #fff !important;
+    border-radius: 10px;
+    padding: 3px;
+}
+.clr-orng{
+	color:#F36A10;
+}

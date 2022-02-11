@@ -1,6 +1,3 @@
-$(document).ready(function(){
-  //get_pagination(parameter);
-});
 //  Get Roles - For Role List Page
 function getRoles() {
   $("#role-loader").css("display", "block");
@@ -34,13 +31,20 @@ function renderRoleList(roles) {
     if(role.description.length > 75){
       dots = "...";
     }
+    //<span>Member:<span class="icon_counts"> ${role.member_count}</span></span>
+    //<button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item green" href="#" data-role_id="${role.id}" id="trigger-role-edit-form">Edit</a></li></ul>
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
+    if(role.member_count > 0){
+      html_member = `<span><a id="role_member_count" data-flinkto="userroles" data-target="${role.id}"><span >Member:</span>${role.member_count}</a></span>`;
+    }else{
+      html_member = `<span><a id="role_member_count"><span>Member:</span> ${role.member_count}</a></span>`;
+    }
     html += `<div class="row">
-                <div class="col-10 cleft tbtn" > <h4 data-flinkto="userroles" data-target="${role.id}">${role.name}</h4></div>
-                <div class="col-2 cright">
+                <div class="col-8 cleft tbtn" > <h4 data-role_id="${role.id}" id="trigger-role-edit-form" class="clr-orng">${role.name}</h4></div>
+                <div class="col-4 cright">
                   <div class="dropdown ahide">
-                    <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item green" href="#" data-role_id="${role.id}" id="trigger-role-edit-form">Edit</a></li></ul>
+                    ${html_member}
                   </div>
                 </div>
               </div>`;
@@ -51,9 +55,9 @@ function renderRoleList(roles) {
     // ******************************************** /
     */
     if(role.rights.length > 0){
-      html += `<div class="member_rights"><span>Rights</span><ul class="list-unstyled">`;
+      html += `<div class="member_rights"><span class="clr-orng">Rights</span><ul class="list-unstyled italic-style">`;
       $.each(role.rights, function (index_rights, role_rights) {
-        html += `<li class="d-inline"><i class="fas fa-check"></i> ${role_rights.name}</li>`;
+        html += `<li class="d-inline"><i class="fas fa-check"></i> <em>${role_rights.name}</em></li>`;
       });
       html += `</ul></div>`;
     }
