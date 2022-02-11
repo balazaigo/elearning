@@ -3589,13 +3589,16 @@ option:not(:first-of-type) {
     width: auto;
     border-radius: 10px;
 }
-#role-create-form input, #role-create-form textarea, #role-create-form select{
+#role-create-form input, #role-create-form textarea, #role-create-form select, #member-create-form input, #member-create-form select{
 	padding-top: 20px
 }
-#role-create-form .form-floating label{
+#role-create-form .form-floating label, #member-create-form .form-floating label{
     top: -13px;
     font-size: 13px;
     left: -1px;
+}
+#member-create-form .search_email .form-floating label{
+	z-index: 999;
 }
 #role-create-form .switch{
 	background: #f36a10;

@@ -177,6 +177,13 @@ function get_assignee_details(cid, module_id){
 				    assignee_html += '</tr>';
 		      });
 		      $("#assignedMember").html(assignee_html);
+			}else{
+		      $("#assignedMember").html(`
+		            <tr>
+		              <td colspan="7">
+		                <div class="alert text-center text-danger">No Records Found!</div>
+		              </td>
+		            </tr>`);
 			}
 		}
 	});

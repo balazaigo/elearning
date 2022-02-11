@@ -506,7 +506,7 @@ function moduleMobilePreview(cid){
                                 <div class="row">
                                 </div>
                               </div>`;
-      var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(249,249,251);'></div>");
+      var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(231 231 231);'></div>");
       get_list_preview( data.module_detail, newDIVs, 1);
       var outerHtml = newDIVs.prop('outerHTML');
       document.getElementById("mp_courseData").innerHTML = course_data_html+outerHtml;
@@ -536,7 +536,7 @@ function moduleDesktopPreview(cid){
                                 <div class="row">
                                 </div>
                               </div>`;
-      var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(249,249,251);'></div>");
+      var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(231 231 231);'></div>");
       get_list_preview( data.module_detail, newDIVs, 1);
       var outerHtml = newDIVs.prop('outerHTML');
       document.getElementById("dp_courseData").innerHTML = course_data_html+outerHtml;

@@ -1,3 +1,6 @@
+$(document).ready(function(){
+  //get_pagination(parameter);
+});
 //  Get Roles - For Role List Page
 function getRoles() {
   $("#role-loader").css("display", "block");

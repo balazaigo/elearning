@@ -18,7 +18,7 @@
       <div class="task-tbox"> <img src="../assets/images/tbox1.jpg" alt="" >
         <div>
           <h4 id="finished_task_count">0</h4>
-          <p>Finished Task Count</p>
+          <p>Finished Task</p>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
       <div class="task-tbox"> <img src="../assets/images/tbox2.jpg" alt="" >
         <div>
           <h4 id="onhold_task_count">0</h4>
-          <p>Onhold Task Count</p>
+          <p>Onhold Task</p>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="task-tbox"> <img src="../assets/images/tbox3.jpg" alt="" >
         <div>
           <h4 id="active_task_count">0</h4>
-          <p>Active Task Count</p>
+          <p>Active Task</p>
         </div>
       </div>
     </div>
@@ -161,9 +161,9 @@
     dataType: 'json',
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
-      $("#active_task_count").html(response.active_task_count);
-      $("#onhold_task_count").html(response.onhold_task_count);
-      $("#finished_task_count").html(response.finished_task_count);
+      $("#active_task_count").html(response.active_count);
+      $("#onhold_task_count").html(response.onhold_count);
+      $("#finished_task_count").html(response.finished_count);
     }
   });
   

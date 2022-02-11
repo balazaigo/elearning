@@ -125,7 +125,10 @@
     <span class="cancel-member-create-form close" href="#">&times;</span>
     <form class="pop-form" id="member-create-form">
       <div class="row mb-3">
-        <div class="col-md-12">
+        <div class="col-md-12 search_email">
+          <div class="form-floating">
+            <label >Search by Email</label>
+          </div>
           <div class="topsearch relative add_email_search">
             <input
               class="form-control form-control-dark w-100"
@@ -133,7 +136,6 @@
               name="email_id"
               type="text"
               autocomplete="off"
-              placeholder="Search by Email"
               aria-label="Search"
             />
             <i class="fas fa-search"></i> </div>
@@ -141,41 +143,56 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-6">
-          <input
-            id="member-fName"
-            name="first_name"
-            type="name"
-            class="form-control"
-            placeholder="First Name"
-            disabled
-          />
+          <div class="form-floating">
+            <label >First Name</label>
+          </div>
+          <div>
+            <input
+              id="member-fName"
+              name="first_name"
+              type="name"
+              class="form-control"
+              disabled
+            />
+          </div>
         </div>
         <div class="col-md-6">
-          <input
-            id="member-lName"
-            name="last_name"
-            type="name"
-            class="form-control"
-            placeholder="Last Name"
-            disabled
-          />
+          <div class="form-floating">
+            <label >Last Name</label>
+          </div>
+          <div>
+            <input
+              id="member-lName"
+              name="last_name"
+              type="name"
+              class="form-control"
+              disabled
+            />
+          </div>
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
-          <input
-            id="member-phoneNo"
-            name="phone_number"
-            type="number"
-            class="form-control"
-            placeholder="Phone No"
-            min="0"
-            disabled
-          />
+          <div class="form-floating">
+            <label >Phone No</label>
+          </div>
+          <div>
+            <input
+              id="member-phoneNo"
+              name="phone_number"
+              type="number"
+              class="form-control"
+              min="0"
+              disabled
+            />
+          </div>
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
+          <div class="form-floating">
+            <label >Select Role</label>
+          </div>
           <div class="dropdown-select">
             <select
               class="form-control sort-select"
@@ -183,7 +200,7 @@
               name="roles_name"
               disabled
             >
-              <option value="" selected disabled>Select Role</option>
+              <option value="" selected disabled></option>
               <!-- HTML snippet will be dynamically appended-->
             </select>
           </div>

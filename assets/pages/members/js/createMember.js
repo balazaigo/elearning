@@ -51,7 +51,7 @@ $(document).on("change", "#member-email", function () {
 
   if (!hasEmailError) {
   
-    console.log("CHECKED");
+    //console.log("CHECKED");
     ajaxValidationMailID(value);
 
   }
