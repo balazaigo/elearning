@@ -117,11 +117,16 @@
 .course .frame_img_icon .dropdown-menu{
     width: 50% !important;
 }
-.admin_course .modal{
+/*.admin_course .modal{
     position: absolute !important;
-    /*right: -40px !important;*/
     left: unset !important;
-} 
+} */
+.admin_course .modal{
+    position: fixed !important;
+    right: 0px !important;
+    left: unset !important;
+    top: 120px;
+}
 #content-courseModule .acnav__list{
     border-radius: 10px;
 }

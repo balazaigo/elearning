@@ -54,6 +54,9 @@ function toinput(e){
     if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
       e.previousSibling.value = ''; 
     }
+    if(e.innerHTML == "Add Module Name"){
+      e.previousSibling.value = ''; 
+    }
     e.setAttribute("style","display:none");
     e.previousSibling.setAttribute("style","display:block");
     e.previousSibling.focus();
@@ -89,7 +92,8 @@ function totext(e){
       }
       e.nextSibling.dataset.prev_val = e.value;
       if(get_submodule_level_values != ''){
-        post_json_dat(url, get_submodule_level_values, method, e);
+        var message = "";
+        post_json_dat(url, get_submodule_level_values, method, e, message);
       }
     }
     e.nextSibling.innerHTML = e.value; 
@@ -100,20 +104,6 @@ function totext(e){
 function get_submodule_level_val(class_module_main_level, class_module_sub_level, ele_val, parent_id_val){
   var data_course_module = "";
   if(class_module_sub_level.indexOf('.') !== -1){
-     //console.log("Found . in str")
-      /*var module_name_list = document.getElementById("module_"+class_module_main_level).innerHTML;
-      var count = (class_module_sub_level.split(".").length - 1);
-      var str_array = class_module_sub_level.split('.');
-      var sting_concat = '';
-      for (let i = 0; i < str_array.length-1; i++) {
-        if(i == 0){
-            sting_concat += str_array[i];
-        }else{
-          sting_concat += "."+str_array[i];
-        }
-        module_name_list += "/"+document.getElementById(sting_concat+"_"+class_module_main_level).innerHTML;
-      }
-      module_name_list += "/"+ele_val;*/
       var level_number = (class_module_sub_level.split("_module")[0]).split(".")[class_module_sub_level.split(".").length-1];
       data_course_module = {
         module_name: String(ele_val),
@@ -123,8 +113,6 @@ function get_submodule_level_val(class_module_main_level, class_module_sub_level
       }
 
   }else{
-      //console.log("Not Found . in str")
-      //var module_name_list = document.getElementById("module_"+class_module_main_level).innerHTML+"/"+ele_val;
       var level_number = class_module_sub_level.split('_')[1];
       data_course_module = {
         module_name: String(ele_val),
@@ -136,7 +124,7 @@ function get_submodule_level_val(class_module_main_level, class_module_sub_level
   return data_course_module;
 }
 
-function post_json_dat(url, data, call_method, e){
+function post_json_dat(url, data, call_method, e, message){
   fetch(url, {
     method: call_method,
     body: JSON.stringify(data),
@@ -144,6 +132,7 @@ function post_json_dat(url, data, call_method, e){
   })
   .then((response) => response.json())
   .then((json) => {
+    var module_name = "";
     el_1 = e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild;//edit
     el_2 = e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild;//delete
     el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
@@ -151,6 +140,16 @@ function post_json_dat(url, data, call_method, e){
     el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
     el_6 = e.parentElement.parentElement.childNodes[5].firstChild;//comment
     el_7 = e.parentElement.parentElement.childNodes[6].firstChild;//assign
+
+    el_li_0 = e.parentElement.parentElement.childNodes[0];
+    el_li_1 = e.parentElement.parentElement.childNodes[1];
+    el_li_2 = e.parentElement.parentElement.childNodes[2];
+    el_li_3 = e.parentElement.parentElement.childNodes[3];
+    el_li_4 = e.parentElement.parentElement.childNodes[4];
+    el_li_5 = e.parentElement.parentElement.childNodes[5];
+    el_li_6 = e.parentElement.parentElement.childNodes[6];
+    el_li_7 = e.parentElement.parentElement.childNodes[7];
+    el_li_8 = e.parentElement.parentElement.childNodes[8];
     el_1.setAttribute("data-flinkto", "courseslistlevel");
     if(json.module_id != undefined || json.module_id != null){
       e.setAttribute("data-module_id", json.module_id);
@@ -172,6 +171,45 @@ function post_json_dat(url, data, call_method, e){
       el_6.setAttribute("data-cid", json.course_id);
       el_7.setAttribute("data-cid", json.course_id);
     }
+    if(json.can_access == false){
+      el_li_0.style.cssText = "pointer-events: none";
+      el_li_1.style.cssText = "pointer-events: none";
+      el_li_2.style.cssText = "pointer-events: none";
+      el_li_3.style.cssText = "pointer-events: none";
+      el_li_4.style.cssText = "pointer-events: none";
+      el_li_5.style.cssText = "pointer-events: none";
+      el_li_6.style.cssText = "pointer-events: none";
+      el_li_7.style.cssText = "pointer-events: none";
+      el_li_8.style.cssText = "pointer-events: none";
+    }
+    if(json.module_name != undefined || json.module_name != null){
+      el_2.setAttribute("data-name", json.module_name);
+      module_name = json.module_name;
+    }
+    var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
+    var num = "";
+    if(classList[2] == 'main_mod'){
+      num = 0;
+    }else{
+      var index = classList[1].lastIndexOf("_");
+      var res_1 = Number(classList[1].substr(index+1));
+      var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
+      num = String(result).match(/\./g).length;
+    }
+    if(num === 0){
+      var result_textMsg = "Module:";
+    }else if(num === 1){
+      var result_textMsg = "Chapter:";
+    }else if(num === 2){
+      var result_textMsg = "Lesson:";
+    }else if(num === 3){
+      var result_textMsg = "Topic:";
+    }else if (num === 4){
+      var result_textMsg = "Sub Topic:";
+    }else if (num > 4){
+      var result_textMsg = "Level:";
+    }
+    toastr.success(result_textMsg+" "+module_name+" Created.");
   })
   .catch(function (error) {
     console.log("Requestfailed", error);
@@ -233,7 +271,7 @@ function add_sub(e){
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result+". Chapter'>"+result+". Chapter</p></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
@@ -247,12 +285,7 @@ function add_sub(e){
                 var class_module_main_level = main_mod_level;
                 var class_module_sub_level = "sub_"+result;
                 var input_val = "Level "+result;
-                //var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-                //var url = API_CONTENT_URL + '/course_module/';
-                //if(get_submodule_level_values != ''){
-                  //post_json_dat(url, get_submodule_level_values);
-                //}
-                toastr.success("Chapter Created.");
+                toastr.success("Chapter Added.");
                 return;
             }
             if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
@@ -263,7 +296,7 @@ function add_sub(e){
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-cid=''  data-module_id='' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
@@ -274,30 +307,6 @@ function add_sub(e){
                 newHTML += "</div>";
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
             }
-
-            /*else{
-                var index = classList[1].lastIndexOf("_");
-                var result = Number(classList[1].substr(index+1));
-                if(e.parentElement.parentElement.childNodes[0].nodeName == '#text'){
-                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(18);
-                }else{
-                    var result = Number(e.parentElement.parentElement.childNodes.length);
-                }
-                newHTML = "<div class='module sub_module_"+result+" sub_"+result+"' style='width:95%;margin-right: -2px;'>";
-                newHTML += "<ul class='sub_module'>";
-                newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);'>Level "+result+"</p></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
-                newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
-                newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
-                newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
-                newHTML += "</ul>";
-                newHTML += "</div>";
-                e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
-            }*/
         }
     }
 }
@@ -334,7 +343,7 @@ function add_sub_sub(e){
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
     newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
-    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a class='dropdown-item green' onclick='delete_sub_module(this);'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
     newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
     newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
     newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
@@ -347,12 +356,7 @@ function add_sub_sub(e){
     var class_module_main_level = main_mod_level;
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
-    toastr.success(result_textMsg+" Created.");
-    //var get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, input_val);
-    //var url = API_CONTENT_URL + '/course_module/';
-    //if(get_submodule_level_values != ''){
-      //post_json_dat(url, get_submodule_level_values);
-    //}
+    toastr.success(result_textMsg+" Added.");
    }
 }
 
@@ -375,51 +379,14 @@ function toggle_collapse_expand(e){
         }
     }
 }
-/******* Expand and collapse main and sub module Levels Ends **************/
-function delete_module(e){
-  var x =e.parentElement.parentElement.parentElement.parentElement.childNodes;
-  if(x[0].nodeName == "#text"){
-      var inp_val = x[3].childNodes[1].innerHTML;
-  }else{
-      var inp_val = x[1].childNodes[0].value;
-  }
-  if(inp_val != '' && inp_val != "Add Module Name"){
-
-      var url = API_CONTENT_URL + '/course_module/'+e.dataset.module_id+'/';
-      var method = "DELETE";
-    var result = [],
-    node = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild;
-    while ( node ) {
-        if (node.nodeType === Node.ELEMENT_NODE ) 
-          result.push( node );
-        node = node.nextElementSibling || node.nextSibling;
-    }
-    if(result.length > 1){
-      e.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
-      post_json_dat(url, null, method);
-      var result2 = [],
-      node2 = document.getElementById('course_box').firstChild;
-      while ( node2 ) {
-          if (node2.nodeType === Node.ELEMENT_NODE ) 
-            result2.push( node2 );
-          node2 = node2.nextElementSibling || node2.nextSibling;
-      }
-      var key = 1;
-      result2.forEach(function(item){
-        item.classList.replace(item.classList[1], "module_"+key);
-        key++;
-      });
-    }
-  }
-}
 function show_tag_popup(e){
-  var offsets = e.getBoundingClientRect();
-  var offset_box = document.getElementById("course_box").getBoundingClientRect();
-  var top = offsets.top + Math.max( $("html").scrollTop(), $("body").scrollTop() ) - 70;
+  //var offsets = e.getBoundingClientRect();
+  //var offset_box = document.getElementById("course_box").getBoundingClientRect();
+  //var top = offsets.top + Math.max( $("html").scrollTop(), $("body").scrollTop() ) - 70;
   //var right = offset_box.left;
   const container = document.getElementById("popup_course_icon");
   const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
-  document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
+  //document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_tag.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
@@ -461,22 +428,6 @@ function show_assignee_popup(e){
     modal.toggle();
   });
 }
-function delete_sub_module(e){
-
-      var url = API_CONTENT_URL + '/course_module/'+e.dataset.module_id+'/';
-      var method = "DELETE";
-    var result = [],
-    node = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild;
-    while ( node ) {
-        if (node.nodeType === Node.ELEMENT_NODE ) 
-          result.push( node );
-        node = node.nextElementSibling || node.nextSibling;
-    }
-    if(result.length > 1){
-      e.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
-      post_json_dat(url, null, method);
-    }
-}
 $(document).ready(function(){
   $('#popup_course_icon').on('hidden.bs.modal', function () {
       $('#course_id').trigger('click');
@@ -507,7 +458,7 @@ function moduleMobilePreview(cid){
                                 </div>
                               </div>`;
       var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(231 231 231);'></div>");
-      get_list_preview( data.module_detail, newDIVs, 1);
+      get_list_preview( data.module_detail, newDIVs, 1, "mobile");
       var outerHtml = newDIVs.prop('outerHTML');
       document.getElementById("mp_courseData").innerHTML = course_data_html+outerHtml;
     });
@@ -537,24 +488,30 @@ function moduleDesktopPreview(cid){
                                 </div>
                               </div>`;
       var newDIVs = $("<div class='course' id='course_box' style='background-color: rgb(231 231 231);'></div>");
-      get_list_preview( data.module_detail, newDIVs, 1);
+      get_list_preview( data.module_detail, newDIVs, 1, "desktop");
       var outerHtml = newDIVs.prop('outerHTML');
       document.getElementById("dp_courseData").innerHTML = course_data_html+outerHtml;
     });
 }
 /***************Course Modules Get Json and assign Tree structured format and Design Starts Here*************/
-function get_list_preview( a, $parent , level_count_inc) {
+function get_list_preview( a, $parent , level_count_inc, prev_type) {
+  var mod_width = "width:93%;";
+  if(prev_type == "mobile"){
+    mod_width = "width:87%;";
+  }
   var levels = '';
   var newDIV = $("<div></div>");
   for (var i = 0; i < a.length; i++) {
       if (a[i]) {
+        var num = "";
           var level_count = a[i].module_name.split("/").length - 1;
           if(a[i].parent_id == null){
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
-            newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+            var color = "color:#F36A10;";
+            newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1;border-left-style: dashed;border-left-color: #d9d7d7;'></div>");
             newUl = $("<ul class='main_module module_opacity' style='opacity:1;padding-bottom: 0px;border-style: none;'></ul>");
-            newUl.append("<li style='background-color: white;padding7px;'><p class='mb-0' style='padding:15px;'><b>"+input_value+" :</b></p></li>");
+            newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p></li>");
             var module_data_html  = get_module_details_preview(a[i]);
             newUl.append(module_data_html);
           }else{
@@ -562,15 +519,31 @@ function get_list_preview( a, $parent , level_count_inc) {
             var first_five_char_class = class_name[1].substring(0,5);
             if(first_five_char_class === "modul"){
               var levels = a[i].level;
+              var color = "color:red;";
             }else{
               var levels = $parent.parent().attr('id')+"."+a[i].level;
+              num = String(levels).match(/\./g).length;
+              if(num == ""){
+                var color = "color:#20204F;";
+              }else if(num === 1){
+                var color = "color:#448744;";
+              }else if(num === 2){
+                var color = "color:#7e2ebb;";
+              }else if(num === 3){
+                var color = "color:#8080bd;";
+              }else if (num === 4){
+                var color = "color:#8b364d;";
+              }else if (num > 4){
+                var color = "color:#998129;";
+              }
             }
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
-            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='width:95%;'>");
+            console.log(num+"= "+input_value)
+            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='"+mod_width+"border-left-style: dashed;border-left-color: #d9d7d7;'>");
             newUl = $("<ul class='sub_module' style='padding-bottom: 0px;border-style: none;'></ul>");
             const [module_content, module_attachments] = get_module_details_preview(a[i]);
-            newUl.append("<li style='background-color: white;padding7px;'><p class='mb-0' style='padding:15px;'><b>"+input_value+" :</b></p>"+module_content+"</li>");
+            newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p>"+module_content+"</li>");
             newUl.append(module_attachments);
           }
           if(level_count === 0){  
@@ -583,7 +556,7 @@ function get_list_preview( a, $parent , level_count_inc) {
             $parent.append(newDIV);
           }
           if (a[i].children){
-              get_list_preview( a[i].children, newUl, level_count_inc);
+              get_list_preview( a[i].children, newUl, level_count_inc, prev_type);
           }
       }
     $parent.append(newDIV);
@@ -652,3 +625,78 @@ $(document).ready(function(){
     $("#mobile_preview").removeClass("overlay_target");
   });
 });
+
+function delete_module_confirm(e){
+  var element = e;
+  $("#mAlertName").text(e.dataset.name);
+  var module_name = e.dataset.name;
+  var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
+  var num = "";
+  if(classList[2] == 'main_mod'){
+    num = 0;
+  }else{
+    var index = classList[1].lastIndexOf("_");
+    var res_1 = Number(classList[1].substr(index+1));
+    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length - 8);
+    num = String(result).match(/\./g).length;
+  }
+  if(num === 0){
+    var result_textMsg = "Module:";
+  }else if(num === 1){
+    var result_textMsg = "Chapter:";
+  }else if(num === 2){
+    var result_textMsg = "Lesson:";
+  }else if(num === 3){
+    var result_textMsg = "Topic:";
+  }else if (num === 4){
+    var result_textMsg = "Sub Topic:";
+  }else if (num > 4){
+    var result_textMsg = "Level:";
+  }
+  var toastr_message = result_textMsg+" "+module_name+" Deleted successfully.";
+  var module_id = e.dataset.module_id;
+  var module_name = e.dataset.name;
+  loadAlertModal(toastr_message, module_id, module_name);
+}
+  function loadAlertModal(toastr_message, module_id, module_name){
+    $('#mAlert').on('shown.bs.modal', function (event) {
+      $("#mAlertCancel").focus();
+      $(document).on('click', '#mAlertDelete', function(e) {
+        var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
+        var method = "DELETE";
+        $.ajax({
+          url: url_api,
+          type: method,
+          dataType: 'json',
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token,
+            "Content-Type": "application/json"
+          },
+          success:function(response){
+            $("#mAlertCancel").click();
+            $("#course_id").trigger("click");
+            toastr.success(toastr_message);
+          },
+          error: function(error){
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+      });
+      //mAlertCancel
+      $(document).on('click', '#mAlertCancel', function() {
+        $(document).off('click', '#mAlertCancel');
+        $(document).off('click', '#mAlertDelete');
+      });
+      
+    });
+    
+    //hidden.bs.modal 
+    $('#mAlert').on('hidden.bs.modal', function (event) {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+      var modal = $(this);
+      modal.find('.modal-content input').val(null);
+      modal.find('.modal-content #mAlertName').html("Loading...");
+    });
+}

@@ -36,9 +36,9 @@ function renderRoleList(roles) {
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
     if(role.member_count > 0){
-      html_member = `<span><a id="role_member_count" data-flinkto="userroles" data-target="${role.id}"><span >Member:</span>${role.member_count}</a></span>`;
+      html_member = `<span><a id="role_member_count" data-flinkto="userroles" data-target="${role.id}"><span data-flinkto="userroles" data-target="${role.id}">Members :</span>${role.member_count}</a></span>`;
     }else{
-      html_member = `<span><a id="role_member_count"><span>Member:</span> ${role.member_count}</a></span>`;
+      html_member = `<span><a id="role_member_count"><span>Members :</span> ${role.member_count}</a></span>`;
     }
     html += `<div class="row">
                 <div class="col-8 cleft tbtn" > <h4 data-role_id="${role.id}" id="trigger-role-edit-form" class="clr-orng">${role.name}</h4></div>

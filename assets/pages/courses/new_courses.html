@@ -556,6 +556,8 @@
           var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
           $('.modal-content').load(url, function (result) {
             modal.show();
+            var parameter = "";
+            get_pagination(parameter);
           });
         }
       },
@@ -581,6 +583,8 @@
       success: function (response) {
         toastr.success("Course information was successfully updated.");
         $('#addCourses').modal('hide');
+        var parameter = "";
+        get_pagination(parameter);
       },
       error: function (error) {
         toastr.error("Response Error: " + error.message);

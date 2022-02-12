@@ -3314,6 +3314,7 @@ form#multiple {
     width: 40px;
     float: right;
     margin-top: -12px;
+    cursor: pointer;
 }
 .course_details .wrapper .course_head_right p{
     width: fit-content;
