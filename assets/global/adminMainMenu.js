@@ -343,7 +343,7 @@ async function getCoursePage(e) {
       course_head += "<div class='wrapper'>";
       course_head += "<div class='left_icon' data-flinkto='courses'><img src='../assets/images/left_arrow.png' class='arrow_icon' data-flinkto='courses'></div>";
       course_head += "<div class='course_head'>";
-      course_head += "<h4 class='header_content' id='course_header'>"+data.course_name+"<span class='header_cid'><small>("+data.course_id_prefix+")</small></span><dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
+      course_head += "<h4 class='header_content' id='course_header'>"+data.course_name+"<span class='header_cid'>&nbsp;&nbsp;<small>("+data.course_id_prefix+")</small></span><dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
       course_head += "<h4 class='header_breadcrumbs'>"+data.description+"</h4>";
       course_head += "</div>";
       course_head += "<div class='course_head_right'>";
@@ -413,14 +413,14 @@ function get_list( a, $parent , level_count_inc) {
               status_class = "status_new";
               status_text = "New";
             }else if(a[i].status == 1){
-              status_class = "status_onhold";
-              status_text = "On Hold";
-            }else if(a[i].status == 2){
-              status_class = "status_completed";
-              status_text = "Completed";
-            }else if(a[i].status == 3){
               status_class = "status_inprogress";
               status_text = "In Progress";
+            }else if(a[i].status == 2){
+              status_class = "status_onhold";
+              status_text = "On Hold";
+            }else if(a[i].status == 3){
+              status_class = "status_completed";
+              status_text = "Completed";
             }
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
@@ -465,14 +465,14 @@ function get_list( a, $parent , level_count_inc) {
                   status_class = "status_new";
                   status_text = "New";
                 }else if(a[i].status == 1){
-                  status_class = "status_onhold";
-                  status_text = "On Hold";
-                }else if(a[i].status == 2){
-                  status_class = "status_completed";
-                  status_text = "Completed";
-                }else if(a[i].status == 3){
                   status_class = "status_inprogress";
                   status_text = "In Progress";
+                }else if(a[i].status == 2){
+                  status_class = "status_onhold";
+                  status_text = "On Hold";
+                }else if(a[i].status == 3){
+                  status_class = "status_completed";
+                  status_text = "Completed";
                 }
               var n = a[i].module_name.lastIndexOf('/');
               var input_value = a[i].module_name.substring(n + 1);
