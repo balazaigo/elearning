@@ -87,7 +87,7 @@ function totext(e){
       }else if(first_five_char_class === "sub_m"){
         var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
         var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
-        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-module_id");
+        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[2].firstChild.getAttribute("data-module_id");
         get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
       e.nextSibling.dataset.prev_val = e.value;
@@ -135,11 +135,11 @@ function post_json_dat(url, data, call_method, e, message){
     var module_name = "";
     el_1 = e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild;//edit
     el_2 = e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild;//delete
-    el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
-    el_4 = e.parentElement.parentElement.childNodes[3].firstChild;//progress
-    el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
-    el_6 = e.parentElement.parentElement.childNodes[5].firstChild;//comment
-    el_7 = e.parentElement.parentElement.childNodes[6].firstChild;//assign
+    el_3 = e.parentElement.parentElement.childNodes[9].firstChild;//tags
+    el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
+    el_5 = e.parentElement.parentElement.childNodes[5].firstChild;//attachment
+    el_6 = e.parentElement.parentElement.childNodes[6].firstChild;//comment
+    el_7 = e.parentElement.parentElement.childNodes[7].firstChild;//assign
 
     el_li_0 = e.parentElement.parentElement.childNodes[0];
     el_li_1 = e.parentElement.parentElement.childNodes[1];
@@ -150,6 +150,7 @@ function post_json_dat(url, data, call_method, e, message){
     el_li_6 = e.parentElement.parentElement.childNodes[6];
     el_li_7 = e.parentElement.parentElement.childNodes[7];
     el_li_8 = e.parentElement.parentElement.childNodes[8];
+    el_li_8 = e.parentElement.parentElement.childNodes[9];
     el_1.setAttribute("data-flinkto", "courseslistlevel");
     if(json.module_id != undefined || json.module_id != null){
       e.setAttribute("data-module_id", json.module_id);
@@ -181,6 +182,7 @@ function post_json_dat(url, data, call_method, e, message){
       el_li_6.style.cssText = "pointer-events: none";
       el_li_7.style.cssText = "pointer-events: none";
       el_li_8.style.cssText = "pointer-events: none";
+      el_li_9.style.cssText = "pointer-events: none";
     }
     if(json.module_name != undefined || json.module_name != null){
       el_2.setAttribute("data-name", json.module_name);
@@ -251,9 +253,9 @@ function check_value(e){
 function add_sub(e){
     var x =e.parentElement.parentElement.childNodes;
     if(x[0].nodeName == "#text"){
-        var inp_val = x[3].childNodes[1].innerHTML;
+        var inp_val = x[5].childNodes[1].innerHTML;
     }else{
-        var inp_val = x[1].childNodes[1].innerHTML;
+        var inp_val = x[2].childNodes[1].innerHTML;
     }
     if(inp_val != ''){
         var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
@@ -263,15 +265,16 @@ function add_sub(e){
                 var index = classList[1].lastIndexOf("_");
                 var result = Number(classList[1].substr(index+1));
                 if(e.parentElement.parentElement.childNodes[0].nodeName == '#text'){
-                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(18);
+                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(20);
                 }else{
-                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(8);
+                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(9);
                 }
                 newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/up_and_down2.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result+". Chapter'>"+result+". Chapter</p></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
@@ -295,8 +298,9 @@ function add_sub(e){
                 newHTML = "<div class='module module_"+result+" main_mod_empty' style='opacity:0.5;'>";
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/up_and_down2.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-cid=''  data-module_id='' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-cid=''  data-module_id='' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
@@ -313,27 +317,27 @@ function add_sub(e){
 
 function add_sub_sub(e){
   var x =e.parentElement.parentElement.childNodes;
-  if(x.length == 15){
-    var inp_val = x[3].childNodes[0].value;
+  if(x.length == 17){
+    var inp_val = x[5].childNodes[0].value;
   }
-  if(x.length == 9){
-    var inp_val = x[1].childNodes[0].value;
+  if(x.length == 10){
+    var inp_val = x[2].childNodes[0].value;
   }
   if(inp_val != ''){
     var main_mod_level = e.parentElement.parentElement.parentElement.classList[3];
     var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
     var index = classList[1].lastIndexOf("_");
     var res_1 = Number(classList[1].substr(index+1));
-    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
+    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 9);
     var num = String(result).match(/\./g).length;
     if(num === 1){
-      var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Lesson";
+      var result_text = Number(e.parentElement.parentElement.childNodes.length - 9)+". Lesson";
       var result_textMsg = "Lesson";
     }else if(num === 2){
-      var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Topic";
+      var result_text = Number(e.parentElement.parentElement.childNodes.length - 9)+". Topic";
       var result_textMsg = "Topic";
     }else if(num === 3){
-      var result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Sub Topic";
+      var result_text = Number(e.parentElement.parentElement.childNodes.length - 9)+". Sub Topic";
       var result_textMsg = "Sub Topic";
     }else{
       var result_text = "Level "+result;
@@ -342,8 +346,9 @@ function add_sub_sub(e){
     newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
+    newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/up_and_down2.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
     newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
-    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Expand</a></li><li><a class='dropdown-item green' onclick='toggle_collapse_expand(this);'>Collapse</a></li></ul></li>";
+    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
     newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
     newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
     newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
@@ -363,11 +368,11 @@ function add_sub_sub(e){
 /******* Expand and collapse main and sub module Levels Starts **************/
 function toggle_collapse_expand(e){
     var childrendivs = [],
-    children = e.parentElement.parentElement.parentElement.parentElement.children;
+    children = e.parentElement.parentElement.children;
     var action = e.innerHTML;
     for(var i = 0; i < children.length; i++){
         if (children[i].tagName == "DIV") {
-          if(action == "Expand"){
+          if(children[i].classList.contains('disp_none')){
               children[i].classList.add('disp_block');
               children[i].classList.remove('disp_none');
               childrendivs.push(children[i]);

@@ -1,5 +1,11 @@
 $(document).ready(function(){
 
+var editor = CKEDITOR.replace( 'editor1',{
+    filebrowserBrowseUrl: '../assets/global/ckfinder/ckfinder.html',
+    filebrowserUploadUrl: '../assets/global/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
+} );
+CKFinder.setupCKEditor( editor );
+get_content_details();
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
     let cid = document.getElementById("course_module_id").getAttribute("data-cid");
@@ -435,7 +441,8 @@ function get_content_details(){
           module_content_id = response.module_content[0].id;
           document.getElementById("saveCourses").setAttribute("data-module_content_id", module_content_id);
         }
-        tinymce.activeEditor.setContent(module_content);
+        //tinymce.activeEditor.setContent(module_content);
+        CKEDITOR.instances["editor1"].setData(module_content);
       }
     });
 }
@@ -823,7 +830,8 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         $("#saveCourses").on("click", function() {
         let cid = document.getElementById("course_module_id").getAttribute("data-cid");
         let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
-          var newData = tinymce.activeEditor.getContent();
+          //var newData = tinymce.activeEditor.getContent();
+          var newData = CKEDITOR.instances["editor1"].getData();
 
           var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
           var method_type = "POST";
@@ -858,7 +866,8 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         $("#convertToAudio").on("click", function() {
         let cid = document.getElementById("course_module_id").getAttribute("data-cid");
         let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
-          var newData = tinymce.activeEditor.getContent();
+          //var newData = tinymce.activeEditor.getContent();
+          var newData = CKEDITOR.instances["editor1"].getData();
           var newTextData = newData.replace(/<[^>]+>/g, '');
           var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
           var method_type = "POST";
