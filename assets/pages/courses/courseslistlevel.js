@@ -843,6 +843,45 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
               success:function(response){
                 toastr.success("Content has been saved.");
                 console.log(response);
+              },
+                error: function(error){
+                  toastr.error("Response Error: " + error.message);
+                  console.log(error);
+                }
+            });
+          }else{
+            toastr.error("Please Write a Content.");
+          }
+          //loadextData(tinymce.activeEditor);
+        });
+
+        $("#convertToAudio").on("click", function() {
+        let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+        let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+          var newData = tinymce.activeEditor.getContent();
+          var newTextData = newData.replace(/<[^>]+>/g, '');
+          var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
+          var method_type = "POST";
+          var URL  = API_CONTENT_URL + '/text/audio/';
+          if(newData !== ''){
+            var content_data = {
+              "course_id": cid,
+              "module_id": module_id,
+              "text": newTextData,
+              "speaker_id":"3"
+            }
+            $.ajax({
+              url: URL,
+              type: method_type,
+              data: JSON.stringify(content_data),
+              headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+              success:function(response){
+                console.log(response);
+                toastr.success("Content has been Converted to Audio.");
+              },
+              error: function(error){
+                toastr.error("Response Error: " + error.message);
+                console.log(error);
               }
             });
           }else{

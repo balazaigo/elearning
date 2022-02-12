@@ -3583,6 +3583,7 @@ option:not(:first-of-type) {
 }
 .editor_sub-btn_cont{
     margin-top: 10px;
+    margin-left: 20px;
     float: right;
 }
 .editor_sub-btn{
