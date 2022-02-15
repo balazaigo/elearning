@@ -127,4 +127,18 @@
       });
     }
   }
+  function assignCourse(e){
+    const container = document.getElementById("addCourses");
+    const modal = new bootstrap.Modal(container);
+    var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
+    if(processRights("Add/Edit Member") === false || processRights("View Member") === false || processRights("Add Course") === false) {
+      toastr.error(window.language.error_no_access);
+      return false;
+    } else {
+      window.sharedAssignCourseId = e.dataset.course_id;
+      $('.modal-content').load(url,function(result){
+        modal.show();
+      });
+    }
+  }
 </script>

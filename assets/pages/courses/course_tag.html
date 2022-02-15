@@ -23,7 +23,9 @@
    let cid = document.getElementById("course_param").getAttribute("data-cid");
    let module_id = document.getElementById("course_param").getAttribute("data-module_id");
     get_module_details(cid, module_id);
+    getTagSuggest();
   }, 0);
+
   function get_module_details(cid, module_id){
     $.ajax({
       url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,

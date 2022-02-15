@@ -303,51 +303,19 @@
               $("#course_attachment").append(course_attachments_html);
             }
             if(response.tags.length > 0){
-              /*var tag_array = new Array();
+              var tag_array_2 = [];
               $.each(response.tags, function (i, val) {
-                var tag_data = {
-                  "text": val.tag_name,
-                  "id": val.id
-                };
-                tag_array.push(tag_data);
-              });
-                $(".tags").select2({
-                  data : tag_array
+                tag_array_2.push(val.tag_name);
+              })
+              var tags_empty = [];
+              if (tag_array_2) {
+                $("#tags").html("");
+                $("#tags").val(tags_empty).change();
+                $.each(tag_array_2, function (i, val) {
+                  $("#tags").append("<option value='" + val + "'>" + val + "</option>");
                 });
-                console.log(tag_array);
-                setTimeout(function(){
-                var data = [];
-                var tags = $("#tags option").each(function () {
-                    data.push($(this).val());
-                });    
-                  $tagsControl.val(data).trigger("change");
-
-                }, 1000);*/
-              /*$(".tags").select2({
-                multiple:true,
-                tags: true,
-                ajax:{}}).select2({
-                "data": tag_array
-                });*/
-              /*$(".tags").select2({
-                dropdownParent: $('#addCourses'),
-                placeholder: "Add a tag",
-                dropdownCssClass: "select2Font",
-                tokenSeparators: [','],
-                tags: true,
-                multiple: true,
-                allowClear: true,
-                data : tag_array,
-                maximumSelectionLength: 64,
-                minimumInputLength: 3,
-                formatSelectionTooBig: function (limit) {
-                  return "Too many selected items, Only 64 tags allowed."
-                },
-                formatNoMatches: "add new tag and hit ENTER-KEY",
-                escapeMarkup: function (markup) {
-                  return markup;
-                }
-              }); */
+                $("#tags").val(tag_array_2).change();
+              }
             }
 
           }
@@ -600,7 +568,10 @@
       headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
       success: function (response) {
         var tags = response.tags;
+        var tags_empty = [];
         if (tags) {
+          $("#tags").html("");
+          $("#tags").val(tags_empty).change();
           $.each(tags, function (i, val) {
             $("#tags").append("<option value='" + val + "'>" + val + "</option>");
           });

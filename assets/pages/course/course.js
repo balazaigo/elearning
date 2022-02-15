@@ -61,6 +61,40 @@ function toinput(e){
     e.previousSibling.setAttribute("style","display:block");
     e.previousSibling.focus();
 }
+function get_module_details(cid, module_id, mytagArray){
+  $.ajax({
+    url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
+    type: 'get',
+    dataType: 'json',
+    success:function(response){
+      var tags_response = "0";
+      mytagArray.forEach(function (element, index) {
+        var tag_data = {
+            "tag_name": element,
+            "module_id": module_id_val,
+            "course_id": cid
+        }
+        $.ajax({
+          url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id_val,
+          type: 'POST',
+          data: JSON.stringify(tag_data),
+          contentType: "application/json; charset=utf-8",
+          success:function(response){
+            tags_response = "0";
+          },
+          error: function(error) {
+            tags_response = "1";
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+      });
+      if(tags_response == "0"){
+          toastr.success("Tags Added Successfully");
+      }
+    }
+  });
+}
 function totext(e){
     if(e.value == ''){
         e.value = e.nextSibling.dataset.prev_val;
@@ -90,6 +124,13 @@ function totext(e){
         var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[2].firstChild.getAttribute("data-module_id");
         get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
+
+      let cid = e.dataset.cid;
+      let module_id_val = e.dataset.module_id;
+      const mytagArray = e.value.split(" ");
+      console.log(mytagArray);
+      var prev_tags = get_module_details(cid, module_id_val, mytagArray);
+      
       e.nextSibling.dataset.prev_val = e.value;
       if(get_submodule_level_values != ''){
         var message = "";
@@ -101,6 +142,7 @@ function totext(e){
     e.nextSibling.setAttribute("style","display:block");
     e.nextSibling.focus();
 }
+
 function get_submodule_level_val(class_module_main_level, class_module_sub_level, ele_val, parent_id_val){
   var data_course_module = "";
   if(class_module_sub_level.indexOf('.') !== -1){
@@ -272,7 +314,7 @@ function add_sub(e){
                 newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/up_and_down2.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result+". Chapter'>"+result+". Chapter</p></li>";
                 newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
@@ -298,7 +340,7 @@ function add_sub(e){
                 newHTML = "<div class='module module_"+result+" main_mod_empty' style='opacity:0.5;'>";
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/up_and_down2.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
                 newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-cid=''  data-module_id='' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
                 newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
@@ -346,7 +388,7 @@ function add_sub_sub(e){
     newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-    newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/up_and_down2.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
+    newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
     newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
     newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
     newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
@@ -373,10 +415,12 @@ function toggle_collapse_expand(e){
     for(var i = 0; i < children.length; i++){
         if (children[i].tagName == "DIV") {
           if(children[i].classList.contains('disp_none')){
+              e.src="../assets/images/arrow_up_icon.png";
               children[i].classList.add('disp_block');
               children[i].classList.remove('disp_none');
               childrendivs.push(children[i]);
           }else{
+              e.src="../assets/images/arrow_down_icon.png";
               children[i].classList.add('disp_none');
               children[i].classList.remove('disp_block');
               childrendivs.push(children[i]);

@@ -82,13 +82,14 @@
 }
 .disp_none{
     display: none;
-  -webkit-animation: out 700ms ease both;
-  animation: out 700ms ease both;
+    /*visibility: hidden;*/
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
 }
 .disp_block{
     display: block;
-  -webkit-animation: in 700ms ease both;
-  animation: in 700ms ease both;
+  /*visibility: visible;*/
+  opacity: 1;
 }
 
 .course .fa-angle-down, .course .fa-angle-up{
@@ -141,7 +142,7 @@
 #content-courseModule{
     border-radius: 1.3rem !important;
 }
-#content-courseModule .btn-close{
+#content-courseModule .btn-close, #addCourses .btn-close{
     float: right;
     padding: 15px;
 }

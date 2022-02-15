@@ -180,6 +180,15 @@ $( document ).ready(function() {
   $("#status, #courses_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
   $('.btnRadio').click(function(){ doSearch(); });
   
+  if(processRights("Add Comments") === false) {
+    $('#content_message').css('pointer-events','none');
+  } 
+  if(processRights("Write Content") === false) {
+    $('#files_task').css('pointer-events','none');
+  } 
+  if(processRights("Add Audio") === false || processRights("Add Slide") === false || processRights("Add Video") === false) {
+    $('#user_message').css('pointer-events','none');
+  }
   //load the courses list
   $.ajax({
     url: API_CONTENT_URL + '/course_list/',
@@ -211,9 +220,9 @@ $( document ).ready(function() {
     dataType: 'json',
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
-      $("#active_task_count").html(response.active_count);
-      $("#onhold_task_count").html(response.onhold_count);
-      $("#finished_task_count").html(response.finished_count);
+      $("#active_task_count").html(response.active_task_count);
+      $("#onhold_task_count").html(response.onhold_task_count);
+      $("#finished_task_count").html(response.finished_task_count);
     }
   });
 });

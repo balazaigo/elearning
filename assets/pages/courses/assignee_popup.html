@@ -32,6 +32,14 @@
 			        </div>
 			      </div>
 			    </div>
+			    <div class="row" id="assignto_all_sub_row">
+			      <div class="col-md-12 mb-3">
+                    <div class="form-check p-0" >
+                      <input class="form-check-input parentcheck" name="assignto_all_sub" type="checkbox" value="assignto_all_sub" id="assignto_all_sub">
+                      <label class="form-check-label" for="assignto_all_sub"> Assign Member to all Sub Module's</label>
+                    </div>
+			      </div>
+			    </div>
 			</form>
 			<div class="modal-footer">
 			  <span class="custom-btn nbtn">
@@ -39,7 +47,7 @@
 			  </span>
 			</div>
 			<div class="user_assign">
-		      <div class="table-section">
+		      <div class="table-section" id="assigned_table">
 		        <table class="table table-bordered responsive">
 		          <thead>
 		            <tr>
@@ -70,25 +78,40 @@ $(document).ready(function(){
 	setTimeout(function(){
 		var cid = document.getElementById("course_param").getAttribute("data-cid");
 		var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+  		var AssignCourseId = window.sharedAssignCourseId;
+  		if(cid === null){
+  			cid = AssignCourseId;
+  		}
 		get_assignee_details(cid, module_id);
+
 	}, 0);
 
   $("#saveAssignee").on("click", function() {
 	var cid = document.getElementById("course_param").getAttribute("data-cid");
 	var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+	var AssignCourseId = window.sharedAssignCourseId;
+	if(cid === null){
+		cid = AssignCourseId;
+	}
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
-      
-      var formData = new FormData();
-      formData.append("course_id",  cid);
-      formData.append("module_id", module_id);
-      formData.append("member_id", $("#member").val());
-      formData.append("start_date",  $("#start_date").val());
-      formData.append("end_date",  $("#end_date").val());
-      formData.append("status", 1);
-
-	  $.ajax({
-		    url: API_CONTENT_URL + "/module_assignee/",
+		var formData = new FormData();
+		formData.append("course_id",  cid);
+		if(module_id !== null){
+			formData.append("module_id", module_id);
+		}
+		formData.append("member_id", $("#member").val());
+		formData.append("start_date",  $("#start_date").val());
+		formData.append("end_date",  $("#end_date").val());
+		formData.append("status", 1);
+		if(module_id === null || $('input[name="assignto_all_sub"]').is(':checked')){
+			formData.append("is_recursive", true);
+		var url  = API_CONTENT_URL + "/bulk/assign/";
+		}else{
+			var url  = API_CONTENT_URL + "/module_assignee/";
+		}
+		$.ajax({
+		    url: url,
 		    method: "POST",
 		    type: 'POST', // For jQuery < 1.9
 		    cache: false,
@@ -99,8 +122,12 @@ $(document).ready(function(){
 		      	"Authorization" : "Bearer " + getUserInfo().access_token
 		    },
 		    success: function(response){
-	     		toastr.success("Member Assigned.");
-				get_assignee_details(cid, module_id);
+	     		toastr.success("Member Assigned Successfully");
+     			if(module_id === null){
+    				$('#addCourses').modal('hide');
+	     		}else{
+					get_assignee_details(cid, module_id);
+				}
 		    },
 		    error: function(error) {
 		      	toastr.error("Response Error: " + error.message);
@@ -148,8 +175,18 @@ $(document).ready(function(){
     }
   });
 function get_assignee_details(cid, module_id){
+	var url = "";
+	if(module_id === null){
+		url = API_CONTENT_URL + '/course/assignees/'+cid;
+		$("#assigned_table").hide();
+		$("#assignto_all_sub_row").hide();
+	}else{
+		url = API_CONTENT_URL + '/available/assignees/'+module_id;
+		$("#assigned_table").show();
+		$("#assignto_all_sub_row").show();
+	}
 	$.ajax({
-		url: API_CONTENT_URL + '/available/assignees/'+module_id,
+		url: url,
 		type: 'get',
 		dataType: 'json',
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -163,27 +200,30 @@ function get_assignee_details(cid, module_id){
 		        $("#member").append("<option value='"+val.id+"'>"+val.first_name+" " + val.last_name+"</option>");
 		      });
 			}
-			if(response.module_assignees.length > 0){
-		      $("#assignedMember").empty();
-		      var assignee_html = '';
-		      $.each( response.module_assignees, function( i, val ) {
-				    assignee_html += '<tr>';
-				    assignee_html += '<td class="wrap">'+ val.assignee_name +'</td>';
-				    assignee_html += '<td class="wrap">'+ val.assigned_by_name +'</td>';
-				    assignee_html += '<td>'+ val.start_date +'</td>';
-				    assignee_html += '<td>'+ val.end_date +'</td>';
-				    assignee_html += '<td>'+ getStatus(val.status) +'</td>';
-				    assignee_html += '<td class="text-center"><span><i class="far fa-trash-alt" id="'+val.id+'" onclick="deleteAssigneeMember(this);"></i></span></td>'
-				    assignee_html += '</tr>';
-		      });
-		      $("#assignedMember").html(assignee_html);
-			}else{
-		      $("#assignedMember").html(`
-		            <tr>
-		              <td colspan="7">
-		                <div class="alert text-center text-danger">No Records Found!</div>
-		              </td>
-		            </tr>`);
+
+			if(module_id !== null){
+				if(response.module_assignees.length > 0){
+			      $("#assignedMember").empty();
+			      var assignee_html = '';
+			      $.each( response.module_assignees, function( i, val ) {
+					    assignee_html += '<tr>';
+					    assignee_html += '<td class="wrap">'+ val.assignee_name +'</td>';
+					    assignee_html += '<td class="wrap">'+ val.assigned_by_name +'</td>';
+					    assignee_html += '<td>'+ val.start_date +'</td>';
+					    assignee_html += '<td>'+ val.end_date +'</td>';
+					    assignee_html += '<td>'+ getStatus(val.status) +'</td>';
+					    assignee_html += '<td class="text-center"><span><i class="far fa-trash-alt" id="'+val.id+'" onclick="deleteAssigneeMember(this);"></i></span></td>'
+					    assignee_html += '</tr>';
+			      });
+			      $("#assignedMember").html(assignee_html);
+				}else{
+			      $("#assignedMember").html(`
+			            <tr>
+			              <td colspan="7">
+			                <div class="alert text-center text-danger">No Records Found!</div>
+			              </td>
+			            </tr>`);
+				}
 			}
 		}
 	});
