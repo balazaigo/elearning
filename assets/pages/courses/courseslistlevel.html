@@ -64,8 +64,61 @@
                                       <div class="col-md-12 p-3">
                                         <div class="course_module_content">
                                         <div class="col-md-12 p-3 b-btn">
-                                          <textarea id="tiny"></textarea>
-                                          <!--<textarea id="editor1"></textarea>-->
+                                          <!--<textarea id="tiny"></textarea>-->
+                                          <textarea id="editor1"></textarea>
+                                          <script type="text/javascript">
+                                            var editor  = CKEDITOR.replace("editor1",{
+                                              height: 500
+                                            });
+                                            CKFinder.setupCKEditor(editor);
+                                          </script>
+                                          <!--<div id="editor">This is some sample content.</div>
+                                          <script>
+                                                  ClassicEditor
+                                                          .create( document.querySelector( '#editor' ),{
+                                                            UploadAdapter: function(loader) {
+                                                              this.loader = loader;
+                                                              this.upload = () => {
+                                                                  return this.loader.file
+                                                                      .then(uploadedFile => {
+                                                                          return new Promise((resolve, reject) => {
+                                                                              const data = new FormData();
+                                                                              data.append('file', uploadedFile);
+                                                                              axios({
+                                                                                  url: 'http://localhost/elearning/assets/image_upload',
+                                                                                  method: 'post',
+                                                                                  data,
+                                                                                  headers: {
+                                                                                      'Content-Type': 'multipart/form-data;'
+                                                                                  },
+                                                                                  withCredentials: false
+                                                                              }).then(response => {
+                                                                                  console.log(response.data.success)
+                                                                                  if (response.data.success == true) {
+                                                                                      resolve({
+                                                                                          default: response.data.url
+                                                                                      });
+                                                                                  } else {
+                                                                                      reject(response.data.message);
+                                                                                  }
+                                                                              }).catch(response => {
+                                                                                  reject('Upload failed');
+                                                                              });
+                                                                          });
+                                                                      });
+                                                              }
+                                                              this.abort = () => {
+                                                                  console.log('Abort upload.')
+                                                              }
+                                                          }
+                                                          } )
+                                                          .then( editor => {
+                                                                  console.log( editor );
+                                                          } )
+                                                          .catch( error => {
+                                                                  console.error( error );
+                                                          } );
+                                          </script>-->
                                           <div class="editor_sub-btn_cont">
                                             <span class="orange-btn">
                                               <a href="#">

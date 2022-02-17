@@ -202,3 +202,6 @@
 .dz-filename span{
   word-break: break-word;
 }
+.ck-editor__editable {
+  min-height: 200px;
+}

@@ -67,31 +67,30 @@ function get_module_details(cid, module_id, mytagArray){
     type: 'get',
     dataType: 'json',
     success:function(response){
-      var tags_response = "0";
-      mytagArray.forEach(function (element, index) {
-        var tag_data = {
-            "tag_name": element,
-            "module_id": module_id_val,
-            "course_id": cid
-        }
-        $.ajax({
-          url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id_val,
-          type: 'POST',
-          data: JSON.stringify(tag_data),
-          contentType: "application/json; charset=utf-8",
-          success:function(response){
-            tags_response = "0";
-          },
-          error: function(error) {
-            tags_response = "1";
-            toastr.error("Response Error: " + error.message);
-            console.log(error);
+      var tags_response = "";
+        mytagArray.forEach(function (element, index) {
+        tag_exists = response.some(function(o){return o["tag_name"] === element;})
+        if(!tag_exists){
+          var tag_data = {
+              "tag_name": element,
+              "module_id": module_id,
+              "course_id": cid
           }
-        });
+          $.ajax({
+            url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
+            type: 'POST',
+            data: JSON.stringify(tag_data),
+            contentType: "application/json; charset=utf-8",
+            success:function(response){
+            },
+            error: function(error) {
+              tags_response = "1";
+              toastr.error("Response Error: " + error.message);
+              console.log(error);
+            }
+          });
+        }
       });
-      if(tags_response == "0"){
-          toastr.success("Tags Added Successfully");
-      }
     }
   });
 }
@@ -128,7 +127,6 @@ function totext(e){
       let cid = e.dataset.cid;
       let module_id_val = e.dataset.module_id;
       const mytagArray = e.value.split(" ");
-      console.log(mytagArray);
       var prev_tags = get_module_details(cid, module_id_val, mytagArray);
       
       e.nextSibling.dataset.prev_val = e.value;
