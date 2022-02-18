@@ -42,6 +42,9 @@ function setUserInfo(authData){
   if(authData !== null) {
     //console.log(authData.rights);
     $("#dropdownMenuButton1").html('<span>' + authData.name.substring(0, 15) + '</span>' + '<span class="user-role">' + authData.role + '</span>');
+    if(authData.m_image !== ""){
+      $("#userProfileImageHead").attr("src",API_BASE_URL+authData.m_image);
+    }
     $(".fullname").html(authData.name);
     //check for rights
     $("#navRight li").each(function(i, val){

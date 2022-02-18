@@ -621,7 +621,7 @@ dfn i {
 	min-height: auto;
 }
 .members span {
-	width: 18px;
+	width: 21px;
 	display: inline-block;
 }
 .mlast {
@@ -3654,4 +3654,12 @@ option:not(:first-of-type) {
 }
 .clr-orng{
 	color:#F36A10;
+}
+#userProfileImageHead{
+	border-radius: 7px; 
+}
+#rolebox .members span img{
+    width: 30px;
+    border-radius: 50%;
+    border: 2.5px solid white;
 }

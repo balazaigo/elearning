@@ -62,14 +62,29 @@ function renderRoleList(roles) {
       html += `</ul></div>`;
     }
     
-    /*html += `<div class="members">
-      <span><img src="../assets/images/member1.png"></span>
+    html += `<div class="members">`;
+    if(role.m_images.length > 0){
+        $.each(role.m_images, function (index_images, role_images) {
+          if(index_images < 5){
+            html += `<span><img src="${API_BASE_URL}${role_images}"></span>`;
+          }
+        });
+    }else{
+            html += `<span><img src=""></span>`;
+    }
+    if(role.m_images.length > 5){
+
+      html += `<span class="mlast">+${role.m_images.length - 5}</span>`;
+    }
+    /*html += `<div class="members">;
+      html += `<span><img src="../assets/images/member1.png"></span>
       <span><img src="../assets/images/member2.png"></span>
       <span><img src="../assets/images/member3.png"></span>
       <span><img src="../assets/images/member4.png"></span>
       <span><img src="../assets/images/member5.png"></span>
-      <span class="mlast">+6</span>
-      </div>`;*/
+      <span class="mlast">+6</span>`;
+     html += `</div>`;*/
+    html += `</div>`;
     html += `</div>`;
     html += `</div>`;
   });
