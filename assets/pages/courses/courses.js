@@ -151,6 +151,22 @@ function template(data){
                 td +="<div class='row mt-2'>";
                 td +="<div class='col-6 cleft'>";
                 //td +="<div class='members'> <span><img src='../assets/images/member1.png' ></span> <span><img src='../assets/images/member2.png' ></span> <span><img src='../assets/images/member3.png' ></span> <span><img src='../assets/images/member4.png' ></span> <span><img src='../assets/images/member5.png' ></span> <span class='mlast'>+6</span> </div>";
+
+               /* td += `<div class="members">`;
+                if(element.m_images.length > 0){
+                    $.each(element.m_images, function (index_images, role_images) {
+                      if(index_images < 5){
+                        td += `<span><img src="${API_BASE_URL}${role_images}"></span>`;
+                      }
+                    });
+                }else{
+                        td += `<span><img src=""></span>`;
+                }
+                if(element.m_images.length > 5){
+
+                  td += `<span class="mlast">+${element.m_images.length - 5}</span>`;
+                }
+                td +="</div>";*/
                 td +="</div>";
                 td +="<div class='col-6 cright' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
                 td +="<div class='new-btn'><p class='"+status_class+"'>"+status_text+"</p></div>";

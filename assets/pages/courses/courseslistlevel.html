@@ -67,11 +67,25 @@
                                           <!--<textarea id="tiny"></textarea>-->
                                           <textarea id="editor1"></textarea>
                                           <script type="text/javascript">
+                                            console.log(getUserInfo().access_token);
                                             var editor  = CKEDITOR.replace("editor1",{
-                                              height: 500
+                                              height: 300,
+                                              filebrowserImageUploadUrl: API_CONTENT_URL+'/editor/upload/',
+                                              //filebrowserImageUploadUrl: '../assets/image_upload/',
+                                              filebrowserUploadMethod: 'form',             
+                                              fileTools_requestHeaders: {
+                                                   'X-Requested-With': 'XMLHttpRequest',
+                                              }
                                             });
-                                            CKFinder.setupCKEditor(editor);
+                                            //CKFinder.setupCKEditor(editor);
+
+                                            /*ClassicEditor
+                                                .create( document.querySelector( '#editor' ) )
+                                                .catch( error => {
+                                                    console.error( error );
+                                                } );*/
                                           </script>
+
                                           <!--<div id="editor">This is some sample content.</div>
                                           <script>
                                                   ClassicEditor

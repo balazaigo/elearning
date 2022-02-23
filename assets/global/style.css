@@ -3663,3 +3663,7 @@ option:not(:first-of-type) {
     border-radius: 50%;
     border: 2.5px solid white;
 }
+#memberListDataContainer .wrap img{
+	border-radius: 50%;
+	width: 30px;
+}
