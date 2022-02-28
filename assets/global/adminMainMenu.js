@@ -608,8 +608,8 @@ function handleTopMenuClick(e) {
     case "courseslistlevel":
       getCoursesListLevelPage(e);
       break;
-	  
-	 case "courseseditor":
+    
+   case "courseseditor":
       getCoursesEditorPage(e);
       break; 
 

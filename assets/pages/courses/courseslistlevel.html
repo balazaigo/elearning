@@ -63,29 +63,84 @@
                                     <div class="row">
                                       <div class="col-md-12 p-3">
                                         <div class="course_module_content">
+                                          <!--<button data-flinkto="certificationlist">certificationlist</button>
+                                          <button data-flinkto="certificationname">certificationname</button>
+                                          <button data-flinkto="cmscourselist">cmscourselist</button>
+                                          <button data-flinkto="cmscoursename">cmscoursename</button>
+                                          <button data-flinkto="cmscourseoverview">cmscourseoverview</button>-->
+
                                         <div class="col-md-12 p-3 b-btn">
                                           <!--<textarea id="tiny"></textarea>-->
                                           <textarea id="editor1"></textarea>
                                           <script type="text/javascript">
-                                            console.log(getUserInfo().access_token);
                                             var editor  = CKEDITOR.replace("editor1",{
                                               height: 300,
-                                              filebrowserImageUploadUrl: API_CONTENT_URL+'/editor/upload/',
+
+                                              //filebrowserBrowseUrl: '../assets/image_upload/',
+                                              //filebrowserImageUploadUrl: API_CONTENT_URL+'/editor/upload/',
                                               //filebrowserImageUploadUrl: '../assets/image_upload/',
-                                              filebrowserUploadMethod: 'form',             
+                                              /*filebrowserUploadMethod: 'form',             
                                               fileTools_requestHeaders: {
                                                    'X-Requested-With': 'XMLHttpRequest',
-                                              }
+                                                   'Accept': 'application/json',
+                                                   "Content-type": "application/json; charset=UTF-8",
+                                                   "Access-Control-Allow-Origin": API_CONTENT_URL,
+                                                   "Access-Control-Allow-Credentials": "true"
+                                              }*/
                                             });
-                                            //CKFinder.setupCKEditor(editor);
 
+                                            CKEDITOR.config.extraPlugins = 'bgimage, base64image, backgrounds';
+                                            //config.extraPlugins = 'backgrounds';
+                                            CKEDITOR.config.allowedContent = true;
+                                            //CKFinder.setupCKEditor(editor);
+                                           /* CKFinder.setupCKEditor( editor, {
+                                                readOnly: true,
+                                                removeModules: 'FormUpload,Html5Upload,UploadFileButton'
+                                            } );*/
+                                            /*$(document).ready(function(){
+                                                CKEDITOR.on( 'dialogDefinition', function( evt ) {
+                                                  console.log(evt);
+                                                  var dialog = evt.data;
+                                                  console.log(dialog);
+                                                  if ( dialog.name == 'image' ) {
+                                                  }
+                                                });
+                                            });*/
                                             /*ClassicEditor
                                                 .create( document.querySelector( '#editor' ) )
                                                 .catch( error => {
                                                     console.error( error );
                                                 } );*/
                                           </script>
+                                          <!--<div id="editor">
+                                          </div>
+                                          <script type="text/javascript">
+                                            var toolbarOptions = [
+                                              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                                              ['blockquote', 'code-block'],
 
+                                              [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                                              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                              [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                                              [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                                              [{ 'direction': 'rtl' }],                         // text direction
+
+                                              [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                                              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                                              [ 'link', 'image', 'video', 'formula' ],          // add's image support
+                                              [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                                              [{ 'font': [] }],
+                                              [{ 'align': [] }],
+
+                                              ['clean']                                         // remove formatting button
+                                          ];
+                                        var quill = new Quill('#editor', {
+                                                modules: {
+                                                    toolbar: toolbarOptions
+                                                },
+                                                theme: 'snow'
+                                              });
+                                          </script>-->
                                           <!--<div id="editor">This is some sample content.</div>
                                           <script>
                                                   ClassicEditor
