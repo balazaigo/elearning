@@ -76,7 +76,7 @@
                                             var editor  = CKEDITOR.replace("editor1",{
                                               height: 300,
 
-                                              //filebrowserBrowseUrl: '../assets/image_upload/',
+                                              filebrowserBrowseUrl: '../assets/global/ckfinder/ckfinder.html',
                                               //filebrowserImageUploadUrl: API_CONTENT_URL+'/editor/upload/',
                                               //filebrowserImageUploadUrl: '../assets/image_upload/',
                                               /*filebrowserUploadMethod: 'form',             
@@ -89,14 +89,14 @@
                                               }*/
                                             });
 
-                                            CKEDITOR.config.extraPlugins = 'bgimage, base64image, backgrounds';
+                                            CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds';
                                             //config.extraPlugins = 'backgrounds';
                                             CKEDITOR.config.allowedContent = true;
                                             //CKFinder.setupCKEditor(editor);
-                                            CKFinder.setupCKEditor( editor, {
+                                            /*CKFinder.setupCKEditor( editor, {
                                                 //readOnly: true,
                                                 //removeModules: 'FormUpload,Html5Upload,UploadFileButton'
-                                            } );
+                                            } );*/
                                             /*$(document).ready(function(){
                                                 CKEDITOR.on( 'dialogDefinition', function( evt ) {
                                                   console.log(evt);
