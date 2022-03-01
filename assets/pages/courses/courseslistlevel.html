@@ -63,173 +63,40 @@
                                     <div class="row">
                                       <div class="col-md-12 p-3">
                                         <div class="course_module_content">
-                                          <!--<button data-flinkto="certificationlist">certificationlist</button>
-                                          <button data-flinkto="certificationname">certificationname</button>
-                                          <button data-flinkto="cmscourselist">cmscourselist</button>
-                                          <button data-flinkto="cmscoursename">cmscoursename</button>
-                                          <button data-flinkto="cmscourseoverview">cmscourseoverview</button>-->
+                                          <div class="col-md-12 p-3 b-btn">
+                                            <textarea id="editor1"></textarea>
+                                            <div class="editor_sub-btn_cont">
+                                              <span class="orange-btn">
+                                                <a href="#">
+                                                  <button  id="saveCourses" class="editor_sub-btn">Submit</button>
+                                                </a>
+                                              </span>
+                                            </div>
+                                            <div class="editor_sub-btn_cont">
+                                              <span class="orange-btn">
+                                                <a href="#">
+                                                  <button  id="convertToAudio" class="editor_sub-btn">Text to Audio</button>
+                                                </a>
+                                              </span>
+                                            </div>
+                                          </div> 
+                                          <div id="dropzone">
+                                            <form id="demo-upload" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
+                                              <div id="upload-1-queue" class="queue pt-3 uploaded_display"></div>
+                                              <div id="upload-1-dropzone"></div>
 
-                                        <div class="col-md-12 p-3 b-btn">
-                                          <!--<textarea id="tiny"></textarea>-->
-                                          <textarea id="editor1"></textarea>
-                                          <script type="text/javascript">
-                                            var editor  = CKEDITOR.replace("editor1",{
-                                              height: 300,
+                                              <DIV id="preview-template" style="display: none;">
+                                              <DIV class="dz-preview dz-file-preview">
+                                              <DIV class="dz-image"><IMG data-dz-thumbnail=""></DIV>
+                                              <DIV class="dz-details">
+                                              <DIV class="dz-size"><SPAN data-dz-size=""></SPAN></DIV>
+                                              <DIV class="dz-filename"><SPAN data-dz-name=""></SPAN></DIV></DIV>
+                                              <DIV class="dz-progress"><SPAN class="dz-upload" 
+                                              data-dz-uploadprogress=""></SPAN></DIV>
+                                              <DIV class="dz-error-message"><SPAN data-dz-errormessage=""></SPAN></DIV>
 
-                                              //filebrowserBrowseUrl: '../assets/global/ckfinder/ckfinder.html',
-                                              //filebrowserImageUploadUrl: API_CONTENT_URL+'/editor/upload/',
-                                              //filebrowserImageUploadUrl: '../assets/image_upload/',
-                                              /*filebrowserUploadMethod: 'form',             
-                                              fileTools_requestHeaders: {
-                                                   'X-Requested-With': 'XMLHttpRequest',
-                                                   'Accept': 'application/json',
-                                                   "Content-type": "application/json; charset=UTF-8",
-                                                   "Access-Control-Allow-Origin": API_CONTENT_URL,
-                                                   "Access-Control-Allow-Credentials": "true"
-                                              }*/
-                                            });
-
-                                            CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds';
-                                            //config.extraPlugins = 'backgrounds';
-                                            CKEDITOR.config.allowedContent = true;
-                                            //CKFinder.setupCKEditor(editor);
-                                            /*CKFinder.setupCKEditor( editor, {
-                                                //readOnly: true,
-                                                //removeModules: 'FormUpload,Html5Upload,UploadFileButton'
-                                            } );*/
-                                            /*$(document).ready(function(){
-                                                CKEDITOR.on( 'dialogDefinition', function( evt ) {
-                                                  console.log(evt);
-                                                  var dialog = evt.data;
-                                                  console.log(dialog);
-                                                  if ( dialog.name == 'image' ) {
-                                                  }
-                                                });
-                                            });*/
-                                            /*ClassicEditor
-                                                .create( document.querySelector( '#editor' ) )
-                                                .catch( error => {
-                                                    console.error( error );
-                                                } );*/
-                                          </script>
-                                          <!--<div id="editor">
+                                            </form>
                                           </div>
-                                          <script type="text/javascript">
-                                            var toolbarOptions = [
-                                              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                                              ['blockquote', 'code-block'],
-
-                                              [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-                                              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                              [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                                              [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-                                              [{ 'direction': 'rtl' }],                         // text direction
-
-                                              [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-                                              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                                              [ 'link', 'image', 'video', 'formula' ],          // add's image support
-                                              [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                                              [{ 'font': [] }],
-                                              [{ 'align': [] }],
-
-                                              ['clean']                                         // remove formatting button
-                                          ];
-                                        var quill = new Quill('#editor', {
-                                                modules: {
-                                                    toolbar: toolbarOptions
-                                                },
-                                                theme: 'snow'
-                                              });
-                                          </script>-->
-                                          <!--<div id="editor">This is some sample content.</div>
-                                          <script>
-                                                  ClassicEditor
-                                                          .create( document.querySelector( '#editor' ),{
-                                                            UploadAdapter: function(loader) {
-                                                              this.loader = loader;
-                                                              this.upload = () => {
-                                                                  return this.loader.file
-                                                                      .then(uploadedFile => {
-                                                                          return new Promise((resolve, reject) => {
-                                                                              const data = new FormData();
-                                                                              data.append('file', uploadedFile);
-                                                                              axios({
-                                                                                  url: 'http://localhost/elearning/assets/image_upload',
-                                                                                  method: 'post',
-                                                                                  data,
-                                                                                  headers: {
-                                                                                      'Content-Type': 'multipart/form-data;'
-                                                                                  },
-                                                                                  withCredentials: false
-                                                                              }).then(response => {
-                                                                                  console.log(response.data.success)
-                                                                                  if (response.data.success == true) {
-                                                                                      resolve({
-                                                                                          default: response.data.url
-                                                                                      });
-                                                                                  } else {
-                                                                                      reject(response.data.message);
-                                                                                  }
-                                                                              }).catch(response => {
-                                                                                  reject('Upload failed');
-                                                                              });
-                                                                          });
-                                                                      });
-                                                              }
-                                                              this.abort = () => {
-                                                                  console.log('Abort upload.')
-                                                              }
-                                                          }
-                                                          } )
-                                                          .then( editor => {
-                                                                  console.log( editor );
-                                                          } )
-                                                          .catch( error => {
-                                                                  console.error( error );
-                                                          } );
-                                          </script>-->
-                                          <div class="editor_sub-btn_cont">
-                                            <span class="orange-btn">
-                                              <a href="#">
-                                                <button  id="saveCourses" class="editor_sub-btn">Submit</button>
-                                              </a>
-                                            </span>
-                                          </div>
-                                          <div class="editor_sub-btn_cont">
-                                            <span class="orange-btn">
-                                              <a href="#">
-                                                <button  id="convertToAudio" class="editor_sub-btn">Text to Audio</button>
-                                              </a>
-                                            </span>
-                                          </div>
-                                            <!--<button class="btn btn-sm btn-primary float-end" id="save-content_mod">Save</button>-->
-
-                                          <!--<button data-flinkto="courseseditor">Write Content</button>-->
-                                        </div> 
-                                        <div id="dropzone">
-                                          <form id="demo-upload" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
-
-                                            <!--<button type="button" class="btn btn-success fileup-btn">
-                                            Drag and drop files
-                                            <input type="file" id="upload-1" name="courseFile_module[]" class="fileupload_module" multiple>
-                                            </button>
-
-                                            <span class="filename">Import a file</span>-->
-                                            <div id="upload-1-queue" class="queue pt-3 uploaded_display"></div>
-                                            <div id="upload-1-dropzone"></div>
-
-                                            <DIV id="preview-template" style="display: none;">
-                                            <DIV class="dz-preview dz-file-preview">
-                                            <DIV class="dz-image"><IMG data-dz-thumbnail=""></DIV>
-                                            <DIV class="dz-details">
-                                            <DIV class="dz-size"><SPAN data-dz-size=""></SPAN></DIV>
-                                            <DIV class="dz-filename"><SPAN data-dz-name=""></SPAN></DIV></DIV>
-                                            <DIV class="dz-progress"><SPAN class="dz-upload" 
-                                            data-dz-uploadprogress=""></SPAN></DIV>
-                                            <DIV class="dz-error-message"><SPAN data-dz-errormessage=""></SPAN></DIV>
-
-                                          </form>
-                                        </div>
                                         </div>
                                       </div>
                                       <div class="col-md-12 p-3 mtag tag_cont_box">

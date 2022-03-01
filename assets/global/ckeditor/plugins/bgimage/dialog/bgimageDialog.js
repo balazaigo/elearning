@@ -57,7 +57,7 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 				orgWidth = null;
 				orgHeight = null;
 			}
-			this.id = editor.id+"previewimage";
+			this.id = b.id+"previewimage";
 			this.setAttribute("style", "max-width:400px;max-height:100px;");
 			this.setAttribute("alt", "");
 			
@@ -181,7 +181,7 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 						type: "checkbox",
 						id: "urlcheckbox",
 						style: "margin-top:5px",
-						label: editor.lang.common.url+":"
+						label: b.lang.common.url+":"
 					},
 					{
 						type: "text",
@@ -199,7 +199,7 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 						type: "checkbox",
 						id: "filecheckbox",
 						style: "margin-top:5px",
-						label: editor.lang.common.upload+":"
+						label: b.lang.common.upload+":"
 					},
 					{
 						type: "file",
@@ -297,7 +297,7 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 			{
 				type: "text",
 				id: "url",
-				label: editor.lang.common.url,
+				label: b.lang.common.url,
 				onChange: function(){ imagePreview("url"); }
 			},
 			{
@@ -310,7 +310,7 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 	
 	/* Dialog */
     return {
-		title: editor.lang.common.image,
+		title: b.lang.common.image,
         minWidth: 450,
         minHeight: 180,
 		onLoad: function(){
@@ -355,7 +355,7 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 			t = this, orgWidth = null, orgHeight = null, imgScal = 1, lock = true;
 			
 			/* selected image or null */
-			selectedImg = editor.getSelection();
+			selectedImg = b.getSelection();
 			if(selectedImg) selectedImg = selectedImg.getSelectedElement();
 			if(!selectedImg || selectedImg.getName() !== "img") selectedImg = null;
 			
@@ -422,11 +422,11 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 		onOk : function(){
 			/* Get image source */
 			var src = "";
-			try { src = CKEDITOR.document.getById(editor.id+"previewimage").$.src; } catch(e) { src = ""; }
+			try { src = CKEDITOR.document.getById(b.id+"previewimage").$.src; } catch(e) { src = ""; }
 			if(typeof(src) != "string" || src == null || src === "") return;
 			
 			/* selected image or new image */
-			if(selectedImg) var newImg = selectedImg; else var newImg = editor.document.createElement("img");
+			if(selectedImg) var newImg = selectedImg; else var newImg = b.document.createElement("img");
 			newImg.setAttribute("src", src);
 			contents = b.document.getBody().getHtml();
             (matches = contents.match(/<div style="(.*)">((.|\n)*?)<\/div>/)) && (contents = matches[2]);
@@ -515,17 +515,17 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
         contents: [
             {
                 id: "tab-source",
-                label: editor.lang.common.generalTab,
+                label: b.lang.common.generalTab,
                 elements: sourceElements
             },
             {
                 id: "tab-properties",
-                label: editor.lang.common.advancedTab,
+                label: b.lang.common.advancedTab,
                 elements: [
                     {
                         type: "text",
                         id: "alt",
-                        label: editor.lang.base64image.alt
+                        label: b.lang.base64image.alt
                     },
                     {
 						type: 'hbox',
@@ -535,18 +535,18 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 								type: "text",
 								width: "45px",
 								id: "width",
-								label: editor.lang.common.width
+								label: b.lang.common.width
 							},
 							{
 								type: "text",
 								width: "45px",
 								id: "height",
-								label: editor.lang.common.height
+								label: b.lang.common.height
 							},
 							{
 								type: "checkbox",
 								id: "lock",
-								label: editor.lang.base64image.lockRatio,
+								label: b.lang.base64image.lockRatio,
 								style: "margin-top:18px;"
 							}
 						]
@@ -559,32 +559,32 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 							{
 								type: "select",
 								id: "align",
-								label: editor.lang.common.align,
+								label: b.lang.common.align,
 								items: [
-									[editor.lang.common.notSet, "none"],
-									[editor.lang.common.alignTop, "top"],
-									[editor.lang.common.alignBottom, "bottom"],
-									[editor.lang.common.alignLeft, "left"],
-									[editor.lang.common.alignRight, "right"]
+									[b.lang.common.notSet, "none"],
+									[b.lang.common.alignTop, "top"],
+									[b.lang.common.alignBottom, "bottom"],
+									[b.lang.common.alignLeft, "left"],
+									[b.lang.common.alignRight, "right"]
 								]
 							},
 							{
 								type: "text",
 								width: "45px",
 								id: "vmargin",
-								label: editor.lang.base64image.vSpace
+								label: b.lang.base64image.vSpace
 							},
 							{
 								type: "text",
 								width: "45px",
 								id: "hmargin",
-								label: editor.lang.base64image.hSpace
+								label: b.lang.base64image.hSpace
 							},
 							{
 								type: "text",
 								width: "45px",
 								id: "border",
-								label: editor.lang.base64image.border
+								label: b.lang.base64image.border
 							}
 						]
 					}

@@ -1,10 +1,9 @@
 $(document).ready(function(){
-
-/*var editor = CKEDITOR.replace( 'editor1',{
-    filebrowserBrowseUrl: '../assets/global/ckfinder/ckfinder.html',
-    filebrowserUploadUrl: '../assets/global/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
-} );*/
-//CKFinder.setupCKEditor( editor );
+  var editor  = CKEDITOR.replace("editor1",{
+    height: 300,
+  });
+  CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds';
+  CKEDITOR.config.allowedContent = true;
 get_content_details();
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
@@ -724,7 +723,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
        //   console.log(pair[0]+ ', ' + pair[1]); 
      // }
     });*/
-
+/*
     var trackPath = false;
       var tinyContentData;
       tinymce.remove("#tiny");
@@ -778,16 +777,16 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
                 // buttonApi.setDisabled(window.trackPath === false);
               };
               ed.on('NodeChange', editorEventCallback);
-              /* onSetup should always return the unbind handlers */
+              // onSetup should always return the unbind handlers 
               return function (buttonApi) {
                 ed.off('NodeChange', editorEventCallback);
               };
             },
           });
         }
-      });
+      });*/
 
-      function loadextData(ed){
+      /*function loadextData(ed){
         $(".trackSidebar").html("");
         var content = '';
         $.getJSON("../assets/pages/courses/data.js?t=" + Math.floor(Date.now() / 1000), function(result){
@@ -815,24 +814,14 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
             }
           });
         });
-      }
+      }*/
       
       $( document ).ready(function() {
-        /*$("#save-content").on("click", function() {
-          var newData = tinymce.activeEditor.getContent();
-          $.post('../assets/pages/courses/savejson.php', {
-            newData: newData
-          }, function(response){
-            // response could contain the url of the newly saved file
-            loadextData(tinymce.activeEditor);
-          })          
-        });*/
         $("#saveCourses").on("click", function() {
         let cid = document.getElementById("course_module_id").getAttribute("data-cid");
         let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
           //var newData = tinymce.activeEditor.getContent();
           var newData = CKEDITOR.instances["editor1"].getData();
-
           var module_content_id = document.getElementById("saveCourses").getAttribute("data-module_content_id");
           var method_type = "POST";
           var URL  = API_CONTENT_URL + '/course_content/';
