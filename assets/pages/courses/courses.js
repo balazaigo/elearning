@@ -32,7 +32,7 @@ $( document ).ready(function() {
     headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
     success:function(response){
       $("#courses_list").empty();
-      $("#courses_list").append("<option value=''>Select Courses</option>");
+      $("#courses_list").append("<option value=''>Select Master Course</option>");
       $.each( response, function( i, val ) {
         $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
       });
