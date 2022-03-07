@@ -303,7 +303,7 @@ input[type="checkbox"]:checked + label::before {
 .side-navbar nav ul {
 	list-style: none;
 	margin: 0;
-	padding: 15px;
+	padding: 45px 15px 15px !important;
 }
 .side-navbar nav ul li {
 	list-style: none;
@@ -3688,4 +3688,46 @@ option:not(:first-of-type) {
 }
 .cases-card {
 	border: 1px solid #ccc !important;
+}
+.caselist ul {
+	padding: 0px;
+	display: block;
+	margin: 0 0 10px;
+	list-style: none;
+}
+.caselist li {
+	width: 100%;
+	border: 0px solid #161515;
+	border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 15px;
+}
+.para {
+	width: 75%;
+	display: flex;
+	align-items: center;
+}
+.para p {
+	margin: 0;
+	color: #20204F;
+	font-weight: 500;
+	width: 98%;
+}
+.para input {
+	border: none;
+	width: 98%;
+	padding: 5px;
+}
+.ac {display: flex;}
+li.solid {
+	border: 1px solid #D3D2DC;
+}
+li.dashed {
+	border: 1px dashed #161515;
+}
+.listinput {
+	display: none;
+}
+.caselist a {
+	color: #344B6C;
 }

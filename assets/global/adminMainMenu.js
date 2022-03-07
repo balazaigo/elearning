@@ -575,6 +575,22 @@ async function getCasesPage() {
   );
 }
 
+async function getCasesListPage() {
+  /*if(processRights("case") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }*/
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/cases/caselist.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
+
 
 async function getModulePage() {
   /*if(processRights("modules") === false) {
@@ -669,6 +685,10 @@ function handleTopMenuClick(e) {
 
     case "cases":
       getCasesPage();
+      break;
+
+    case "caseslist":
+      getCasesListPage();
       break;
 
     case "modules":
