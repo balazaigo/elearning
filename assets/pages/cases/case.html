@@ -46,7 +46,8 @@
             <input type="text" id="rolename" class="form-control" placeholder="Assign to">
           </div>
           <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Oneline Description">
+            <label for="tags2" class="tags2-label d-none">Add a tags</label>
+            <select class="form-control tags2" id="tags2" name="tags2[]" multiple="multiple" style="width:100%"></select>
           </div>
         </div>
         <div class="row">
@@ -111,13 +112,13 @@
         </div>
       </div>
       <div class="whitebg col-md-12 mt-3">
-        <div class="row" id="course-box">
+        <div class="row" id="course-box" data-flinkto="caseslist">
           <div class="col-md-4">
             <div class="role-content cases-card mb-4">
               <div class="row">
-                <div class="col-6 cleft new-btn">  <a href="#">New</a>  </div>
+                <div class="col-6 cleft new-btn" data-flinkto="caseslist">  <a href="#" data-flinkto="caseslist">New</a>  </div>
                 <div class="col-6 cright">
-                  <div class="dropdown ahide">
+                  <div class="dropdown ahide" data-flinkto="caseslist">
                     <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                       <li><a class="dropdown-item green" href="#">Edit</a></li>
@@ -127,10 +128,10 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-12">
-                    <h4>Producer</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
+              <div class="row" data-flinkto="caseslist">
+                <div class="col-12" data-flinkto="caseslist">
+                    <h4 data-flinkto="caseslist">Producer</h4>
+                    <p data-flinkto="caseslist">Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
                 </div>
               </div> 
             </div>
@@ -141,6 +142,3 @@
     </div>
   </div>
 
-  <!--Cases card end-->
-
-  
