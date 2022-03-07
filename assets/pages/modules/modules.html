@@ -1,0 +1,212 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="c-align d-flex align-center justify-cotent-center">
+          <div>
+            <div class="round"><img src="../assets/images/course-1.svg" /></div>
+            <h4>Create your first Chapter</h4>
+            <p class="role-btn"><a href="#createchapter">Create Chapter</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--popup start-->
+  <div id="createchapter" class="overlay" style="display: block;">
+    <div class="popup pt-3">
+      <h4 class="mb-3">Create Chapter</h4>
+      <a class="close" href="#">×</a>
+      <form method="get" class="pop-form">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <input type="text" id="rolename" class="form-control" placeholder="Role name">
+          </div>
+          <div class="col-md-12 mb-3">
+            <div class="dropdown-select">
+                <select class="sort-select form-control">
+                  <option value="case1">Select type of case</option>
+                  <option value="case2">case2</option>
+                  <option value="case3">case3</option>
+                  <option value="case4">case4</option>
+                </select>
+              </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <div class="dropdown-select">
+                <select class="sort-select form-control">
+                  <option value="case1">Assign to</option>
+                  <option value="case2">case2</option>
+                  <option value="case3">case3</option>
+                  <option value="case4">case4</option>
+                </select>
+              </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <input type="text" id="rolename" class="form-control" placeholder="Assign to">
+          </div>
+          <div class="col-md-12 mb-3">
+            <input type="text" id="rolename" class="form-control" placeholder="Oneline Description">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 pt-3 pb-3 wauto">  <span class="orange-btn nbtn"><a href="#">
+            <button id="add-role">Create</button>
+            </a></span> </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--popup end-->
+
+  <!--Chapter list start-->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 title-head mb-3">
+        <h2>Chapters <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
+        <span class="orange-btn nbtn"><a href="#createchapter">
+        <button id="createchapter"><i class="fas fa-plus"></i> Create Module</button>
+        </a></span> </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+        <div class="white-bg title-head p-3">
+            <div class="container-fluid p-0">
+                <div class="row">
+                <div class="col-lg-4 col-md-4">
+                  <div class="searchbar">
+                    <h4>List of Chapters <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
+                  </div>
+                </div>
+                <div class="col-lg-8 col-md-8 top-btn">
+                    <div class="container p-0">
+                        <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                          <div class="topsearch relative">
+                          <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search">
+                          <i class="fas fa-search"></i> </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                        <div class="dropdown-select">
+                        <select class="form-control sort-select">
+                          <option value="Project1">Project1</option>
+                          <option value="Project2">Project2</option>
+                          <option value="Project3">Project3</option>
+                          <option value="Project4">Project4</option>
+                        </select>
+                      </div>                        
+                        </div>
+                       <div class="col-lg-3 col-md-3">
+                          <div class="dropdown-select">
+                        <select class="form-control sort-select">
+                          <option value="Recent">Recent</option>
+                          <option value="Completed">Completed</option>
+                          <option value="Onhold">Onhold</option>
+                          <option value="To do">To do</option>
+                        </select>
+                      </div>
+                        </div>
+                  </div>
+                   </div>
+
+                </div>                
+              </div>
+            </div>
+              </div>
+            </div>
+            <div class="whitebg col-md-12">
+          <div class="container-fluid p-0">
+        <div class="table-section">
+            <table class="table table-bordered responsive">
+        <thead>
+          <tr>
+            <th><div class="form-check">
+              <input class="form-check-input parentcheck" type="checkbox" value="" id="flexCheckDefault-1">
+              <label class="form-check-label" for="flexCheckDefault-1">
+              </label>
+            </div></th>
+            <th>CHAPTER ID</th>                
+            <th>NAME OF THE MODULE</th>
+            <th>COURSE NAME</th>
+            <th>CASE TITLE</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-2">
+              <label class="form-check-label" for="flexCheckDefault-2">
+              </label>
+            </div></td>
+            <td row-header="Table heading"><span class="gbg">#3214</span></td>
+            <td row-header="Table heading">Module Name</td>
+            <td row-header="Table heading">Course 1</td>
+            <td row-header="Table heading">Case 1</td>
+            <td row-header="Table heading"><div class="dropdown ahide">
+                <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                  <li><a class="dropdown-item green" href="#">Edit</a></li>
+                  <li><a class="dropdown-item red" href="#">Disable</a></li>
+                  <li><a class="dropdown-item red" href="#">Delete</a></li>
+                </ul>
+              </div></td>
+           
+          </tr>
+          <tr>
+            <td><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-2">
+              <label class="form-check-label" for="flexCheckDefault-2">
+              </label>
+            </div></td>
+            <td row-header="Table heading"><span class="gbg">#3214</span></td>
+            <td row-header="Table heading">Module Name</td>
+            <td row-header="Table heading">Course 1</td>
+            <td row-header="Table heading">Case 1</td>
+            <td row-header="Table heading"><div class="dropdown ahide">
+                <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                  <li><a class="dropdown-item green" href="#">Edit</a></li>
+                  <li><a class="dropdown-item red" href="#">Disable</a></li>
+                  <li><a class="dropdown-item red" href="#">Delete</a></li>
+                </ul>
+              </div></td>
+           
+          </tr>
+          <tr>
+            <td><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-2">
+              <label class="form-check-label" for="flexCheckDefault-2">
+              </label>
+            </div></td>
+            <td row-header="Table heading"><span class="gbg">#3214</span></td>
+            <td row-header="Table heading">Module Name</td>
+            <td row-header="Table heading">Course 1</td>
+            <td row-header="Table heading">Case 1</td>
+            <td row-header="Table heading"><div class="dropdown ahide">
+                <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                  <li><a class="dropdown-item green" href="#">Edit</a></li>
+                  <li><a class="dropdown-item red" href="#">Disable</a></li>
+                  <li><a class="dropdown-item red" href="#">Delete</a></li>
+                </ul>
+              </div></td>
+           
+          </tr>
+          
+        </tbody>
+      </table>
+        </div>
+      </div>
+      
+              
+          </div>
+                
+        </div>
+  </div>
+
+  <!--Chapter list end-->
+
+
+
+  
