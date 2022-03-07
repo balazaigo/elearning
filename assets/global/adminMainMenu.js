@@ -558,6 +558,23 @@ async function get403Page() {
   );
 }
 
+/**************case module start***************/
+async function getCasesPage() {
+  if(processRights("course") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/cases/case.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
+
 function handleTopMenuClick(e) {
   console.log(e.target.dataset.flinkto);
   switch (e.target.dataset.flinkto) {
@@ -632,6 +649,11 @@ function handleTopMenuClick(e) {
     case "memberstab":
       getMembersTabPage();
       break;
+
+    case "cases":
+      getCasesPage();
+      break;
+      
 
     case "settings":
       getTestPage();

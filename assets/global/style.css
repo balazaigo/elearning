@@ -3671,3 +3671,21 @@ option:not(:first-of-type) {
     float: right;
     margin-right: 29px;
 }
+/*************cases start*****************/
+#createcases .popup {
+	margin: 0px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 10px !important;
+	width: 35%;
+	position: relative;
+	transition: all 5s ease-in-out;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	overflow: auto;
+}
+.cases-card {
+	border: 1px solid #ccc !important;
+}

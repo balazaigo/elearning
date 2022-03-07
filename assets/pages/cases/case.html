@@ -1,0 +1,146 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="c-align d-flex align-center justify-cotent-center">
+          <div>
+            <div class="round"><img src="../assets/images/course-1.svg" /></div>
+            <h4>Create your first Cases</h4>
+            <p class="role-btn"><a href="#createcases">Create Cases</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--popup start-->
+  <div id="createcases" class="overlay" style="display: block;">
+    <div class="popup pt-3">
+      <h4 class="mb-3">Create Cases</h4>
+      <a class="close" href="#">×</a>
+      <form method="get" class="pop-form">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <input type="text" id="rolename" class="form-control" placeholder="Role name">
+          </div>
+          <div class="col-md-12 mb-3">
+            <div class="dropdown-select">
+                <select class="sort-select form-control">
+                  <option value="case1">Select type of case</option>
+                  <option value="case2">case2</option>
+                  <option value="case3">case3</option>
+                  <option value="case4">case4</option>
+                </select>
+              </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <div class="dropdown-select">
+                <select class="sort-select form-control">
+                  <option value="case1">Assign to</option>
+                  <option value="case2">case2</option>
+                  <option value="case3">case3</option>
+                  <option value="case4">case4</option>
+                </select>
+              </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <input type="text" id="rolename" class="form-control" placeholder="Assign to">
+          </div>
+          <div class="col-md-12 mb-3">
+            <input type="text" id="rolename" class="form-control" placeholder="Oneline Description">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 pt-3 pb-3 wauto">  <span class="orange-btn nbtn"><a href="#">
+            <button id="add-role">Create</button>
+            </a></span> </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--popup end-->
+
+
+  <!--Cases card start-->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 title-head mb-3">
+        <h2>Cases <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
+        <span class="orange-btn nbtn"><a href="#add-course">
+        <button id="add-courses"><i class="fas fa-plus"></i> Add Cases</button>
+        </a></span> </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="white-bg title-head br-5 p-3">
+          <div class="row w-100">
+            <div class="col-lg-4 col-md-4">
+              <div class="searchbar">
+                <h4>All Case Studies <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-8 top-btn">
+              <div class="row">
+                <div class="col-lg-6 col-md-6">
+                  <div class="topsearch relative">
+                    <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search">
+                    <i class="fas fa-search"></i> </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                <div class="dropdown-select">
+                    <select class="sort-select form-control">
+                      <option value="Course1">Course1</option>
+                      <option value="Course2">Course2</option>
+                      <option value="Course3">Course3</option>
+                      <option value="Course4">Course4</option>
+                    </select>
+                  </div>                    
+                </div>
+                <div class="col-lg-3 col-md-3">
+                  <div class="dropdown-select">
+                    <select class="sort-select form-control">
+                      <option value="Recent">Recent</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Onhold">Onhold</option>
+                      <option value="To do">To do</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="whitebg col-md-12 mt-3">
+        <div class="row" id="course-box">
+          <div class="col-md-4">
+            <div class="role-content cases-card mb-4">
+              <div class="row">
+                <div class="col-6 cleft new-btn">  <a href="#">New</a>  </div>
+                <div class="col-6 cright">
+                  <div class="dropdown ahide">
+                    <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                      <li><a class="dropdown-item green" href="#">Edit</a></li>
+                      <li><a class="dropdown-item red" href="#">Disable</a></li>
+                      <li><a class="dropdown-item red" href="#">Delete</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                    <h4>Producer</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
+                </div>
+              </div> 
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Cases card end-->
+
+  
