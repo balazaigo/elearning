@@ -560,12 +560,29 @@ async function get403Page() {
 
 /**************case module start***************/
 async function getCasesPage() {
-  if(processRights("course") === false) {
+  /*if(processRights("case") === false) {
     toastr.error(window.language.error_no_access);
     return false;
-  }
+  }*/
   $("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/cases/case.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
+
+
+async function getModulePage() {
+  /*if(processRights("modules") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }*/
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/modules/modules.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
       } else {
@@ -653,6 +670,10 @@ function handleTopMenuClick(e) {
     case "cases":
       getCasesPage();
       break;
+
+    case "modules":
+        getModulePage();
+        break;  
       
 
     case "settings":
