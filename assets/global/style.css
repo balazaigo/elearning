@@ -3691,7 +3691,6 @@ option:not(:first-of-type) {
 }
 .caselist ul {
 	padding: 0px;
-	display: block;
 	margin: 0 0 10px;
 	list-style: none;
 }
@@ -3718,7 +3717,18 @@ option:not(:first-of-type) {
 	width: 98%;
 	padding: 5px;
 }
-.ac {display: flex;}
+.ac {
+	display: flex;
+	position: relative;
+	padding: 5px 0;
+}
+.list-side {
+	position: absolute;
+	right: 10px;
+}
+.list-side a {
+	padding: 0 5px;
+}
 li.solid {
 	border: 1px solid #D3D2DC;
 }
@@ -3730,4 +3740,32 @@ li.dashed {
 }
 .caselist a {
 	color: #344B6C;
+}
+.pro-btn {
+	margin-top: 5px !important;
+}
+.pro-btn a {
+	background: #7DAAF91A;
+	padding: 8px 15px !important;
+	border-radius: 35px;
+	font-size: 15px;
+	color: #394EED;
+}
+.pro-btn a:hover {
+	background: #20204F;
+	color: #fff;
+}
+.list-side li {
+	width: auto;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+.list-side .dropdown-menu li {
+	float: none;
+}
+.list-side .dropdown-menu li {
+	float: none;
+	margin: 0;
+	padding: 0;
 }

@@ -608,6 +608,22 @@ async function getModulePage() {
   );
 }
 
+async function getModulesaListPage() {
+  /*if(processRights("modules") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }*/
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/modules/moduleslist.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
+
 function handleTopMenuClick(e) {
   console.log(e.target.dataset.flinkto);
   switch (e.target.dataset.flinkto) {
@@ -695,10 +711,13 @@ function handleTopMenuClick(e) {
         getModulePage();
         break;  
       
+    case "moduleslist":
+        getModulesaListPage();
+        break;
 
     case "settings":
-      getTestPage();
-      break;
+        getTestPage();
+        break;
     default:
   }
 }
