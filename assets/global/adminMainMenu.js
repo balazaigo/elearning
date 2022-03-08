@@ -558,6 +558,8 @@ async function get403Page() {
   );
 }
 
+
+
 /**************case module start***************/
 async function getCasesPage() {
   /*if(processRights("case") === false) {
@@ -624,6 +626,24 @@ async function getModulesaListPage() {
   );
 }
 
+async function getCoursesListNewPage() {
+  /*if(processRights("case") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }*/
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistnew.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
+
+
+
 function handleTopMenuClick(e) {
   console.log(e.target.dataset.flinkto);
   switch (e.target.dataset.flinkto) {
@@ -666,7 +686,8 @@ function handleTopMenuClick(e) {
     case "courseslist":
       getCoursesListPage();
       break;
-
+      
+     
     case "courseslistinner":
       getCoursesListInnerPage(e);
       break;
@@ -675,10 +696,14 @@ function handleTopMenuClick(e) {
       getCoursesListLevelPage(e);
       break;
     
-   case "courseseditor":
+    case "courseseditor":
       getCoursesEditorPage(e);
-      break; 
-
+      break;
+      
+    case "courseslistnew":
+        getCoursesListNewPage();
+        break;
+    
     case "task":
       getTaskPage();
       break;
