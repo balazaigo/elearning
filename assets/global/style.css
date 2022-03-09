@@ -160,7 +160,7 @@ input[type=radio]:checked + label:before {
 input[type="checkbox"]:checked + label::before {
 	content: "\2714";
 	color: white;
-	background-color: #0ebcf2;
+	background-color: #F36A10;
 	text-align: center;
 	line-height: 18px;
 	text-shadow: 0px 0px 3px #eee;
@@ -774,8 +774,8 @@ dfn i {
 }
 .popup .close {
 	position: absolute;
-	top: 0px;
-	right: 10px;
+	top: 5px;
+	right: 5px;
 	transition: all 200ms;
 	font-size: 30px;
 	font-weight: bold;
@@ -1649,6 +1649,7 @@ span.obg {
 	border: 1px solid #a2a2b7;
 	padding: 3px 10px;
 	color: #a2a2b7;
+	display: inline-block;
 }
 .popup h4 {
 	color: #20204F;
@@ -1875,10 +1876,17 @@ span.obg {
 	right: 0px;
 	padding-right: 15px;
 }
+.taskbtn {
+	text-align: center;
+}
+.comment-box {
+	width: 100%;
+	bottom: 0;
+}
 .status {
-    display: flex;
+    /*display: flex;
     justify-content: end;
-    align-items: center;
+    align-items: center;*/
 }
 .status a {
 	color: #20204F;
@@ -1930,15 +1938,18 @@ span.obg {
 	display: none;
 }
 .drop-down .select-list {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    margin-top: 40px;
-    padding: 0;
-    background-color: #eee;
-    list-style: none;
-    width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	margin-top: 40px;
+	padding: 0;
+	background-color: #eee;
+	list-style: none;
+	width: 100%;
+	max-height: 275px;
+	overflow: hidden;
+	overflow-y: scroll;
 }
 .drop-down .select-list li {
 	display: none;
@@ -3796,4 +3807,75 @@ li.dashed {
 	width: auto;
 	height: auto;
 	padding: 0 10px;
+}
+.medium-popup {
+	width: 768px !important;
+}
+
+.material-textfield {
+	position: relative;
+}
+.newfield label {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: white;
+	padding: 0px 25px 0px 4px;
+	margin: 0 0.5rem;
+	transition: .1s ease-out;
+	transform-origin: left top;
+	pointer-events: none;
+	color: #999;
+}
+.newfield input {
+	outline: none;
+	border: 1px solid #ccc;
+	color: #000;
+	transition: 0.1s ease-out;
+}
+.newfield input:focus + label {
+	color: #000;
+	top: 0;
+	transform: translateY(-50%) scale(.9);
+}
+#create-chapter .role-content {
+	border: 1px solid #ddd;
+	padding: 10px;
+}
+#create-chapter .role-content h4 {
+	margin: 0;
+	font-size: 18px;
+}
+#create-chapter .role-content p {
+	margin: 0;
+}
+.chapter-card {
+	height: 400px;
+	overflow-x: hidden;
+}
+.chapter-list {
+	list-style: none;
+	padding: 0;
+	overflow-x: hidden;
+	height: 80%;
+}
+.chapter-list ul{
+	list-style: none;
+	padding: 0;
+}
+.chapter-list ul li {
+	clear: both;
+	color: #787895;
+}
+.chapter-list span {
+	float: right;
+}
+.br-right {
+	border-right: 1px solid #ccc;
+}
+.chk {
+	position: absolute;
+	right: 5px;
+	top: 5px;
 }

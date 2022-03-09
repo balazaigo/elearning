@@ -15,35 +15,25 @@
   <!--popup start-->
   <div id="createchapter" class="overlay" style="display: block;">
     <div class="popup pt-3">
-      <h4 class="mb-3">Create Chapter</h4>
+      <h4 class="mb-3">Add a new chapter</h4>
       <a class="close" href="#">×</a>
       <form method="get" class="pop-form">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Role name">
+            <input type="text" id="rolename" class="form-control" placeholder="Name of the Chapter">
           </div>
           <div class="col-md-12 mb-3">
             <div class="dropdown-select">
                 <select class="sort-select form-control">
-                  <option value="case1">Select type of case</option>
-                  <option value="case2">case2</option>
-                  <option value="case3">case3</option>
-                  <option value="case4">case4</option>
+                  <option value="case1">Enter Chapter Id</option>
+                  <option value="case2">Chapter1</option>
+                  <option value="case3">Chapter2</option>
+                  <option value="case4">Chapter3</option>
                 </select>
               </div>
           </div>
           <div class="col-md-12 mb-3">
-            <div class="dropdown-select">
-                <select class="sort-select form-control">
-                  <option value="case1">Assign to</option>
-                  <option value="case2">case2</option>
-                  <option value="case3">case3</option>
-                  <option value="case4">case4</option>
-                </select>
-              </div>
-          </div>
-          <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Assign to">
+            <input type="text" id="rolename" class="form-control" placeholder="Add a tag">
           </div>
           <div class="col-md-12 mb-3">
             <input type="text" id="rolename" class="form-control" placeholder="Oneline Description">
@@ -89,10 +79,11 @@
                         <div class="col-lg-3 col-md-3">
                         <div class="dropdown-select">
                         <select class="form-control sort-select">
-                          <option value="Project1">Project1</option>
-                          <option value="Project2">Project2</option>
-                          <option value="Project3">Project3</option>
-                          <option value="Project4">Project4</option>
+                          <option value="Project1">All Modules</option>
+                          <option value="Project2">Modules1</option>
+                          <option value="Project2">Modules2</option>
+                          <option value="Project3">Modules3</option>
+                          <option value="Project4">Modules4</option>
                         </select>
                       </div>                        
                         </div>
@@ -126,8 +117,7 @@
               </label>
             </div></th>
             <th>CHAPTER ID</th>                
-            <th>NAME OF THE MODULE</th>
-            <th>COURSE NAME</th>
+            <th>NAME OF THE CHAPTER</th>
             <th>CASE TITLE</th>
             <th>ACTIONS</th>
           </tr>
@@ -140,8 +130,7 @@
               </label>
             </div></td>
             <td row-header="Table heading"><span class="gbg">#3214</span></td>
-            <td row-header="Table heading" data-flinkto="moduleslist">Module Name</td>
-            <td row-header="Table heading">Course 1</td>
+            <td row-header="Table heading" data-flinkto="moduleslist">Module A</td>
             <td row-header="Table heading">Case 1</td>
             <td row-header="Table heading"><div class="dropdown ahide">
                 <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
@@ -154,13 +143,12 @@
           </tr>
           <tr>
             <td><div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-2">
-              <label class="form-check-label" for="flexCheckDefault-2">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-3">
+              <label class="form-check-label" for="flexCheckDefault-3">
               </label>
             </div></td>
             <td row-header="Table heading"><span class="gbg">#3214</span></td>
-            <td row-header="Table heading">Module Name</td>
-            <td row-header="Table heading">Course 1</td>
+            <td row-header="Table heading" data-flinkto="moduleslist">Module A</td>
             <td row-header="Table heading">Case 1</td>
             <td row-header="Table heading"><div class="dropdown ahide">
                 <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
@@ -173,18 +161,17 @@
           </tr>
           <tr>
             <td><div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-2">
-              <label class="form-check-label" for="flexCheckDefault-2">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-4">
+              <label class="form-check-label" for="flexCheckDefault-4">
               </label>
             </div></td>
             <td row-header="Table heading"><span class="gbg">#3214</span></td>
-            <td row-header="Table heading">Module Name</td>
-            <td row-header="Table heading">Course 1</td>
+            <td row-header="Table heading" data-flinkto="moduleslist">Module A</td>
             <td row-header="Table heading">Case 1</td>
             <td row-header="Table heading"><div class="dropdown ahide">
                 <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                  <li><a class="dropdown-item green" href="#">Edit</a></li>
+                  <li><a class="dropdown-item green" href="#create-chapter">Edit</a></li>
                   <li><a class="dropdown-item red" href="#">Disable</a></li>
                   <li><a class="dropdown-item red" href="#">Delete</a></li>
                 </ul>
@@ -203,6 +190,122 @@
   </div>
 
   <!--Chapter list end-->
+
+
+   <!--popup start-->
+  <div id="create-chapter" class="overlay" style="display: block;">
+    <div class="popup medium-popup">
+      
+      <a class="close" href="#">×</a>
+      <div class="row">
+        <div class="col-md-5 br-right">
+          <h4 class="mb-3">List of Modules</h4>
+          <div class="row">
+            <div class="col-md-6">
+                <div class="topsearch relative mb-3">
+                <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search">
+                <i class="fas fa-search"></i> </div>
+            </div>
+            <div class="col-md-6">
+              <div class="dropdown-select">
+                <select class="form-control sort-select">
+                  <option value="Project1">Categories</option>
+                  <option value="Project2">Modules1</option>
+                  <option value="Project2">Modules2</option>
+                  <option value="Project3">Modules3</option>
+                  <option value="Project4">Modules4</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="chapter-card">
+            <div class="role-content mb-3">
+              <h4>Module A</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
+              <span class="chk">
+                <input type="checkbox" class="form-check-input" id="remember01">
+                <label for="remember01" class="form-label"></label>
+              </span>             
+            </div>
+            <div class="role-content mb-3">
+              <h4>Module B</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>  
+              <span class="chk">
+                <input type="checkbox" class="form-check-input" id="remember02">
+                <label for="remember02" class="form-label"></label>
+              </span>          
+            </div>
+            <div class="role-content mb-3">
+              <h4>Module C</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
+              <span class="chk">
+                <input type="checkbox" class="form-check-input" id="remember03">
+                <label for="remember03" class="form-label"></label>
+              </span>            
+            </div>
+            <div class="role-content mb-3">
+              <h4>Module D</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
+              <span class="chk">
+                <input type="checkbox" class="form-check-input" id="remember04">
+                <label for="remember04" class="form-label"></label>
+              </span>                         
+            </div>
+          </div>          
+        </div>
+        <div class="col-md-7">
+          <h4 class="mb-3">List of Chapters</h4>
+          <div class="chapter-list">
+            <ul class="mb-2 h-100">
+              <li>Chapter1 
+                <span>
+                  <input type="checkbox" class="form-check-input" id="remember1">
+                  <label for="remember1" class="form-label"></label>
+                </span>
+              </li>
+              <li>Chapter2 
+                <span>
+                  <input type="checkbox" class="form-check-input" id="remember2">
+                  <label for="remember2" class="form-label"></label>
+                </span>
+              </li>
+              <li>Chapter3 
+                <span>
+                  <input type="checkbox" class="form-check-input" id="remember3">
+                  <label for="remember3" class="form-label"></label>
+                </span>
+              </li> 
+              <li>Chapter4 
+                <span>
+                  <input type="checkbox" class="form-check-input" id="remember4">
+                  <label for="remember4" class="form-label"></label>
+                </span>
+              </li> 
+              <li>Chapter5 
+                <span>
+                  <input type="checkbox" class="form-check-input" id="remember5">
+                  <label for="remember5" class="form-label"></label>
+                </span>
+              </li> 
+              <li>Chapter6 
+                <span>
+                  <input type="checkbox" class="form-check-input" id="remember6">
+                  <label for="remember6" class="form-label"></label>
+                </span>
+              </li>       
+            </ul>
+          </div> 
+          <div class="col-12 pt-3 pb-3 wauto"> <span class="border-btn nbtn"><a href="#">
+            <button id="add-role-cancel">Create Chapter</button>
+            </a></span> <span class="orange-btn nbtn"><a href="#">
+            <button id="add-role">Add selected Chapter</button>
+            </a></span> </div>         
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!--popup end-->
 
 
 
