@@ -218,8 +218,9 @@
               </div>
             </div>
           </div>
-          <div class="chapter-card">
-            <div class="role-content mb-3">
+          
+          <div id="ccard" class="chapter-card">
+            <div class="role-content mb-3" onclick="cardlist(this)">
               <h4>Module A</h4>
               <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
               <span class="chk">
@@ -227,7 +228,7 @@
                 <label for="remember01" class="form-label"></label>
               </span>             
             </div>
-            <div class="role-content mb-3">
+            <div class="role-content mb-3" onclick="cardlist(this)">
               <h4>Module B</h4>
               <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>  
               <span class="chk">
@@ -235,7 +236,7 @@
                 <label for="remember02" class="form-label"></label>
               </span>          
             </div>
-            <div class="role-content mb-3">
+            <div class="role-content mb-3" onclick="cardlist(this)">
               <h4>Module C</h4>
               <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
               <span class="chk">
@@ -243,7 +244,7 @@
                 <label for="remember03" class="form-label"></label>
               </span>            
             </div>
-            <div class="role-content mb-3">
+            <div class="role-content mb-3" onclick="cardlist(this)">
               <h4>Module D</h4>
               <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
               <span class="chk">
@@ -307,6 +308,16 @@
   </div>
    <!--popup end-->
 
+   
+   <script>
+    function cardlist(e){
+          var elems = document.querySelector(".cardactive");
+          if(elems !==null){
+          elems.classList.remove("cardactive");
+          }
+          e.classList.add('cardactive');
+    }
+  </script>
 
 
   
