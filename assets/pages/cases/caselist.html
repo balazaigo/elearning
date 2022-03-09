@@ -4,6 +4,9 @@
         <div class="row w-100">
             	<div class="col-md-8">
                 <h2><span class="back"><a href="#"><i class="fas fa-arrow-left"></i></a></span> Cases 1 
+            <input type="hidden" data-flinkto="cases" id="case_id_name"/>
+            	<div class="col-md-12">
+                <h2><span class="back"><a  data-flinkto="cases"><i class="fas fa-arrow-left" data-flinkto="cases"></i></a></span> <small id="case_ind_name_text">Cases 1 </small>
                      <a href=""><img src="../assets/images/pen-edit.jpg"></a>
                     <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> <span><a href="#">Breadcumbs1</a> <a href="#">Breadcumbs2</a></span> </h2>
                 </div> 
@@ -195,3 +198,30 @@
     </ul>
     <!-----List end------>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+            let case_id = document.getElementById("case_id_name").getAttribute("data-case_id");
+            let case_name = document.getElementById("case_id_name").getAttribute("data-case_name");
+            if(case_name){
+                $("#case_ind_name_text").text(case_name);
+            }
+            if(case_id){
+                $.ajax({
+                    url: API_BASE_URL + '/case_module/'+case_id,
+                    type: 'get',
+                    dataType: 'json',
+                    headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+                    success: function (response) {
+                        console.log("response:", response);
+                        
+                    },
+                    error: function(error) {
+                        toastr.error("Response Error: " + error.message);
+                        console.log(error);
+                    }
+                });
+            }
+        }, 0);
+    });
+</script>

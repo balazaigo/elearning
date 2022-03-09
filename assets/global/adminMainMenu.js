@@ -577,7 +577,7 @@ async function getCasesPage() {
   );
 }
 
-async function getCasesListPage() {
+async function getCasesListPage(e) {
   /*if(processRights("case") === false) {
     toastr.error(window.language.error_no_access);
     return false;
@@ -586,6 +586,11 @@ async function getCasesListPage() {
     `${SITE_URL_PROTOCOL}/assets/pages/cases/caselist.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
+        var case_flinkto_elem = document.querySelectorAll("[data-flinkto='cases'], [data-flinkto='caseslist']");
+        case_flinkto_elem.forEach(el=>{
+          el.setAttribute("data-case_id", e.target.dataset.case_id);
+          el.setAttribute("data-case_name", e.target.dataset.case_name);
+        });
       } else {
         console.log("Something error happend");
       }
@@ -729,7 +734,7 @@ function handleTopMenuClick(e) {
       break;
 
     case "caseslist":
-      getCasesListPage();
+      getCasesListPage(e);
       break;
 
     case "modules":

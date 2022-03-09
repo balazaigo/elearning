@@ -1,74 +1,89 @@
-<div class="container-fluid">
+<div class="container-fluid disp_none" id="add_case_container">
     <div class="row">
       <div class="col-12">
         <div class="c-align d-flex align-center justify-cotent-center">
           <div>
             <div class="round"><img src="../assets/images/course-1.svg" /></div>
-            <h4>Create your first Cases</h4>
-            <p class="role-btn"><a href="#createcases">Create Cases</a></p>
+            <h4>Create your first Case</h4>
+            
+            <span class="orange-btn nbtn">
+            <button class="add-case"><i class="fas fa-plus"></i> Add Case</button>
+            </span>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 
   <!--popup start-->
-  <div id="createcases" class="overlay" style="display: block;">
+  <div id="createcases" class="overlay" style="display:none;">
     <div class="popup pt-3">
-      <h4 class="mb-3">Create Cases</h4>
-      <a class="close" href="#">×</a>
-      <form method="get" class="pop-form">
+      <h4 class="mb-3" id="create_case_text">Create Case</h4>
+      <span class="close">×</span>
+      <form method="post" id="frmNewCase" name="frmNewCase" enctype="multipart/form-data">
+        <input type="hidden" name="case_id" id="case_id" value="">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Role name">
-          </div>
-          <div class="col-md-12 mb-3">
-            <div class="dropdown-select">
-                <select class="sort-select form-control">
-                  <option value="case1">Select type of case</option>
-                  <option value="case2">case2</option>
-                  <option value="case3">case3</option>
-                  <option value="case4">case4</option>
-                </select>
+              <div class="form-floating">
+                <input type="text" id="case_name" name="name" class="form-control cm-capitalize" placeholder=" ">
+                <label for="case_name">Name of the Case</label>
               </div>
           </div>
+
           <div class="col-md-12 mb-3">
-            <div class="dropdown-select">
-                <select class="sort-select form-control">
-                  <option value="case1">Assign to</option>
-                  <option value="case2">case2</option>
-                  <option value="case3">case3</option>
-                  <option value="case4">case4</option>
-                </select>
-              </div>
+            <div class="form-floating">
+              <select class="sort-select form-control" id="case_type" name="case_type">
+                <option value="">Select type of case</option>
+                <option value="0">Simple</option>
+                <option value="1">Moderate</option>
+                <option value="2">Complex</option>
+              </select>
+              <label for="case_type" data-title="Select type of case" data-caption="Select">Select</label>
+            </div>
           </div>
           <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Assign to">
+            <div class="form-floating">
+              <select class="sort-select form-control" id="case_assign_to" name="member_id">
+                <option value="">Assign To</option>
+              </select>
+              <label for="assign_to" data-title="Select Assignto" data-caption="Select">Select</label>
+            </div>
           </div>
           <div class="col-md-12 mb-3">
-            <label for="tags2" class="tags2-label d-none">Add a tags</label>
-            <select class="form-control tags2" id="tags2" name="tags2[]" multiple="multiple" style="width:100%"></select>
+            <div class="form-floating">
+              <input type="text" id="case_description" name="description" class="form-control counter"
+                placeholder=" " maxlength="1024" minlength="4"/>
+              <span class="charcounter">0 Char</span>
+              <label for="description">One line description</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12 pt-3 pb-3 wauto">  <span class="orange-btn nbtn"><a href="#">
-            <button id="add-role">Create</button>
-            </a></span> </div>
+          <div class="col-md-12 mb-3">
+            <label for="tags2" class="tags2-label d-none">Add a tag</label>
+            <select class="form-control tags2" id="tags2" name="tags[]" multiple="multiple" style="width:100%"></select>
+          </div>
         </div>
       </form>
+
+        <div class="row">
+          <div class="col-12 pt-3 pb-3 wauto">  <span class="orange-btn nbtn">
+            <button class="add-case_save" id="create_case_save_text">Create</button>
+            </span> </div>
+        </div>
     </div>
   </div>
   <!--popup end-->
 
 
   <!--Cases card start-->
-  <div class="container-fluid">
+  <div class="container-fluid"  id="list_case_container">
     <div class="row">
       <div class="col-12 title-head mb-3">
         <h2>Cases <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
-        <span class="orange-btn nbtn"><a href="#add-course">
-        <button id="add-courses"><i class="fas fa-plus"></i> Add Cases</button>
-        </a></span> </div>
+        <span class="orange-btn nbtn">
+        <button class="add-case"><i class="fas fa-plus"></i> Add Case</button>
+        </span> 
+      </div>
     </div>
     <div class="row">
       <div class="col-12">
@@ -83,26 +98,23 @@
               <div class="row">
                 <div class="col-lg-6 col-md-6">
                   <div class="topsearch relative">
-                    <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search">
+                    <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search"  id="search_data" onblur="searchParam()">
                     <i class="fas fa-search"></i> </div>
                 </div>
                 <div class="col-lg-3 col-md-3">
                 <div class="dropdown-select">
-                    <select class="sort-select form-control">
-                      <option value="Course1">Course1</option>
-                      <option value="Course2">Course2</option>
-                      <option value="Course3">Course3</option>
-                      <option value="Course4">Course4</option>
+                    <select class="sort-select form-control" id="case_list" name="case_list" onchange="searchParam()">
+                      <option value="">All Case study</option>
                     </select>
                   </div>                    
                 </div>
                 <div class="col-lg-3 col-md-3">
                   <div class="dropdown-select">
-                    <select class="sort-select form-control">
-                      <option value="Recent">Recent</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Onhold">Onhold</option>
-                      <option value="To do">To do</option>
+                    <select class="sort-select form-control" id="sort_recent" onchange="searchParam()">
+                      <option value="0">Recent</option>
+                      <option value="4">Completed</option>
+                      <option value="2">Onhold</option>
+                      <option value="1">To do</option>
                     </select>
                   </div>
                 </div>
@@ -112,8 +124,8 @@
         </div>
       </div>
       <div class="whitebg col-md-12 mt-3">
-        <div class="row" id="course-box" data-flinkto="caseslist">
-          <div class="col-md-4">
+        <div class="row" id="case-box" data-flinkto="caseslist">
+         <!-- <div class="col-md-4">
             <div class="role-content cases-card mb-4">
               <div class="row">
                 <div class="col-6 cleft new-btn" data-flinkto="caseslist">  <a href="#" data-flinkto="caseslist">New</a>  </div>
@@ -135,10 +147,540 @@
                 </div>
               </div> 
             </div>
-          </div>
+          </div>-->
           
         </div>
+        <div id="pagination-container-to"></div>
       </div>
     </div>
   </div>
 
+<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title"><span id="mAlertName"></span></h6>
+        <a class="close" data-bs-dismiss="modal">×</a>
+      </div>
+      <div class="modal-body text-center">
+        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" alt="Delete"> </div>
+        <input type="hidden" id="mAlertURL" value="" />
+        <p>Are you sure you want to delete it?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <span class="dborder-btn nbtn">
+          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        </span>
+        <span class="danger-btn nbtn">
+          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  /*********Case List section Starts***********************/
+  $(".add-case").click(function(){
+    window.sharedEditCaseId = "";
+    $("#createcases").addClass("overlay_target");
+    $("#createcases").attr("style","display:block");
+  });
+  $(".close").click(function(){
+    $("#createcases").removeClass("overlay_target");
+    $("#createcases").attr("style","display:none");
+    window.sharedEditCaseId = "";
+  })
+  function searchParam(){
+    var search_param = "";
+    var search_inp_val = document.getElementById("search_data").value;
+    if(search_inp_val !== ''){
+        search_param += "?search="+search_inp_val;
+    }
+    var case_list_val = document.getElementById("case_list").value;
+    if(case_list_val !== ""){
+        if(search_param == ""){
+            search_param += "?id="+case_list_val;
+        }else{
+            search_param += "&id="+case_list_val;
+        }
+    }
+    var sort_recent_val = document.getElementById("sort_recent").value;
+    if(sort_recent_val !== ""){
+        if(search_param == ""){
+            search_param += "?status="+sort_recent_val;
+        }else{
+            search_param += "&status="+sort_recent_val;
+        }
+    }
+    get_pagination(search_param);
+}
+
+function get_pagination(parameter){
+  if($( "#pagination-container-to" ).length > 0) {
+    $('#pagination-container-to').pagination({
+      dataSource: API_CONTENT_URL_MOCK + '/cases'+parameter,
+      locator: 'data',
+      totalNumberLocator: function(response) {
+        return response.total;
+      },
+      alias: {
+        pageNumber: 'page',
+        pageSize: 'per_page',
+      },  
+      pageSize: 10,
+      ajax: {
+        beforeSend: function(request) {
+          request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
+        },
+        complete: function(jqXHR, textStatus) {
+          if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
+            return false; // do nothing
+          } else if (jqXHR && jqXHR.status === 403) {
+            window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+          } else {
+            alert('error');
+          }
+        },    
+      },
+      callback: function(data, pagination) {
+        if(pagination.totalNumber < 7){
+          $("#pagination-container-to").hide();
+        }else{
+          $("#pagination-container-to").show();
+        }
+        if(data.length === 0){
+          $("#nodataFound_course").attr("style", "display:block");
+        }else{
+          $("#nodataFound_course").attr("style", "display:none");
+        }
+        var html = template(data);
+        loadAlertModal();
+      }
+    });
+  }
+}
+
+  function loadAlertModal(){
+    $('#mAlert').on('shown.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var recipientID = button.data('url');
+      var name = button.data('name');
+      var modal = $(this);
+      modal.find('.modal-content input').val(recipientID);
+      modal.find('.modal-content #mAlertName').html(name);
+      $("#mAlertCancel").focus();
+      //mAlertDelete
+      $(document).on('click', '#mAlertDelete', function() {
+        var url = $("#mAlertURL").val();
+        /*$.ajax({
+          url: API_CONTENT_URL_MOCK + '/cases/' + url,
+          type: 'PATCH',
+          data: JSON.stringify({
+            "status": 3
+          }),
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token,
+            "Content-Type": "application/json"
+          },
+          success:function(response){
+            $("#mAlertCancel").click();
+            doSearch();
+          },
+          error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });*/
+        $.ajax({
+          url: API_CONTENT_URL_MOCK + '/cases/' + url,
+          type: 'DELETE',
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token
+          },
+          success:function(response){
+            $("#mAlertCancel").click();
+          },
+          error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+      });
+      //mAlertCancel
+      $(document).on('click', '#mAlertCancel', function() {
+        $(document).off('click', '#mAlertCancel');
+        $(document).off('click', '#mAlertDelete');
+      });
+      
+    });
+    
+    //hidden.bs.modal 
+    $('#mAlert').on('hidden.bs.modal', function (event) {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+      var modal = $(this);
+      modal.find('.modal-content input').val(null);
+      modal.find('.modal-content #mAlertName').html("Loading...");
+    });
+    
+    $(".mDisabled").on("click", function(){
+      var url = $(this).data("url");
+      $.ajax({
+        url: API_CONTENT_URL + '/task/' + url + '/',
+        type: 'PATCH',
+        data: JSON.stringify({
+          "status": 2
+        }),
+        headers: {
+          "Authorization": "Bearer " + getUserInfo().access_token,
+          "Content-Type": "application/json"
+        },
+        success:function(response){
+          doSearch();
+        },
+        error: function(error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
+    });
+    
+    //mEnabled
+    $(".mEnabled").on("click", function(){
+      var url = $(this).data("url");
+      $.ajax({
+        url: API_CONTENT_URL + '/task/' + url + '/',
+        type: 'PATCH',
+        data: JSON.stringify({
+          "status": 1
+        }),
+        headers: {
+          "Authorization": "Bearer " + getUserInfo().access_token,
+          "Content-Type": "application/json"
+        },
+        success:function(response){
+          doSearch();
+        },
+        error: function(error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
+    });
+  
+  }
+function template(data){
+    $('#case-box').empty();
+    console.log(data);
+
+      $("#case_list").empty();
+      $("#case_list").append("<option value=''>All Case study</option>");
+      $.each(data, function( i, val ) {
+        $("#case_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
+      });
+    data.forEach(function (element, index) {
+        if (Object.keys(element).length > 0) {
+          $("#add_case_container").removeClass("disp_block");
+          $("#add_case_container").addClass("disp_none");
+            var status_class = "";
+            var status_text = "";
+            if(element.type == 0){
+              status_class = "status_new";
+              status_text = "Simple";
+            }else if(element.type == 1){
+              status_class = "status_inprogress";
+              status_text = "Moderate";
+            }else if(element.type == 2){
+              status_class = "status_onhold";
+              status_text = "Complex";
+            }
+          var dots = "";
+          if(element.description.length > 75){
+            dots = "...";
+          }
+          var td = `<div class="col-md-4">
+            <div class="role-content cases-card mb-4">
+              <div class="row">
+                <div class="col-6 cleft new-btn" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">  <a href="#" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}" class="${status_class}">${status_text}</a>  </div>
+                <div class="col-6 cright">
+                  <div class="dropdown ahide" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">
+                    <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                      <li><a class="dropdown-item green" href="#" data-case_id='${element.id}' data-case_name='${element.name}' onClick='editCase(this);'>Edit</a></li>
+                      <li><a class="dropdown-item red" href="#">Disable</a></li>
+                      <li><a class="dropdown-item red" href="#mAlert" id="delete_${element.id}"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${element.name}" data-url="${element.id}">Delete</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">
+                <div class="col-12" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">
+                    <h4 data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">${element.name}</h4>
+                    <p data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">${element.description.substring(0, 75)+dots}</p>
+                </div>
+              </div> 
+            </div>
+          </div>`;
+
+          $('#case-box').append(td);
+        }else{
+
+          $("#list_case_container").removeClass("disp_block");
+          $("#list_case_container").addClass("disp_none");
+        }
+    });
+}   
+/*********Case List section Ends***********************/
+/**********Case Edit section Starts ****************/
+function editCase(e){
+    window.sharedEditCaseId = e.dataset.case_id;
+    console.log(window.sharedEditCaseId);
+    if(window.sharedEditCaseId){
+      console.log(window.sharedEditCaseId);
+      $("#createcases").attr("style","display:block");
+      $("#createcases").addClass("overlay_target");
+      $("#create_case_text").text("Edit Case");
+      $("#create_case_save_text").text("Update");
+      var url = API_CONTENT_URL_MOCK + `/cases/`+window.sharedEditCaseId;
+      fetch(url, {
+        method: "GET",
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        $("#case_name").val(data.name);
+        $("#case_description").val(data.description);
+        getAssignMember(data.member_id);
+        $("#case_type option[value='"+data.type+"']").prop('selected', true);
+
+        if(data.tags.length > 0){
+          var tag_array_2 = [];
+          $.each(data.tags, function (i, val) {
+            tag_array_2.push(val.name);
+          })
+          var tags_empty = [];
+          if (tag_array_2) {
+            $("#tags2").html("");
+            $("#tags2").val(tags_empty).change();
+            $.each(tag_array_2, function (i, val) {
+              $("#tags2").append("<option value='" + val + "'>" + val + "</option>");
+            });
+            $("#tags2").val(tag_array_2).change();
+          }
+        }
+      })
+      .catch(function(error){
+        console.log("Requestfailed", error);
+      });
+    }
+}
+/**********Case Edit section Ends ****************/
+/****** Create Case View section Starts *************/
+  $("<link/>", {
+     rel: "stylesheet",
+     type: "text/css",
+     href: "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+  }).appendTo("head");  
+  $.getScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
+  var frmvalidatorfrm;
+
+  function getAssignMember(member_id){
+      $.ajax({
+        url: API_BASE_URL + '/mem_category_list/' + encodeURI("Define Course"),
+        type: 'get',
+        dataType: 'json',
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        success: function (response) {
+          console.log("response:", response);
+          $("#case_assign_to").empty();
+          $("#case_assign_to").append("<option value=''>Assign To</option>");
+          $.each(response.data, function (i, val) {
+            $("#case_assign_to").append("<option value='" + val.id + "'>" + val.first_name + " " + val.last_name + "</option>");
+          });
+          if(member_id){
+              $("#case_assign_to option[value='"+member_id+"']").prop('selected', true);
+          }
+        }
+      });
+  }
+  $(document).ready(function(){
+    var search_param = "";
+    get_pagination(search_param);
+    var member_id = "";
+    getAssignMember(member_id);
+    var URL = API_CONTENT_URL + "/tags/";
+    var $tagsControl = $('.tags2').select2({
+      dropdownParent: $('#createcases'),
+      placeholder: "Add a tag",
+      dropdownCssClass: "select2Font",
+      tokenSeparators: [','],
+      tags: true,
+      multiple: true,
+      allowClear: true,
+      ajax: {
+        url: URL,
+        dataType: 'json',
+        type: "GET",
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        quietMillis: 50,
+        data: function (params) {
+          return {
+            term: $.trim(params.term)
+          };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return {
+                text: item,
+                id: item
+              }
+            })
+          };
+        },
+        cache: true,
+      },
+      createTag: function (params) {
+        var term = $.trim(params.term);
+        if (term === '') {
+          return null;
+        }
+        return {
+          id: term,
+          text: term,
+          newTag: true
+        };
+      },
+      maximumSelectionLength: 64,
+      minimumInputLength: 3,
+      formatSelectionTooBig: function (limit) {
+        return "Too many selected items, Only 64 tags allowed."
+      },
+      formatNoMatches: "add new tag and hit ENTER-KEY",
+      escapeMarkup: function (markup) {
+        return markup;
+      }
+    });
+  /****** Create Case View section Ends *************/
+
+  /****** Create Case Save section Starts *************/
+    $('.cm-capitalize').each(function () { $(this).capitalize(); });
+    $('.cm-uppercase').each(function () { $(this).upperCase(); });
+    $('.cm-replaceSpace').each(function () { $(this).replaceSpace(); });
+    $(".form-select").each(function (index, element) {
+      const $this = $(this);
+      $this.on("change", (event) => {
+        const $this = $(event.currentTarget);
+        if ($this.val()) {
+          $this.next("label").html($this.next("label").data("title"));
+        } else {
+          $this.next("label").html($this.next("label").data("caption"));
+        }
+      });
+    });
+    $.validator.addMethod("pattern", function (value, element, param) {
+      if (this.optional(element)) { return true; }
+      if (typeof param === "string") {
+        param = new RegExp("^(?:" + param + ")$");
+      }
+      return param.test(value);
+    }, "Check your inputs");
+    var frmvalidatorfrm = $("#frmNewCase").validate({
+      rules: {
+        case_name: { required: true, minlength: 1, maxlength: 256 },
+        description: { required: true, minlength: 1, maxlength: 256 },
+        case_type: { required: true },
+        assign_to: { required: true },
+      },
+      messages: {
+        case_name: {
+          required: "Please enter a Case Name",
+          minlength: "Your case name must consist of at least 1 characters",
+          maxlength: "Your case name must consist of max of 256 characters",
+        },
+        description: {
+          required: "Please enter a description",
+          minlength: "Description must consist of at least 1 characters",
+          maxlength: "Description must consist of max of 20 characters",
+        },
+        case_type: { required: "Please select the Case type" },
+        assign_to: { required: "Please select Assign To" },
+      },
+      errorElement: "em",
+      errorPlacement: function (error, element) {
+        error.addClass("help-block");
+        if (element.prop("type") === "checkbox") {
+          error.insertAfter(element.parent("label"));
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass("is-invalid");
+      }
+    });
+
+    $("#create_case_save_text").on("click", function () {
+      var isValidForm = frmvalidatorfrm.form();
+      if (isValidForm) {
+        if ($("#tags2").val().length === 0) {
+          alert("Tags field cannot empty please choice atleast one tag!");
+          return false;
+        }
+        var tags = $("#tags2").val().join(",");
+        var formData = new FormData();
+
+        formData.append("name", $("#case_name").val());
+        formData.append("type", $("#case_type").find("option:selected").val());
+        formData.append("member_id", $("#case_assign_to").find("option:selected").val());
+        formData.append("description", $("#case_description").val());
+        formData.append("tags", tags);
+console.log(window.sharedEditCaseId);
+        var case_id = window.sharedEditCaseId;
+        var URL = API_CONTENT_URL_MOCK + "/cases";
+        var method = "POST";
+        var type = "POST";
+        if(case_id != ""){
+          var URL = API_CONTENT_URL_MOCK + "/cases/"+case_id;
+          var method = "PUT";
+          var type = "PUT";
+        }
+
+        $.ajax({
+          url: URL,
+          method: method,
+          type: type, // For jQuery < 1.9
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token
+          },
+          success: function (response) {
+            console.log(response)
+            toastr.success("New Case was successfully saved.");
+            $(".close").trigger("click");
+            $("#createcases").attr("style","display:none");
+
+            $("#createcases").removeClass("overlay_target");
+            var parameter = "";
+            get_pagination(parameter);
+            window.sharedEditCaseId = "";
+          },
+          error: function (error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+      }
+    });
+
+  /****** Create Case Save section Ends *************/
+  });
+
+</script>

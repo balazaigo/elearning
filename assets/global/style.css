@@ -3879,3 +3879,15 @@ li.dashed {
 	right: 5px;
 	top: 5px;
 }
+#case-box .status_new{
+    background-color: rgb(240,220,250);
+    color: rgb(180 39 245);
+}
+#case-box .status_inprogress{
+    background-color: rgb(242,247,255);
+    color: rgb(50 77 249);
+}
+#case-box .status_onhold{
+    background-color: rgb(254,249,233);
+    color: rgb(255 189 0);
+}
