@@ -9,8 +9,11 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
 } else if(SITE_URL_PROTOCOL === "http://94.177.203.98"){
 	SITE_URL_PROTOCOL = "http://94.177.203.98/exper-js-new/";
 
-} else if(SITE_URL_PROTOCOL === "https://localhost"){
-	SITE_URL_PROTOCOL = "https://localhost/elearning/";
+} else if(SITE_URL_PROTOCOL === "http://localhost"){
+	SITE_URL_PROTOCOL = "http://localhost/elearning/";
+  API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
+  API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
+  API_CONTENT_URL_MOCK = "https://private-anon-c092dfeba1-expercd.apiary-mock.com";
 
 } else if(SITE_URL_PROTOCOL === "https://elearning.zaigoinfotech.com"){
 	SITE_URL_PROTOCOL = "https://elearning.zaigoinfotech.com/";

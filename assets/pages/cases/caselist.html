@@ -207,7 +207,7 @@
                 $("#case_ind_name_text").text(case_name);
             }
             if(case_id){
-                $.ajax({
+                /*$.ajax({
                     url: API_BASE_URL + '/case_module/'+case_id,
                     type: 'get',
                     dataType: 'json',
@@ -220,7 +220,7 @@
                         toastr.error("Response Error: " + error.message);
                         console.log(error);
                     }
-                });
+                });*/
             }
         }, 0);
     });
