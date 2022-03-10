@@ -6,7 +6,12 @@
                     <input type="hidden" data-flinkto="cases" id="case_id_name"/>
                 <h2><span class="back"><a  data-flinkto="cases"><i class="fas fa-arrow-left" data-flinkto="cases"></i></a></span> <small id="case_ind_name_text">Cases 1 </small>
                      <a href=""><img src="../assets/images/pen-edit.jpg"></a>
-                    <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> <span><a href="#">Breadcumbs1</a> <a href="#">Breadcumbs2</a></span> </h2>
+                    <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> 
+                    <!-- in this page we don't need breadcumbs, So Commented it-->
+                    <!--<span><a href="#">Breadcumbs1</a> <a href="#">Breadcumbs2</a></span> -->
+                    <span id="case_ind_desc_text"></span>
+                </h2>
+
                 </div> 
                 <div class="col-md-4 p-0 side-btn">
                     <ul>
@@ -185,7 +190,7 @@
                     <!-----inner-level li List end------>
                     <div class="knowledge">                    
                         <span class="para">
-                            <p><a href=""><img src="../assets/images/pad.jpg">Knowledge Check</a></p>
+                            <p data-flinkto="knowledgecheck"><a href="" data-flinkto="knowledgecheck"><img src="../assets/images/pad.jpg" data-flinkto="knowledgecheck">Knowledge Check</a></p>
                         </span>                   
                     </div>
                 </li>                
@@ -205,20 +210,25 @@
                 $("#case_ind_name_text").text(case_name);
             }
             if(case_id){
-                /*$.ajax({
-                    url: API_BASE_URL + '/case_module/'+case_id,
+                $.ajax({
+                    url: API_CONTENT_URL + '/cases/'+case_id+'/modules',
                     type: 'get',
                     dataType: 'json',
                     headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
                     success: function (response) {
                         console.log("response:", response);
-                        
+
+                        var dots = "";
+                        if(response.description.length > 75){
+                            dots = "...";
+                        }
+                        $("#case_ind_desc_text").text(response.description.substring(0, 75)+dots);
                     },
                     error: function(error) {
                         toastr.error("Response Error: " + error.message);
                         console.log(error);
                     }
-                });*/
+                });
             }
         }, 0);
     });
