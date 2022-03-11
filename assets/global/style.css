@@ -3705,13 +3705,13 @@ option:not(:first-of-type) {
 	margin: 0 0 10px;
 	list-style: none;
 }
-.caselist li {
+/*.caselist li {
 	width: 100%;
 	border: 0px solid #161515;
 	border-radius: 5px;
 	padding: 5px;
 	margin-bottom: 15px;
-}
+}*/
 .para {
 	width: 75%;
 	display: flex;
@@ -3913,4 +3913,43 @@ li.dashed {
 }
 .ques-box li .form-check {
 	width: 95%;
+}
+#caselists .main_module, #caselists .sub_module{
+	border-style: none !important;
+}
+#caselists .module{
+	padding: 5px 5px 10px 10px;
+	border-radius: 5px;
+	float: left !important;
+    background: white;
+}
+#caselists .no_child{
+	border: 1px solid #D3D2DC;
+}
+#caselists .has_child{
+	border: 1px dashed #D3D2DC;
+}
+#caselists .case_list_module_box{
+	background: #f9f9fb !important;
+	padding: 0px !important;
+}
+#caselists .main_mod_title{	
+    font-weight: 600;
+    font-size: 18px;
+}
+#caselists .main_mod_sub_title{
+	font-size: 14px;
+    font-weight: 700;
+}
+#case_box .icon_counts {
+    position: absolute;
+    background-color: black;
+    color: white;
+    font-size: 11px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    margin-left: -15px;
+    margin-top: 17px;
 }

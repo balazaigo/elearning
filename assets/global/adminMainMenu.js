@@ -647,7 +647,7 @@ async function getCoursesListNewPage() {
   );
 }
 
-async function getKnowledgeCheckPage() {
+async function getKnowledgeCheckPage(e) {
   /*if(processRights("case") === false) {
     toastr.error(window.language.error_no_access);
     return false;
@@ -656,6 +656,13 @@ async function getKnowledgeCheckPage() {
     `${SITE_URL_PROTOCOL}/assets/pages/cases/knowledgecheck.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
+        var case_flinkto_elem = document.querySelectorAll("[data-flinkto='caseslist']");
+        case_flinkto_elem.forEach(el=>{
+          el.setAttribute("data-case_id", e.target.dataset.case_id);
+          el.setAttribute("data-case_name", e.target.dataset.case_name);
+          el.setAttribute("data-case_module_id", e.target.dataset.case_module_id);
+          el.setAttribute("data-case_module_name", e.target.dataset.case_module_name);
+        });
       } else {
         console.log("Something error happend");
       }
