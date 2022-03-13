@@ -1,11 +1,13 @@
-<div class="container-fluid" style="display: none;">
+<div class="container-fluid" style="display:none;">
     <div class="row">
       <div class="col-12">
         <div class="c-align d-flex align-center justify-cotent-center">
           <div>
-            <div class="round"><img src="../assets/images/course-1.svg" /></div>
+            <div class="round"><img src="../assets/images/course-1.svg" alt="Modules" /></div>
             <h4>Create your first Chapter</h4>
-            <p class="role-btn"><a href="#createchapter">Create Chapter</a></p>
+            <span class="orange-btn nbtn">
+              <button class="add-case"><i class="fas fa-plus"></i> Create Chapter</button>
+            </span>
           </div>
         </div>
       </div>
@@ -13,40 +15,51 @@
   </div>
 
   <!--popup start-->
-  <div id="createchapter" class="overlay" style="display: block;">
+  <div id="createchapter" class="overlay" style="display:none;">
     <div class="popup pt-3">
-      <h4 class="mb-3">Add a new chapter</h4>
-      <a class="close" href="#">×</a>
-      <form method="get" class="pop-form">
+      <h4 class="mb-3" id="create_chapter_text">Add a new chapter</h4>
+      <span class="close">×</span>
+      <form method="post" id="frmNewCase" name="frmNewCase" enctype="multipart/form-data">
+        <input type="hidden" name="case_id" id="case_id" value="">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Name of the Chapter">
-          </div>
-          <div class="col-md-12 mb-3">
-            <div class="dropdown-select">
-                <select class="sort-select form-control">
-                  <option value="case1">Enter Chapter Id</option>
-                  <option value="case2">Chapter1</option>
-                  <option value="case3">Chapter2</option>
-                  <option value="case4">Chapter3</option>
-                </select>
+              <div class="form-floating">
+                <input type="text" id="case_name" name="case_name" class="form-control cm-capitalize" placeholder=" ">
+                <label for="case_name">Name of the Chapter</label>
               </div>
           </div>
+
           <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Add a tag">
+            <div class="form-floating">
+              <select class="sort-select form-control" id="chapter_id" name="chapter_id">
+                <option value="">Select Chapter</option>
+              </select>
+              <label for="chapter_id" data-title="Select Chapter" data-caption="Select">Select</label>
+            </div>
           </div>
           <div class="col-md-12 mb-3">
-            <input type="text" id="rolename" class="form-control" placeholder="Oneline Description">
+            <div class="form-floating">
+              <input type="text" id="case_description" name="description" class="form-control counter"
+                placeholder=" " maxlength="1024" minlength="4"/>
+              <span class="charcounter">0 Char</span>
+              <label for="description">One line description</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12 pt-3 pb-3 wauto">  <span class="orange-btn nbtn"><a href="#">
-            <button id="add-role">Create</button>
-            </a></span> </div>
+          <div class="col-md-12 mb-3">
+            <label for="tags2" class="tags2-label d-none">Add a tag</label>
+            <select class="form-control tags2" id="tags2" name="tags[]" multiple="multiple" style="width:100%"></select>
+          </div>
         </div>
       </form>
+
+        <div class="row">
+          <div class="col-12 pt-3 pb-3 wauto">  <span class="orange-btn nbtn">
+            <button class="add-case_save" id="create_chapter_save_text">Create</button>
+            </span> </div>
+        </div>
     </div>
   </div>
+
   <!--popup end-->
 
   <!--Chapter list start-->
@@ -55,7 +68,9 @@
       <div class="col-12 title-head mb-3">
         <h2>Chapters 
         <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
-        <span class="orange-btn nbtn"><a href="#createchapter"><button id="createchapter_btn"><i class="fas fa-plus"></i> Create Module</button></a></span>
+        <span class="orange-btn nbtn">
+          <button class="add-case"><i class="fas fa-plus"></i> Create Chapter</button>
+        </span>
       </div>
     </div>
     <div class="row">
@@ -80,7 +95,7 @@
                         </div>
                         <div class="col-lg-3 col-md-3">
                         <div class="dropdown-select">
-                          <select class="sort-select" id="chapter_id" name="chapter_id">
+                          <select class="sort-select" id="chapter_list" name="chapter_list">
                             <option value="">Select Chapters</option>
                           </select>
                       </div>                        
@@ -260,9 +275,9 @@
     if($("#searchText").val()) {
       queryPara += "&search=" + $("#searchText").val();
     }
-    //chapter_id
-    if($("#chapter_id").val()) {
-      queryPara += "&chapter_id=" + $("#chapter_id").val();
+    //chapter_list
+    if($("#chapter_list").val()) {
+      queryPara += "&chapter_id=" + $("#chapter_list").val();
     }
     //status
     if($("#status").val()) {
@@ -393,8 +408,74 @@
   }
   
   $( document ).ready(function() {
+
+      $.validator.addMethod("pattern", function (value, element, param) {
+        if (this.optional(element)) { return true; }
+        if (typeof param === "string") {
+          param = new RegExp("^(?:" + param + ")$");
+        }
+        return param.test(value);
+      }, "Check your inputs");
+      var frmvalidatorfrm = $("#frmNewCase").validate({
+        rules: {
+          case_name: { required: true, minlength: 1, maxlength: 256 },
+          description: { required: true, minlength: 1, maxlength: 256 },
+          case_type: { required: true },
+          assign_to: { required: true },
+        },
+        messages: {
+          case_name: {
+            required: "Please enter a Case Name",
+            minlength: "Your case name must consist of at least 1 characters",
+            maxlength: "Your case name must consist of max of 256 characters",
+          },
+          description: {
+            required: "Please enter a description",
+            minlength: "Description must consist of at least 1 characters",
+            maxlength: "Description must consist of max of 20 characters",
+          },
+          case_type: { required: "Please select the Case type" },
+          assign_to: { required: "Please select Assign To" },
+        },
+        errorElement: "em",
+        errorPlacement: function (error, element) {
+          error.addClass("help-block");
+          if (element.prop("type") === "checkbox") {
+            error.insertAfter(element.parent("label"));
+          } else {
+            error.insertAfter(element);
+          }
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass("is-invalid");
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass("is-invalid");
+        }
+      });
+  
+    $(".add-case").click(function(){
+      $( '#frmNewCase' ).each(function(){
+          this.reset();
+          frmvalidatorfrm.resetForm();
+          $('#frmNewCase .form-control').removeClass('is-invalid');
+      });
+      var tags_empty = [];
+      $("#tags2").html("");
+      $("#tags2").val(tags_empty).change();
+      $("#createchapter").addClass("overlay_target");
+      $("#createchapter").attr("style","display:block");
+      $("#create_chapter_text").text("Create Chapter");
+      $("#create_chapter_save_text").text("Create");
+    });
+    $(".close").click(function(){
+      $("#createchapter").removeClass("overlay_target");
+      $("#createchapter").attr("style","display:none");
+    })
+    
+    
     $(".btnReset").on("click", function(){
-      $("#status, #chapter_id, #searchText").val(null);
+      $("#status, #chapter_list, #searchText").val(null);
       doSearch();
       setTimeout(function() {
         $(".btnReset").addClass("d-none");
@@ -404,7 +485,7 @@
       $(".btnReset").removeClass("d-none");
       doSearch(); 
     });
-    $("#status, #chapter_id").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
+    $("#status, #chapter_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
     
 
     //load the courses list
@@ -417,10 +498,10 @@
         "Content-Type": "application/json"
       },
       success:function(response){
-        $("#chapter_id").empty();
-        $("#chapter_id").append("<option value=''>Select Chapter</option>");
+        $("#chapter_list, #chapter_id").empty();
+        $("#chapter_list, #chapter_id").append("<option value=''>Select Chapter</option>");
         $.each( response, function( i, val ) {
-          $("#chapter_id").append("<option value='"+val.id+"'>"+val.name+"</option>");
+          $("#chapter_list, #chapter_id").append("<option value='"+val.id+"'>"+val.name+"</option>");
         });
       },
       error: function(error){
