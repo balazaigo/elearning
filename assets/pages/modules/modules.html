@@ -121,12 +121,13 @@
                     <th>CHAPTER ID</th>                
                     <th>NAME OF THE CHAPTER</th>
                     <th>CASE TITLE</th>
+                    <th>COURSE NAME</th>
                     <th>ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody id="listData">
                   <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                       <div class="alert text-center">Loading...</div>
                     </td>
                   </tr>
@@ -326,6 +327,8 @@
         html += '<td><span class="badge bg-success gridTaskID">#'+ item.chapter_id +'</span></td>';
         html += '<td>'+ item.chapter_name +'</td>';
         html += '<td>'+ item.case_name +'</td>';
+        html += '<td>'+ item.course_name +'</td>';
+        
         //html += '<td>'+ getStatus(item.status) +'</td>';
         html += `
           <td class="text-center">
@@ -334,12 +337,10 @@
               <i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
             
-        html += `<li><a class="dropdown-item green" onClick="getModuleDetails('${item.id}')">&nbsp;Edit</a></li>`;
-    
         if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
-          //html += `<li><a class="dropdown-item green" onClick="getTaskDetails(${item.id})">&nbsp;Edit</a></li>`;
+          html += `<li><a class="dropdown-item green" onClick="getModuleDetails('${item.id}')">&nbsp;Edit</a></li>`;
         } else {
-          //html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
+          html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
         }
     
         html += `<li>`;
