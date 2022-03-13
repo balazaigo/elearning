@@ -76,35 +76,35 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	setTimeout(function(){
-		var cid = document.getElementById("case_param").getAttribute("data-cid");
-		var module_id = document.getElementById("case_param").getAttribute("data-module_id");
+		var case_id = document.getElementById("case_param").getAttribute("data-case_id");
+		var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
   		var AssignCourseId = window.sharedAssignCourseId;
-  		if(cid === null){
-  			cid = AssignCourseId;
+  		if(case_id === null){
+  			case_id = AssignCourseId;
   		}
-		get_assignee_details(cid, module_id);
+		get_assignee_details(case_id, case_module_id);
 
 	}, 0);
 
   $("#saveAssignee").on("click", function() {
-	var cid = document.getElementById("case_param").getAttribute("data-cid");
-	var module_id = document.getElementById("case_param").getAttribute("data-module_id");
+	var case_id = document.getElementById("case_param").getAttribute("data-case_id");
+	var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
 	var AssignCourseId = window.sharedAssignCourseId;
-	if(cid === null){
-		cid = AssignCourseId;
+	if(case_id === null){
+		case_id = AssignCourseId;
 	}
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
 		var formData = new FormData();
-		formData.append("case_id",  cid);
-		if(module_id !== null){
-			formData.append("case_module_id", module_id);
+		formData.append("case_id",  case_id);
+		if(case_module_id !== null){
+			formData.append("case_module_id", case_module_id);
 		}
 		formData.append("member_id", $("#member").val());
 		formData.append("start_date",  $("#start_date").val());
 		formData.append("end_date",  $("#end_date").val());
 		formData.append("status", 1);
-		if(module_id === null || $('input[name="assignto_all_sub"]').is(':checked')){
+		if(case_module_id === null || $('input[name="assignto_all_sub"]').is(':checked')){
 			formData.append("is_recursive", true);
 		var url  = API_CONTENT_URL + "/bulk/assign/";
 		}else{
@@ -123,10 +123,10 @@ $(document).ready(function(){
 		    },
 		    success: function(response){
 	     		toastr.success("Member Assigned Successfully");
-     			if(module_id === null){
+     			if(case_module_id === null){
     				$('#addCourses').modal('hide');
 	     		}else{
-					get_assignee_details(cid, module_id);
+					get_assignee_details(case_id, case_module_id);
 				}
 		    },
 		    error: function(error) {
@@ -174,8 +174,8 @@ $(document).ready(function(){
      $(element).removeClass("is-invalid");
     }
   });
-function get_assignee_details(cid, module_id){
-	url = API_CONTENT_URL + '/available/case_module_assignees/'+module_id;
+function get_assignee_details(case_id, case_module_id){
+	url = API_CONTENT_URL + '/available/case_module_assignees/'+case_module_id;
 	$("#assigned_table").show();
 	$("#assignto_all_sub_row").show();
 	$.ajax({
@@ -194,7 +194,7 @@ function get_assignee_details(cid, module_id){
 		      });
 			}
 
-			if(module_id !== null){
+			if(case_module_id !== null){
 				if(response.module_assignees.length > 0){
 			      $("#assignedMember").empty();
 			      var assignee_html = '';
@@ -222,8 +222,8 @@ function get_assignee_details(cid, module_id){
 	});
 }
 function deleteAssigneeMember(e){
-	var cid = document.getElementById("case_param").getAttribute("data-cid");
-	var module_id = document.getElementById("case_param").getAttribute("data-module_id");
+	var case_id = document.getElementById("case_param").getAttribute("data-case_id");
+	var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
 	if(e.id !== null){
 		$.ajax({
 		    url: API_CONTENT_URL + "/case_module_assignees/"+e.id+"/",
@@ -234,7 +234,7 @@ function deleteAssigneeMember(e){
 		    success: function(response){
 		 		toastr.success("Member UnAsssigned.");
 	            e.parentElement.parentElement.parentElement.remove();
-	            get_assignee_details(cid, module_id);
+	            get_assignee_details(case_id, case_module_id);
 		    },
 		    error: function(error) {
 		      	toastr.error("Response Error: " + error.message);

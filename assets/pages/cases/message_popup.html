@@ -39,20 +39,20 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	setTimeout(function(){
-		var cid = document.getElementById("case_param").getAttribute("data-cid");
-		var module_id = document.getElementById("case_param").getAttribute("data-module_id");
-		get_message_details(cid, module_id);
+		var case_id = document.getElementById("case_param").getAttribute("data-case_id");
+		var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
+		get_message_details(case_id, case_module_id);
 	}, 0);
 
   $("#saveMessage").on("click", function() {
-	var cid = document.getElementById("case_param").getAttribute("data-cid");
-	var module_id = document.getElementById("case_param").getAttribute("data-module_id");
+	var case_id = document.getElementById("case_param").getAttribute("data-case_id");
+	var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
       var user_details = getUserInfo();
       var formData = new FormData();
-      formData.append("case_id",  cid);
-      formData.append("case_module_id", module_id);
+      formData.append("case_id",  case_id);
+      formData.append("case_module_id", case_module_id);
       formData.append("comments", $("#message").val());
 	  //formData.append("commented_member_id", user_details.id);
 	  //formData.append("commented_member_name", user_details.name);
@@ -70,7 +70,7 @@ $(document).ready(function(){
 		    },
 		    success: function(response){
 	     		toastr.success("Comment saved Successfully.");
-				get_message_details(cid, module_id);
+				get_message_details(case_id, case_module_id);
 		    },
 		    error: function(error) {
 		      	toastr.error("Response Error: " + error.message);
@@ -116,9 +116,9 @@ $.validator.addMethod("pattern", function( value, element, param ) {
      $(element).removeClass("is-invalid");
     }
   });
-function get_message_details(cid, module_id){
+function get_message_details(case_id, case_module_id){
 	$.ajax({
-		url: API_CONTENT_URL + '/case_module_comments/?case_module_id='+module_id,
+		url: API_CONTENT_URL + '/case_module_comments/?case_module_id='+case_module_id,
 		type: 'get',
 		dataType: 'json',
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},

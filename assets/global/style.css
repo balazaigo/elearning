@@ -3808,7 +3808,7 @@ li.dashed {
 	border-radius: 50%;
 	width: auto;
 	height: auto;
-	padding: 0 10px;
+	padding: 3px 10px;
 }
 .medium-popup {
 	width: 768px !important;

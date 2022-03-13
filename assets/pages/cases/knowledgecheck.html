@@ -336,7 +336,8 @@ $(".module_ques_select").click(function(){
 //To Get Template For Question and Answer from Json data
 function get_json_quest_and_answer(case_id, case_module_id){
 
-      var url = API_CONTENT_URL + `/questions/?case_id=`+case_id+`&case_module_id=`+case_module_id+`/`;
+      //var url = API_CONTENT_URL + `/questions/?case_id=`+case_id+`&case_module_id=`+case_module_id+`/`;
+      var url = API_CONTENT_URL + `/module/`+case_module_id;
       fetch(url, {
         method: "GET",
         headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
@@ -344,8 +345,8 @@ function get_json_quest_and_answer(case_id, case_module_id){
       .then((response) => response.json())
       .then((data) => {
           var template_question = "";
-          if(data.length > 0){
-            $.each(data, function (ques_i, ques_val) {
+          if(data.module_questions.length > 0){
+            $.each(data.module_questions, function (ques_i, ques_val) {
               var numItems = ques_i;
               var typeClass = "";
               if(ques_val.type == 1){
@@ -382,7 +383,12 @@ function get_json_quest_and_answer(case_id, case_module_id){
                           <ul>`;
                 if(ques_val.answers.length > 0){
                   $.each(ques_val.answers, function (ans_i, ans_val) {
-                    
+                      var checked = "";
+                      if(ques_val.valid_answers.length > 0){
+                        if (Object.values(ques_val.valid_answers).indexOf(ans_val.id) > -1) {
+                          checked = "checked";
+                        }
+                      }
                       if(ques_val.type == 1){
                         //To Append True or false answers
                         template_question += `<li class="mt-2">`;
@@ -393,7 +399,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         template_question += `</div>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
-                        template_question += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_${ans_i}_ckb_${numItems}" onclick="delete_answer(this)" checked>`;
+                        template_question += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_${ans_i}_ckb_${numItems}" onclick="insert_answer(this)" ${checked}>`;
                         template_question += `<div class="switch--toggle"></div>`;
                         template_question += `</label>`;
                         template_question += `</span>`;
@@ -408,7 +414,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         template_question += `</div>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
-                        template_question += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_${ans_i}_multiple_${numItems}" onclick="delete_answer(this)" checked><div class="switch--toggle"></div>`;
+                        template_question += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_${ans_i}_multiple_${numItems}" onclick="insert_answer(this)"  ${checked}><div class="switch--toggle"></div>`;
                         template_question += `</label>`;
                         template_question += `</span>`;
                         template_question += `</li>`;
@@ -422,7 +428,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         template_question += `</div>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
-                        template_question += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_${ans_i}_ckb_${numItems}" onclick="delete_answer(this)" checked>`;
+                        template_question += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_${ans_i}_ckb_${numItems}" onclick="insert_answer(this)" ${checked}>`;
                         template_question += `<div class="switch--toggle"></div>`;
                         template_question += `</label>`;
                         template_question += `</span>`;
@@ -481,7 +487,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_1_ckb_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_1_ckb_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -494,7 +500,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_2_ckb_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_2_ckb_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -507,7 +513,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_3_ckb_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_3_ckb_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -520,7 +526,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_4_ckb_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_4_ckb_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -565,7 +571,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_1_multiple_${numItems}" onclick="delete_answer(this)"><div class="switch--toggle"></div>`;
+            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_1_multiple_${numItems}" onclick="insert_answer(this)"><div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
             droppable_template += `</li>`;
@@ -577,7 +583,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_2_multiple_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_2_multiple_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -590,7 +596,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_3_multiple_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_3_multiple_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -603,7 +609,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_4_multiple_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_4_multiple_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -648,7 +654,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_1_ckb_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_1_ckb_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -662,7 +668,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</div>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
-            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_2_ckb_${numItems}" onclick="delete_answer(this)">`;
+            droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_2_ckb_${numItems}" onclick="insert_answer(this)">`;
             droppable_template += `<div class="switch--toggle"></div>`;
             droppable_template += `</label>`;
             droppable_template += `</span>`;
@@ -677,7 +683,46 @@ function get_ques_ans_template(draggable_id, numItems){
    $(".caselist").append(droppable_template);
 }
 //To remove Answer when Uncheck Option
-function delete_answer(e){
+function insert_answer(e){
+  if(e.checked === true){
+
+    var quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
+    var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
+    if(quest_id && answer_id){
+    var quest_type = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-ques_type");
+    var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+    var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+    var question = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].value;
+        var formData = new FormData();
+        formData.append("valid_answers", answer_id);
+        formData.append("type", quest_type);
+        formData.append("case_id", case_id);
+        formData.append("case_module_id", case_module_id);
+        formData.append("question", question);
+      $.ajax({
+        url: API_CONTENT_URL + '/questions/' + quest_id+'/',
+        method: 'PUT',
+        type: 'PUT', // For jQuery < 1.9
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        headers: {
+          "Authorization": "Bearer " + getUserInfo().access_token
+        },
+        success:function(response){
+          toastr.success("Valid Answer Saved successfully.");
+          var search_param = "";
+        },
+        error: function(error) {
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
+    }else{
+      toastr.error("Please Edit Answer");
+    }
+  }
   /*if(e.checked === false){
       e.closest('.mt-2').childNodes[0].childNodes[1].setAttribute("data-answer_id", "");
       e.closest('.mt-2').childNodes[0].childNodes[2].setAttribute("data-answer_id", "");
@@ -721,11 +766,11 @@ function toInput(e){
 }
 //When edit Answer Option
 function toText(e){
-  if(e.value){
+  /*if(e.value){
     e.parentElement.nextElementSibling.childNodes[0].childNodes[0].checked = true;
   }else{
     e.parentElement.nextElementSibling.childNodes[0].childNodes[0].checked = false;
-  }
+  }*/
   e.previousElementSibling.textContent = e.value;
   e.setAttribute("style","display:none");
 
@@ -761,9 +806,7 @@ function toText(e){
         console.log(response)
         toastr.success("Answer option was successfully saved.");
         if(response.id){
-          console.log(response.id);
           $(e).attr("data-answer_id", response.id);
-          console.log(e.previousElementSibling);
           e.previousElementSibling.setAttribute("data-answer_id", response.id);
         }
       },
@@ -811,7 +854,6 @@ function saveQuestion(el){
         console.log(response)
         toastr.success("Question was successfully saved.");
         if(response.id){
-          console.log(response.id);
           $(el).attr("data-quest_id", response.id);
         }
       },

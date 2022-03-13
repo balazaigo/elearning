@@ -17,7 +17,7 @@
                 <div class="col-md-4 p-0 side-btn">
                     <ul>
                       <li> <span class="orange-btn"><a href="#">
-                        <button>Save</button>
+                        <!--<button>Save</button>-->
                         </a></span> </li>                
                     </ul>
                   </div>               
@@ -103,27 +103,27 @@ function get_list_mod( a, $parent , level_count_inc) {
             if(a[i].is_qa == true){
               newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></li>");
             }
-              newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title'>"+input_value+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
+              newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title'>"+input_value+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
             newUl.append("<li class='expand_img_icon  disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
-             // newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>");
+              newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
               //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
               if(a[i].attachment_count > 0){
-                newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
               }else{
-                newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li>");
+                newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
               }
               if(a[i].comment_count > 0){
-                newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+                newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
               }else{
-                newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li>");
+                newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
               }
               if(a[i].assign_count > 0){
-                newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+                newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
               }else{
-                newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li></li>");
+                newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li></li>");
               }
               newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);'></li>");
-              newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li>");
+              newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
           }else{
                 var class_name = $parent.parent().prop('className').split(" ");
                 var first_five_char_class = class_name[1].substring(0,5);
@@ -165,29 +165,29 @@ function get_list_mod( a, $parent , level_count_inc) {
                 if(a[i].is_qa == true){
                   newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></li>");
                 }
-              newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><p onclick='toinput_case_mod(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"'>"+input_value+"</p></li>");
+              newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p onclick='toinput_case_mod(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"'>"+input_value+"</p></li>");
               if(no_icon === ""){
                   newUl.append("<li class='expand_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
 
-                //  newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>");
+                  newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
                   //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                   if(a[i].attachment_count > 0){
-                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
                   }else{
-                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li>");
+                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
                   }
                   if(a[i].comment_count > 0){
-                    newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+                    newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
                   }else{
-                    newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li>");
+                    newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
                   }
                   if(a[i].assign_count > 0){
-                    newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+                    newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
                   }else{
-                    newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li></li>");
+                    newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li></li>");
                   }
                   newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>");
-                  newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].case_id+"'></li>");
+                  newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
             }
 
           }
@@ -235,49 +235,57 @@ function show_tag_popup_case_mod(e){
   //var offset_box = document.getElementById("course_box").getBoundingClientRect();
   //var top = offsets.top + Math.max( $("html").scrollTop(), $("body").scrollTop() ) - 70;
   //var right = offset_box.left;
-  const container = document.getElementById("popup_course_icon");
-  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
-  //document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
-  var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/case_tag.html?t=` + Math.floor(Date.now() / 1000);
-  $('.modal-content').load(url,function(result){
-    document.getElementById("case_param").setAttribute("data-module_id", e.dataset.module_id);
-    document.getElementById("case_param").setAttribute("data-cid", e.dataset.cid);
-    modal.toggle();
-  });
+  if(e.dataset.case_id && e.dataset.case_module_id){
+      const container = document.getElementById("popup_course_icon");
+      const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+      //document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
+      var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/case_tag.html?t=` + Math.floor(Date.now() / 1000);
+      $('.modal-content').load(url,function(result){
+        document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+        document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
+        modal.toggle();
+      });
+  }
 }
 
 function show_attachment_popup_case_mod(e){
   //var right = offset_box.left;
-  const container = document.getElementById("popup_course_icon");
-  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
-  var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
-  $('.modal-content').load(url,function(result){
-    document.getElementById("case_param").setAttribute("data-module_id", e.dataset.module_id);
-    document.getElementById("case_param").setAttribute("data-cid", e.dataset.cid);
-    modal.toggle();
-  });
+  if(e.dataset.case_id && e.dataset.case_module_id){
+      const container = document.getElementById("popup_course_icon");
+      const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+      var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
+      $('.modal-content').load(url,function(result){
+        document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+        document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
+        modal.toggle();
+      });
+  }
 }
 function show_message_popup_case_mod(e){
   //var right = offset_box.left;
-  const container = document.getElementById("popup_course_icon");
-  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
-  var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/message_popup.html?t=` + Math.floor(Date.now() / 1000);
-  $('.modal-content').load(url,function(result){
-    document.getElementById("case_param").setAttribute("data-module_id", e.dataset.module_id);
-    document.getElementById("case_param").setAttribute("data-cid", e.dataset.cid);
-    modal.toggle();
-  });
+  if(e.dataset.case_id && e.dataset.case_module_id){
+      const container = document.getElementById("popup_course_icon");
+      const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+      var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/message_popup.html?t=` + Math.floor(Date.now() / 1000);
+      $('.modal-content').load(url,function(result){
+        document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+        document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
+        modal.toggle();
+      });
+  }
 }
 function show_assignee_popup_case_mod(e){
   //var right = offset_box.left;
-  const container = document.getElementById("popup_course_icon");
-  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
-  var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
-  $('.modal-content').load(url,function(result){
-    document.getElementById("case_param").setAttribute("data-module_id", e.dataset.module_id);
-    document.getElementById("case_param").setAttribute("data-cid", e.dataset.cid);
-    modal.toggle();
-  });
+  if(e.dataset.case_id && e.dataset.case_module_id){
+      const container = document.getElementById("popup_course_icon");
+      const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+      var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
+      $('.modal-content').load(url,function(result){
+        document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+        document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
+        modal.toggle();
+      });
+  }
 }
 
 $(document).ready(function(){
@@ -286,15 +294,16 @@ $(document).ready(function(){
   });
 });
 function toinput_case_mod(e){
-    if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
-      e.previousSibling.value = ''; 
+    console.log(e.tagName);
+    if(e.tagName == "P"){
+        e.setAttribute("style","display:none");
+        e.previousSibling.setAttribute("style","display:block");
+        e.previousSibling.focus();
+    }else{
+        e.parentElement.setAttribute("style", "display:none");
+        e.parentElement.previousSibling.setAttribute("style","display:block");
+        e.parentElement.previousSibling.focus();
     }
-    if(e.innerHTML == "Add Module Name"){
-      e.previousSibling.value = ''; 
-    }
-    e.setAttribute("style","display:none");
-    e.previousSibling.setAttribute("style","display:block");
-    e.previousSibling.focus();
 }
 function totext_case_mod(e){
     if(e.value == ''){
@@ -304,11 +313,11 @@ function totext_case_mod(e){
       var class_module_level = e.parentElement.parentElement.parentElement.classList[1];
       var first_five_char_class = class_module_level.substring(0,5);
       var get_submodule_level_values = '';
-      if(e.dataset.module_id !== undefined){
-        var url = API_CONTENT_URL + '/course_module/'+e.dataset.module_id+'/';
+      if(e.dataset.case_module_id){
+        var url = API_CONTENT_URL + '/case_modules/'+e.dataset.case_module_id+'/';
         var method = "PUT";
       }else{
-        var url = API_CONTENT_URL + '/course_module/';
+        var url = API_CONTENT_URL + '/case_modules/';
         var method = "POST";
       }
       if(first_five_char_class === "modul"){
@@ -316,36 +325,47 @@ function totext_case_mod(e){
         var get_submodule_level_values = {
           module_name: String(e.value),
           level: parseInt(level_number), 
-          course_id:String(document.getElementById("course_id").value),
+          case_id:String(document.getElementById("case_id_name").getAttribute("data-case_id")),
           parent_id:null
         }
       }else if(first_five_char_class === "sub_m"){
         var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
         var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
-        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[2].firstChild.getAttribute("data-module_id");
+        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-case_module_id");
         get_submodule_level_values = get_submodule_level_val_case_mod(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
 
-      let cid = e.dataset.cid;
-      let module_id_val = e.dataset.module_id;
-      const mytagArray = e.value.split(" ");
-      var prev_tags = get_module_details_case_mod(cid, module_id_val, mytagArray);
-      
       e.nextSibling.dataset.prev_val = e.value;
       if(get_submodule_level_values != ''){
         var message = "";
         post_json_dat_case_mod(url, get_submodule_level_values, method, e, message);
       }
+      let case_id = e.dataset.case_id;
+      let module_id_val = e.dataset.case_module_id;
+      const mytagArray = e.value.split(" ");
+      if(case_id && module_id_val){
+        var prev_tags = get_module_details_case_mod(case_id, module_id_val, mytagArray);
+      }
+      
     }
-    e.nextSibling.innerHTML = e.value; 
-    e.setAttribute("style","display:none");
-    e.nextSibling.setAttribute("style","display:block");
-    e.nextSibling.focus();
+
+    if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
+        e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
+        e.setAttribute("style","display:none");
+        e.nextSibling.setAttribute("style","display:block");
+        e.nextSibling.focus();
+    }else{
+        e.nextSibling.innerHTML = e.value;
+        e.setAttribute("style","display:none");
+        e.nextSibling.setAttribute("style","display:block");
+        e.nextSibling.focus();
+    }
+
 }
 
-function get_module_details_case_mod(cid, module_id, mytagArray){
+function get_module_details_case_mod(case_id, module_id, mytagArray){
   $.ajax({
-    url: API_CONTENT_URL + '/case_tags/?case_id='+cid+'&case_module_id='+module_id,
+    url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+module_id,
     type: 'get',
     dataType: 'json',
     success:function(response){
@@ -356,10 +376,10 @@ function get_module_details_case_mod(cid, module_id, mytagArray){
           var tag_data = {
               "name": element,
               "case_module_id": module_id,
-              "case_id": cid
+              "case_id": case_id
           }
           $.ajax({
-            url: API_CONTENT_URL + '/case_tags/?case_id='+cid+'&case_module_id='+module_id,
+            url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+module_id,
             type: 'POST',
             data: JSON.stringify(tag_data),
             contentType: "application/json; charset=utf-8",
@@ -383,7 +403,7 @@ function get_submodule_level_val_case_mod(class_module_main_level, class_module_
       data_course_module = {
         module_name: String(ele_val),
         level: parseInt(level_number), 
-        course_id:String(document.getElementById("course_id").value),
+        case_id:String(document.getElementById("case_id_name").getAttribute("data-case_id")),
         parent_id: parent_id_val
       }
 
@@ -392,7 +412,7 @@ function get_submodule_level_val_case_mod(class_module_main_level, class_module_
       data_course_module = {
         module_name: String(ele_val),
         level: parseInt(level_number), 
-        course_id:String(document.getElementById("course_id").value),
+        case_id:String(document.getElementById("case_id_name").getAttribute("data-case_id")),
         parent_id: parent_id_val
       }
   }
@@ -408,44 +428,44 @@ function post_json_dat_case_mod(url, data, call_method, e, message){
   .then((response) => response.json())
   .then((json) => {
     var module_name = "";
-    el_1 = e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild;//edit
-    el_2 = e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild;//delete
-    el_3 = e.parentElement.parentElement.childNodes[9].firstChild;//tags
-    el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
-    el_5 = e.parentElement.parentElement.childNodes[5].firstChild;//attachment
-    el_6 = e.parentElement.parentElement.childNodes[6].firstChild;//comment
-    el_7 = e.parentElement.parentElement.childNodes[7].firstChild;//assign
+    el_1 = e.parentElement.parentElement.childNodes[3].childNodes[1].firstChild.firstChild;//edit
+    el_2 = e.parentElement.parentElement.childNodes[3].childNodes[1].childNodes[1].firstChild;//delete
+    el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
+    //el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
+    el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
+    el_6 = e.parentElement.parentElement.childNodes[4].firstChild;//comment
+    el_7 = e.parentElement.parentElement.childNodes[6].firstChild;//assign
 
-    el_li_0 = e.parentElement.parentElement.childNodes[0];
-    el_li_1 = e.parentElement.parentElement.childNodes[1];
-    el_li_2 = e.parentElement.parentElement.childNodes[2];
-    el_li_3 = e.parentElement.parentElement.childNodes[3];
-    el_li_4 = e.parentElement.parentElement.childNodes[4];
-    el_li_5 = e.parentElement.parentElement.childNodes[5];
-    el_li_6 = e.parentElement.parentElement.childNodes[6];
-    el_li_7 = e.parentElement.parentElement.childNodes[7];
-    el_li_8 = e.parentElement.parentElement.childNodes[8];
-    el_li_8 = e.parentElement.parentElement.childNodes[9];
-    el_1.setAttribute("data-flinkto", "courseslistlevel");
+    el_li_0 = e.parentElement.parentElement.childNodes[0];//Drag & Drop
+    el_li_1 = e.parentElement.parentElement.childNodes[1];//Input
+    el_li_2 = e.parentElement.parentElement.childNodes[2];//Expand Or Collapse
+    el_li_3 = e.parentElement.parentElement.childNodes[3];//Three Dots
+    el_li_4 = e.parentElement.parentElement.childNodes[4];//Attachment
+    el_li_5 = e.parentElement.parentElement.childNodes[5];//Message
+    el_li_6 = e.parentElement.parentElement.childNodes[6];//Assignee
+    el_li_7 = e.parentElement.parentElement.childNodes[7];//Add module
+    el_li_8 = e.parentElement.parentElement.childNodes[8];//Tag
+    //el_li_9 = e.parentElement.parentElement.childNodes[9];
+    el_1.setAttribute("data-flinkto", "caselistlevel");
     if(json.module_id != undefined || json.module_id != null){
-      e.setAttribute("data-module_id", json.module_id);
-      el_1.setAttribute("data-module_id", json.module_id);
-      el_2.setAttribute("data-module_id", json.module_id);
-      el_3.setAttribute("data-module_id", json.module_id);
-      el_4.setAttribute("data-module_id", json.module_id);
-      el_5.setAttribute("data-module_id", json.module_id);
-      el_6.setAttribute("data-module_id", json.module_id);
-      el_7.setAttribute("data-module_id", json.module_id);
+      e.setAttribute("data-case_module_id", json.module_id);
+      el_1.setAttribute("data-case_module_id", json.module_id);
+      el_2.setAttribute("data-case_module_id", json.module_id);
+      el_3.setAttribute("data-case_module_id", json.module_id);
+      //el_4.setAttribute("data-case_module_id", json.module_id);
+      el_5.setAttribute("data-case_module_id", json.module_id);
+      el_6.setAttribute("data-case_module_id", json.module_id);
+      el_7.setAttribute("data-case_module_id", json.module_id);
     }
-    if(json.course_id != undefined || json.course_id != null){
-      e.setAttribute("data-cid", json.course_id);
-      el_1.setAttribute("data-cid", json.course_id);
-      el_2.setAttribute("data-cid", json.course_id);
-      el_3.setAttribute("data-cid", json.course_id);
-      el_4.setAttribute("data-cid", json.course_id);
-      el_5.setAttribute("data-cid", json.course_id);
-      el_6.setAttribute("data-cid", json.course_id);
-      el_7.setAttribute("data-cid", json.course_id);
+    if(json.case_id != undefined || json.case_id != null){
+      e.setAttribute("data-case_id", json.case_id);
+      el_1.setAttribute("data-case_id", json.case_id);
+      el_2.setAttribute("data-case_id", json.case_id);
+      el_3.setAttribute("data-case_id", json.case_id);
+      //el_4.setAttribute("data-case_id", json.case_id);
+      el_5.setAttribute("data-case_id", json.case_id);
+      el_6.setAttribute("data-case_id", json.case_id);
+      el_7.setAttribute("data-case_id", json.case_id);
     }
     if(json.can_access == false){
       el_li_0.style.cssText = "pointer-events: none";
@@ -457,10 +477,10 @@ function post_json_dat_case_mod(url, data, call_method, e, message){
       el_li_6.style.cssText = "pointer-events: none";
       el_li_7.style.cssText = "pointer-events: none";
       el_li_8.style.cssText = "pointer-events: none";
-      el_li_9.style.cssText = "pointer-events: none";
+      //el_li_9.style.cssText = "pointer-events: none";
     }
     if(json.module_name != undefined || json.module_name != null){
-      el_2.setAttribute("data-name", json.module_name);
+      el_2.setAttribute("data-module_name", json.module_name);
       module_name = json.module_name;
     }
     var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
@@ -473,19 +493,21 @@ function post_json_dat_case_mod(url, data, call_method, e, message){
       var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
       num = String(result).match(/\./g).length;
     }
+    var result_textMsg = "";
     if(num === 0){
-      var result_textMsg = "Module:";
+      result_textMsg = "Module:";
     }else if(num === 1){
-      var result_textMsg = "Chapter:";
+      result_textMsg = "Chapter:";
     }else if(num === 2){
-      var result_textMsg = "Lesson:";
+      result_textMsg = "Lesson:";
     }else if(num === 3){
-      var result_textMsg = "Topic:";
+      result_textMsg = "Topic:";
     }else if (num === 4){
-      var result_textMsg = "Sub Topic:";
+      result_textMsg = "Sub Topic:";
     }else if (num > 4){
-      var result_textMsg = "Level:";
+      result_textMsg = "Level:";
     }
+    result_textMsg = "Level:"
     toastr.success(result_textMsg+" "+module_name+" Created.");
   })
   .catch(function (error) {
@@ -526,12 +548,11 @@ function check_value_case_mod(e){
 
 }
 function add_sub_case_mod(e){
-    var x =e.parentElement.childNodes;
-    console.log(x);
+    var x =e.parentElement.parentElement.childNodes;
     if(x[0].nodeName == "#text"){
-        var inp_val = x[5].childNodes[1].innerHTML;
+        var inp_val = x[3].childNodes[1].innerHTML;
     }else{
-        var inp_val = x[2].childNodes[1].innerHTML;
+        var inp_val = x[1].childNodes[1].innerHTML;
     }
     if(inp_val != ''){
         var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
@@ -541,24 +562,26 @@ function add_sub_case_mod(e){
                 var index = classList[1].lastIndexOf("_");
                 var result = Number(classList[1].substr(index+1));
                 if(e.parentElement.parentElement.childNodes[0].nodeName == '#text'){
-                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(20);
+                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(18);
                 }else{
-                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(9);
+                    var result = Number(e.parentElement.parentElement.childNodes.length)- Number(8);
                 }
-                newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
+                newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result+". Chapter'>"+result+". Chapter</p></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
-                newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
-                newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
-                newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
+                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"'>Level "+result+"</p></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+                newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
+                $(e).closest('.main_mod').removeClass("no_child");
+                $(e).closest('.main_mod').addClass("has_child");
                 e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
 
                 var class_module_main_level = main_mod_level;
@@ -571,18 +594,18 @@ function add_sub_case_mod(e){
                 var index = classList[1].lastIndexOf("_");
                 var result = Number(classList[1].substr(index+1));
                 var result = Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length) + Number(1);
-                newHTML = "<div class='module module_"+result+" main_mod_empty' style='opacity:0.5;'>";
+                newHTML = "<div class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value=''onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-cid=''  data-module_id='' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
-                newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
-                newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
-                newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
+                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+                newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li></li>";
+                newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -604,35 +627,43 @@ function add_sub_sub_case_mod(e){
     var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
     var index = classList[1].lastIndexOf("_");
     var res_1 = Number(classList[1].substr(index+1));
-    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 9);
+    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
     var num = String(result).match(/\./g).length;
+    var result_text = "";
+    var result_textMsg = "";
     if(num === 1){
-      var result_text = Number(e.parentElement.parentElement.childNodes.length - 9)+". Lesson";
-      var result_textMsg = "Lesson";
+      result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Lesson";
+      result_textMsg = "Lesson";
     }else if(num === 2){
-      var result_text = Number(e.parentElement.parentElement.childNodes.length - 9)+". Topic";
-      var result_textMsg = "Topic";
+      result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Topic";
+      result_textMsg = "Topic";
     }else if(num === 3){
-      var result_text = Number(e.parentElement.parentElement.childNodes.length - 9)+". Sub Topic";
-      var result_textMsg = "Sub Topic";
+      result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Sub Topic";
+      result_textMsg = "Sub Topic";
     }else{
-      var result_text = "Level "+result;
-      var result_textMsg = "Level";
+      result_text = "Level "+result;
+      result_textMsg = "Level";
     }
-    newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+"' style='width:95%;margin-right: -2px;'>";
+      result_text = "Level "+result;
+      result_textMsg = "Level";
+
+    newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-    newHTML += "<li class='expand_img_icon disp_in_block flt_left'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>";
-    newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Level "+result+"'onblur='totext(this);' style='display: none;' maxlength='256'><p onclick='toinput(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
-    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>";
-    newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+    newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
+    newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+    //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
     newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
     newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
     newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
-    newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub(this);'></li>";
-    newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>";
+    newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>";
+    newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag'></li>";
     newHTML += "</ul>";
     newHTML += "</div>";
+
+    $(e).closest('.module').removeClass("no_child");
+    $(e).closest('.module').addClass("has_child");
     e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
     var class_module_main_level = main_mod_level;
     var class_module_sub_level = "sub_"+result;
