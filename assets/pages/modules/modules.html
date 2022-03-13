@@ -80,22 +80,18 @@
                         </div>
                         <div class="col-lg-3 col-md-3">
                         <div class="dropdown-select">
-                        <select class="form-control sort-select" id="module_id">
-                          <option value="Project1">All Modules</option>
-                          <option value="Project2">Modules1</option>
-                          <option value="Project2">Modules2</option>
-                          <option value="Project3">Modules3</option>
-                          <option value="Project4">Modules4</option>
-                        </select>
+                          <select class="sort-select" id="chapter_topic_id" name="chapter_topic_id">
+                            <option value="">Select Chapters</option>
+                          </select>
                       </div>                        
                         </div>
                        <div class="col-lg-3 col-md-3">
                           <div class="dropdown-select">
                         <select class="form-control sort-select" id="status">
-                          <option value="Recent">Recent</option>
-                          <option value="Completed">Completed</option>
-                          <option value="Onhold">Onhold</option>
-                          <option value="To do">To do</option>
+                          <option value="0">Recent</option>
+                          <option value="1">Completed</option>
+                          <option value="2">Onhold</option>
+                          <option value="3">To do</option>
                         </select>
                       </div>
                         </div>
@@ -263,9 +259,9 @@
     if($("#searchText").val()) {
       queryPara += "&search=" + $("#searchText").val();
     }
-    //module_id
-    if($("#module_id").val()) {
-      queryPara += "&module_id=" + $("#module_id").val();
+    //chapter_topic_id
+    if($("#chapter_topic_id").val()) {
+      queryPara += "&chapter_topic_id=" + $("#chapter_topic_id").val();
     }
     //status
     if($("#status").val()) {
@@ -397,7 +393,7 @@
   
   $( document ).ready(function() {
     $(".btnReset").on("click", function(){
-      $("#status, #module_id, #searchText").val(null);
+      $("#status, #chapter_topic_id, #searchText").val(null);
       doSearch();
       setTimeout(function() {
         $(".btnReset").addClass("d-none");
@@ -407,7 +403,29 @@
       $(".btnReset").removeClass("d-none");
       doSearch(); 
     });
-    $("#status, #courses_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
+    $("#status, #chapter_topic_id").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
+    
+
+    //load the courses list
+    $.ajax({
+      url: API_CONTENT_URL + '/chapters/',
+      type: 'get',
+      dataType: 'json',
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        $("#chapter_topic_id").empty();
+        $("#chapter_topic_id").append("<option value=''>Select Chapter</option>");
+        $.each( response, function( i, val ) {
+          $("#chapter_topic_id").append("<option value='"+val.id+"'>"+val.name+"</option>");
+        });
+      },
+      error: function(error){
+        console.log(error);
+      }
+    });
   
     if($( "#pagination-container" ).length > 0) {
       doSearch();
