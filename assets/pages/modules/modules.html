@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-lg-3 col-md-3">
                         <div class="dropdown-select">
-                          <select class="sort-select" id="chapter_topic_id" name="chapter_topic_id">
+                          <select class="sort-select" id="chapter_id" name="chapter_id">
                             <option value="">Select Chapters</option>
                           </select>
                       </div>                        
@@ -88,6 +88,7 @@
                        <div class="col-lg-3 col-md-3">
                           <div class="dropdown-select">
                         <select class="form-control sort-select" id="status">
+                          <option value="">Select Status</option>
                           <option value="0">Recent</option>
                           <option value="1">Completed</option>
                           <option value="2">Onhold</option>
@@ -259,9 +260,9 @@
     if($("#searchText").val()) {
       queryPara += "&search=" + $("#searchText").val();
     }
-    //chapter_topic_id
-    if($("#chapter_topic_id").val()) {
-      queryPara += "&chapter_topic_id=" + $("#chapter_topic_id").val();
+    //chapter_id
+    if($("#chapter_id").val()) {
+      queryPara += "&chapter_id=" + $("#chapter_id").val();
     }
     //status
     if($("#status").val()) {
@@ -320,7 +321,7 @@
           </div>
         </td>
         `;
-        html += '<td><span class="badge bg-success gridTaskID">#'+ item.chapter_id +'</span></td>';
+        html += '<td><span class="badge bg-success gridTaskID">#'+ item.chapter_short_code +'</span></td>';
         html += '<td>'+ item.chapter_name +'</td>';
         html += '<td>'+ item.case_name +'</td>';
         html += '<td>'+ item.course_name +'</td>';
@@ -393,7 +394,7 @@
   
   $( document ).ready(function() {
     $(".btnReset").on("click", function(){
-      $("#status, #chapter_topic_id, #searchText").val(null);
+      $("#status, #chapter_id, #searchText").val(null);
       doSearch();
       setTimeout(function() {
         $(".btnReset").addClass("d-none");
@@ -403,7 +404,7 @@
       $(".btnReset").removeClass("d-none");
       doSearch(); 
     });
-    $("#status, #chapter_topic_id").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
+    $("#status, #chapter_id").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
     
 
     //load the courses list
@@ -416,10 +417,10 @@
         "Content-Type": "application/json"
       },
       success:function(response){
-        $("#chapter_topic_id").empty();
-        $("#chapter_topic_id").append("<option value=''>Select Chapter</option>");
+        $("#chapter_id").empty();
+        $("#chapter_id").append("<option value=''>Select Chapter</option>");
         $.each( response, function( i, val ) {
-          $("#chapter_topic_id").append("<option value='"+val.id+"'>"+val.name+"</option>");
+          $("#chapter_id").append("<option value='"+val.id+"'>"+val.name+"</option>");
         });
       },
       error: function(error){
