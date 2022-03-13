@@ -526,7 +526,8 @@ function check_value_case_mod(e){
 
 }
 function add_sub_case_mod(e){
-    var x =e.parentElement.parentElement.childNodes;
+    var x =e.parentElement.childNodes;
+    console.log(x);
     if(x[0].nodeName == "#text"){
         var inp_val = x[5].childNodes[1].innerHTML;
     }else{
