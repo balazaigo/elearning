@@ -690,6 +690,15 @@ function insert_answer(e){
     var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
     if(quest_id && answer_id){
     var quest_type = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-ques_type");
+    //console.log(quest_type);
+    if(quest_type == "1" || quest_type == "3"){
+      //console.log(document.querySelector(e.target.closest('.mt-2')));
+      //e.closest('.mt-2').childNodes[1].childNodes[0].childNodes[0].checked = false;
+      //console.log($(e).closest('ul'));
+      //console.log($(e).closest('ul').siblings('input:checkbox'))
+       //$(e).closest('ul').siblings('input:checkbox').prop('checked', false);
+      //e.checked = true;
+    }
     var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
     var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
     var question = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].value;
