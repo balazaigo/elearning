@@ -597,7 +597,27 @@ async function getCasesListPage(e) {
     }
   );
 }
-
+async function getCasesListLevelPage(e){
+  /*if(processRights("case") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }*/
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/cases/caselistlevel.html`,
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+        var case_flinkto_elem = document.querySelectorAll("[data-flinkto='cases'], [data-flinkto='caseslist'], [data-flinkto='caseslist']");
+        case_flinkto_elem.forEach(el=>{
+          el.setAttribute("data-case_id", e.target.dataset.case_id);
+          el.setAttribute("data-case_module_id", e.target.dataset.case_module_id);
+        });
+        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/cases/caselistlevel.js`, function() {}); 
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
 
 async function getModulePage() {
   /*if(processRights("modules") === false) {
@@ -615,7 +635,7 @@ async function getModulePage() {
   );
 }
 
-async function getModulesaListPage() {
+async function getModulesListPage() {
   /*if(processRights("modules") === false) {
     toastr.error(window.language.error_no_access);
     return false;
@@ -759,7 +779,11 @@ function handleTopMenuClick(e) {
     case "caseslist":
       getCasesListPage(e);
       break;
-      
+
+    case "caselistlevel":
+      getCasesListLevelPage(e);
+      break;
+            
     case "knowledgecheck":
         getKnowledgeCheckPage(e);
         break;  
@@ -769,7 +793,7 @@ function handleTopMenuClick(e) {
         break;  
       
     case "moduleslist":
-        getModulesaListPage();
+        getModulesListPage();
         break;
 
     case "settings":

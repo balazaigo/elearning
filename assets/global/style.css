@@ -4007,3 +4007,9 @@ li.dashed {
     height: 35px;
 }
 /************** Knowledge Check Module Page Styles Ends ***************/
+.image_content{
+	overflow-x:hidden;
+}
+.image_content img{
+    max-width: 359px;
+}

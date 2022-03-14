@@ -7,5 +7,5 @@ CKEDITOR.plugins.setLang('bgimage','ru',{
 	blendMode    : 'Режим наложения',
 	position     : 'Позиция',
 	bgWidth      : 'Ширина (CSS unit, напр. 20px)',
-	bgHeight     : 'Высота (CSS unit, напр. 20%)'
+	bgHeight     : 'Высота (CSS unit, напр. 20px)'
 })
