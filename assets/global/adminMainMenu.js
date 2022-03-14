@@ -673,6 +673,23 @@ async function getCasesListLevelPage(e){
   );
 }
 
+async function getChaptersPage(e) {
+  /*if(processRights("chapters") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }*/
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/chapters/chapters.html?t=` + Math.floor(Date.now() / 1000),
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+        console.log(e.target.dataset);
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
+
 async function getModulePage() {
   /*if(processRights("modules") === false) {
     toastr.error(window.language.error_no_access);
@@ -849,6 +866,11 @@ function handleTopMenuClick(e) {
     case "moduleslist":
         getModulesListPage();
         break;
+
+    case "chapters":
+        getChaptersPage(e);
+        break;  
+      
 
     case "settings":
         getTestPage();

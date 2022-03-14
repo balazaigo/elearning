@@ -1,0 +1,770 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 title-head mb-3">
+        <div class="row w-100">
+          <div class="col-md-8">
+            <input type="hidden" id="chapter_id_name" data-flinkto="chapters" />
+            <input type="hidden" id="chapter_id_mod" data-flinkto="chapters">
+            <h2>
+              <span class="back"><a data-flinkto="chapters">
+                <i class="fas fa-arrow-left" data-flinkto="chapters"></i></a></span> <small id="chapter_ind_name_text"></small>
+                <a href=""><img src="../assets/images/pen-edit.jpg" alt="edit"></a>
+                <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> 
+                <span id="chapter_ind_desc_text"></span>
+            </h2>
+
+                </div> 
+                <div class="col-md-4 p-0 side-btn">
+                    <ul>
+                        <li> <span class="orange-btn"><a href="#"><!--<button>Save</button>--></a></span> </li>                
+                    </ul>
+                  </div>               
+            </div>           
+          
+        </div>
+    </div>
+</div>
+<div class="col-md-12 p-3 br-5 caselist" id="chapterList">
+</div>
+<div class="modal fade" id="popup_course_icon" data-bs-backdrop="static">';
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" id="content-courseModule"></div>
+  </div>
+</div>
+
+<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title"><span id="mAlertName"></span></h6>
+        <a class="close" data-bs-dismiss="modal">×</a>
+      </div>
+      <div class="modal-body text-center">
+        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" alt="Delete"> </div>
+        <input type="hidden" id="mAlertURL" value="" />
+        <p>Are you sure you want to delete it?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <span class="dborder-btn nbtn">
+          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        </span>
+        <span class="danger-btn nbtn">
+          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    setTimeout(function(){
+        let chapter_id = document.getElementById("chapter_id_mod").getAttribute("data-chapter_id");
+        let chapter_name = document.getElementById("chapter_id_mod").getAttribute("data-chapter_name");
+        if(chapter_id){
+            $.ajax({
+                url: API_CONTENT_URL + '/chapters/'+chapter_id+'/topics',
+                type: 'get',
+                dataType: 'json',
+                headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+                success: function (response) {
+                    console.log("response:", response);
+                    var dots = "";
+                    if(response.description.length > 75){
+                        dots = "...";
+                    }
+                    $("#chapter_ind_name_text").text(response.chapter_name);
+                    $("#chapter_ind_desc_text").text(response.description.substring(0, 75)+dots);
+                    var newDIV = $("<div class='course case_list_module_box' id='case_box'></div>");
+                    var outerHtml = '';
+                    get_list_mod( response.children, newDIV, 1);
+                    var outerHtml = newDIV.prop('outerHTML');
+                    document.getElementById("chapterList").innerHTML = outerHtml;
+                },
+                error: function(error) {
+                    toastr.error("Response Error: " + error.message);
+                    console.log(error);
+                }
+            });
+        }
+    }, 0);
+  });
+  /***************Case Modules Get Json and assign Tree structured format and Design Starts Here*************/
+  function get_list_mod( a, $parent , level_count_inc) {
+    let chapter_name = document.getElementById("chapter_id_name").getAttribute("data-chapter_name");
+    var levels = '';
+    var newDIV = $("<div></div>");
+    for (var i = 0; i < a.length; i++) {
+        if (a[i]) {
+            var level_count = a[i].name.split("/").length - 1;
+            if(a[i].parent_id == null){
+              var n = a[i].name.lastIndexOf('/');
+              var input_value = a[i].name.substring(n + 1);
+              var prevent_click = "";
+              if(a[i].can_access == false){
+                prevent_click = "pointer-events:none;";
+              }
+              if(a[i].is_qa == true){
+                  if (a[i].children.length > 0){
+                      newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                  }else{
+                      newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                  }
+              }else{
+  
+                  if (a[i].children.length > 0){
+                      newDIV = $("<div class='module module_"+level_count_inc+" main_mod has_child draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                  }else{
+                      newDIV = $("<div class='module module_"+level_count_inc+" main_mod no_child draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                  }
+              }
+              newUl = $("<ul class='main_module module_opacity' style='opacity:1'></ul>");
+              newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
+  
+              if(a[i].is_qa == true){
+                newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"' data-chapter_name='"+chapter_name+"' data-chapter_name='"+input_value+"'></li>");
+              }
+                newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title'>"+input_value+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
+              newUl.append("<li class='expand_img_icon  disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
+                newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
+                //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
+                if(a[i].attachment_count > 0){
+                  newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                }else{
+                  newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                }
+                if(a[i].comment_count > 0){
+                  newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+                }else{
+                  newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                }
+                if(a[i].assign_count > 0){
+                  newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+                }else{
+                  newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li></li>");
+                }
+                newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);'></li>");
+                newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+            }else{
+                  var class_name = $parent.parent().prop('className').split(" ");
+                  var first_five_char_class = class_name[1].substring(0,5);
+                  if(first_five_char_class === "modul"){
+                    var levels = a[i].level;
+                  }else{
+                    var levels = $parent.parent().attr('id')+"."+a[i].level;
+                  }
+                  var n = a[i].name.lastIndexOf('/');
+                  var input_value = a[i].name.substring(n + 1);
+                  var prevent_click = "";
+                  if(a[i].can_access == false){
+                      prevent_click = "pointer-events:none;";
+                  }
+                  var title_font = '';   
+                  var no_icon = ""; 
+                  if(String(levels).indexOf('.') !== -1){
+                      //do nothing
+                      no_icon = "true";
+                  } else{
+                      title_font = 'main_mod_sub_title';
+                  }
+                  if(a[i].is_qa == true){
+                      if (a[i].children.length > 0){
+                          newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+"  disp_block' id='"+levels+"' style=''>");
+                      }else{
+                          newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+"  disp_block' id='"+levels+"' style=''>");
+                      }
+                  }else{
+                      if (a[i].children.length > 0){
+                          newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" has_child disp_block' id='"+levels+"' style=''>");
+                      }else{
+                          newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" no_child disp_block' id='"+levels+"' style=''>");
+                      }
+                  }
+                newUl = $("<ul class='sub_module'></ul>");
+                newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
+  
+                  if(a[i].is_qa == true){
+                    newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"' data-chapter_name='"+chapter_name+"' data-chapter_name='"+input_value+"'></li>");
+                  }
+                newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><p onclick='toinput_case_mod(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"'>"+input_value+"</p></li>");
+                if(a[i].is_qa == false){
+                    newUl.append("<li class='expand_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
+  
+                    newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
+                    //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
+                    if(a[i].attachment_count > 0){
+                      newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                    }else{
+                      newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                    }
+                    if(a[i].comment_count > 0){
+                      newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+                    }else{
+                      newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                    }
+                    if(a[i].assign_count > 0){
+                      newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+                    }else{
+                      newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li></li>");
+                    }
+                    newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>");
+                    newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+              }
+  
+            }
+            if(level_count === 0){  
+              newDIV.append(newUl);
+              $parent.append(newDIV);
+  
+              level_count_inc++;
+            }else{
+              newDIV.append(newUl);
+              $parent.append(newDIV);
+            }
+            if (a[i].children){
+                get_list_mod( a[i].children, newUl, level_count_inc);
+            }
+        }
+      $parent.append(newDIV);
+    }
+  }
+  /***************Case Modules Get Json and assign Tree structured format and Design Ends Here*************/
+  /******* Expand and collapse main and sub module Levels Starts **************/
+  function toggle_collapse_expand_case_mod(e){
+      var childrendivs = [],
+      children = e.parentElement.parentElement.children;
+      var action = e.innerHTML;
+      for(var i = 0; i < children.length; i++){
+          if (children[i].tagName == "DIV") {
+            if(children[i].classList.contains('disp_none')){
+                e.src="../assets/images/arrow_down_icon.png";
+                children[i].classList.add('disp_block');
+                children[i].classList.remove('disp_none');
+                childrendivs.push(children[i]);
+            }else{
+                e.src="../assets/images/arrow_up_icon.png";
+                children[i].classList.add('disp_none');
+                children[i].classList.remove('disp_block');
+                childrendivs.push(children[i]);
+            }
+          }
+      }
+  }
+  function show_tag_popup_case_mod(e){
+    //var offsets = e.getBoundingClientRect();
+    //var offset_box = document.getElementById("course_box").getBoundingClientRect();
+    //var top = offsets.top + Math.max( $("html").scrollTop(), $("body").scrollTop() ) - 70;
+    //var right = offset_box.left;
+    if(e.dataset.chapter_id && e.dataset.case_module_id){
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+        //document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/case_tag.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          modal.toggle();
+        });
+    }
+  }
+  function show_attachment_popup_case_mod(e){
+    //var right = offset_box.left;
+    if(e.dataset.chapter_id && e.dataset.case_module_id){
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          modal.toggle();
+        });
+    }
+  }
+  function show_message_popup_case_mod(e){
+    //var right = offset_box.left;
+    if(e.dataset.chapter_id && e.dataset.case_module_id){
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/message_popup.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          modal.toggle();
+        });
+    }
+  }
+  function show_assignee_popup_case_mod(e){
+    //var right = offset_box.left;
+    if(e.dataset.chapter_id && e.dataset.case_module_id){
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
+          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          modal.toggle();
+        });
+    }
+  }
+  function toinput_case_mod(e){
+      console.log(e.tagName);
+      if(e.tagName == "P"){
+          e.setAttribute("style","display:none");
+          e.previousSibling.setAttribute("style","display:block");
+          e.previousSibling.focus();
+      }else{
+          e.parentElement.setAttribute("style", "display:none");
+          e.parentElement.previousSibling.setAttribute("style","display:block");
+          e.parentElement.previousSibling.focus();
+      }
+  }
+
+  function totext_case_mod(e){
+      
+      console.log(e);
+    
+      if(e.value == ''){
+          e.value = e.nextSibling.dataset.prev_val;
+      }
+      if(e.value != "" && e.value != "Add Module Name"){
+        var class_module_level = e.parentElement.parentElement.parentElement.classList[1];
+        var first_five_char_class = class_module_level.substring(0,5);
+        var get_submodule_level_values = '';
+        if(e.dataset.case_module_id){
+          var url = API_CONTENT_URL + '/case_modules/'+e.dataset.case_module_id+'/';
+          var method = "PUT";
+        }else{
+          var url = API_CONTENT_URL + '/case_modules/';
+          var method = "POST";
+        }
+        if(first_five_char_class === "modul"){
+          var level_number = class_module_level.split('_')[1];
+          var get_submodule_level_values = {
+            name: String(e.value),
+            level: parseInt(level_number), 
+            chapter_id:String(document.getElementById("chapter_id_name").getAttribute("data-chapter_id")),
+            parent_id:null
+          }
+        }else if(first_five_char_class === "sub_m"){
+          var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
+          var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
+          var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-case_module_id");
+          get_submodule_level_values = get_submodule_level_val_case_mod(class_module_main_level, class_module_sub_level, e.value, parent_id);
+        }
+  
+        e.nextSibling.dataset.prev_val = e.value;
+        if(get_submodule_level_values != ''){
+          var message = "";
+          post_json_dat_case_mod(url, get_submodule_level_values, method, e, message);
+        }
+        let chapter_id = e.dataset.chapter_id;
+        let module_id_val = e.dataset.case_module_id;
+        const mytagArray = e.value.split(" ");
+        if(chapter_id && module_id_val){
+          var prev_tags = get_module_details_case_mod(chapter_id, module_id_val, mytagArray);
+        }
+        
+      }
+  
+      if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
+          e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
+          e.setAttribute("style","display:none");
+          e.nextSibling.setAttribute("style","display:block");
+          e.nextSibling.focus();
+      }else{
+          e.nextSibling.innerHTML = e.value;
+          e.setAttribute("style","display:none");
+          e.nextSibling.setAttribute("style","display:block");
+          e.nextSibling.focus();
+      }
+  
+  }
+  function get_module_details_case_mod(chapter_id, module_id, mytagArray){
+    $.ajax({
+      url: API_CONTENT_URL + '/case_tags/?chapter_id='+chapter_id+'&case_module_id='+module_id,
+      type: 'get',
+      dataType: 'json',
+      success:function(response){
+        var tags_response = "";
+          mytagArray.forEach(function (element, index) {
+          tag_exists = response.some(function(o){return o["name"] === element;})
+          if(!tag_exists){
+            var tag_data = {
+                "name": element,
+                "case_module_id": module_id,
+                "chapter_id": chapter_id
+            }
+            $.ajax({
+              url: API_CONTENT_URL + '/case_tags/?chapter_id='+chapter_id+'&case_module_id='+module_id,
+              type: 'POST',
+              data: JSON.stringify(tag_data),
+              contentType: "application/json; charset=utf-8",
+              success:function(response){
+              },
+              error: function(error) {
+                tags_response = "1";
+                toastr.error("Response Error: " + error.message);
+                console.log(error);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  function get_submodule_level_val_case_mod(class_module_main_level, class_module_sub_level, ele_val, parent_id_val){
+    var data_course_module = "";
+    if(class_module_sub_level.indexOf('.') !== -1){
+        var level_number = (class_module_sub_level.split("_module")[0]).split(".")[class_module_sub_level.split(".").length-1];
+        data_course_module = {
+          name: String(ele_val),
+          level: parseInt(level_number), 
+          chapter_id:String(document.getElementById("chapter_id_name").getAttribute("data-chapter_id")),
+          parent_id: parent_id_val
+        }
+  
+    }else{
+        var level_number = class_module_sub_level.split('_')[1];
+        data_course_module = {
+          name: String(ele_val),
+          level: parseInt(level_number), 
+          chapter_id:String(document.getElementById("chapter_id_name").getAttribute("data-chapter_id")),
+          parent_id: parent_id_val
+        }
+    }
+    return data_course_module;
+  }
+  function post_json_dat_case_mod(url, data, call_method, e, message){
+    fetch(url, {
+      method: call_method,
+      body: JSON.stringify(data),
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      var name = "";
+      el_1 = e.parentElement.parentElement.childNodes[3].childNodes[1].firstChild.firstChild;//edit
+      el_2 = e.parentElement.parentElement.childNodes[3].childNodes[1].childNodes[1].firstChild;//delete
+      el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
+      //el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
+      el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
+      el_6 = e.parentElement.parentElement.childNodes[4].firstChild;//comment
+      el_7 = e.parentElement.parentElement.childNodes[6].firstChild;//assign
+  
+      el_li_0 = e.parentElement.parentElement.childNodes[0];//Drag & Drop
+      el_li_1 = e.parentElement.parentElement.childNodes[1];//Input
+      el_li_2 = e.parentElement.parentElement.childNodes[2];//Expand Or Collapse
+      el_li_3 = e.parentElement.parentElement.childNodes[3];//Three Dots
+      el_li_4 = e.parentElement.parentElement.childNodes[4];//Attachment
+      el_li_5 = e.parentElement.parentElement.childNodes[5];//Message
+      el_li_6 = e.parentElement.parentElement.childNodes[6];//Assignee
+      el_li_7 = e.parentElement.parentElement.childNodes[7];//Add module
+      el_li_8 = e.parentElement.parentElement.childNodes[8];//Tag
+      //el_li_9 = e.parentElement.parentElement.childNodes[9];
+      el_1.setAttribute("data-flinkto", "caselistlevel");
+      if(json.module_id != undefined || json.module_id != null){
+        e.setAttribute("data-case_module_id", json.module_id);
+        el_1.setAttribute("data-case_module_id", json.module_id);
+        el_2.setAttribute("data-case_module_id", json.module_id);
+        el_3.setAttribute("data-case_module_id", json.module_id);
+        //el_4.setAttribute("data-case_module_id", json.module_id);
+        el_5.setAttribute("data-case_module_id", json.module_id);
+        el_6.setAttribute("data-case_module_id", json.module_id);
+        el_7.setAttribute("data-case_module_id", json.module_id);
+      }
+      if(json.chapter_id != undefined || json.chapter_id != null){
+        e.setAttribute("data-chapter_id", json.chapter_id);
+        el_1.setAttribute("data-chapter_id", json.chapter_id);
+        el_2.setAttribute("data-chapter_id", json.chapter_id);
+        el_3.setAttribute("data-chapter_id", json.chapter_id);
+        //el_4.setAttribute("data-chapter_id", json.chapter_id);
+        el_5.setAttribute("data-chapter_id", json.chapter_id);
+        el_6.setAttribute("data-chapter_id", json.chapter_id);
+        el_7.setAttribute("data-chapter_id", json.chapter_id);
+      }
+      if(json.can_access == false){
+        el_li_0.style.cssText = "pointer-events: none";
+        el_li_1.style.cssText = "pointer-events: none";
+        el_li_2.style.cssText = "pointer-events: none";
+        el_li_3.style.cssText = "pointer-events: none";
+        el_li_4.style.cssText = "pointer-events: none";
+        el_li_5.style.cssText = "pointer-events: none";
+        el_li_6.style.cssText = "pointer-events: none";
+        el_li_7.style.cssText = "pointer-events: none";
+        el_li_8.style.cssText = "pointer-events: none";
+        //el_li_9.style.cssText = "pointer-events: none";
+      }
+      if(json.name != undefined || json.name != null){
+        el_2.setAttribute("data-name", json.name);
+        name = json.name;
+      }
+      var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
+      var num = "";
+      if(classList[2] == 'main_mod'){
+        num = 0;
+      }else{
+        var index = classList[1].lastIndexOf("_");
+        var res_1 = Number(classList[1].substr(index+1));
+        var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
+        num = String(result).match(/\./g).length;
+      }
+      var result_textMsg = "";
+      if(num === 0){
+        result_textMsg = "Module:";
+      }else if(num === 1){
+        result_textMsg = "Chapter:";
+      }else if(num === 2){
+        result_textMsg = "Lesson:";
+      }else if(num === 3){
+        result_textMsg = "Topic:";
+      }else if (num === 4){
+        result_textMsg = "Sub Topic:";
+      }else if (num > 4){
+        result_textMsg = "Level:";
+      }
+      result_textMsg = "Level:"
+      toastr.success(result_textMsg+" "+name+" Created.");
+    })
+    .catch(function (error) {
+      console.log("Requestfailed", error);
+    });
+  }
+  function check_value_case_mod(e){
+      console.log(e);
+      var x = e.parentElement.parentElement.parentElement.lastElementChild.childNodes;
+      if(e.value != ''){
+          e.parentElement.parentElement.setAttribute("style","opacity:1");
+          var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
+          var index = classList[1].lastIndexOf("_");
+          if(classList[2] == 'main_mod_empty'){
+              e.parentElement.parentElement.parentElement.classList.remove('main_mod_empty');
+              e.parentElement.parentElement.parentElement.classList.remove('no_child');
+              e.parentElement.parentElement.parentElement.classList.add('main_mod');
+              e.parentElement.parentElement.parentElement.classList.add('no_child');
+              e.parentElement.parentElement.parentElement.classList.add('draggable');
+              e.parentElement.parentElement.parentElement.setAttribute("style","opacity:1");
+              if(e.parentElement.previousSibling.nodeName == "#text"){
+                  e.parentElement.parentElement.childNodes[1].firstChild.setAttribute('draggable','true');
+              }else{
+                  e.parentElement.previousSibling.firstChild.setAttribute("draggable","true");
+              }
+          }
+          var result = Number(classList[1].substr(index+1)) + Number(1);
+      }else{
+          e.parentElement.parentElement.parentElement.classList.remove('main_mod');
+          e.parentElement.parentElement.parentElement.classList.add('main_mod_empty');
+          e.parentElement.parentElement.parentElement.classList.remove('draggable');
+          e.parentElement.parentElement.setAttribute("style","opacity:0.5");
+          if(e.parentElement.previousSibling.firstChild !== null){
+            e.parentElement.previousSibling.firstChild.setAttribute("draggable","true");
+          }
+      }
+      var listItens = document.querySelectorAll('.draggable');
+      [].forEach.call(listItens, function(item) {
+        addEventsDragAndDrop(item);
+      });
+  
+  }
+  function add_sub_case_mod(e){
+      var x =e.parentElement.parentElement.childNodes;
+      console.log(x);
+      if(x[0].nodeName == "#text"){
+          var inp_val = x[3].childNodes[1].innerHTML;
+      }else{
+          var inp_val = x[1].childNodes[1].innerHTML;
+      }
+      if(inp_val != ''){
+          var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
+          if(classList[2] == 'main_mod'){
+              if(e.parentElement.parentElement.parentElement.parentElement.childNodes[e.parentElement.parentElement.parentElement.parentElement.childNodes.length-1].classList !== undefined && e.parentElement.parentElement.parentElement.parentElement.childNodes[e.parentElement.parentElement.parentElement.parentElement.childNodes.length-1].classList[2] == 'main_mod_empty'){
+                var main_mod_level = e.parentElement.parentElement.parentElement.classList[1];
+                  var index = classList[1].lastIndexOf("_");
+                  var result = Number(classList[1].substr(index+1));
+                  if(e.parentElement.parentElement.childNodes[0].nodeName == '#text'){
+                      var result = Number(e.parentElement.parentElement.childNodes.length)- Number(18);
+                  }else{
+                      var result = Number(e.parentElement.parentElement.childNodes.length)- Number(8);
+                  }
+                  newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
+                  newHTML += "<ul class='sub_module'>";
+                  newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
+                  newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"'>Level "+result+"</p></li>";
+                  newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                  newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-chapter_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-name='' data-chapter_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                  //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+                  newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "</ul>";
+                  newHTML += "</div>";
+                  $(e).closest('.main_mod').removeClass("no_child");
+                  $(e).closest('.main_mod').addClass("has_child");
+                  e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
+  
+                  var class_module_main_level = main_mod_level;
+                  var class_module_sub_level = "sub_"+result;
+                  var input_val = "Level "+result;
+                  toastr.success("Chapter Added.");
+                  return;
+              }
+              if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
+                  var index = classList[1].lastIndexOf("_");
+                  var result = Number(classList[1].substr(index+1));
+                  var result = Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length) + Number(1);
+                  newHTML = "<div class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
+                  newHTML += "<ul class='main_module module_opacity'>";
+                  newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
+                  newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
+                  newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                  newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-chapter_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-chapter_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                  //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+                  newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-chapter_id='' data-case_module_id=''></li></li>";
+                  newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-chapter_id='' data-case_module_id=''></li>";
+                  newHTML += "</ul>";
+                  newHTML += "</div>";
+                  e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
+              }
+          }
+      }
+  }
+  function add_sub_sub_case_mod(e){
+    var x =e.parentElement.parentElement.childNodes;
+    if(x.length == 17){
+      var inp_val = x[5].childNodes[0].value;
+    }
+    if(x.length == 10){
+      var inp_val = x[2].childNodes[0].value;
+    }
+    if(inp_val != ''){
+      var main_mod_level = e.parentElement.parentElement.parentElement.classList[3];
+      var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
+      var index = classList[1].lastIndexOf("_");
+      var res_1 = Number(classList[1].substr(index+1));
+      var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
+      var num = String(result).match(/\./g).length;
+      var result_text = "";
+      var result_textMsg = "";
+      if(num === 1){
+        result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Lesson";
+        result_textMsg = "Lesson";
+      }else if(num === 2){
+        result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Topic";
+        result_textMsg = "Topic";
+      }else if(num === 3){
+        result_text = Number(e.parentElement.parentElement.childNodes.length - 8)+". Sub Topic";
+        result_textMsg = "Sub Topic";
+      }else{
+        result_text = "Level "+result;
+        result_textMsg = "Level";
+      }
+        result_text = "Level "+result;
+        result_textMsg = "Level";
+  
+      newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
+      newHTML += "<ul class='sub_module'>";
+      newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
+      newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
+      newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+      newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-name='' data-chapter_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+      //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+      newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
+      newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
+      newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
+      newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>";
+      newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag'></li>";
+      newHTML += "</ul>";
+      newHTML += "</div>";
+  
+      $(e).closest('.module').removeClass("no_child");
+      $(e).closest('.module').addClass("has_child");
+      e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
+      var class_module_main_level = main_mod_level;
+      var class_module_sub_level = "sub_"+result;
+      var input_val = "Level "+result;
+      toastr.success(result_textMsg+" Added.");
+     }
+  }
+  function delete_case_module_confirm(e){
+    var element = e;
+    $("#mAlertName").text(e.dataset.name);
+    var chapter_name = e.dataset.name;
+    var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
+    var num = "";
+    if(classList[2] == 'main_mod'){
+      num = 0;
+    }else{
+      var index = classList[1].lastIndexOf("_");
+      var res_1 = Number(classList[1].substr(index+1));
+      var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length - 8);
+      num = String(result).match(/\./g).length;
+    }
+    if(num === 0){
+      var result_textMsg = "Module:";
+    }else if(num === 1){
+      var result_textMsg = "Chapter:";
+    }else if(num === 2){
+      var result_textMsg = "Lesson:";
+    }else if(num === 3){
+      var result_textMsg = "Topic:";
+    }else if (num === 4){
+      var result_textMsg = "Sub Topic:";
+    }else if (num > 4){
+      var result_textMsg = "Level:";
+    }
+    var toastr_message = chapter_name+" Deleted successfully.";
+    var case_module_id = e.dataset.case_module_id;
+    var chapter_name = e.dataset.name;
+    loadAlertModal(toastr_message, case_module_id, chapter_name);
+  }
+  function loadAlertModal(toastr_message, module_id, name){
+    $('#mAlert').on('shown.bs.modal', function (event) {
+      $("#mAlertCancel").focus();
+      $(document).on('click', '#mAlertDelete', function(e) {
+        var url_api = API_CONTENT_URL + '/case_modules/'+module_id+'/';
+        var method = "DELETE";
+        $.ajax({
+          url: url_api,
+          type: method,
+          dataType: 'json',
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token,
+            "Content-Type": "application/json"
+          },
+          success:function(response){
+            $("#mAlertCancel").click();
+            $("#chapter_id_mod").trigger("click");
+            toastr.success(toastr_message);
+          },
+          error: function(error){
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+      });
+      //mAlertCancel
+      $(document).on('click', '#mAlertCancel', function() {
+        $(document).off('click', '#mAlertCancel');
+        $(document).off('click', '#mAlertDelete');
+      });
+      
+    });
+    
+    //hidden.bs.modal 
+    $('#mAlert').on('hidden.bs.modal', function (event) {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+      var modal = $(this);
+      modal.find('.modal-content input').val(null);
+      modal.find('.modal-content #mAlertName').html("Loading...");
+    });
+  }
+  $(document).ready(function(){
+    $('#popup_course_icon').on('hidden.bs.modal', function () {
+        $('#chapter_id_mod').trigger('click');
+    });
+  });
+</script>

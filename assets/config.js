@@ -14,6 +14,11 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
   API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
   API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
 
+} else if(SITE_URL_PROTOCOL === "https://localhost"){
+	SITE_URL_PROTOCOL = "https://localhost/elearning/";
+  API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
+  API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
+
 } else if(SITE_URL_PROTOCOL === "https://elearning.zaigoinfotech.com"){
 	SITE_URL_PROTOCOL = "https://elearning.zaigoinfotech.com/";
 
