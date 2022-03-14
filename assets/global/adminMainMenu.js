@@ -313,7 +313,8 @@ async function getCoursePage(e) {
                       <div id="mp_courseData"></div>
                     </div>
                   </div>`;
-  var newDIV = $("<div class='course' id='course_box'></div>");
+  var parent_div = $("<div class='row'></div>");
+  var newDIV = $("<div class='col-lg-8 col-md-8 course' id='course_box'></div>");
   var outerHtml = '';
   //var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/nested2.json`;
   var url = API_CONTENT_URL + `/course_module/?course_id=`+e.target.dataset.cid;
@@ -338,7 +339,60 @@ async function getCoursePage(e) {
     newUl2.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");
     newDiv2.append(newUl2);
     newDIV.append(newDiv2);
-    var outerHtml = newDIV.prop('outerHTML');
+    parent_div.append(newDIV);
+      var module_menu = (`<div class="col-lg-4 col-md-4">
+                            <div class="recent-text white-bg br-5 p-3">
+                              <h4 class="modules-head mb-4">Modules</h4>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <div class="module-sec">
+                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
+                                          <p>Section</p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="module-sec">
+                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
+                                          <p>Sub Section</p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="module-sec">
+                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
+                                          <p>Module</p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="module-sec">
+                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
+                                          <p>Case Study</p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="module-sec">
+                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
+                                          <p>Readings</p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="module-sec">
+                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
+                                          <p>Authors</p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="module-sec">
+                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
+                                          <p>Resources</p>
+                                      </div>
+                                  </div>
+                              </div>
+                             
+                            </div>
+                          </div>`);
+    
+    parent_div.append(module_menu);                          
+    var outerHtml = parent_div.prop('outerHTML');
     if(outerHtml !== ''){
       var course_head = "<div class='container-fluid course_details'>";
       course_head += "<div class='wrapper'>";

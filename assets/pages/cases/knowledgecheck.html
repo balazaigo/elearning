@@ -520,7 +520,7 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input id="opt_4_${numItems}" type="radio" name="opt_${numItems}" value="opt_4_${numItems}">  `;
+            droppable_template += `<input id="opt_4_${numItems}" type="radio" name="opt_${numItems}" value="opt_4_${numItems}">`;
             droppable_template += `<label for="opt_4_${numItems}" onclick="toInput(this)">Option 4</label>`;
             droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mcq_opt_4_${numItems}" onblur="toText(this)" style="display:none">`;
             droppable_template += `</div>`;
@@ -661,7 +661,6 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<p class="listinput"><input class="form-control" type="text" part="placeholder" name="ques_trf_opt_2_${numItems}"></p>`;
             droppable_template += `<input id="opt_2_${numItems}" type="radio" name="opt_${numItems}" value="opt_2_${numItems}">`;
             droppable_template += `<label for="opt_2_${numItems}" onclick="toInput(this)">False</label>`;
             droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_2_${numItems}" onblur="toText(this)" style="display:none">`;
@@ -685,7 +684,7 @@ function get_ques_ans_template(draggable_id, numItems){
 //To remove Answer when Uncheck Option
 function insert_answer(e){
   if(e.checked === true){
-    var valid_answer = 1;
+    var valid_answer = "1";
     var quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
     var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
     var answer_name = e.closest('.mt-2').childNodes[0].childNodes[1].textContent;
@@ -704,11 +703,11 @@ function insert_answer(e){
       insert_answer_for_question(answer_id, answer_name, quest_type, case_id, case_module_id, question, quest_id, valid_answer);
     }else{
       $(e).prop('checked', false);
-      toastr.error("Please Edit Answer");
+      //toastr.error("Please Edit Answer");
     }
   }
   if(e.checked === false){
-    var valid_answer = 0;
+    var valid_answer = "0";
     var quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
     var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
     var answer_name = e.closest('.mt-2').childNodes[0].childNodes[1].textContent;
@@ -724,24 +723,25 @@ function insert_answer(e){
   }
 }
 function insert_answer_for_question(answer_id, answer_name, quest_type, case_id, case_module_id, question, quest_id, valid_answer){
-  var formData = new FormData();
+        var formData = new FormData();
         formData.append("valid_answer", valid_answer);
         formData.append("type", quest_type);
-        //formData.append("case_id", case_id);
         formData.append("case_module_id", case_module_id);
         formData.append("question", question);
         formData.append("answer", answer_name);
         formData.append("question_id", quest_id);
+        var object = {};
+        formData.forEach(function(value, key){
+            object[key] = value;
+        });
+        var json = JSON.stringify(object);
       $.ajax({
         url: API_CONTENT_URL + '/answers/' + answer_id+'/',
-        method: 'PUT',
-        type: 'PUT', // For jQuery < 1.9
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: formData,
+        type: 'PATCH',
+        data: json,
         headers: {
-          "Authorization": "Bearer " + getUserInfo().access_token
+          "Authorization": "Bearer " + getUserInfo().access_token,
+          "Content-Type": "application/json"
         },
         success:function(response){
           toastr.success("Valid Answer Saved successfully.");
@@ -752,6 +752,7 @@ function insert_answer_for_question(answer_id, answer_name, quest_type, case_id,
           console.log(error);
         }
       });
+      return false;
 }
 //To Edit Answer Option
 function toInput(e){
@@ -798,7 +799,6 @@ function toText(e){
         "Authorization": "Bearer " + getUserInfo().access_token
       },
       success: function (response) {
-        console.log(response)
         toastr.success("Answer option was successfully saved.");
         if(response.id){
           $(e).attr("data-answer_id", response.id);
@@ -814,7 +814,6 @@ function toText(e){
 }
 //To Save Questions
 function saveQuestion(el){
-  console.log(el.value);
   if(el.value){
     var quest_id = $(el).attr("data-quest_id");
     var quest_type = $(el).attr("data-ques_type");
@@ -846,7 +845,6 @@ function saveQuestion(el){
         "Authorization": "Bearer " + getUserInfo().access_token
       },
       success: function (response) {
-        console.log(response)
         toastr.success("Question was successfully saved.");
         if(response.id){
           $(el).attr("data-quest_id", response.id);
