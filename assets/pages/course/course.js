@@ -116,7 +116,7 @@ function totext(e){
           level: parseInt(level_number), 
           course_id:String(document.getElementById("course_id").value),
           parent_id:null
-        }
+        };
       }else if(first_five_char_class === "sub_m"){
         var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
         var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
@@ -291,7 +291,16 @@ function check_value(e){
 
 }
 function add_sub(e){
-    var x =e.parentElement.parentElement.childNodes;
+    $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
+    $("#course_box").removeClass( "col-lg-12" ).addClass( "col-lg-8" );
+    $(".dots_img_icon").attr("style", "display:none;");
+    $(".attach_img_icon").attr("style", "display:none;");
+    $(".message_img_icon").attr("style", "display:none;");
+    $(".user_img_icon").attr("style", "display:none;");
+    $(".frame_img_icon").attr("style", "display:none;");
+    $(".plus_img_icon").attr("style", "display:none;");
+    $("#right_module_menu").show();
+    /*var x =e.parentElement.parentElement.childNodes;
     if(x[0].nodeName == "#text"){
         var inp_val = x[5].childNodes[1].innerHTML;
     }else{
@@ -352,11 +361,21 @@ function add_sub(e){
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
             }
         }
-    }
+    }*/
 }
 
 function add_sub_sub(e){
-  var x =e.parentElement.parentElement.childNodes;
+
+    $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
+    $("#course_box").removeClass( "col-lg-12" ).addClass( "col-lg-8" );
+    $(".dots_img_icon").attr("style", "display:none;");
+    $(".attach_img_icon").attr("style", "display:none;");
+    $(".message_img_icon").attr("style", "display:none;");
+    $(".user_img_icon").attr("style", "display:none;");
+    $(".frame_img_icon").attr("style", "display:none;");
+    $(".plus_img_icon").attr("style", "display:none;");
+    $("#right_module_menu").show();
+  /*var x =e.parentElement.parentElement.childNodes;
   if(x.length == 17){
     var inp_val = x[5].childNodes[0].value;
   }
@@ -402,7 +421,7 @@ function add_sub_sub(e){
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
     toastr.success(result_textMsg+" Added.");
-   }
+   }*/
 }
 
 /******* Expand and collapse main and sub module Levels Starts **************/
@@ -746,4 +765,236 @@ function delete_module_confirm(e){
       modal.find('.modal-content input').val(null);
       modal.find('.modal-content #mAlertName').html("Loading...");
     });
+}
+
+$( ".module-section" ).draggable({
+    revert: "invalid",
+    stack: ".draggable",
+    helper: 'clone'});
+$( ".main_mod" ).droppable({
+    accept: ".module-section",
+    drop: function( event, ui ) {
+       var droppable = $(this);
+       var draggable = ui.draggable;
+       var draggable_id = draggable.attr("id");
+       var numItems = $('.module').length+1;
+       var container_size = document.getElementById("course_box").classList[0];
+       var style_none = "display:block;";
+       if(container_size == "col-lg-8"){
+         style_none = "display:none;";
+       }
+        var classList_1 = $(this).attr('class').split(' ')[1];
+        var index = classList_1.lastIndexOf("_");
+        console.log(index);
+        var result = Number(classList_1.substr(index+1))+ Number(1);
+        console.log(result);
+        var url = API_CONTENT_URL + '/course_module/';
+        var method = "POST";
+        var get_submodule_level_values = {
+          module_name: String("Introduction"),
+          level: parseInt(result), 
+          course_id:String(document.getElementById("course_id").value),
+          parent_id:null
+        };
+
+      fetch(url, {
+        method: method,
+        body: JSON.stringify(get_submodule_level_values),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      })
+      .then((response) => response.json())
+      .then((json) => {
+           var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
+              template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
+              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
+              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
+              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
+              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
+              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${json.module_id}' data-cid='${json.course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Introduction' data-cid='${json.course_id}''  data-module_id='${json.module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
+              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
+              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
+              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
+
+           $(this).after(template);
+      })
+      .catch(function (error) {
+        console.log("Requestfailed", error);
+      });
+    }
+});
+
+$( ".main_mod_empty" ).droppable({
+    accept: ".module-section",
+    drop: function( event, ui ) {
+       var droppable = $(this);
+       var draggable = ui.draggable;
+       var draggable_id = draggable.attr("id");
+       var numItems = $('.module').length+1;
+       var container_size = document.getElementById("course_box").classList[0];
+       var style_none = "display:block;";
+       if(container_size == "col-lg-8"){
+         style_none = "display:none;";
+       }
+        var classList_1 = $(this).attr('class').split(' ')[1];
+        var index = classList_1.lastIndexOf("_");
+        console.log(index);
+        var result = Number(classList_1.substr(index+1));
+        console.log(result);
+        var url = API_CONTENT_URL + '/course_module/';
+        var method = "POST";
+        var get_submodule_level_values = {
+          module_name: String("Introduction"),
+          level: parseInt(result), 
+          course_id:String(document.getElementById("course_id").value),
+          parent_id:null
+        };
+
+      fetch(url, {
+        method: method,
+        body: JSON.stringify(get_submodule_level_values),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      })
+      .then((response) => response.json())
+      .then((json) => {
+           var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
+              template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
+              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
+              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
+              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
+              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
+              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${json.module_id}' data-cid='${json.course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Introduction' data-cid='${json.course_id}''  data-module_id='${json.module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
+              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
+              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
+              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
+
+           $(this).before(template);
+      })
+      .catch(function (error) {
+        console.log("Requestfailed", error);
+      });
+    }
+});
+
+$( ".module-sub_section" ).draggable({
+    revert: "invalid",
+    stack: ".draggable",
+    helper: 'clone'});
+$( ".sub_mods" ).droppable({
+    accept: ".module-sub_section",
+    drop: function( event, ui ) {
+       var droppable = $(this);
+       var draggable = ui.draggable;
+       var draggable_id = draggable.attr("id");
+       var numItems = $('.module').length+1;
+       var result = style_none = module_id = course_id = "test";
+       var class_module_level = $(this).attr('class').split(' ')[1];
+       console.log(class_module_level);
+       var first_five_char_class = class_module_level.substring(0,5);
+       var get_submodule_level_values = '';
+       var url = API_CONTENT_URL + '/course_module/';
+       var method = "POST";
+       var class_module_main_level = $(this).attr('class').split(' ')[3];
+       var class_module_sub_level = $(this).attr('class').split(' ')[2];
+       var parent_id = $(this).parent().parent().find(".module").attr("data-module_id");
+       console.log($(this));
+       console.log(class_module_main_level);
+       console.log(class_module_sub_level);
+       console.log(parent_id);
+       event.preventDefault();
+       console.log(event.target.parentElement);
+       get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
+        /*var template =`<div class='module sub_module_${result} sub_${result} module_${result} no_child disp_block draggable ui-droppable' id='${result}' draggable='true'>`;
+              template += `<ul class='sub_module draggable ui-droppable'>`;
+              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
+              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Special Population 1' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${module_id}' data-cid='${course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Special Population 1'>Special Population 1</p></li>`;
+              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
+              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
+              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${module_id}' data-cid='${course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Special Population 1' data-cid='${course_id}''  data-module_id='${module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
+              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
+              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
+              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
+              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li></li>`;
+              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
+
+              template +=`<div class='module sub_module_${result} sub_${result} module_${result} no_child disp_block draggable ui-droppable' id='${result}' draggable='true'>`;
+              template += `<ul class='sub_module draggable ui-droppable'>`;
+              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
+              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Special Population 2' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${module_id}' data-cid='${course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Special Population 2'>Special Population 2</p></li>`;
+              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
+              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
+              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${module_id}' data-cid='${course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Special Population 2' data-cid='${course_id}''  data-module_id='${module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
+              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
+              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
+              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
+              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li></li>`;
+              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
+
+$(this.firstChild).append(template);
+//$(this).children()[0].append(template);*/
+           //$(this).children("ul")[0].append(template);
+       /*var container_size = document.getElementById("course_box").classList[0];
+       var style_none = "display:block;";
+       if(container_size == "col-lg-8"){
+         style_none = "display:none;";
+       }
+        var classList_1 = $(this).attr('class').split(' ')[1];
+        var index = classList_1.lastIndexOf("_");
+        console.log(index);
+        var result = Number(classList_1.substr(index+1));
+        console.log(result);
+        var url = API_CONTENT_URL + '/course_module/';
+        var method = "POST";
+        var get_submodule_level_values = {
+          module_name: String("Introduction"),
+          level: parseInt(result), 
+          course_id:String(document.getElementById("course_id").value),
+          parent_id:null
+        };
+
+      fetch(url, {
+        method: method,
+        body: JSON.stringify(get_submodule_level_values),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      })
+      .then((response) => response.json())
+      .then((json) => {
+           var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
+              template += `<ul class='main_module module_opacity' style='opacity:1'>`;
+              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
+              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
+              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
+              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
+              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${json.module_id}' data-cid='${json.course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Introduction' data-cid='${json.course_id}''  data-module_id='${json.module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
+              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
+              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
+              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
+
+           $(this).before(template);
+      })
+      .catch(function (error) {
+        console.log("Requestfailed", error);
+      });*/
+    }
+});
+function hide_show_container(e){
+    $("#right_module_menu").hide();
+    $("#course_box").removeClass( "col-md-8" ).addClass( "col-md-12" );
+    $("#course_box").removeClass( "col-lg-8" ).addClass( "col-lg-12" );
+    $(".dots_img_icon").attr("style", "display:inline_block;");
+    $(".attach_img_icon").attr("style", "display:inline_block;");
+    $(".message_img_icon").attr("style", "display:inline_block;");
+    $(".user_img_icon").attr("style", "display:inline_block;");
+    $(".frame_img_icon").attr("style", "display:inline_block;");
+    $(".plus_img_icon").attr("style", "display:inline_block;");
 }

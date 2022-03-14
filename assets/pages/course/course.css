@@ -1,13 +1,13 @@
-.main_module, .sub_module{
+/*.main_module, .sub_module{
     border-style: dashed;
     border-color: #e0e0e0;
     border-width: 2px;
     width: auto;
     padding-bottom: 44px;
-}
+}*/
 .module{
     width: 100%;
-    float: right;
+    /*float: right;*/
     margin-top: 15px;
 }
 .module_opacity{
@@ -25,7 +25,7 @@
     padding-inline-start: 0px;
     list-style-type: none;
 }
-.course_img_icon, .frame_img_icon, .plus_img_icon, .message_img_icon, .attach_img_icon, .dots_img_icon, .user_img_icon, .up_down_img_icon, .delete_img_icon, .expand_img_icon{
+.course_img_icon, .frame_img_icon, .plus_img_icon, .message_img_icon, .attach_img_icon, .dots_img_icon, .user_img_icon, .up_down_img_icon, .delete_img_icon, .expand_img_icon, .elipsis_icon{
     cursor: pointer;
     padding: 5px;
 }
@@ -121,6 +121,10 @@
 .course .expand_img_icon img{
     width: 20px;
     margin-top: 7px;
+}
+.course .elipsis_img_icon img{
+    width: 45px;
+    margin-top: 0px;
 }
 /*.admin_course .modal{
     position: absolute !important;
@@ -289,4 +293,28 @@
     cursor: pointer;
     -webkit-transition: 0.3s all;
     transition: 0.3s all;
+}
+#course_box .has_child {
+    border: 1px dashed #D3D2DC;
+}
+#course_box .no_child{
+    border: 1px solid #D3D2DC;
+}
+#course_box .module {
+    padding: 5px 5px 10px 10px;
+    border-radius: 5px;
+    float: left !important;
+    background: white;
+}
+#course_box{
+    background: #f9f9fb !important;
+}
+
+#course_box .drag_drop_qa_text{
+    font-weight: 600;
+}
+#course_box .qa_dashed{
+    border-radius: 5px;
+    border:2px dashed #161515;
+    opacity: 0.5;
 }
