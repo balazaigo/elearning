@@ -34,6 +34,12 @@
           </div>
 
           <div class="col-md-12 mb-3">
+              <div class="form-floating">
+                <input type="text" id="case_short_code" name="case_short_code" class="form-control cm-replaceSpace" placeholder=" ">
+                <label for="case_short_code">Case ID</label>
+              </div>
+          </div>
+          <div class="col-md-12 mb-3">
             <div class="form-floating">
               <select class="sort-select form-control" id="case_type" name="case_type">
                 <option value="">Select type of case</option>
@@ -41,15 +47,15 @@
                 <option value="1">Moderate</option>
                 <option value="2">Complex</option>
               </select>
-              <label for="case_type" data-title="Select type of case" data-caption="Select">Select</label>
+              <label for="case_type" data-title="Select type of case" data-caption="Select">Type of Case</label>
             </div>
           </div>
           <div class="col-md-12 mb-3">
             <div class="form-floating">
               <select class="sort-select form-control" id="case_assign_to" name="assign_to">
-                <option value="">Assign To</option>
+                <option value="">Select Assign To</option>
               </select>
-              <label for="assign_to" data-title="Select Assignto" data-caption="Select">Select</label>
+              <label for="assign_to" data-title="Select Assignto" data-caption="Select">Assign To</label>
             </div>
           </div>
           <div class="col-md-12 mb-3">
@@ -153,6 +159,14 @@
           
         </div>
         <div id="pagination-container-to"></div>
+        
+        <div  id="nodataFound_course" style="display: none;">
+            <div class="row">
+              <div class="col-12 title-head mb-3">
+                <p><span class="text-danger">No Records Found!</span></p>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -309,14 +323,22 @@ function get_pagination(parameter){
 
         $("#role-loader").removeClass("disp_block");
         $("#role-loader").addClass("disp_none");
+        console.log(parameter);
         if(data.length === 0){
-          $("#nodataFound_course").attr("style", "display:block");
+          if(parameter != ""){
+            $("#nodataFound_course").attr("style", "display:block");
+            $("#list_case_container").addClass("disp_block");
+            $("#list_case_container").removeClass("disp_none");
 
-          $("#add_case_container").addClass("disp_block");
-          $("#add_case_container").removeClass("disp_none");
+            $("#add_case_container").removeClass("disp_block");
+            $("#add_case_container").addClass("disp_none");
+          }else{
+            $("#add_case_container").addClass("disp_block");
+            $("#add_case_container").removeClass("disp_none");
 
-          $("#list_case_container").removeClass("disp_block");
-          $("#list_case_container").addClass("disp_none");
+            $("#list_case_container").removeClass("disp_block");
+            $("#list_case_container").addClass("disp_none");
+          }
         }else{
           $("#nodataFound_course").attr("style", "display:none");
           $("#list_case_container").addClass("disp_block");
@@ -486,6 +508,7 @@ function editCase(e){
         console.log(data);
         $("#case_name").val(data.name);
         $("#case_description").val(data.description);
+        $("#case_short_code").val(data.short_code);
         getAssignMember(data.member_id);
         $("#case_type option[value='"+data.type+"']").prop('selected', true);
 
@@ -529,7 +552,7 @@ function editCase(e){
         success: function (response) {
           console.log("response:", response);
           $("#case_assign_to").empty();
-          $("#case_assign_to").append("<option value=''>Assign To</option>");
+          $("#case_assign_to").append("<option value=''>Select Assign To</option>");
           $.each(response.data, function (i, val) {
             $("#case_assign_to").append("<option value='" + val.id + "'>" + val.first_name + " " + val.last_name + "</option>");
           });
@@ -568,6 +591,12 @@ function editCase(e){
   });
   $(document).ready(function(){
 
+    $("#case_name").on("blur", function () {
+      var str = $(this).val();
+      var acpref = str.substring(0, 4);
+      $("#case_short_code").val(acpref.str_replace(' ', '-').toUpperCase());
+      getTagSuggest(str);
+    });
     var search_param = "";
     get_pagination(search_param);
     var member_id = "";
@@ -658,11 +687,11 @@ function editCase(e){
         var formData = new FormData();
 
         formData.append("name", $("#case_name").val());
+        formData.append("short_code", $("#case_short_code").val());
         formData.append("type", $("#case_type").find("option:selected").val());
         formData.append("member_id", $("#case_assign_to").find("option:selected").val());
         formData.append("description", $("#case_description").val());
         formData.append("tags", tags);
-console.log(window.sharedEditCaseId);
         var case_id = window.sharedEditCaseId;
         var URL = API_CONTENT_URL + "/cases/";
         var method = "POST";
@@ -706,4 +735,24 @@ console.log(window.sharedEditCaseId);
   /****** Create Case Save section Ends *************/
   });
 
+  function getTagSuggest(qString) {
+    $.ajax({
+      url: encodeURI(API_CONTENT_URL + '/suggest/tags/?term=' + qString),
+      type: 'get',
+      dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success: function (response) {
+        var tags = response.tags;
+        var tags_empty = [];
+        if (tags) {
+          $("#tags2").html("");
+          $("#tags2").val(tags_empty).change();
+          $.each(tags, function (i, val) {
+            $("#tags2").append("<option value='" + val + "'>" + val + "</option>");
+          });
+          $("#tags2").val(tags).change();
+        }
+      }
+    });
+  }
 </script>

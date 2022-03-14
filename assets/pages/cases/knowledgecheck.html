@@ -347,7 +347,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
           var template_question = "";
           if(data.module_questions.length > 0){
             $.each(data.module_questions, function (ques_i, ques_val) {
-              var numItems = ques_i;
+              var numItems = ques_i+1;
               var typeClass = "";
               if(ques_val.type == 1){
                 typeClass = "trueorfalse";
@@ -685,31 +685,55 @@ function get_ques_ans_template(draggable_id, numItems){
 //To remove Answer when Uncheck Option
 function insert_answer(e){
   if(e.checked === true){
-
+    var valid_answer = 1;
     var quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
     var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
+    var answer_name = e.closest('.mt-2').childNodes[0].childNodes[1].textContent;
     if(quest_id && answer_id){
-    var quest_type = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-ques_type");
-    //console.log(quest_type);
-    if(quest_type == "1" || quest_type == "3"){
-      //console.log(document.querySelector(e.target.closest('.mt-2')));
-      //e.closest('.mt-2').childNodes[1].childNodes[0].childNodes[0].checked = false;
-      //console.log($(e).closest('ul'));
-      //console.log($(e).closest('ul').siblings('input:checkbox'))
-       //$(e).closest('ul').siblings('input:checkbox').prop('checked', false);
-      //e.checked = true;
+      var quest_type = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-ques_type");
+      if(quest_type == "1" || quest_type == "3"){
+         var chk_attr_name = $(e).attr('name');
+         $("input[name='"+chk_attr_name+"']").each( function() {
+          $(this).prop('checked', false);
+         });
+        e.checked = true;
+      }
+      var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+      var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+      var question = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].value;
+      insert_answer_for_question(answer_id, answer_name, quest_type, case_id, case_module_id, question, quest_id, valid_answer);
+    }else{
+      $(e).prop('checked', false);
+      toastr.error("Please Edit Answer");
     }
+  }
+  if(e.checked === false){
+    var valid_answer = 0;
+    var quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
+    var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
+    var answer_name = e.closest('.mt-2').childNodes[0].childNodes[1].textContent;
     var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
     var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
     var question = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].value;
-        var formData = new FormData();
-        formData.append("valid_answers", answer_id);
+    if(quest_id && answer_id){
+      var quest_type = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-ques_type");
+      insert_answer_for_question(answer_id, answer_name, quest_type, case_id, case_module_id, question, quest_id, valid_answer);
+    }else{
+      toastr.error("Please Edit Answer");
+    }
+  }
+}
+function insert_answer_for_question(answer_id, answer_name, quest_type, case_id, case_module_id, question, quest_id, valid_answer){
+  var formData = new FormData();
+        formData.append("valid_answer", valid_answer);
         formData.append("type", quest_type);
-        formData.append("case_id", case_id);
+        //formData.append("case_id", case_id);
         formData.append("case_module_id", case_module_id);
         formData.append("question", question);
+        formData.append("answer", answer_name);
+        formData.append("question_id", quest_id);
       $.ajax({
-        url: API_CONTENT_URL + '/questions/' + quest_id+'/',
+        url: API_CONTENT_URL + '/answers/' + answer_id+'/',
         method: 'PUT',
         type: 'PUT', // For jQuery < 1.9
         cache: false,
@@ -728,44 +752,6 @@ function insert_answer(e){
           console.log(error);
         }
       });
-    }else{
-      toastr.error("Please Edit Answer");
-    }
-  }
-  /*if(e.checked === false){
-      e.closest('.mt-2').childNodes[0].childNodes[1].setAttribute("data-answer_id", "");
-      e.closest('.mt-2').childNodes[0].childNodes[2].setAttribute("data-answer_id", "");
-      var ques_type = e.closest('.ques-box').classList[2];
-      console.log(e.closest("li"));
-      let li = e.closest("li")
-      let nodes = Array.from( li.closest('ul').children ); // get array
-      let index = nodes.indexOf( li )+1; 
-      var text_input = "";
-      if(ques_type === "mcq" || ques_type === "multiplechoice"){
-        text_input = "Option "+index;
-      }else if(ques_type === "trueorfalse"){
-        text_input = index == 1 ? "True" : "False";
-      }
-      e.closest('.mt-2').childNodes[0].childNodes[1].textContent = text_input;
-      //e.closest('.mt-2').childNodes[0].childNodes[1].textContent = ""
-      var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
-      $.ajax({
-        url: API_CONTENT_URL + '/answers/' + answer_id,
-        type: 'DELETE',
-        headers: {
-          "Authorization": "Bearer " + getUserInfo().access_token
-        },
-        success:function(response){
-          toastr.success("Option Removed successfully.");
-          var search_param = "";
-          get_pagination(search_param);
-        },
-        error: function(error) {
-          toastr.error("Response Error: " + error.message);
-          console.log(error);
-        }
-      });
-  }*/
 }
 //To Edit Answer Option
 function toInput(e){
