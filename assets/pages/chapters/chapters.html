@@ -143,6 +143,30 @@
   </div>
   <!--Chapter list end-->
   
+<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title"><span id="mAlertName"></span></h6>
+        <a class="close" data-bs-dismiss="modal">×</a>
+      </div>
+      <div class="modal-body text-center">
+        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" alt="Delete"> </div>
+        <input type="hidden" id="mAlertURL" value="" />
+        <p>Are you sure you want to delete it?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <span class="dborder-btn nbtn">
+          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        </span>
+        <span class="danger-btn nbtn">
+          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 var frmvalidatorfrm;
 
@@ -187,7 +211,7 @@ var frmvalidatorfrm;
       callback: function(data, pagination) {
         var html = template(data);
         $('#listData').html(html);
-        // loadAlertModal();
+        loadAlertModal();
       }
     });
 
@@ -226,16 +250,6 @@ var frmvalidatorfrm;
     
         html += `<li>`;
     
-        if(item.status == '0' || item.status == '1') {
-          html += `<a id="disabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>`;
-        } else if(item.status == '2') {
-          html += `<a id="enabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enabled</a>`;
-        } else {
-          html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
-        }
-    
-        html += `</li><li>`;
-        
         if(item.status == '2' || item.status == '3') {
           html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
         } else {
@@ -493,4 +507,58 @@ var frmvalidatorfrm;
       //description
     }
   }
+
+  function loadAlertModal(){
+    $('#mAlert').on('shown.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var recipientID = button.data('url');
+      var name = button.data('name');
+      var modal = $(this);
+      modal.find('.modal-content input').val(recipientID);
+      modal.find('.modal-content #mAlertName').html(name);
+      $("#mAlertCancel").focus();
+      //mAlertDelete
+
+      //mAlertCancel
+      $(document).on('click', '#mAlertCancel', function() {
+        $(document).off('click', '#mAlertCancel');
+        $(document).off('click', '#mAlertDelete');
+      });
+
+      $(document).off('click', '#mAlertDelete');
+      $(document).on('click', '#mAlertDelete', function() {
+        var url = $("#mAlertURL").val();
+        if(url) {
+          $.ajax({
+            url: API_CONTENT_URL + '/chapters/' + url + '/',
+            type: 'DELETE',
+            headers: {
+              "Authorization": "Bearer " + getUserInfo().access_token
+            },
+            success:function(response){
+              toastr.success("Chapter deleted successfully.");     
+              $("#mAlertCancel").click();     
+              doSearch();
+            },
+            error: function(error) {
+              console.log(error);
+              toastr.error("Response Error: " + error.detail);
+            }
+          });
+        } else {
+          alert("Not selected!");
+        }
+      });
+
+    });
+    //hidden.bs.modal 
+    $('#mAlert').on('hidden.bs.modal', function (event) {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+      var modal = $(this);
+      modal.find('.modal-content input').val(null);
+      modal.find('.modal-content #mAlertName').html("Loading...");
+    });
+  }
+
 </script>
