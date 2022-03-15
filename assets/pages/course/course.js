@@ -50,6 +50,7 @@ var listItens = document.querySelectorAll('.draggable');
 [].forEach.call(listItens, function(item) {
   addEventsDragAndDrop(item);
 });
+
 function toinput(e){
     if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
       e.previousSibling.value = ''; 
@@ -290,16 +291,57 @@ function check_value(e){
     });
 
 }
-function add_sub(e){
-    $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
-    $("#course_box").removeClass( "col-lg-12" ).addClass( "col-lg-8" );
-    $(".dots_img_icon").attr("style", "display:none;");
-    $(".attach_img_icon").attr("style", "display:none;");
-    $(".message_img_icon").attr("style", "display:none;");
-    $(".user_img_icon").attr("style", "display:none;");
-    $(".frame_img_icon").attr("style", "display:none;");
-    $(".plus_img_icon").attr("style", "display:none;");
-    $("#right_module_menu").show();
+function add_sub(e, section){
+  var classList = e.className.split(/\s+/);
+  var index = classList[1].lastIndexOf("_");
+  var result = Number(classList[1].substr(index+1));
+  var url = API_CONTENT_URL + '/course_module/';
+  var method = "POST";
+  console.log(section);
+  if(section == "Sub Section"){
+
+    var parent_id = e.getAttribute("data-module_id");
+    var get_submodule_level_values = {
+      module_name: String("Special Population 1"),
+      level: parseInt(result), 
+      course_id:String(document.getElementById("course_id").value),
+      parent_id:parent_id
+    };
+  }else{
+    var get_submodule_level_values = {
+      module_name: String("Introduction new"),
+      level: parseInt(result), 
+      course_id:String(document.getElementById("course_id").value),
+      parent_id:null
+    };
+  }
+  fetch(url, {
+        method: method,
+        body: JSON.stringify(get_submodule_level_values),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        $('#course_id').trigger('click');
+           /*var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
+              template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
+              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
+              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
+              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
+              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
+              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${json.module_id}' data-cid='${json.course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Introduction' data-cid='${json.course_id}''  data-module_id='${json.module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
+              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
+              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
+              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
+
+           $(this).before(template);*/
+      })
+      .catch(function (error) {
+        console.log("Requestfailed", error);
+      });
     /*var x =e.parentElement.parentElement.childNodes;
     if(x[0].nodeName == "#text"){
         var inp_val = x[5].childNodes[1].innerHTML;
@@ -364,17 +406,65 @@ function add_sub(e){
     }*/
 }
 
-function add_sub_sub(e){
+function get_submodule_level_val_sub(class_module_main_level, class_module_sub_level, parent_id_val){
+  var data_course_module = "";
+  if(class_module_sub_level.indexOf('.') !== -1){
+      var level_number = (class_module_sub_level.split("_module")[0]).split(".")[class_module_sub_level.split(".").length-1];
+      data_course_module = {
+        module_name: String("Special Population 1"),
+        level: parseInt(level_number), 
+        course_id:String(document.getElementById("course_id").value),
+        parent_id: parent_id_val
+      }
 
-    $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
-    $("#course_box").removeClass( "col-lg-12" ).addClass( "col-lg-8" );
-    $(".dots_img_icon").attr("style", "display:none;");
-    $(".attach_img_icon").attr("style", "display:none;");
-    $(".message_img_icon").attr("style", "display:none;");
-    $(".user_img_icon").attr("style", "display:none;");
-    $(".frame_img_icon").attr("style", "display:none;");
-    $(".plus_img_icon").attr("style", "display:none;");
-    $("#right_module_menu").show();
+  }else{
+      var level_number = class_module_sub_level.split('_')[1];
+      data_course_module = {
+        module_name: String("Special Population 1"),
+        level: parseInt(level_number), 
+        course_id:String(document.getElementById("course_id").value),
+        parent_id: parent_id_val
+      }
+  }
+  return data_course_module;
+}
+function add_sub_sub(e, section){
+  console.log(e);
+  console.log(section);
+
+  var classList = e.className.split(/\s+/);
+  if(classList[2] == 'main_mod'){
+
+  }else{
+    var index = classList[1].lastIndexOf("_");
+    var result = Number(classList[1].substr(index+1));
+    var url = API_CONTENT_URL + '/course_module/';
+    var method = "POST";
+    var class_module_main_level = e.classList[3];
+    var class_module_sub_level = e.classList[2];
+    var parent_id = e.getAttribute("data-module_id");
+    get_submodule_level_values = get_submodule_level_val_sub(class_module_main_level, class_module_sub_level, parent_id);
+    console.log(get_submodule_level_values);
+  }
+  /*var get_submodule_level_values = {
+    module_name: String("Introduction new"),
+    level: parseInt(result), 
+    course_id:String(document.getElementById("course_id").value),
+    parent_id:null
+  };*/
+  fetch(url, {
+        method: method,
+        body: JSON.stringify(get_submodule_level_values),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        $('#course_id').trigger('click');
+      })
+      .catch(function (error) {
+        console.log("Requestfailed", error);
+      });
+
   /*var x =e.parentElement.parentElement.childNodes;
   if(x.length == 17){
     var inp_val = x[5].childNodes[0].value;
@@ -766,7 +856,7 @@ function delete_module_confirm(e){
       modal.find('.modal-content #mAlertName').html("Loading...");
     });
 }
-
+/*
 $( ".module-section" ).draggable({
     revert: "invalid",
     stack: ".draggable",
@@ -895,6 +985,7 @@ $( ".sub_mods" ).droppable({
        var result = style_none = module_id = course_id = "test";
        var class_module_level = $(this).attr('class').split(' ')[1];
        console.log(class_module_level);
+       $(this).children("ul").attr("style", "z-index:0;");
        var first_five_char_class = class_module_level.substring(0,5);
        var get_submodule_level_values = '';
        var url = API_CONTENT_URL + '/course_module/';
@@ -908,7 +999,7 @@ $( ".sub_mods" ).droppable({
        console.log(parent_id);
        event.preventDefault();
        console.log(event.target.parentElement);
-       get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
+       get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);*/
         /*var template =`<div class='module sub_module_${result} sub_${result} module_${result} no_child disp_block draggable ui-droppable' id='${result}' draggable='true'>`;
               template += `<ul class='sub_module draggable ui-droppable'>`;
               template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
@@ -985,12 +1076,13 @@ $(this.firstChild).append(template);
       .catch(function (error) {
         console.log("Requestfailed", error);
       });*/
-    }
-});
+    /*}
+});*/
 function hide_show_container(e){
     $("#right_module_menu").hide();
     $("#course_box").removeClass( "col-md-8" ).addClass( "col-md-12" );
     $("#course_box").removeClass( "col-lg-8" ).addClass( "col-lg-12" );
+    $(".elipsis_img_icon").attr("style", "display:none;");
     $(".dots_img_icon").attr("style", "display:inline_block;");
     $(".attach_img_icon").attr("style", "display:inline_block;");
     $(".message_img_icon").attr("style", "display:inline_block;");
@@ -998,3 +1090,78 @@ function hide_show_container(e){
     $(".frame_img_icon").attr("style", "display:inline_block;");
     $(".plus_img_icon").attr("style", "display:inline_block;");
 }
+function add_module(e, id, mod_level){
+    $("#clicked_event").attr("data-click_id", id);
+    $("#clicked_event").attr("data-click_level", mod_level);
+    $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
+    $("#course_box").removeClass( "col-lg-12" ).addClass( "col-lg-8" );
+    $(".elipsis_img_icon").attr("style", "display:block;");
+    $(".dots_img_icon").attr("style", "display:none;");
+    $(".attach_img_icon").attr("style", "display:none;");
+    $(".message_img_icon").attr("style", "display:none;");
+    $(".user_img_icon").attr("style", "display:none;");
+    $(".frame_img_icon").attr("style", "display:none;");
+    $(".plus_img_icon").attr("style", "display:none;");
+    $("#right_module_menu").show();
+}
+$(".module-sec").click(function(e){
+  var e = this;
+  var clicked_elem_id = document.getElementById("clicked_event").getAttribute("data-click_id");
+  var clicked_elem_level = document.getElementById("clicked_event").getAttribute("data-click_level");
+  /*console.log(clicked_elem_level);
+  console.log(clicked_elem_id);
+  console.log(e.childNodes);
+  console.log(e.childNodes[3]);*/
+  var selected_module = e.childNodes[3].textContent;
+  $("#right_module_menu").hide();
+  $("#course_box").removeClass( "col-md-8" ).addClass( "col-md-12" );
+  $("#course_box").removeClass( "col-lg-8" ).addClass( "col-lg-12" );
+  $(".elipsis_img_icon").attr("style", "display:none;");
+  $(".dots_img_icon").attr("style", "display:inline_block;");
+  $(".attach_img_icon").attr("style", "display:inline_block;");
+  $(".message_img_icon").attr("style", "display:inline_block;");
+  $(".user_img_icon").attr("style", "display:inline_block;");
+  $(".frame_img_icon").attr("style", "display:inline_block;");
+  $(".plus_img_icon").attr("style", "display:inline_block;");
+  var element = document.querySelector('[data-unique_id="'+clicked_elem_id+'"]');
+  if(clicked_elem_level == "sub_sub" && selected_module == "Section"){
+    toastr.error("Can't add Section inside Sub Module");
+  }else{
+    if(selected_module == "Section" || selected_module == "Sub Section"){
+      if(clicked_elem_level == "sub"){
+        add_sub(element, selected_module);
+      }else{
+        add_sub_sub(element, selected_module);
+      }
+    }else if(selected_module == "Module"){
+       /* if(clicked_elem_level == "sub"){
+          add_sub_module(element, selected_module);
+        }else{
+          add_sub_sub_module(element, selected_module);
+        }*/
+
+      /*if(processRights("Add Course") === false || processRights("Define Course") === false) {
+        toastr.error(window.language.error_no_access);
+        return false;
+      } else {*/
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container);
+        var url = `${SITE_URL_PROTOCOL}/assets/cases/courses/module_list.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          modal.show();
+        });
+      //}
+
+    }else if(selected_module == "Case Study"){
+
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container);
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/case_study_list.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          $(".modal-lg").attr("style","max-width: 80%;");
+          $("#popup_course_icon").attr("style","top: 20px;");
+          modal.show();
+        });
+    }
+  }
+});

@@ -1,0 +1,107 @@
+<div class="modal-header">
+  <h5 class="modal-title">Add a new course</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+
+  <form method="post" class="" id="frmNewCourses" name="frmNewCourses" enctype="multipart/form-data">
+    <input type="hidden" name="platform_id" id="platform_id" value="1e4758ac-8077-42e6-b9d9-11b0de0df37d">
+    <input type="hidden" name="course_id" id="course_id" value="">
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize"
+            placeholder="Name of the course">
+          <label for="coursesName">Master Course Name</label>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <input type="text" id="coursesID" name="coursesID" class="form-control cm-replaceSpace"
+            placeholder="Course ID Prefix">
+          <label for="coursesID">CAS ID</label>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <select class="sort-select form-select" id="category" name="category">
+            <option value="">Category</option>
+          </select>
+          <label for="category" data-title="Select category" data-caption="Select">Select</label>
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <select class="sort-select form-select" id="subCategory" name="subCategory">
+            <option value="">Sub Category</option>
+          </select>
+          <label for="subCategory" data-title="Select subcategory" data-caption="Select">Select</label>
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label class="custom-file">
+          <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control"
+            placeholder="Design documents">
+          <span class="filename">Design documents</span>
+        </label>
+      </div>
+
+      <div class="col-md-12 mb-3" id="course_attachment">
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="form-floating">
+          <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date"
+            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
+          <label for="start_date">Start Date</label>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-floating">
+          <input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date"
+            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
+          <label for="end_date">End Date</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <select class="sort-select form-select" id="member" name="member">
+            <option value="">Member</option>
+          </select>
+          <label for="member" data-title="Assign Member" data-caption="Assign">Assign Project Manager</label>
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label for="tags" class="tags-label d-none">Add a tags</label>
+        <select class="form-control tags" id="tags" name="tags[]" multiple="multiple" style="width:100%"></select>
+      </div>
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <input type="text" id="description" name="description" class="form-control counter"
+            placeholder="One line description" maxlength="1024" minlength="4"/>
+          <span class="charcounter">0 Char</span>
+          <label for="description">One line description</label>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+<div class="modal-footer">
+  <span class="custom-btn nbtn">
+    <button type="button" class="btn btn-success" id="saveCoursesNew">Save & New</button>
+  </span>
+  <span class="orange-btn nbtn">
+    <button type="button" class="btn btn-primary" id="saveCoursesClose">Save & Close</button>
+  </span>
+</div>
+<script type="text/javascript">
