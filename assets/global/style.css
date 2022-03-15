@@ -4062,3 +4062,6 @@ li.dashed {
 	border:2px dashed #161515;
 	opacity: 0.5;
 }
+.title-head h2 span#chapter_ind_desc_text {
+  margin-left:56px;
+}
