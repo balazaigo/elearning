@@ -485,6 +485,19 @@
         }
       });
     });
+    
+    $("input[name='chk']").on("click", function (e) {
+      var isFalse = false;
+      $("input[name='chk']:not(.parentcheck)").each( function () {
+        if($(this).is(":checked") == true) {
+          isFalse = true;
+        }
+      });
+      if(!isFalse) {
+        //parentcheck
+        $("#myCheck").prop("checked", false);
+      }
+    });
   
   }
 

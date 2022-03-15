@@ -203,13 +203,9 @@ function init() {
 
 /**************select and deselect checkbox*************/
 function selects() {
-  console.log("hello");
-
   var checkBox = document.getElementById("myCheck");
   var text = document.getElementById("text");
   if (checkBox.checked == true) {
-    console.log("hai");
-
     var ele = document.getElementsByName("chk");
     for (var i = 0; i < ele.length; i++) {
       if (ele[i].type == "checkbox") {

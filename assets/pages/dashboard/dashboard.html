@@ -164,8 +164,8 @@ function doSearch(){
   });
 }
   
-
 $( document ).ready(function() {
+
   $(".btnReset").on("click", function(){
     $("#status, #courses_list, #searchText").val(null);
     doSearch();
@@ -484,7 +484,21 @@ function loadAlertModal(){
     });
   });
 
+  $("input[name='chk']").on("click", function (e) {
+    var isFalse = false;
+    $("input[name='chk']:not(.parentcheck)").each( function () {
+      if($(this).is(":checked") == true) {
+        isFalse = true;
+      }
+    });
+    if(!isFalse) {
+      //parentcheck
+      $("#myCheck").prop("checked", false);
+    }
+  });
+
 }
+
 function checkdate(){
   var start_date = $("#start_date_task").val();
   var end_date   = $("#end_date_task").val();

@@ -60,8 +60,8 @@
                     <div class="dropdown-select">
                       <select class="form-control sort-select" id="status">
                         <option value="">Status</option>
-                        <option value="1">Active</option>
-                        <option value="2">InActive</option>
+                        <option value="0">Active</option>
+                        <option value="1">InActive</option>
                       </select>
                     </div>
                   </div>
@@ -470,14 +470,14 @@ function gridMembers(tagID, htmlID, assignTOBY){
         }else{
           $("#pagination-container").show();
         }
-      var html = template(data);
+      var html = template(data, pagination);
       $('#' + htmlID).html(html);
       loadAlertModal();
     }
   });
 }
 
-function template(data, tagTOBY) {
+function template(data, pagination) {
   var html = '';
   if(data.length > 0) {
     $.each(data, function(index, item) {
@@ -491,7 +491,9 @@ function template(data, tagTOBY) {
         </div>
       </td>
       `;
-      html += '<td><span class="">'+ (index + 1) +'</span></td>';
+      item.m_image = item.m_image.replace("http:", "");
+      item.m_image = item.m_image.replace("https:", "");
+      html += '<td><span class="">'+ (pagination.pageSize * (pagination.pageNumber - 1) + index + 1) +'</span></td>';
       html += '<td class="wrap"><img src="'+item.m_image+'" />&nbsp;&nbsp;'+ item.first_name + ' ' + item.last_name +'</td>';
       html += '<td>'+ item.email_id +'</td>';
       html += '<td>'+ item.phone_number +'</td>';
@@ -698,6 +700,19 @@ function loadAlertModal(){
         console.log(error);
       }
     });
+  });
+  
+  $("input[name='chk']").on("click", function (e) {
+    var isFalse = false;
+    $("input[name='chk']:not(.parentcheck)").each( function () {
+      if($(this).is(":checked") == true) {
+        isFalse = true;
+      }
+    });
+    if(!isFalse) {
+      //parentcheck
+      $("#myCheck").prop("checked", false);
+    }
   });
 
 }
