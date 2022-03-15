@@ -3860,15 +3860,17 @@ li.dashed {
 	list-style: none;
 	padding: 0;
 	overflow-x: hidden;
-	height: 80%;
+	height: 95%;
 }
 .chapter-list ul{
 	list-style: none;
 	padding: 0;
+    margin-bottom: 0px;
 }
 .chapter-list ul li {
 	clear: both;
-	color: #787895;
+    color: #212529;
+    font-weight: 600;
 }
 .chapter-list span {
 	float: right;

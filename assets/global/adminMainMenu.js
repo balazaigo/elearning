@@ -492,7 +492,7 @@ function get_list( a, $parent , level_count_inc) {
             if (a[i].children.length > 0){
               has_child = "has_child";
             }
-              newDIV = $("<div class='module module_"+level_count_inc+" main_mod "+has_child+" draggable' id='"+a[i].level+"' data-unique_id='module_"+level_count_inc+"' draggable='true' data-module_id='"+a[i].module_id+"'></div>");
+              newDIV = $("<div class='module module_"+level_count_inc+" main_mod "+has_child+" draggable' id='"+a[i].level+"' data-unique_id='module_"+level_count_inc+"' data-unique_case_id='"+a[i].case_id+"' draggable='true' data-module_id='"+a[i].module_id+"'></div>");
             newUl = $("<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'></ul>");
             newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><p onclick='toinput(this);' id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"'>"+input_value+"</p></li>");
@@ -552,7 +552,7 @@ function get_list( a, $parent , level_count_inc) {
               if (a[i].children.length > 0){
                 has_child = "has_child";
               }
-              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+has_child+" disp_block sub_mods' id='"+levels+"' data-unique_id='sub_module_"+levels+"' data-module_id='"+a[i].module_id+"'>");
+              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+has_child+" disp_block sub_mods' id='"+levels+"' data-unique_id='sub_module_"+levels+"' data-module_id='"+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' >");
               newUl = $("<ul class='sub_module draggable ui-droppable'></ul>");
               newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><p onclick='toinput(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"'>"+input_value+"</p></li>");

@@ -588,6 +588,22 @@ $(document).ready(function(){
   $('#popup_course_icon').on('hidden.bs.modal', function () {
       $('#course_id').trigger('click');
   });
+  var course_len = $("#course_box > div").length;
+  console.log(course_len);
+  if(course_len < 2){
+    //$("#clicked_event").attr("data-click_id", id);
+    //$("#clicked_event").attr("data-click_level", mod_level);
+    $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
+    $("#course_box").removeClass( "col-lg-12" ).addClass( "col-lg-8" );
+    $(".elipsis_img_icon").attr("style", "display:block;");
+    $(".dots_img_icon").attr("style", "display:none;");
+    $(".attach_img_icon").attr("style", "display:none;");
+    $(".message_img_icon").attr("style", "display:none;");
+    $(".user_img_icon").attr("style", "display:none;");
+    $(".frame_img_icon").attr("style", "display:none;");
+    $(".plus_img_icon").attr("style", "display:none;");
+    $("#right_module_menu").show();
+  }
 });
 function moduleMobilePreview(cid){
 
@@ -856,18 +872,18 @@ function delete_module_confirm(e){
       modal.find('.modal-content #mAlertName').html("Loading...");
     });
 }
-/*
+
 $( ".module-section" ).draggable({
     revert: "invalid",
     stack: ".draggable",
     helper: 'clone'});
-$( ".main_mod" ).droppable({
+$( ".main_mod_empty" ).droppable({
     accept: ".module-section",
     drop: function( event, ui ) {
        var droppable = $(this);
        var draggable = ui.draggable;
        var draggable_id = draggable.attr("id");
-       var numItems = $('.module').length+1;
+       var numItems = $('.main_mod').length+1;
        var container_size = document.getElementById("course_box").classList[0];
        var style_none = "display:block;";
        if(container_size == "col-lg-8"){
@@ -894,7 +910,7 @@ $( ".main_mod" ).droppable({
       })
       .then((response) => response.json())
       .then((json) => {
-           var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
+           var template =`<div class='module module_${numItems} main_mod no_child draggable ui-droppable' data-module_id='${json.module_id}' id='${result}' data-unique_id="module_${numItems}"draggable='true' style='opacity:1'>`;
               template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
               template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
               template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
@@ -906,16 +922,16 @@ $( ".main_mod" ).droppable({
               template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
               template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
               template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
-
-           $(this).after(template);
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${numItems}', 'sub');"></li></ul></div>`;
+           $(this).before(template);
+          hide_show_container();
       })
       .catch(function (error) {
         console.log("Requestfailed", error);
       });
     }
 });
-
+/*
 $( ".main_mod_empty" ).droppable({
     accept: ".module-section",
     drop: function( event, ui ) {
@@ -1078,7 +1094,7 @@ $(this.firstChild).append(template);
       });*/
     /*}
 });*/
-function hide_show_container(e){
+function hide_show_container(){
     $("#right_module_menu").hide();
     $("#course_box").removeClass( "col-md-8" ).addClass( "col-md-12" );
     $("#course_box").removeClass( "col-lg-8" ).addClass( "col-lg-12" );
@@ -1108,6 +1124,8 @@ $(".module-sec").click(function(e){
   var e = this;
   var clicked_elem_id = document.getElementById("clicked_event").getAttribute("data-click_id");
   var clicked_elem_level = document.getElementById("clicked_event").getAttribute("data-click_level");
+  var element = document.querySelector('[data-unique_id="'+clicked_elem_id+'"]');
+  console.log(element.getAttribute("data-unique_case_id"));
   /*console.log(clicked_elem_level);
   console.log(clicked_elem_id);
   console.log(e.childNodes);
@@ -1123,7 +1141,10 @@ $(".module-sec").click(function(e){
   $(".user_img_icon").attr("style", "display:inline_block;");
   $(".frame_img_icon").attr("style", "display:inline_block;");
   $(".plus_img_icon").attr("style", "display:inline_block;");
-  var element = document.querySelector('[data-unique_id="'+clicked_elem_id+'"]');
+  if(element.getAttribute("data-unique_case_id") == "null" && selected_module == "Module"){
+    toastr.error("Chapter can only be added for Case Levels");
+    return false;
+  }
   if(clicked_elem_level == "sub_sub" && selected_module == "Section"){
     toastr.error("Can't add Section inside Sub Module");
   }else{
@@ -1146,14 +1167,13 @@ $(".module-sec").click(function(e){
       } else {*/
         const container = document.getElementById("popup_course_icon");
         const modal = new bootstrap.Modal(container);
-        var url = `${SITE_URL_PROTOCOL}/assets/cases/courses/module_list.html?t=` + Math.floor(Date.now() / 1000);
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/module_list.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
           modal.show();
         });
       //}
 
     }else if(selected_module == "Case Study"){
-
         const container = document.getElementById("popup_course_icon");
         const modal = new bootstrap.Modal(container);
         var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/case_study_list.html?t=` + Math.floor(Date.now() / 1000);
