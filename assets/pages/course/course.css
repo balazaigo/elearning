@@ -163,6 +163,7 @@
 .tag__container #tag__List_append{
     width: 80%;
     float: left;
+    margin-top:15px;
 }
 .tag__container .showmore{
     width: 25%;
@@ -172,6 +173,7 @@
     bottom: 40px;
     right: 0px;
     color: rgb(243,106,16);
+    text-align:center;
 }
 .tag__container .showless{
     width: 100%;
