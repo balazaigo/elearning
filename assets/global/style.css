@@ -4067,3 +4067,17 @@ li.dashed {
 .title-head h2 span#chapter_ind_desc_text {
   margin-left:56px;
 }
+/* 15-03-2022 Email Bug Fixed */
+.bx.bx-menu {
+  font-size:24px;
+}
+#menu-btn {
+  border-radius:0px 0px 7px 0px !important;
+  right:-77px;
+}
+div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
+  font-size: 24px;
+  top: 2px;
+  position: relative;
+  left: 9px;
+}
