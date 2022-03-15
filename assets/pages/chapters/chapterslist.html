@@ -517,6 +517,7 @@
       }
       result_textMsg = "Level:"
       toastr.success(result_textMsg+" "+name+" Created.");
+      $("#chapter_id_mod").trigger("click");
     })
     .catch(function (error) {
       console.log("Requestfailed", error);
@@ -714,6 +715,7 @@
     var chapter_name = e.dataset.name;
     loadAlertModal(toastr_message, chapter_topic_id, chapter_name);
   }
+
   function loadAlertModal(toastr_message, chapter_topic_id, name){
     $('#mAlert').on('shown.bs.modal', function (event) {
       $("#mAlertCancel").focus();
