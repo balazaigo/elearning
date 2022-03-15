@@ -778,6 +778,26 @@ async function getKnowledgeCheckPage(e) {
   );
 }
 
+async function getChapterListPage(e) {
+  /*if(processRights("case") === false) {
+    toastr.error(window.language.error_no_access);
+    return false;
+  }*/
+  $("#app-admin").load(
+    `${SITE_URL_PROTOCOL}/assets/pages/chapters/chapterslist.html?t=` + Math.floor(Date.now() / 1000),
+    function (resp, status, xhr) {
+      if (status == "success" && xhr.status == 200) {
+        var case_flinkto_elem = document.querySelectorAll("[data-flinkto='chapters'], [data-flinkto='chapterslist']");
+        case_flinkto_elem.forEach(el=>{
+          el.setAttribute("data-chapter_id", e.target.dataset.chapter_id);
+          el.setAttribute("data-chapter_name", e.target.dataset.chapter_name);
+        });
+      } else {
+        console.log("Something error happend");
+      }
+    }
+  );
+}
 
 
 function handleTopMenuClick(e) {
@@ -887,7 +907,10 @@ function handleTopMenuClick(e) {
     case "chapters":
         getChaptersPage(e);
         break;  
-      
+
+    case "chapterslist":
+        getChapterListPage(e);
+        break;  
 
     case "settings":
         getTestPage();

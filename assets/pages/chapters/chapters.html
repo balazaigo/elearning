@@ -233,8 +233,8 @@ var frmvalidatorfrm;
         </td>
         `;
         html += '<td><span class="badge bg-success gridTaskID">#'+ item.short_code +'</span></td>';
-        html += '<td onClick="getChapterDetails(\''+item.id+'\', \''+item.name+'\')">'+ item.name +'</td>';
-        html += '<td onClick="getChapterDetails(\''+item.id+'\', \''+item.name+'\')">'+ item.description +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.name +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.description +'</td>';
         html += `
           <td class="text-right">
           <div class="dropdown ahide">
@@ -460,29 +460,6 @@ var frmvalidatorfrm;
     });
 
   });
-  
-  async function getChapterDetails(capterID, capterName) {
-    /*
-    if(processRights("chapters") === false) {
-      toastr.error(window.language.error_no_access);
-      return false;
-    }
-    */
-    $("#app-admin").load(
-      `${SITE_URL_PROTOCOL}/assets/pages/chapters/chapterslist.html?t=` + Math.floor(Date.now() / 1000),
-      function (resp, status, xhr) {
-        if (status == "success" && xhr.status == 200) {
-          var case_flinkto_elem = document.querySelectorAll("[data-flinkto='chapters']");
-          case_flinkto_elem.forEach(el=>{
-            el.setAttribute("data-chapter_id", capterID);
-            el.setAttribute("data-chapter_name", capterName);
-          });
-        } else {
-          console.log("Something error happend");
-        }
-      }
-    );
-  }
   
   function editChapter(e){
     $('#frmNewChapter').each(function(){

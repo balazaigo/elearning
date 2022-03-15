@@ -4,7 +4,7 @@
         <div class="row w-100">
           <div class="col-md-8">
             <input type="hidden" id="chapter_id_name" data-flinkto="chapters" />
-            <input type="hidden" id="chapter_id_mod" data-flinkto="chapters">
+            <input type="hidden" id="chapter_id_mod" data-flinkto="chapterslist">
             <h2>
               <span class="back"><a data-flinkto="chapters">
                 <i class="fas fa-arrow-left" data-flinkto="chapters"></i></a></span> <small id="chapter_ind_name_text"></small>
@@ -316,7 +316,6 @@
           e.parentElement.previousSibling.focus();
       }
   }
-
   function totext_chapter_mod(e){
       if(e.value == ''){
           e.value = e.nextSibling.dataset.prev_val;
@@ -374,7 +373,6 @@
       }
   
   }
-  
   function get_module_details_chapter_mod(chapter_id, chapter_topic_id, mytagArray){
     $.ajax({
       url: API_CONTENT_URL + '/chapter_topic_tags/?chapter_id='+chapter_id+'&chapter_topic_id='+chapter_topic_id,
