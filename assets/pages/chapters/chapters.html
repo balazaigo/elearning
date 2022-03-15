@@ -19,26 +19,30 @@
     <div class="popup pt-3">
       <h4 class="mb-3" id="create_chapter_text">Add a new chapter</h4>
       <span class="close">×</span>
-      <form method="post" id="frmNewCase" name="frmNewCase" enctype="multipart/form-data">
-        <input type="hidden" name="case_id" id="case_id" value="">
+      <form method="post" id="frmNewChapter" name="frmNewChapter" enctype="multipart/form-data">
+        <input type="hidden" name="chapter_id" id="chapter_id" value="">
         <div class="row">
           <div class="col-md-12 mb-3">
               <div class="form-floating">
-                <input type="text" id="case_name" name="case_name" class="form-control cm-capitalize" placeholder=" ">
-                <label for="case_name">Name of the Chapter</label>
+                <input type="text" id="chapter_name" name="chapter_name" class="form-control cm-capitalize" placeholder=" ">
+                <label for="chapter_name">Name of the Chapter</label>
               </div>
           </div>
+
           <div class="col-md-12 mb-3">
             <div class="form-floating">
-              <input type="text" id="case_description" name="description" class="form-control counter"
+              <input type="text" id="short_code" name="short_code" class="form-control cm-replaceSpace" placeholder=" ">
+              <label for="short_code">Short Code</label>
+            </div>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <div class="form-floating">
+              <input type="text" id="description" name="description" class="form-control counter"
                 placeholder=" " maxlength="1024" minlength="4"/>
               <span class="charcounter">0 Char</span>
               <label for="description">One line description</label>
             </div>
-          </div>
-          <div class="col-md-12 mb-3">
-            <label for="tags2" class="tags2-label d-none">Add a tag</label>
-            <select class="form-control tags2" id="tags2" name="tags[]" multiple="multiple" style="width:100%"></select>
           </div>
         </div>
       </form>
@@ -140,6 +144,7 @@
   <!--Chapter list end-->
   
 <script>
+var frmvalidatorfrm;
 
   function doSearch(){
     var queryPara = '?self=';
@@ -214,7 +219,7 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
             
         if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
-          html += `<li><a class="dropdown-item green" onClick="getChapterDetails('${item.id}', '${item.name}')">&nbsp;Edit</a></li>`;
+          html += `<li><a class="dropdown-item green" data-chapter_id='${item.id}' data-chapter_name='${item.name}' data-short_code='${item.short_code}' data-description='${item.description}' onClick='editChapter(this);'>&nbsp;Edit</a></li>`;
         } else {
           html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
         }
@@ -272,6 +277,23 @@
   }
   
   $( document ).ready(function() {
+    
+    $('.cm-capitalize').each(function () { $(this).capitalize(); });
+    $('.cm-uppercase').each(function () { $(this).upperCase(); });
+    $('.cm-replaceSpace').each(function () { $(this).replaceSpace(); });
+  
+    $('.counter').on("keyup", function () {
+      var cuChar = $(this).val().length;
+      $(this).next("span.charcounter").html(cuChar + " Char");
+    });
+  
+    $("#chapter_name").on("blur", function () {
+      var str = $(this).val();
+      if(!$("#short_code").val()) {
+        var acpref = str.substring(0, 4);
+        $("#short_code").val(acpref.str_replace(' ', '-').toUpperCase());
+      }
+    });
 
       $.validator.addMethod("pattern", function (value, element, param) {
         if (this.optional(element)) { return true; }
@@ -280,16 +302,15 @@
         }
         return param.test(value);
       }, "Check your inputs");
-      var frmvalidatorfrm = $("#frmNewCase").validate({
+      window.frmvalidatorfrm = $("#frmNewChapter").validate({
         rules: {
-          case_name: { required: true, minlength: 1, maxlength: 256 },
+          chapter_name: { required: true, minlength: 1, maxlength: 256 },
           description: { required: true, minlength: 1, maxlength: 256 },
-          case_type: { required: true },
-          assign_to: { required: true },
+          short_code: { required: true },
         },
         messages: {
-          case_name: {
-            required: "Please enter a Case Name",
+          chapter_name: {
+            required: "Please enter a Chapter Name",
             minlength: "Your case name must consist of at least 1 characters",
             maxlength: "Your case name must consist of max of 256 characters",
           },
@@ -298,8 +319,7 @@
             minlength: "Description must consist of at least 1 characters",
             maxlength: "Description must consist of max of 20 characters",
           },
-          case_type: { required: "Please select the Case type" },
-          assign_to: { required: "Please select Assign To" },
+          short_code: { required: "Please enter a code" },
         },
         errorElement: "em",
         errorPlacement: function (error, element) {
@@ -319,24 +339,29 @@
       });
   
     $(".add-case").click(function(){
-      $( '#frmNewCase' ).each(function(){
+      window.sharedEditChapterId = "";
+      $( '#frmNewChapter' ).each(function(){
           this.reset();
-          frmvalidatorfrm.resetForm();
-          $('#frmNewCase .form-control').removeClass('is-invalid');
+          window.frmvalidatorfrm.resetForm();
+          $('#frmNewChapter .form-control').removeClass('is-invalid');
       });
-      var tags_empty = [];
-      $("#tags2").html("");
-      $("#tags2").val(tags_empty).change();
       $("#createchapter").addClass("overlay_target");
       $("#createchapter").attr("style","display:block");
       $("#create_chapter_text").text("Create Chapter");
       $("#create_chapter_save_text").text("Create");
+
+      $('.counter').on("keyup", function () {
+        var cuChar = $(this).val().length;
+        $(this).next("span.charcounter").html(cuChar + " Char");
+      });
+      
     });
     $(".close").click(function(){
       $("#createchapter").removeClass("overlay_target");
       $("#createchapter").attr("style","display:none");
-    })
-    
+      window.sharedEditChapterId = "";
+      $("span.charcounter").html("0 Char");
+    });
     
     $(".btnReset").on("click", function(){
       $("#status, #searchText").val(null);
@@ -350,7 +375,6 @@
       doSearch(); 
     });
     $("#status").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
-    
 
     //load the courses list
     $.ajax({
@@ -377,6 +401,50 @@
       doSearch();
     }
 
+    $("#create_chapter_save_text").on("click", function () {
+      var isValidForm = window.frmvalidatorfrm.form();
+      if (isValidForm) {
+        var formData = new FormData();
+        formData.append("name", $("#chapter_name").val());
+        formData.append("short_code", $("#short_code").val());
+        formData.append("description", $("#description").val());
+        var chapter_id = window.sharedEditChapterId;
+        var URL = API_CONTENT_URL + "/chapters/";
+        var method = "POST";
+        var type = "POST";
+        if(chapter_id != ""){
+          var URL = API_CONTENT_URL + "/chapters/"+chapter_id+"/";
+          var method = "PUT";
+          var type = "PUT";
+        }
+        $.ajax({
+          url: URL,
+          method: method,
+          type: type, // For jQuery < 1.9
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token
+          },
+          success: function (response) {
+            toastr.success("New Chapter was successfully saved.");
+            $(".close").trigger("click");
+            $("#createchapter").attr("style","display:none");
+            $("#createchapter").removeClass("overlay_target");
+            window.sharedEditChapterId = "";
+            $("span.charcounter").html("0 Char");
+            doSearch();
+          },
+          error: function (error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+      }
+    });
+
   });
   
   async function getChapterDetails(capterID, capterName) {
@@ -401,5 +469,28 @@
       }
     );
   }
-</script>
   
+  function editChapter(e){
+    $('#frmNewChapter').each(function(){
+      this.reset();
+      window.frmvalidatorfrm.resetForm();
+      $('#frmNewChapter .form-control').removeClass('is-invalid');
+    });
+    window.sharedEditChapterId = e.dataset.chapter_id;
+    if(window.sharedEditChapterId){
+      $("#createchapter").attr("style","display:block");
+      $("#createchapter").addClass("overlay_target");
+      $("#create_chapter_text").html("Edit : <small>" + e.dataset.chapter_name.substring(0, 50)) + "</small>";
+      $("#create_chapter_save_text").text("Update");
+      $("#chapter_id").val(e.dataset.chapter_id);
+      $("#chapter_name").val(e.dataset.chapter_name);
+      $("#short_code").val(e.dataset.short_code);
+      $("#description").val(e.dataset.description);
+      if(e.dataset.description) {
+        var cuChar = $("#description").val().length;
+        $("#description").next("span.charcounter").html(cuChar + " Char");
+      }
+      //description
+    }
+  }
+</script>
