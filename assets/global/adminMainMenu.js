@@ -699,7 +699,7 @@ async function getChaptersPage(e) {
     `${SITE_URL_PROTOCOL}/assets/pages/chapters/chapters.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
-        console.log(e.target.dataset);
+        //console.log(e.target.dataset);
       } else {
         console.log("Something error happend");
       }
