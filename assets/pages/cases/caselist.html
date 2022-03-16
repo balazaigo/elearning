@@ -4,15 +4,16 @@
         <div class="row w-100">
             	<div class="col-md-8">
                     <input type="hidden" data-flinkto="cases" id="case_id_name"/>
+                    <input type="hidden" id="member_id" val=""/>
                     <input type="hidden" id="case_id_mod" data-flinkto="caseslist">
                 <h2><span class="back"><a  data-flinkto="cases"><i class="fas fa-arrow-left" data-flinkto="cases"></i></a></span> <small id="case_ind_name_text"></small>
-                     <a href=""><img src="../assets/images/pen-edit.jpg"></a>
+                    <input type="text" id="case_ind_name_input" onblur="toTextHeader();" value="" style="display: none;">
+                     <a id="text_edit_img_header" onclick="toInputHeader();"><img src="../assets/images/pen-edit.jpg"></a>
                     <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> 
                     <!-- in this page we don't need breadcumbs, So Commented it-->
                     <!--<span><a href="#">Breadcumbs1</a> <a href="#">Breadcumbs2</a></span> -->
                     <span id="case_ind_desc_text"></span>
                 </h2>
-
                 </div> 
                 <div class="col-md-4 p-0 side-btn">
                     <ul>
@@ -69,13 +70,13 @@
                     dataType: 'json',
                     headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
                     success: function (response) {
-                        console.log("response:", response);
                         var dots = "";
                         if(response.description.length > 75){
                             dots = "...";
                         }
                         $("#case_ind_name_text").text(response.case_name);
                         $("#case_ind_desc_text").text(response.description.substring(0, 75)+dots);
+                        $("#member_id").val(response.member_id);
                         var newDIV = $("<div class='course case_list_module_box' id='case_box'></div>");
                         var outerHtml = '';
                         get_list_mod( response.children, newDIV, 1);
@@ -370,7 +371,10 @@ function totext_case_mod(e){
       }
       
     }
-
+    var childList = e.parentElement.parentElement.childNodes
+    childList.forEach(function(item){
+        item.setAttribute("style","pointer-events:unset;");
+    });
     if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
         e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
         e.setAttribute("style","display:none");
@@ -404,7 +408,7 @@ function get_module_details_case_mod(case_id, module_id, mytagArray){
             url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+module_id,
             type: 'POST',
             data: JSON.stringify(tag_data),
-            contentType: "application/json; charset=utf-8",
+            headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
             success:function(response){
             },
             error: function(error) {
@@ -596,14 +600,14 @@ function add_sub_case_mod(e){
                 newHTML += "<ul class='sub_module'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"'>Level "+result+"</p></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
                 //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 $(e).closest('.main_mod').removeClass("no_child");
@@ -613,7 +617,7 @@ function add_sub_case_mod(e){
                 var class_module_main_level = main_mod_level;
                 var class_module_sub_level = "sub_"+result;
                 var input_val = "Level "+result;
-                toastr.success("Chapter Added.");
+                //toastr.success("Chapter Added.");
                 return;
             }
             if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
@@ -624,14 +628,14 @@ function add_sub_case_mod(e){
                 newHTML += "<ul class='main_module module_opacity'>";
                 newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                 newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                newHTML += "<li class='expand_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
                 //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li></li>";
+                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -677,14 +681,14 @@ function add_sub_sub_case_mod(e){
     newHTML += "<ul class='sub_module'>";
     newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
     newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"</p></li>";
-    newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
-    newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+    newHTML += "<li class='expand_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+    newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
     //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-    newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
-    newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
-    newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
-    newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>";
-    newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag'></li>";
+    newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
+    newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
+    newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
+    newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>";
+    newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag'></li>";
     newHTML += "</ul>";
     newHTML += "</div>";
 
@@ -694,7 +698,7 @@ function add_sub_sub_case_mod(e){
     var class_module_main_level = main_mod_level;
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
-    toastr.success(result_textMsg+" Added.");
+    //toastr.success(result_textMsg+" Added.");
    }
 }
 
@@ -728,7 +732,6 @@ function delete_case_module_confirm(e){
   var toastr_message = case_module_name+" Deleted successfully.";
   var case_module_id = e.dataset.case_module_id;
   var case_module_name = e.dataset.module_name;
-  loadAlertModal(toastr_message, case_module_id, case_module_name);
 }
   function loadAlertModal(toastr_message, module_id, module_name){
     $('#mAlert').on('shown.bs.modal', function (event) {
@@ -771,5 +774,44 @@ function delete_case_module_confirm(e){
       modal.find('.modal-content input').val(null);
       modal.find('.modal-content #mAlertName').html("Loading...");
     });
+}
+ function toInputHeader(){
+  $("#case_ind_name_input").val($("#case_ind_name_text").text());
+  $("#case_ind_name_input").attr("style", "display:inline-block");
+  $("#case_ind_name_input").focus();
+  $("#case_ind_name_text").attr("style", "display:none");
+  $("#text_edit_img_header").attr("style", "display:none");
+}
+function toTextHeader(){
+  let case_id = document.getElementById("case_id_name").getAttribute("data-case_id");
+  if($("#case_ind_name_input").val() !==""){
+    $("#case_ind_name_text").text($("#case_ind_name_input").val());
+    $("#case_ind_name_input").attr("style", "display:none");
+    $("#case_ind_name_text").attr("style", "display:inline-block");
+    $("#text_edit_img_header").attr("style", "display:inline-block");
+    var case_name = $("#case_ind_name_input").val();
+    var member_id = $("#member_id").val();
+    var case_data = {
+        "name": case_name,
+        "member_id" : member_id
+    }
+    $.ajax({
+      url: API_CONTENT_URL + "/cases/"+case_id+"/",
+      type: 'PATCH',
+      data: JSON.stringify(case_data),
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success:function(response){
+
+        toastr.success("Case Name Updated Successfully.");
+      },
+      error: function(error) {
+        tags_response = "1";
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  }else{
+        toastr.error("Case Name Should not be empty.");
+  }
 }
 </script>

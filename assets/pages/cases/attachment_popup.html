@@ -158,12 +158,12 @@
 
 function get_module_details(case_id, case_module_id){
     $.ajax({
-      url: API_CONTENT_URL + '/case_module_attachments/?case_module_id'+case_module_id,
+      url: API_CONTENT_URL + '/case_module_attachments/?case_module_id='+case_module_id,
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(response){
-        var module_attachments = response.module_attachments;
+        var module_attachments = response;
         var module_attachments_html = "";
         if(module_attachments && module_attachments.length > 0){
             module_attachments.forEach(function (element, index) {

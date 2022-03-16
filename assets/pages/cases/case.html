@@ -119,6 +119,7 @@
                 <div class="col-lg-3 col-md-3">
                   <div class="dropdown-select">
                     <select class="sort-select form-control" id="sort_recent" onchange="searchParam()">
+                      <option value="">Search By</option>
                       <option value="0">Recent</option>
                       <option value="4">Completed</option>
                       <option value="2">Onhold</option>
@@ -591,6 +592,10 @@ function editCase(e){
   });
   $(document).ready(function(){
 
+    $('.counter').keyup(function () {
+      var cuChar = $(this).val().length;
+      $(this).next("span.charcounter").html(cuChar + " Char");
+    });
     $("#case_name").on("blur", function () {
       var str = $(this).val();
       var acpref = str.substring(0, 4);
@@ -714,8 +719,11 @@ function editCase(e){
             "Authorization": "Bearer " + getUserInfo().access_token
           },
           success: function (response) {
-            console.log(response)
-            toastr.success("New Case was successfully saved.");
+            if(method == "POST"){
+              toastr.success("New Case was successfully saved.");
+            }else{
+              toastr.success("Case updated successfully.");
+            }
             $(".close").trigger("click");
             $("#createcases").attr("style","display:none");
 

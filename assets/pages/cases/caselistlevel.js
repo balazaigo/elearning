@@ -412,12 +412,12 @@ function get_breadcrumbs(){
       success:function(data){
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
-        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="cases" data-case_id="${data.case_id}"><a href="#" data-flinkto="cases" data-case_id="${data.case_id}">${data.case_name}</a></li>`;
+        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="cases" data-case_id="${data.case_id}"><a href="#" data-flinkto="cases" data-case_id="${data.case_id}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
               brd_crumbs += `<li class="breadcrumb-item" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}"><a href="#" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
-                  document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.case_id_prefix})</small></span>`;
+                  document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
               }
             });
         }

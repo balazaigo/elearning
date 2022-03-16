@@ -2677,6 +2677,14 @@ to {
 .case-section h4 {
 	font-size: 18px;
 }
+#case_ind_name_input{
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 18px;
+    line-height: 2;
+
+}
 a.login-btn {
 	background: #F36A10;
 	border: none;

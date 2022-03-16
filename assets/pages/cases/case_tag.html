@@ -30,6 +30,7 @@
       url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+case_module_id,
       type: 'get',
       dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
       success:function(response){
         console.log(response);
         var case_tags = response;
@@ -90,7 +91,7 @@ document.addEventListener("keyup", function(e){
         url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+case_module_id_val,
         type: 'POST',
         data: JSON.stringify(tag_data),
-        contentType: "application/json; charset=utf-8",
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
         success:function(response){
           const newTag = ` <li>${currentTag}<span class="tag__removes" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
@@ -123,7 +124,7 @@ document.addEventListener("click", function(e){
         $.ajax({
           url: API_CONTENT_URL + '/case_tags/'+tag_id+'/',
           type: 'DELETE',
-          contentType: "application/json; charset=utf-8",
+          headers: {"Authorization": "Bearer " + getUserInfo().access_token },
           success:function(response){
             e.target.parentElement.remove();
           }
