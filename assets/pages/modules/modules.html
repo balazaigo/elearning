@@ -126,8 +126,8 @@
                 <thead>
                   <tr>
                     <th><div class="form-check">
-                      <input class="form-check-input parentcheck" type="checkbox" value="" id="flexCheckDefault-1">
-                      <label class="form-check-label" for="flexCheckDefault-1">
+                      <input class="form-check-input parentcheck_module_list" name="chk" type="checkbox" value="" id="myCheck" onclick="selects();">
+                      <label class="form-check-label" for="myCheck" role="button">
                       </label>
                     </div></th>
                     <th>CHAPTER ID</th>                
@@ -332,7 +332,7 @@
         <td>
           <div class="form-check">
             <input class="form-check-input" name="chk" type="checkbox" value="`+ item.id +`" id="chk_`+ item.id +`">
-            <label class="form-check-label" for="chk_`+ item.id +`"> </label>
+            <label class="form-check-label" for="chk_`+ item.id +`" role="button"> </label>
           </div>
         </td>
         `;
@@ -407,6 +407,18 @@
     e.classList.add('cardactive');
   }
   
+  $("input[name='chk']").on("click", function (e) {
+    var isFalse_mod = false;
+    $("input[name='chk']:not(.parentcheck_module_list)").each( function () {
+      if($(this).is(":checked") == true) {
+        isFalse_mod = true;
+      }
+    });
+    if(!isFalse_mod) {
+      //parentcheck
+      $("#myCheck").prop("checked", false);
+    }
+  });
   $( document ).ready(function() {
 
       $.validator.addMethod("pattern", function (value, element, param) {

@@ -193,9 +193,9 @@
     });
     $("#status, #courses_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
     $('.btnRadio').click(function(){ doSearch(); });
-    if(processRights("Add Comments") === false) {
+    /*if(processRights("Add Comments") === false) {
       $('#content_message').css('pointer-events','none');
-    } 
+    } */
     if(processRights("Write Content") === false) {
       $('#files_task').css('pointer-events','none');
     } 
@@ -432,7 +432,7 @@
       
     });
     
-    //hidden.bs.modal	
+    //hidden.bs.modal 
     $('#mAlert').on('hidden.bs.modal', function (event) {
       $(document).off('click', '#mAlertCancel');
       $(document).off('click', '#mAlertDelete');
@@ -565,7 +565,7 @@ function change_status(e){
   $("#det_task_status").html(task_status);
 }
 function getTaskDetails(id){
-  $("#content_message").val("");
+ // $("#content_message").val("");
   $("#files_task").val("");
   $("#user_message").val("");
   $("#taskdetails").addClass("overlay_target");
@@ -579,23 +579,27 @@ function getTaskDetails(id){
       },
       success:function(response){
         //console.log(response);
-        $("#det_task_id").text("")
-        $("#det_task_name").text("");
+        $("#det_task_id").text("");
+        $("#det_task_name").val("");
         $("#created_dateTime").text("");
         $("#start_date_task").val("");
         $("#end_date_task").val("");
         $("#task_id").val("");
         $("#module_id").val("");
         $("#course_id").val("");
+        $("#case_module_id").val("");
+        $("#case_id").val("");
+        $("#chapter_id").val("");
+        $("#chapter_topic_id").val("");
         $("#det_task_status").html("");
         $(".default_option li").empty();
         $("#user_comments").empty();
-        $("#content_message").val("");
+        //$("#content_message").val("");
         $("#user_message").val("");
         $("#task_breadcrumb").empty();
         var task_det = response.task_detail;
         $("#det_task_id").text("#"+task_det.id);
-        $("#det_task_name").text(task_det.name);
+        $("#det_task_name").val(task_det.name);
         var created_date = new Date(task_det.created_on);
         var created_dateTime = created_date.toLocaleString([], {year: "numeric",month: "2-digit", day: "2-digit", hour: '2-digit', minute:'2-digit'});
         $("#created_dateTime").text(created_dateTime);
@@ -607,7 +611,21 @@ function getTaskDetails(id){
         if(task_det.module_id){
           $("#module_id").val(task_det.module_id);
         }
-        $("#course_id").val(task_det.course_id);
+        if(task_det.course_id){
+          $("#course_id").val(task_det.course_id);
+        }
+        if(task_det.case_id){
+          $("#case_id").val(task_det.case_id);
+        }
+        if(task_det.case_module_id){
+          $("#case_module_id").val(task_det.case_module_id);
+        }
+        if(task_det.chapter_id){
+          $("#chapter_id").val(task_det.chapter_id);
+        }
+        if(task_det.chapter_topic_id){
+          $("#chapter_topic_id").val(task_det.chapter_topic_id);
+        }
         var task_status = getStatusTask(task_det.status);
         $("#det_task_status").html(task_status);
         var currentele = "";
@@ -637,9 +655,9 @@ function getTaskDetails(id){
         if(response.available_assignees.length > 0){
           get_member(task_det.assigned_to, task_det.assignee, response.available_assignees);
         }
-        if(response.module_content.length > 0){
+        /*if(response.module_content.length > 0){
             $("#content_message").val(response.module_content[0].content);
-        }
+        }*/
         if(response.module_comments.length > 0){
           var member_comments_html = "";
             $.each( response.module_comments, function( i, val ) {
@@ -702,17 +720,21 @@ $(document).ready(function(){
     doSearch();
   });
   $("#UpdateTask").on("click", function() {
-    var content_message = $("#content_message").val();
+    //var content_message = $("#content_message").val();
     var user_message = $("#user_message").val();
     var task_id = $("#task_id").val();
     var course_id = $("#course_id").val();
     var module_id = $("#module_id").val();
+    var case_id = $("#case_id").val();
+    var case_module_id = $("#case_module_id").val();
+    var chapter_id = $("#chapter_id").val();
+    var chapter_topic_id = $("#chapter_topic_id").val();
     var start_date = $("#start_date_task").val();
     var end_date = $("#end_date_task").val();
     var status = $('#det_task_status span.active').attr('data-status');
     var priority = $("#assign_priority").attr("data-priority");
     var assign_to = $("#assign_member").attr("data-member_id");
-    var task_name = $("#det_task_name").text();
+    var task_name = $("#det_task_name").val();
     var todayDate = new Date().toISOString().slice(0, 10);
     var formData = new FormData();
     var error_status = 1;
@@ -735,11 +757,11 @@ $(document).ready(function(){
     if(error_status == 0){
       return false;
     }
-    if(content_message !== ''){
+    /*if(content_message !== ''){
       update_content(content_message, task_id, course_id, module_id);
-    }
+    }*/
     if(user_message !== ''){
-      update_comments(user_message, task_id, course_id, module_id);
+      update_comments(user_message, task_id, course_id, module_id, case_id, case_module_id, chapter_id, chapter_topic_id);
     }
     var formData_file = new FormData();
     formData.append("assignee", assign_to);
@@ -754,16 +776,36 @@ $(document).ready(function(){
     formData.append("name", task_name);
     formData.append("id", task_id);
     formData.append("module_id", module_id);
+    var attachment_URL = API_CONTENT_URL + "/module_attachment/";
     $.each($('input[name^="task_file"]')[0].files, function(i, file) {
           formData_file.append("attachment", file);
           formData_file.append("attachment_type", file.type);
           formData_file.append("attachment_name", file.name);
           formData_file.append("created_date", todayDate);
           formData_file.append("status", 0);
-          formData_file.append("course_id", course_id);
+          if(course_id){
+            attachment_URL = API_CONTENT_URL + "/module_attachment/";
+            formData_file.append("course_id", course_id);
+            if(module_id){
+              formData_file.append("module_id", module_id);
+            }
+          }
+          if(case_id){
+            attachment_URL = API_CONTENT_URL + "/case_module_attachments/";
+            formData_file.append("case_id", case_id);
+            if(case_module_id){
+              formData_file.append("case_module_id", case_module_id);
+            }
+          }
+          if(chapter_id){
+            attachment_URL = API_CONTENT_URL + "/chapter_topic_attachments/";
+            formData_file.append("chapter_id", chapter_id);
+            if(chapter_topic_id){
+              formData_file.append("chapter_topic_id", chapter_topic_id);
+            }
+          }
           formData_file.append("id", task_id);
-          formData_file.append("module_id", module_id);
-          update_attachment(formData_file);
+          update_attachment(formData_file, attachment_URL);
           formData.append("attachment", file);
           formData.append("attachment_type", file.type);
     });
@@ -790,9 +832,9 @@ $(document).ready(function(){
     });
   });
 });
-function update_attachment(formData){
+function update_attachment(formData, URL){
   $.ajax({
-    url: API_CONTENT_URL + "/module_attachment/",
+    url: URL,
     method: "POST",
     type: 'POST', // For jQuery < 1.9
     cache: false,
@@ -811,7 +853,7 @@ function update_attachment(formData){
     }
   });
 }
-function update_content(content_message, task_id, course_id, module_id){
+/*function update_content(content_message, task_id, course_id, module_id){
   if(module_id){
     var content_data = {
       "id": task_id,
@@ -837,17 +879,35 @@ function update_content(content_message, task_id, course_id, module_id){
       //toastr.success("Content has been saved.");
     }
   });
-}
-function update_comments(user_message, task_id, course_id, module_id){
+}*/
+function update_comments(user_message, task_id, course_id, module_id, case_id, case_module_id, chapter_id, chapter_topic_id){
+  var URL = API_CONTENT_URL + "/module_comments/";
     var formData = new FormData();
-    formData.append("course_id",  course_id);
-    if(module_id){
-      formData.append("module_id",  module_id);
+    if(course_id){
+      URL = API_CONTENT_URL + "/module_comments/";
+      formData.append("course_id",  course_id);
+      if(module_id){
+        formData.append("module_id",  module_id);
+      }
+    }
+    if(case_id){
+      URL = API_CONTENT_URL + "/case_module_comments/";
+      formData.append("case_id",  case_id);
+      if(case_module_id){
+        formData.append("case_module_id",  case_module_id);
+      }
+    }
+    if(chapter_id){
+      URL = API_CONTENT_URL + "/chapter_topic_comments/";
+      formData.append("chapter_id",  chapter_id);
+      if(chapter_topic_id){
+        formData.append("chapter_topic_id",  chapter_topic_id);
+      }
     }
     formData.append("id", task_id);
     formData.append("comments", user_message);
     $.ajax({
-        url: API_CONTENT_URL + "/module_comments/",
+        url: URL,
         type: 'POST', // For jQuery < 1.9
         cache: false,
         contentType: false,
@@ -868,11 +928,16 @@ function update_comments(user_message, task_id, course_id, module_id){
 </script>
 
 <!--<div id="taskdetails" class="overlay" style="visibility: visible !important;opacity:inherit !important;">-->
-<div id="taskdetails" class="overlay">
+  <div id="taskdetails" class="overlay">
     <div class="popup medium-popup p-0"> <a class="close" href="#" id="add-role-close">&times;</a>
       <input type="hidden" id="task_id" value="">
       <input type="hidden" id="course_id" value="">
       <input type="hidden" id="module_id" value="">
+      <input type="hidden" id="case_id" value="">
+      <input type="hidden" id="case_module_id" value="">
+      <input type="hidden" id="chapter_id" value="">
+      <input type="hidden" id="chapter_topic_id" value="">
+      <input type="hidden" id="det_task_name" value="">
       <div class="row">
         <div class="col-md-12">
           <div class="white p-3">
@@ -973,7 +1038,9 @@ function update_comments(user_message, task_id, course_id, module_id){
                 </div>
               </div>
             </div>           
-            <h4 class="mb-4">Comments</h4>            
+            <h4 class="mb-4">Comments</h4>
+            <div class="col-md-12 mb-3 comments" id="user_comments">    
+            </div>        
           </div>
           <div class="white-bg box-shadow p-3 comment-box">
             <div class="col-md-12 mb-3 comments">
@@ -1048,6 +1115,7 @@ function update_comments(user_message, task_id, course_id, module_id){
     $('#start').attr('min', maxDate);
  }); 
  </script>
+ 
 <div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
