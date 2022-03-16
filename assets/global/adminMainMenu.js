@@ -338,7 +338,7 @@ async function getCoursePage(e) {
     newUl2.append("<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li>");
     newUl2.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");*/
     newUl2 = $("<ul class='level-top drag_drop_show_hide' style='margin-bottom:0px;'></ul>");
-    newUl2.append(`<li class="dashed qa_dashed qa_droppable"><div class="ac drag_drop_qa"><span class="drag"><a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a></span><span class="para"><p class="drag_drop_qa_text">Drag and Drop the Question</p></span></div></li>`);
+    newUl2.append(`<li class="dashed qa_dashed qa_droppable"><div class="ac drag_drop_qa"><span class="drag"><a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a></span><span class="para"><p class="drag_drop_qa_text">Drag and Drop Section</p></span></div></li>`);
     newDiv2.append(newUl2);
     newDIV.append(newDiv2);
     parent_div.append(newDIV);
@@ -463,7 +463,7 @@ function get_list( a, $parent , level_count_inc) {
   var newDIV = $("<div></div>");
   for (var i = 0; i < a.length; i++) {
       if (a[i]) {
-          var level_count = a[i].module_name.split("/").length - 1;
+          var level_count = 0;
           if(a[i].parent_id == null){
             var status_class = "";
             var status_text = "";
@@ -480,8 +480,8 @@ function get_list( a, $parent , level_count_inc) {
               status_class = "status_completed";
               status_text = "Completed";
             }
-            var n = a[i].module_name.lastIndexOf('/');
-            var input_value = a[i].module_name.substring(n + 1);
+            var n = a[i].module_name;
+            var input_value = a[i].module_name
             var prevent_click = "";
             if(a[i].can_access == false){
               prevent_click = "pointer-events:none;";
@@ -492,7 +492,7 @@ function get_list( a, $parent , level_count_inc) {
             if (a[i].children.length > 0){
               has_child = "has_child";
             }
-              newDIV = $("<div class='module module_"+level_count_inc+" main_mod "+has_child+" draggable' id='"+a[i].level+"' data-unique_id='module_"+level_count_inc+"' data-unique_case_id='"+a[i].case_id+"' draggable='true' data-module_id='"+a[i].module_id+"'></div>");
+              newDIV = $("<div class='module module_"+level_count_inc+" main_mod "+has_child+" draggable' id='"+a[i].level+"' data-unique_id='module_"+level_count_inc+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' draggable='true' data-module_id='"+a[i].module_id+"'></div>");
             newUl = $("<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'></ul>");
             newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><p onclick='toinput(this);' id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"'>"+input_value+"</p></li>");
@@ -516,7 +516,7 @@ function get_list( a, $parent , level_count_inc) {
                 newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li></li>");
               }
               newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li>");
-              newUl.append(`<li class='plus_img_icon disp_in_block flt_right' style='${prevent_click}${style_block}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${level_count_inc}', 'sub');"></li>`);
+              newUl.append(`<li class='plus_img_icon disp_in_block flt_right' style='${prevent_click}${style_block}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${level_count_inc}${a[i].module_id}', 'sub');"></li>`);
           }else{
                 var class_name = $parent.parent().prop('className').split(" ");
                 var first_five_char_class = class_name[1].substring(0,5);
@@ -540,8 +540,8 @@ function get_list( a, $parent , level_count_inc) {
                   status_class = "status_completed";
                   status_text = "Completed";
                 }
-              var n = a[i].module_name.lastIndexOf('/');
-              var input_value = a[i].module_name.substring(n + 1);
+              var n = a[i].module_name;
+              var input_value = a[i].module_name
               var prevent_click = "";
               if(a[i].can_access == false){
                 prevent_click = "pointer-events:none;";
@@ -552,7 +552,7 @@ function get_list( a, $parent , level_count_inc) {
               if (a[i].children.length > 0){
                 has_child = "has_child";
               }
-              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+has_child+" disp_block sub_mods' id='"+levels+"' data-unique_id='sub_module_"+levels+"' data-module_id='"+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' >");
+              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+has_child+" disp_block sub_mods' id='"+levels+"' data-unique_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' >");
               newUl = $("<ul class='sub_module draggable ui-droppable'></ul>");
               newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><p onclick='toinput(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"'>"+input_value+"</p></li>");
@@ -576,7 +576,7 @@ function get_list( a, $parent , level_count_inc) {
                 newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li></li>");
               }
               newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li>");
-              newUl.append(`<li class='plus_img_icon disp_in_block flt_right' style='${prevent_click}${style_block}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'sub_module_${levels}', 'sub_sub');"></li>`);
+              newUl.append(`<li class='plus_img_icon disp_in_block flt_right' style='${prevent_click}${style_block}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'sub_module_${levels}${a[i].module_id}', 'sub_sub');"></li>`);
           }
           if(level_count === 0){  
             newDIV.append(newUl);

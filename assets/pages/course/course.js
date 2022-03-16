@@ -910,7 +910,7 @@ $( ".main_mod_empty" ).droppable({
       })
       .then((response) => response.json())
       .then((json) => {
-           var template =`<div class='module module_${numItems} main_mod no_child draggable ui-droppable' data-module_id='${json.module_id}' id='${result}' data-unique_id="module_${numItems}"draggable='true' style='opacity:1'>`;
+           var template =`<div class='module module_${numItems} main_mod no_child draggable ui-droppable' data-module_id='${json.module_id}' id='${result}' data-unique_id="module_${numItems}${json.module_id}"draggable='true' style='opacity:1'>`;
               template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
               template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
               template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
@@ -922,7 +922,7 @@ $( ".main_mod_empty" ).droppable({
               template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
               template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
               template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${numItems}', 'sub');"></li></ul></div>`;
+              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${numItems}${json.module_id}', 'sub');"></li></ul></div>`;
            $(this).before(template);
           hide_show_container();
       })

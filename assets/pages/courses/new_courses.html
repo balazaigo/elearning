@@ -527,7 +527,10 @@
             var parameter = "";
             get_pagination(parameter);
           });
+        }else{ 
+        $('#courses_page').trigger('click');
         }
+
       },
       error: function (error) {
         toastr.error("Response Error: " + error.message);
@@ -551,6 +554,7 @@
       success: function (response) {
         toastr.success("Course information was successfully updated.");
         $('#addCourses').modal('hide');
+        $('#courses_page').trigger('click');
         var parameter = "";
         get_pagination(parameter);
       },
