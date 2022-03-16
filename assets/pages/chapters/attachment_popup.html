@@ -40,13 +40,13 @@
     </div>
   </div>                                    
 </div>
-<input type="hidden" id="case_param">
+<input type="hidden" id="chapter_param">
 <script type="text/javascript">
   $(document).ready(function(){
 
   setTimeout(function(){
-    var chapter_id = document.getElementById("case_param").getAttribute("data-chapter_id");
-    var chapter_topic_id = document.getElementById("case_param").getAttribute("data-chapter_topic_id");
+    var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+    var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
     get_module_details(chapter_id, chapter_topic_id);
   }, 0);
   
@@ -77,8 +77,8 @@
         bytesPerStep = 100000;
     dropzoneCase.uploadFiles = function(files) {
         var self = this;
-        var chapter_id = document.getElementById("case_param").getAttribute("data-chapter_id");
-        var chapter_topic_id = document.getElementById("case_param").getAttribute("data-chapter_topic_id");
+        var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+        var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
         var formData = new FormData();
         var todayDate = new Date().toISOString().slice(0, 10);
         for (var i = 0; i < files.length; i++) {

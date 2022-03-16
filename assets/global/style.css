@@ -3875,6 +3875,9 @@ li.dashed {
 .chapter-list span {
 	float: right;
 }
+.chapter_list_table td{
+	cursor: pointer;
+}
 .br-right {
 	border-right: 1px solid #ccc;
 }

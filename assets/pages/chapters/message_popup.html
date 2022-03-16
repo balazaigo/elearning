@@ -35,18 +35,18 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="case_param">
+<input type="hidden" id="chapter_param">
 <script type="text/javascript">
 $(document).ready(function(){
 	setTimeout(function(){
-		var chapter_id = document.getElementById("case_param").getAttribute("data-chapter_id");
-		var chapter_topic_id = document.getElementById("case_param").getAttribute("data-chapter_topic_id");
-		get_message_details(chapter_id, chapter_topic_id);
+		var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+		var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
+		get_chapter_msg_message_details(chapter_id, chapter_topic_id);
 	}, 0);
 
   $("#saveMessage").on("click", function() {
-	var chapter_id = document.getElementById("case_param").getAttribute("data-chapter_id");
-	var chapter_topic_id = document.getElementById("case_param").getAttribute("data-chapter_topic_id");
+	var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+	var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
 
@@ -70,7 +70,7 @@ $(document).ready(function(){
 		    },
 		    success: function(response){
 	     		toastr.success("Comment saved Successfully.");
-				  get_message_details(chapter_id, chapter_topic_id);
+				  get_chapter_msg_message_details(chapter_id, chapter_topic_id);
 		    },
 		    error: function(error) {
 		      	toastr.error("Response Error: " + error.message);
@@ -116,7 +116,7 @@ $.validator.addMethod("pattern", function( value, element, param ) {
      $(element).removeClass("is-invalid");
     }
   });
-function get_message_details(chapter_id, chapter_topic_id){
+function get_chapter_msg_message_details(chapter_id, chapter_topic_id){
 	$.ajax({
 		url: API_CONTENT_URL + '/chapter_topic_comments/?chapter_topic_id='+chapter_topic_id,
 		type: 'get',

@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-md-12 p-3 mtag">
             <div class="tag__container">
-              <input type="text" class="tag__inputs" placeholder="+ Add Tag">
+              <input type="text" class="tag__inputs_chap_mod" placeholder="+ Add Tag">
               <ul class="tag__List content hideContent" id="tag__List_append">
               </ul>
               <div class="show-more showmore">More >></div>
@@ -17,15 +17,15 @@
     </div>
   </li>
 </ul>
-<input type="hidden" id="case_param" value=""/>
+<input type="hidden" id="chapter_param" value=""/>
 <script type="text/javascript">
   setTimeout(function(){
-   let chapter_id = document.getElementById("case_param").getAttribute("data-chapter_id");
-   let chapter_topic_id = document.getElementById("case_param").getAttribute("data-chapter_topic_id");
-    get_module_details(chapter_id, chapter_topic_id);
+   let chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+   let chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
+    get_chapter_tag_module_details(chapter_id, chapter_topic_id);
   }, 0);
 
-  function get_module_details(chapter_id, chapter_topic_id){
+  function get_chapter_tag_module_details(chapter_id, chapter_topic_id){
     $.ajax({
       url: API_CONTENT_URL + '/chapter_topic_tags/?chapter_id='+chapter_id+'&chapter_topic_id='+chapter_topic_id,
       type: 'get',
@@ -63,7 +63,7 @@ $(".show-more").on("click", function() {
 
 /*******************multiple tag list************************/
 document.addEventListener("keyup", function(e){
-    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs")) {
+    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs_chap_mod")) {
     const currentTag = e.target.value;
     if(currentTag){
       const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -79,8 +79,8 @@ document.addEventListener("keyup", function(e){
       }else{
         hiddenInput.value = currentTag;       
       }
-     let chapter_id = document.getElementById("case_param").getAttribute("data-chapter_id");
-     let chapter_topic_id_val = document.getElementById("case_param").getAttribute("data-chapter_topic_id");
+     let chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+     let chapter_topic_id_val = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
       var tag_data = {
           "name": currentTag,
           "chapter_topic_id": chapter_topic_id_val,

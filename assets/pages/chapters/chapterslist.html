@@ -24,7 +24,7 @@
         </div>
     </div>
 </div>
-<div class="col-md-12 p-3 br-5 caselist" id="chapterList">
+<div class="col-md-12 p-3 br-5 chapterlist" id="chapterList">
 </div>
 <div class="modal fade" id="popup_course_icon" data-bs-backdrop="static">';
   <div class="modal-dialog modal-lg">
@@ -128,7 +128,7 @@
                 }
                   newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='"+input_value+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title'>"+input_value+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
                 newUl.append("<li class='expand_img_icon  disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
-                  newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
+                  newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='chapterlistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
                   //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                   if(a[i].attachment_count > 0){
                     newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
@@ -192,7 +192,7 @@
                   if(a[i].is_qa == false){
                       newUl.append("<li class='expand_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
     
-                      newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
+                      newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='chapterlistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
                       //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                       if(a[i].attachment_count > 0){
                         newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
@@ -259,8 +259,8 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/chapters_tag.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
-          document.getElementById("case_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
-          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
         });
     }
@@ -272,8 +272,8 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
-          document.getElementById("case_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
-          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
         });
     }
@@ -285,8 +285,8 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/message_popup.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
-          document.getElementById("case_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
-          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
         });
     }
@@ -298,8 +298,8 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
-          document.getElementById("case_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
-          document.getElementById("case_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
+          document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
         });
     }
@@ -454,7 +454,7 @@
       el_li_7 = e.parentElement.parentElement.childNodes[7];//Add module
       el_li_8 = e.parentElement.parentElement.childNodes[8];//Tag
       //el_li_9 = e.parentElement.parentElement.childNodes[9];
-      el_1.setAttribute("data-flinkto", "caselistlevel");
+      el_1.setAttribute("data-flinkto", "chapterlistlevel");
       if(json.chapter_topic_id != undefined || json.chapter_topic_id != null){
         e.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
         el_1.setAttribute("data-chapter_topic_id", json.chapter_topic_id);

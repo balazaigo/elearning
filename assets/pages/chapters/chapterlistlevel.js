@@ -8,9 +8,9 @@
   get_content_details_case_module();
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
-    let case_id = document.getElementById("case_details").getAttribute("data-case_id");
-    let case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
-    var dropzone = new Dropzone('#demo-upload_case_module', {
+    let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+    let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
+    var dropzone = new Dropzone('#demo-upload_chapter_module', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
         thumbnailHeight: 120,
@@ -33,9 +33,9 @@
 
     });
 
-    get_breadcrumbs();
+    get_chapter_breadcrumbs();
     //setTimeout(, 1000);
-    get_search_details();
+    get_chapter_search_details();
     var minSteps = 6,
         maxSteps = 60,
         timeBetweenSteps = 100,
@@ -43,8 +43,8 @@
 
     dropzone.uploadFiles = function(files) {
         var self = this;
-        var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-        var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+        let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+        let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
         var formData = new FormData();
         var todayDate = new Date().toISOString().slice(0, 10);
         for (var i = 0; i < files.length; i++) {
@@ -74,10 +74,10 @@
             formData.append("attachment_name", file.name);
             formData.append("created_date", todayDate);
             formData.append("status", 0);
-            formData.append("case_module_id", case_module_id);
-            formData.append("case_id", case_id);
+            formData.append("chapter_topic_id", chapter_topic_id);
+            formData.append("chapter_id", chapter_id);
             $.ajax({
-              url: API_CONTENT_URL + "/case_module_attachments/",
+              url: API_CONTENT_URL + "/chapter_topic_attachments/",
               method: "POST",
               type: 'POST', // For jQuery < 1.9
               cache: false,
@@ -122,17 +122,17 @@
     }
 
     $.ajax({
-      url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+case_module_id,
+      url: API_CONTENT_URL + '/chapter_topic_tags/?chapter_id='+chapter_id+'&chapter_topic_id='+chapter_topic_id,
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(response){
-        var case_tags = response;
+        var chapter_tags = response;
         var tag_list ="";
         var tag_list_str = "";
-        for(var i = 0; i < case_tags.length; i++){
-          tag_list += '<li>'+case_tags[i].name+'<span class="tag__removes tag__removes2" data-tag="'+case_tags[i].name+'" data-tagid="'+case_tags[i].id+'">×</span></li>';
-          tag_list_str += case_tags[i].name+",";
+        for(var i = 0; i < chapter_tags.length; i++){
+          tag_list += '<li>'+chapter_tags[i].name+'<span class="tag__removes tag__removes2" data-tag="'+chapter_tags[i].name+'" data-tagid="'+chapter_tags[i].id+'">×</span></li>';
+          tag_list_str += chapter_tags[i].name+",";
         }
         document.getElementById("tag__List_append").innerHTML = tag_list;
         document.getElementById("tag__values").value = tag_list_str;
@@ -150,17 +150,17 @@
     });
 
 $("#global_search_module").keyup(function() { 
-    get_search_details();
+    get_chapter_search_details();
  });
 
  $("#global_search_module").on("search", function() { 
-    get_search_details();
+    get_chapter_search_details();
  });
 
 $("#role-loader").css("display", "none");
 $("#rolebox").css("display", "flex");
 });
-function get_search_details(){
+function get_chapter_search_details(){
     var tagName = $("#global_search_module").val();
     var active_tab_type = $("#active_li li.active").attr('id');
     $.ajax({
@@ -401,23 +401,23 @@ function get_search_details(){
       }
     });
 }
-function get_breadcrumbs(){
-    var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-    var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+function get_chapter_breadcrumbs(){
+    let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+    let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
     $.ajax({
-      url: API_CONTENT_URL + '/breadcrumbs/'+case_id+'/'+case_module_id,
+      url: API_CONTENT_URL + '/breadcrumbs/'+chapter_id+'/'+chapter_topic_id,
       type: 'GET',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(data){
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
-        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="cases" data-case_id="${data.case_id}"><a href="#" data-flinkto="cases" data-case_id="${data.case_id}">${data.case_name}</a></li>`;
+        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="chapterslist" data-chapter_id="${data.chapter_id}"><a href="#" data-flinkto="chapterslist" data-chapter_id="${data.chapter_id}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
-              brd_crumbs += `<li class="breadcrumb-item" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}"><a href="#" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;
+              brd_crumbs += `<li class="breadcrumb-item" data-flinkto="chapterslistlevel" data-chapter_id="${elements.course_id}" data-chapter_topic_id="${elements.module_id}"><a href="#" data-flinkto="chapterslistlevel" data-chapter_id="${elements.course_id}" data-chapter_topic_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
-                  document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.case_id_prefix})</small></span>`;
+                  document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
               }
             });
         }
@@ -426,10 +426,10 @@ function get_breadcrumbs(){
     });
 }
 function get_content_details_case_module(){
-    var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-    var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+    let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+    let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
     $.ajax({
-      url: API_CONTENT_URL + '/module/'+case_module_id,
+      url: API_CONTENT_URL + '/module/'+chapter_topic_id,
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -438,20 +438,20 @@ function get_content_details_case_module(){
         if(response.module_content.length > 0){
           module_content = response.module_content[0].content;
           module_content_id = response.module_content[0].id;
-          document.getElementById("saveCases").setAttribute("data-module_content_id", module_content_id);
+          document.getElementById("saveTopics").setAttribute("data-module_content_id", module_content_id);
         }
         //tinymce.activeEditor.setContent(module_content);
         CKEDITOR.instances["editor1"].setData(module_content);
       }
     });
 }
-function get_module_details_case_module(){
+function get_module_details_chapter_module(){
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
-    var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-    var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+    let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+    let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
     $.ajax({
-      url: API_CONTENT_URL + '/module/'+case_module_id,
+      url: API_CONTENT_URL + '/module/'+chapter_topic_id,
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -531,9 +531,9 @@ function get_module_details_case_module(){
                             </ul>`;
         }
 
-        $("#case_module_content").empty();
-        $("#case_module_content").append(module_content_html);
-        $("#case_module_content").append(module_attachments_html);
+        $("#chapter_module_content").empty();
+        $("#chapter_module_content").append(module_content_html);
+        $("#chapter_module_content").append(module_attachments_html);
 setTimeout(function() {
       $("#role-loader").css("display", "none");
       $("#rolebox").css("display", "block");
@@ -578,7 +578,7 @@ $('ul.tab-s li').click(function(){
   
 /*******************multiple tag list************************/
 document.addEventListener("keyup", function(e){
-    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs2")) {
+    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs_chap_level")) {
     const currentTag = e.target.value;
     if(currentTag){
       const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -595,15 +595,15 @@ document.addEventListener("keyup", function(e){
         hiddenInput.value = currentTag;       
       }
       
-      var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-      var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+      let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+      let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
       var tag_data = {
           "name": currentTag,
-          "case_module_id": case_module_id,
-          "case_id": case_id
+          "chapter_topic_id": chapter_topic_id,
+          "chapter_id": chapter_id
       }
       $.ajax({
-        url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+case_module_id,
+        url: API_CONTENT_URL + '/chapter_topic_tags/?chapter_id='+chapter_id+'&chapter_topic_id='+chapter_topic_id,
         type: 'POST',
         data: JSON.stringify(tag_data),
         headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -645,7 +645,7 @@ document.addEventListener("click", function(e){
       var tag_id = e.target.dataset.tagid;
       if(tag_id !== ''){
         $.ajax({
-          url: API_CONTENT_URL + '/case_tags/'+tag_id+'/',
+          url: API_CONTENT_URL + '/chapter_topic_tags/'+tag_id+'/',
           type: 'DELETE',
           headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
           success:function(response){
@@ -684,7 +684,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
   }
 }
 
-  /*$("#saveCases").on("click", function() {
+  /*$("#saveTopics").on("click", function() {
        let cid = document.getElementById("course_module_id").getAttribute("data-cid");
        let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
       var formData = new FormData();
@@ -817,18 +817,18 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
       }*/
       
       $( document ).ready(function() {
-        $("#saveCases").on("click", function() {
-          var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-          var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+        $("#saveTopics").on("click", function() {
+          let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+          let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
           //var newData = tinymce.activeEditor.getContent();
           var newData = CKEDITOR.instances["editor1"].getData();
-          var module_content_id = document.getElementById("saveCases").getAttribute("data-module_content_id");
+          var module_content_id = document.getElementById("saveTopics").getAttribute("data-module_content_id");
           var method_type = "POST";
-          var URL  = API_CONTENT_URL + '/case_module_contents/';
+          var URL  = API_CONTENT_URL + '/chapter_topic_contents/';
           if(newData !== ''){
             var content_data = {
-              "case_id": case_id,
-              "case_module_id": case_module_id,
+              "chapter_id": chapter_id,
+              "chapter_topic_id": chapter_topic_id,
               "content": newData,
               "revision_label":""
             }
@@ -852,18 +852,18 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         });
 
         $("#convertToAudio").on("click", function() {
-          var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-          var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+          let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+          let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
           //var newData = tinymce.activeEditor.getContent();
           var newData = CKEDITOR.instances["editor1"].getData();
           var newTextData = newData.replace(/<[^>]+>/g, '');
-          var module_content_id = document.getElementById("saveCases").getAttribute("data-module_content_id");
+          var module_content_id = document.getElementById("saveTopics").getAttribute("data-module_content_id");
           var method_type = "POST";
           var URL  = API_CONTENT_URL + '/text/audio/';
           if(newData !== ''){
             var content_data = {
-              "case_id": case_id,
-              "case_module_id": case_module_id,
+              "chapter_id": chapter_id,
+              "chapter_topic_id": chapter_topic_id,
               "text": newTextData,
               "speaker_id":"3"
             }
