@@ -436,87 +436,94 @@
     .then((response) => response.json())
     .then((json) => {
       var name = "";
-      el_1 = e.parentElement.parentElement.childNodes[3].childNodes[1].firstChild.firstChild;//edit
-      el_2 = e.parentElement.parentElement.childNodes[3].childNodes[1].childNodes[1].firstChild;//delete
-      el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
-      //el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
-      el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
-      el_6 = e.parentElement.parentElement.childNodes[4].firstChild;//comment
-      el_7 = e.parentElement.parentElement.childNodes[6].firstChild;//assign
-  
-      el_li_0 = e.parentElement.parentElement.childNodes[0];//Drag & Drop
-      el_li_1 = e.parentElement.parentElement.childNodes[1];//Input
-      el_li_2 = e.parentElement.parentElement.childNodes[2];//Expand Or Collapse
-      el_li_3 = e.parentElement.parentElement.childNodes[3];//Three Dots
-      el_li_4 = e.parentElement.parentElement.childNodes[4];//Attachment
-      el_li_5 = e.parentElement.parentElement.childNodes[5];//Message
-      el_li_6 = e.parentElement.parentElement.childNodes[6];//Assignee
-      el_li_7 = e.parentElement.parentElement.childNodes[7];//Add module
-      el_li_8 = e.parentElement.parentElement.childNodes[8];//Tag
-      //el_li_9 = e.parentElement.parentElement.childNodes[9];
-      el_1.setAttribute("data-flinkto", "chapterlistlevel");
-      if(json.chapter_topic_id != undefined || json.chapter_topic_id != null){
-        e.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-        el_1.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-        el_2.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-        el_3.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-        //el_4.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-        el_5.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-        el_6.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-        el_7.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
-      }
-      if(json.chapter_id != undefined || json.chapter_id != null){
-        e.setAttribute("data-chapter_id", json.chapter_id);
-        el_1.setAttribute("data-chapter_id", json.chapter_id);
-        el_2.setAttribute("data-chapter_id", json.chapter_id);
-        el_3.setAttribute("data-chapter_id", json.chapter_id);
-        //el_4.setAttribute("data-chapter_id", json.chapter_id);
-        el_5.setAttribute("data-chapter_id", json.chapter_id);
-        el_6.setAttribute("data-chapter_id", json.chapter_id);
-        el_7.setAttribute("data-chapter_id", json.chapter_id);
-      }
-      if(json.can_access == false){
-        el_li_0.style.cssText = "pointer-events: none";
-        el_li_1.style.cssText = "pointer-events: none";
-        el_li_2.style.cssText = "pointer-events: none";
-        el_li_3.style.cssText = "pointer-events: none";
-        el_li_4.style.cssText = "pointer-events: none";
-        el_li_5.style.cssText = "pointer-events: none";
-        el_li_6.style.cssText = "pointer-events: none";
-        el_li_7.style.cssText = "pointer-events: none";
-        el_li_8.style.cssText = "pointer-events: none";
-        //el_li_9.style.cssText = "pointer-events: none";
-      }
-      if(json.name != undefined || json.name != null){
-        el_2.setAttribute("data-name", json.name);
-        name = json.name;
-      }
-      var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
-      var num = "";
-      if(classList[2] == 'main_mod'){
-        num = 0;
-      }else{
-        var index = classList[1].lastIndexOf("_");
-        var res_1 = Number(classList[1].substr(index+1));
-        var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
-        num = String(result).match(/\./g).length;
-      }
-      var result_textMsg = "";
-      if(num === 0){
-        result_textMsg = "Module:";
-      }else if(num === 1){
-        result_textMsg = "Chapter:";
-      }else if(num === 2){
-        result_textMsg = "Lesson:";
-      }else if(num === 3){
-        result_textMsg = "Topic:";
-      }else if (num === 4){
-        result_textMsg = "Sub Topic:";
-      }else if (num > 4){
+      if(e.parentElement.parentElement.childNodes.length > 3){
+        el_1 = e.parentElement.parentElement.childNodes[3].childNodes[1].firstChild.firstChild;//edit
+        el_2 = e.parentElement.parentElement.childNodes[3].childNodes[1].childNodes[1].firstChild;//delete
+        el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
+        //el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
+        el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
+        el_6 = e.parentElement.parentElement.childNodes[4].firstChild;//comment
+        el_7 = e.parentElement.parentElement.childNodes[6].firstChild;//assign
+    
+        el_li_0 = e.parentElement.parentElement.childNodes[0];//Drag & Drop
+        el_li_1 = e.parentElement.parentElement.childNodes[1];//Input
+        el_li_2 = e.parentElement.parentElement.childNodes[2];//Expand Or Collapse
+        el_li_3 = e.parentElement.parentElement.childNodes[3];//Three Dots
+        el_li_4 = e.parentElement.parentElement.childNodes[4];//Attachment
+        el_li_5 = e.parentElement.parentElement.childNodes[5];//Message
+        el_li_6 = e.parentElement.parentElement.childNodes[6];//Assignee
+        el_li_7 = e.parentElement.parentElement.childNodes[7];//Add module
+        el_li_8 = e.parentElement.parentElement.childNodes[8];//Tag
+        //el_li_9 = e.parentElement.parentElement.childNodes[9];
+        el_1.setAttribute("data-flinkto", "chapterlistlevel");
+        if(json.chapter_topic_id != undefined || json.chapter_topic_id != null){
+          e.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+          el_1.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+          el_2.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+          el_3.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+          //el_4.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+          el_5.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+          el_6.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+          el_7.setAttribute("data-chapter_topic_id", json.chapter_topic_id);
+        }
+        if(json.chapter_id != undefined || json.chapter_id != null){
+          e.setAttribute("data-chapter_id", json.chapter_id);
+          el_1.setAttribute("data-chapter_id", json.chapter_id);
+          el_2.setAttribute("data-chapter_id", json.chapter_id);
+          el_3.setAttribute("data-chapter_id", json.chapter_id);
+          //el_4.setAttribute("data-chapter_id", json.chapter_id);
+          el_5.setAttribute("data-chapter_id", json.chapter_id);
+          el_6.setAttribute("data-chapter_id", json.chapter_id);
+          el_7.setAttribute("data-chapter_id", json.chapter_id);
+        }
+        if(json.can_access == false){
+          el_li_0.style.cssText = "pointer-events: none";
+          el_li_1.style.cssText = "pointer-events: none";
+          el_li_2.style.cssText = "pointer-events: none";
+          el_li_3.style.cssText = "pointer-events: none";
+          el_li_4.style.cssText = "pointer-events: none";
+          el_li_5.style.cssText = "pointer-events: none";
+          el_li_6.style.cssText = "pointer-events: none";
+          el_li_7.style.cssText = "pointer-events: none";
+          el_li_8.style.cssText = "pointer-events: none";
+          //el_li_9.style.cssText = "pointer-events: none";
+        }
+        if(json.name != undefined || json.name != null){
+          el_2.setAttribute("data-name", json.name);
+          name = json.name;
+        }
+        var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
+        var num = "";
+        if(classList[2] == 'main_mod'){
+          num = 0;
+        }else{
+          var index = classList[1].lastIndexOf("_");
+          var res_1 = Number(classList[1].substr(index+1));
+          var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
+          num = String(result).match(/\./g).length;
+        }
+        var result_textMsg = "";
+        if(num === 0){
+          result_textMsg = "Module:";
+        }else if(num === 1){
+          result_textMsg = "Chapter:";
+        }else if(num === 2){
+          result_textMsg = "Lesson:";
+        }else if(num === 3){
+          result_textMsg = "Topic:";
+        }else if (num === 4){
+          result_textMsg = "Sub Topic:";
+        }else if (num > 4){
+          result_textMsg = "Level:";
+        }
         result_textMsg = "Level:";
       }
-      result_textMsg = "Level:"
-      toastr.success(result_textMsg+" "+name+" Created.");
+      if(call_method == "POST"){
+        toastr.success("Created Successfully.");
+      }else{
+        toastr.success("Updated Successfully.");
+      }
+      
       $("#chapter_id_mod").trigger("click");
     })
     .catch(function (error) {
@@ -583,14 +590,14 @@
                   newHTML += "<ul class='sub_module'>";
                   newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                   newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='Level "+result+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"'>Level "+result+"</p></li>";
-                  newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
-                  newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-name='' data-chapter_id='' data-chapter_topic_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                  //newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                  //newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-name='' data-chapter_id='' data-chapter_topic_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
                   //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                  newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "</ul>";
                   newHTML += "</div>";
                   $(e).closest('.main_mod').removeClass("no_child");
@@ -600,7 +607,7 @@
                   var class_module_main_level = main_mod_level;
                   var class_module_sub_level = "sub_"+result;
                   var input_val = "Level "+result;
-                  toastr.success("Chapter Added.");
+                  //toastr.success("Chapter Added.");
                   return;
               }
               if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
@@ -611,14 +618,14 @@
                   newHTML += "<ul class='main_module module_opacity'>";
                   newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
                   newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value=''onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'><p onclick='toinput_case_mod(this);' id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name</p></li>";
-                  newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
-                  newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-chapter_id=''  data-chapter_topic_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                  //newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                  //newHTML += "<li class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-chapter_id=''  data-chapter_topic_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
                   //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                  newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li></li>";
-                  newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li></li>";
+                  //newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  //newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "</ul>";
                   newHTML += "</div>";
                   e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -680,7 +687,7 @@
       var class_module_main_level = main_mod_level;
       var class_module_sub_level = "sub_"+result;
       var input_val = "Level "+result;
-      toastr.success(result_textMsg+" Added.");
+      //toastr.success(result_textMsg+" Added.");
      }
   }
   function delete_case_module_confirm(e){

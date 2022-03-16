@@ -347,53 +347,52 @@ async function getCoursePage(e) {
                             <div class="recent-text white-bg br-5 p-3">
                               <h4 class="modules-head mb-4">Modules</h4>
                               <div class="row">
-                                  <div class="col-md-6">
+                                  <div class="col-md-6 mod-section">
                                       <div class="module-sec module-section">
                                           <img class="" src="../assets/images/section-icon.jpg" alt="" />
                                           <p>Section</p>
                                       </div>
                                   </div>
-                                  <div class="col-md-6">
+                                  <div class="col-md-6 mod-sub_section">
                                       <div class="module-sec module-sub_section">
                                           <img class="" src="../assets/images/section-icon.jpg" alt="" />
                                           <p>Sub Section</p>
                                       </div>
                                   </div>
-                                  <div class="col-md-6">
-                                      <div class="module-sec">
-                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
-                                          <p>Module</p>
-                                      </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <div class="module-sec">
+                                  <div class="col-md-6 mod-case_study">
+                                      <div class="module-sec module-case_study">
                                           <img class="" src="../assets/images/section-icon.jpg" alt="" />
                                           <p>Case Study</p>
                                       </div>
                                   </div>
-                                  <div class="col-md-6">
-                                      <div class="module-sec">
+                                  <div class="col-md-6 mod-module">
+                                      <div class="module-sec module-module">
                                           <img class="" src="../assets/images/section-icon.jpg" alt="" />
-                                          <p>Readings</p>
-                                      </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <div class="module-sec">
-                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
-                                          <p>Authors</p>
-                                      </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <div class="module-sec">
-                                          <img class="" src="../assets/images/section-icon.jpg" alt="" />
-                                          <p>Resources</p>
+                                          <p>Module</p>
                                       </div>
                                   </div>
                               </div>
                              
                             </div>
                           </div>`);
-    
+    /* <div class="col-md-6">
+          <div class="module-sec">
+              <img class="" src="../assets/images/section-icon.jpg" alt="" />
+              <p>Readings</p>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="module-sec">
+              <img class="" src="../assets/images/section-icon.jpg" alt="" />
+              <p>Authors</p>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="module-sec">
+              <img class="" src="../assets/images/section-icon.jpg" alt="" />
+              <p>Resources</p>
+          </div>
+      </div>*/
     parent_div.append(module_menu);                          
     var outerHtml = parent_div.prop('outerHTML');
     if(outerHtml !== ''){
@@ -492,10 +491,16 @@ function get_list( a, $parent , level_count_inc) {
             if (a[i].children.length > 0){
               has_child = "has_child";
             }
+            if(a[i].chapter_id && !a[i].case_id){
+              prevent_click = "pointer-events:none;";
+            }
+
               newDIV = $("<div class='module module_"+level_count_inc+" main_mod "+has_child+" draggable' id='"+a[i].level+"' data-unique_id='module_"+level_count_inc+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' draggable='true' data-module_id='"+a[i].module_id+"'></div>");
             newUl = $("<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'></ul>");
             newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><p onclick='toinput(this);' id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"'>"+input_value+"</p></li>");
+
+            if(!a[i].chapter_id && !a[i].case_id){
               newUl.append("<li class='expand_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>");
               newUl.append("<li class='elipsis_img_icon disp_in_block flt_right' style='"+prevent_click+style_none+"'><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>");
               newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>");
@@ -516,6 +521,10 @@ function get_list( a, $parent , level_count_inc) {
                 newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li></li>");
               }
               newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li>");
+            }
+              if(a[i].chapter_id && a[i].can_access == true){
+                prevent_click = "pointer-events:unset;";
+              }
               newUl.append(`<li class='plus_img_icon disp_in_block flt_right' style='${prevent_click}${style_block}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${level_count_inc}${a[i].module_id}', 'sub');"></li>`);
           }else{
                 var class_name = $parent.parent().prop('className').split(" ");
@@ -552,10 +561,15 @@ function get_list( a, $parent , level_count_inc) {
               if (a[i].children.length > 0){
                 has_child = "has_child";
               }
+              if(a[i].chapter_id || a[i].case_id){
+                prevent_click = "pointer-events:none;";
+              }
               newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+has_child+" disp_block sub_mods' id='"+levels+"' data-unique_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' >");
               newUl = $("<ul class='sub_module draggable ui-droppable'></ul>");
               newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
               newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><p onclick='toinput(this);' id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"'>"+input_value+"</p></li>");
+
+            if(!a[i].chapter_id && !a[i].case_id){
               newUl.append("<li class='expand_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>");
               newUl.append("<li class='elipsis_img_icon disp_in_block flt_right' style='"+prevent_click+style_none+"'><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>");
               newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>");
@@ -576,7 +590,21 @@ function get_list( a, $parent , level_count_inc) {
                 newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li></li>");
               }
               newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></li>");
-              newUl.append(`<li class='plus_img_icon disp_in_block flt_right' style='${prevent_click}${style_block}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'sub_module_${levels}${a[i].module_id}', 'sub_sub');"></li>`);
+            }
+
+              if(a[i].case_id && a[i].can_access == true){
+                prevent_click = "pointer-events:unset;";
+              }
+              if(a[i].chapter_id && a[i].group_name){
+                var dots = "";
+                if(a[i].group_name.length > 75){
+                  dots = "...";
+                }
+                newUl.append(`<li class='progress_btn disp_in_block flt_right w-auto' style='${prevent_click}'><p class="status_inprogress">${a[i].group_name.substring(0, 75)+dots}</></li>`);
+              }
+              if(!a[i].chapter_id){
+                newUl.append(`<li class='plus_img_icon disp_in_block flt_right' style='${prevent_click}${style_block}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'sub_module_${levels}${a[i].module_id}', 'sub_sub');"></li>`);
+              }
           }
           if(level_count === 0){  
             newDIV.append(newUl);

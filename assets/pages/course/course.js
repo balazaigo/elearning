@@ -1107,6 +1107,21 @@ function hide_show_container(){
     $(".plus_img_icon").attr("style", "display:inline_block;");
 }
 function add_module(e, id, mod_level){
+    var element = document.querySelector('[data-unique_id="'+id+'"]');
+    var module_id =  element.getAttribute("data-module_id");
+    var selected_case_id = element.getAttribute("data-unique_case_id");
+    console.log(selected_case_id);
+    if(selected_case_id !== "null" && selected_case_id !== "undefined" ){
+      $(".mod-module").show();
+      $(".mod-section").hide();
+      $(".mod-sub_section").hide();
+      $(".mod-case_study").hide();
+    }else{
+      $(".mod-module").hide();
+      $(".mod-section").show();
+      $(".mod-sub_section").show();
+      $(".mod-case_study").show();
+    }
     $("#clicked_event").attr("data-click_id", id);
     $("#clicked_event").attr("data-click_level", mod_level);
     $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
