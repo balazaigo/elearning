@@ -17,7 +17,7 @@
   <!--popup start-->
   <div id="createchapter" class="overlay" style="display:none;">
     <div class="popup pt-3">
-      <h4 class="mb-3" id="create_chapter_text">Add a new chapter</h4>
+      <h4 class="mb-3" id="create_chapter_text">Create Chapter</h4>
       <span class="close">×</span>
       <form method="post" id="frmNewChapter" name="frmNewChapter" enctype="multipart/form-data">
         <input type="hidden" name="chapter_id" id="chapter_id" value="">
@@ -331,7 +331,7 @@ var frmvalidatorfrm;
         rules: {
           chapter_name: { required: true, minlength: 1, maxlength: 256 },
           description: { required: true, minlength: 1, maxlength: 256 },
-          short_code: { required: true },
+          short_code: { required: true, maxlength: 256 },
         },
         messages: {
           chapter_name: {
@@ -344,7 +344,10 @@ var frmvalidatorfrm;
             minlength: "Description must consist of at least 1 characters",
             maxlength: "Description must consist of max of 20 characters",
           },
-          short_code: { required: "Please enter a code" },
+          short_code: { 
+            required: "Please enter a code",
+            maxlength: "Your case name must consist of max of 256 characters",
+          },
         },
         errorElement: "em",
         errorPlacement: function (error, element) {
