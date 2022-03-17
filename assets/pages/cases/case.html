@@ -209,6 +209,7 @@
       rules: {
         case_name: { required: true, minlength: 1, maxlength: 256 },
         description: { required: true, minlength: 1, maxlength: 256 },
+        case_short_code: { maxlength: 256 },
         case_type: { required: true },
         assign_to: { required: true },
       },
@@ -217,6 +218,12 @@
           required: "Please enter a Case Name",
           minlength: "Your case name must consist of at least 1 characters",
           maxlength: "Your case name must consist of max of 256 characters",
+        },
+
+        case_short_code: {
+          //required: "Please enter a Case Name",
+          //minlength: "Your case ID must consist of at least 1 characters",
+          maxlength: "Your case ID must consist of max of 256 characters",
         },
         description: {
           required: "Please enter a description",
