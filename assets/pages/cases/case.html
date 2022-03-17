@@ -197,7 +197,7 @@
 </div>
 <script type="text/javascript">
   /*********Case List section Starts***********************/
-
+    //To Validate Add Case Fields
     $.validator.addMethod("pattern", function (value, element, param) {
       if (this.optional(element)) { return true; }
       if (typeof param === "string") {
@@ -262,7 +262,8 @@
     $("#createcases").removeClass("overlay_target");
     $("#createcases").attr("style","display:none");
     window.sharedEditCaseId = "";
-  })
+  });
+  //To get Searching parameters
   function searchParam(){
     var search_param = "";
     var search_inp_val = document.getElementById("search_data").value;
@@ -287,7 +288,7 @@
     }
     get_pagination(search_param);
 }
-
+//To Paginate case list Data
 function get_pagination(parameter){
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
@@ -354,89 +355,59 @@ function get_pagination(parameter){
     });
   }
 }
+//To Load Alert Popup
+function loadAlertModal(){
+  $('#mAlert').on('shown.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipientID = button.data('url');
+    var name = button.data('name');
+    var modal = $(this);
+    modal.find('.modal-content input').val(recipientID);
+    modal.find('.modal-content #mAlertName').html(name);
+    $("#mAlertCancel").focus();
+    //mAlertDelete
 
-  function loadAlertModal(){
-    $('#mAlert').on('shown.bs.modal', function (event) {
-      var button = $(event.relatedTarget);
-      var recipientID = button.data('url');
-      var name = button.data('name');
-      var modal = $(this);
-      modal.find('.modal-content input').val(recipientID);
-      modal.find('.modal-content #mAlertName').html(name);
-      $("#mAlertCancel").focus();
-      //mAlertDelete
-
-      //mAlertCancel
-      $(document).on('click', '#mAlertCancel', function() {
-        $(document).off('click', '#mAlertCancel');
-        $(document).off('click', '#mAlertDelete');
-      });
-      
-    });
-    //hidden.bs.modal 
-    $('#mAlert').on('hidden.bs.modal', function (event) {
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
       $(document).off('click', '#mAlertCancel');
       $(document).off('click', '#mAlertDelete');
-      var modal = $(this);
-      modal.find('.modal-content input').val(null);
-      modal.find('.modal-content #mAlertName').html("Loading...");
     });
     
-    $(".mDisabled").on("click", function(){
-      var url = $(this).data("url");
-      $.ajax({
-        url: API_CONTENT_URL + '/task/' + url + '/',
-        type: 'PATCH',
-        data: JSON.stringify({
-          "status": 2
-        }),
-        headers: {
-          "Authorization": "Bearer " + getUserInfo().access_token,
-          "Content-Type": "application/json"
-        },
-        success:function(response){
-          doSearch();
-        },
-        error: function(error) {
-          toastr.error("Response Error: " + error.message);
-          console.log(error);
-        }
-      });
-    });
-    
-    //mEnabled
-    /*$(".mEnabled").on("click", function(){
-      var url = $(this).data("url");
-      $.ajax({
-        url: API_CONTENT_URL + '/task/' + url + '/',
-        type: 'PATCH',
-        data: JSON.stringify({
-          "status": 1
-        }),
-        headers: {
-          "Authorization": "Bearer " + getUserInfo().access_token,
-          "Content-Type": "application/json"
-        },
-        success:function(response){
-          doSearch();
-        },
-        error: function(error) {
-          toastr.error("Response Error: " + error.message);
-          console.log(error);
-        }
-      });
-    });*/
+  });
+  //hidden.bs.modal 
+  $('#mAlert').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
   
-  }
+  $(".mDisabled").on("click", function(){
+    var url = $(this).data("url");
+    $.ajax({
+      url: API_CONTENT_URL + '/task/' + url + '/',
+      type: 'PATCH',
+      data: JSON.stringify({
+        "status": 2
+      }),
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        doSearch();
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  });
+}
+//To Display template for Case card When pagination with search param call
 function template(data){
     $('#case-box').empty();
-    console.log(data);
-
-      $("#case_list").empty();
-      $("#case_list").append("<option value=''>All Case study</option>");
-      $.each(data, function( i, val ) {
-        $("#case_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
-      });
     data.forEach(function (element, index) {
         if (Object.keys(element).length > 0) {
             var status_class = "";
@@ -484,8 +455,8 @@ function template(data){
 }   
 /*********Case List section Ends***********************/
 /**********Case Edit section Starts ****************/
+//TO display case data to edit when click edit
 function editCase(e){
-
     $( '#frmNewCase' ).each(function(){
         this.reset();
         frmvalidatorfrm.resetForm();
@@ -591,11 +562,38 @@ function editCase(e){
     });
   });
   $(document).ready(function(){
-
+    //TO Get Cases list for search case dropdown
+    var url_api = API_CONTENT_URL + '/cases_list/';
+    var method = "GET";
+    $.ajax({
+      url: url_api,
+      type: method,
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        console.log(response);
+        var chapters_list_template = "";
+        if(response.length > 0){
+          $("#case_list").empty();
+          $("#case_list").append("<option value=''>All Case study</option>");
+          $.each(response, function( i, val ) {
+            $("#case_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
+          });
+        }
+      },
+      error: function(error){
+        //toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+    //To Display character length in add Case description
     $('.counter').keyup(function () {
       var cuChar = $(this).val().length;
       $(this).next("span.charcounter").html(cuChar + " Char");
     });
+    //To Display entered case name as Tags for tags field
     $("#case_name").on("blur", function () {
       var str = $(this).val();
       var acpref = str.substring(0, 4);

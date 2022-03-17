@@ -732,11 +732,13 @@ function delete_case_module_confirm(e){
   var toastr_message = case_module_name+" Deleted successfully.";
   var case_module_id = e.dataset.case_module_id;
   var case_module_name = e.dataset.module_name;
+  loadAlertModal(toastr_message, case_module_id, case_module_name);
 }
   function loadAlertModal(toastr_message, module_id, module_name){
     $('#mAlert').on('shown.bs.modal', function (event) {
       $("#mAlertCancel").focus();
-      $(document).on('click', '#mAlertDelete', function(e) {
+      $(document).on('click', '#mAlertDelete', function(e) {console.log(e);
+        console.log(module_id);
         var url_api = API_CONTENT_URL + '/case_modules/'+module_id+'/';
         var method = "DELETE";
         $.ajax({
@@ -750,7 +752,7 @@ function delete_case_module_confirm(e){
           success:function(response){
             $("#mAlertCancel").click();
             $("#case_id_mod").trigger("click");
-            toastr.success(toastr_message);
+            toastr.success("Deleted Successfully.");
           },
           error: function(error){
             toastr.error("Response Error: " + error.message);
