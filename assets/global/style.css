@@ -1694,8 +1694,9 @@ span.obg {
 	color: #53ab63;
 }
 .assign-details h6 {
-	margin: 0;
+	margin: 0 0 5px;
 	color: #20204F;
+	font-size: 14px;
 }
 .assign-details .dropdown-toggle {
 	width: 100%;
@@ -2282,9 +2283,9 @@ ul.tab-s li.active {
 	background: #20204F;
 	border: none;
 	border-radius: 30px;
-	padding: 8px 15px;
+	padding: 7px 15px;
 	color: #fff;
-	font-size: 18px;
+	font-size: 15px;
 	width: 100%;
 }
 .b-btn button:hover {
@@ -2293,6 +2294,8 @@ ul.tab-s li.active {
 .tab_content h5 {
 	color: #2A3757;
 	margin-bottom: 15px;
+	font-size: 18px;
+	font-weight: 500;
 }
 .tab-text h6 {
 	color: #2A3757;
@@ -3266,7 +3269,8 @@ form#multiple {
 	position: relative !important;
 }
 .course_details .orange-btn button {
-    font-weight: 700 !important;
+	font-weight: 500 !important;
+	font-size: 15px;
 }
 .course_details .course_name_head {
     display: block;
@@ -3311,8 +3315,9 @@ form#multiple {
 	color: #97a5ba;
 	font-size: 18px;
 	font-weight: 400;
-	margin-top: 13px; 
+	margin-top: 13px;
 	display: block;
+	margin: 0;
 }
 .course{
 	/*width: 100%;*/
@@ -3450,8 +3455,10 @@ table td.wrap {word-wrap:break-word;}
 
 /* New Course */
 .custom-btn button {
-	padding: 8px 20px;
+	padding: 7px 20px;
 	border-radius: 30px;
+	font-size: 14px;
+	font-weight: 500;
 }
 label.tags-label {
   color:#9A9A9A;
@@ -4118,4 +4125,11 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 .modal-dialog .close {
 	font-size: 20px;
 	color: #333;
+}
+.course_module_content h4 {
+	font-size: 18px;
+}
+#taskdetails .medium-popup {
+	width: 768px !important;
+	height: 550px;
 }

@@ -173,12 +173,12 @@
 .course_module_details .course_head_right li{
   display: inline-block;
 }
-.course_details .wrapper .course_head .header_breadcrumbs a{
-    color: #97a5ba;
-    font-size: 18px;
-    font-weight: 400;
-    margin-top: 10px;
-    display: block;
+.course_details .wrapper .course_head .header_breadcrumbs a {
+	color: #97a5ba;
+	font-size: 16px;
+	font-weight: 400;
+	margin-top: 10px;
+	display: block;
 }
 #module_breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
     padding-top: 10px;
