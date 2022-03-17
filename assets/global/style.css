@@ -311,7 +311,7 @@ input[type="checkbox"]:checked + label::before {
 }
 .side-navbar nav ul li a {
 	display: block;
-	padding: 10px 15px;
+	padding: 10px 10px;
 	color: #898FA3;
 	border-left: 3px solid transparent;
 	text-decoration: none;
@@ -320,6 +320,8 @@ input[type="checkbox"]:checked + label::before {
 	-ms-transition: 0.2s linear;
 	-o-transition: 0.2s linear;
 	transition: 0.2s linear;
+	font-size: 15px;
+	font-weight: 500;
 }
 .side-navbar nav ul li a:hover {
 	color: #fff;
@@ -350,17 +352,18 @@ input[type="checkbox"]:checked + label::before {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: 500;
-	font-size: 32px;
-	line-height: 26px;
+	font-size: 25px;
+	line-height: 25px;
 	color: #2A3757;
 }
 .title-head p {
-	font-family: Inter;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 16px;
-	line-height: 24px;
-	color: #526884;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    color: #526884;
+    font-weight: 500;
 }
 .relative {
 	position: relative;
@@ -466,9 +469,10 @@ input[type="checkbox"]:checked + label::before {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: bold;
-	font-size: 35px;
+	font-size: 30px;
 	line-height: 50px;
 	color: #20204F;
+	margin: 0;
 }
 .title-head .nbtn {
 	position: absolute;
@@ -551,8 +555,10 @@ dfn i {
 	background: #F36A10;
 	border: none;
 	color: #fff;
-	padding: 8px 20px;
+	padding: 7px 20px;
 	border-radius: 30px;
+	font-size: 15px;
+	font-weight: 500;
 }
 .orange-btn button:hover {
 	background: #20204F;
@@ -563,6 +569,8 @@ dfn i {
 	color: #F36A10;
 	padding: 7px 20px;
 	border-radius: 30px;
+	font-size: 15px;
+	font-weight: 500;
 }
 .border-btn button:hover {
 	background: #20204F;
@@ -573,8 +581,10 @@ dfn i {
 	background: #F13637;
 	border: none;
 	color: #fff;
-	padding: 8px 20px;
+	padding: 7px 20px;
 	border-radius: 30px;
+	font-size: 15px;
+	font-weight: 500;
 }
 .danger-btn button:hover {
 	background: #20204F;
@@ -583,8 +593,10 @@ dfn i {
 	background: #fff;
 	border: 1px solid #F13637;
 	color: #F13637;
-	padding: 8px 20px;
+	padding: 7px 20px;
 	border-radius: 30px;
+	font-size: 15px;
+	font-weight: 500;
 }
 .dborder-btn button:hover {
 	background: #20204F;
@@ -602,7 +614,7 @@ dfn i {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: 600;
-	font-size: 18px;
+	font-size: 16px;
 	line-height: 26px;
 	word-wrap: break-word;
 	min-height: auto;
@@ -633,7 +645,7 @@ dfn i {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: normal;
-	font-size: 15px;
+	font-size: 14px;
 	line-height: 20px;
 	color: #787895;
 	text-align: left;
@@ -649,10 +661,9 @@ dfn i {
 	background: #fff;
 	color: #20204F;
 	font-family: Inter;
-
 	font-style: normal;
 	font-weight: normal;
-	font-size: 15px;
+	font-size: 14px;
 	line-height: 20px;
 	text-align: left;
 	vertical-align: middle;
@@ -664,10 +675,11 @@ dfn i {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: 600;
-	font-size: 20px;
+	font-size: 18px;
 	line-height: 26px;
 	color: #20204F;
 	text-align: left;
+	margin: 0;
 }
 .green-shade a {
 	background: #ECFBE6;
@@ -1040,8 +1052,8 @@ span.back {
 .role-content h6 {
 	font-style: normal;
 	font-weight: 600;
-	font-size: 18px;
-	line-height: 26px;
+	font-size: 16px;
+	line-height: 25px;
 	color: #20204F;
 }
 span.c-comment {
@@ -1653,7 +1665,7 @@ span.obg {
 }
 .popup h4 {
 	color: #20204F;
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: 600;
 	margin-bottom: 15px;
 }
@@ -1795,9 +1807,10 @@ span.obg {
 	color: #212529;
 	text-align: inherit;
 	text-decoration: none;
-	white-space: normal!important;
+	white-space: normal !important;
 	background-color: transparent;
 	border: 0;
+	font-size: 14px;
 }
 .wauto {
 	text-align: right;
@@ -2017,7 +2030,8 @@ span.obg {
 	-webkit-transition: background ease 0.2s;
 	transition: background ease 0.2s;
 	color: #898FA3;
-	padding: 10px 20px;
+	padding: 7px 20px;
+    font-size: 15px;
 }
 .tabs .tab {
 	-webkit-box-ordinal-group: 100;
@@ -2120,6 +2134,7 @@ span.obg {
 .task-tbox p {
 	color: #20204F;
 	margin: 0;
+	font-weight: 500;
 }
 .comments h4 {
 	font-size: 18px;
@@ -3627,8 +3642,9 @@ option:not(:first-of-type) {
 #role-create-form .switch .switch--toggle{
 	background: #20204f;
 }
-.set_back_color{
-	background: #e7e7e7;
+.set_back_color {
+	background: #e5e5f1;
+	margin-bottom: 15px;
 }
 #rolebox .cleft h4{
     display: -webkit-box;
@@ -3659,17 +3675,18 @@ option:not(:first-of-type) {
 	border-top: 5px solid #20204f;
 }
 
-#role_member_count{
-    background: #e7e7e7;
-    border-radius: 19px;
-    padding: 5px;
-    font-size: 14px;
+#role_member_count {
+	background: #e7e7e7;
+	border-radius: 20px;
+	padding: 5px 6px;
+	font-size: 12px;
+	display: inline-block;
 }
 #role_member_count:hover {
     background: #20204F;
     color: #fff !important;
-    border-radius: 10px;
-    padding: 3px;
+    border-radius: 20px;
+    padding: 5px 6px;
 }
 .clr-orng{
 	color:#F36A10;
@@ -4091,4 +4108,14 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
   top: 2px;
   position: relative;
   left: 9px;
+}
+.paginationjs .paginationjs-pages li.active > a {
+	height: 30px;
+	line-height: 30px;
+	background: #F36A10;
+	color: #fff;
+}
+.modal-dialog .close {
+	font-size: 20px;
+	color: #333;
 }
