@@ -631,6 +631,7 @@ function loadAlertModal(){
           "Content-Type": "application/json"
         },
         success:function(response){
+          toastr.success("Member Deleted Successfully.");
           $("#mAlertCancel").click();
           doSearch();
         },
@@ -670,6 +671,7 @@ function loadAlertModal(){
         "Content-Type": "application/json"
       },
       success:function(response){
+        toastr.success("Member Disabled Successfully.");
         doSearch();
       },
       error: function(error) {
@@ -693,6 +695,7 @@ function loadAlertModal(){
         "Content-Type": "application/json"
       },
       success:function(response){
+        toastr.success("Member Enabled Successfully.");
         doSearch();
       },
       error: function(error) {

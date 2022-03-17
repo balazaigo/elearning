@@ -145,6 +145,7 @@ function saveRole(data, role_id) {
     })
     .then((response) => {
       getRolesPage();
+      toastr.success("Role updated successfully.")
     })
     .catch((error) => {
       var res = error.response;
@@ -166,6 +167,7 @@ function saveRole(data, role_id) {
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
     })
     .then((response) => {
+      toastr.success("New Role saved successfully.")
       getRolesPage();
     })
     .catch((error) => {
