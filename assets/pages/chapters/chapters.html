@@ -120,10 +120,11 @@
                       <input class="form-check-input parentcheck_chapter_list" name="chk" type="checkbox" value="" id="myCheck" onclick="selects();">
                       <label class="form-check-label" for="myCheck" role="button">
                       </label>
-                    </div></th>
-                    <th>SHORT CODE</th>                
+                    </div></th>               
                     <th>NAME</th>
-                    <th>DESCRIPTION</th>
+                    <th>CASE NAME</th>
+                    <th>COURSE NAME</th>
+                    <th>GROUP NAME</th>
                     <th>ACTIONS</th>
                   </tr>
                 </thead>
@@ -232,9 +233,12 @@ var frmvalidatorfrm;
           </div>
         </td>
         `;
-        html += '<td><span class="badge bg-success gridTaskID">#'+ item.short_code +'</span></td>';
+        //html += '<td><span class="badge bg-success gridTaskID">#'+ item.short_code +'</span></td>';
         html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.name +'</td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.description +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.cases +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.courses +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.groups +'</td>';
+        //html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.description +'</td>';
         html += `
           <td class="text-right">
           <div class="dropdown ahide">
