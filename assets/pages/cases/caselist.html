@@ -394,6 +394,10 @@ function get_module_details_case_mod(case_id, module_id, mytagArray){
     url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+module_id,
     type: 'get',
     dataType: 'json',
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
     success:function(response){
       var tags_response = "";
         mytagArray.forEach(function (element, index) {
@@ -534,7 +538,11 @@ function post_json_dat_case_mod(url, data, call_method, e, message){
       result_textMsg = "Level:";
     }
     result_textMsg = "Level:"
-    toastr.success(result_textMsg+" "+module_name+" Created.");
+    if(call_method == "POST"){
+      toastr.success("Created Successfully.");
+    }else{
+      toastr.success("Updated Successfully.");
+    }
   })
   .catch(function (error) {
     console.log("Requestfailed", error);

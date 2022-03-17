@@ -185,7 +185,10 @@
           url: API_CONTENT_URL + '/cases/add/chapter/',
           type: 'POST',
           data: JSON.stringify(chapter_data),
-          contentType: "application/json; charset=utf-8",
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token,
+            "Content-Type": "application/json"
+          },
           success:function(response){
             console.log(response);
             toastr.success("Module Chapter Created Successfully.");

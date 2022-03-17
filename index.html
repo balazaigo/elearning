@@ -25,6 +25,9 @@
           <div class="login-banner fullheight"> <img src="./assets/images/exper-login.png" alt=""> </div>
         </div>
         <div class="col-lg-6 col-md-6 col-12 wbg">
+          <span class="orange-btn" id="back_button_login" onclick="backtologin();" style="display:none;" role="button">
+              <img src="./assets/images/back_icon.png"><h5>Back</h5>
+          </span>
           <div class="form-section h-100 d-flex align-items-center p-5">
             <div>
               <div class="login-logo mb-3"><img src="images/logo.svg" alt=""></div>
@@ -167,6 +170,7 @@
             window.confirmationResult = confirmationResult;
             $("#areaPhone").hide();
             $("#areaCode").show();
+            $("#back_button_login").show();
             $("#o1").focus();
           }).catch(function(error) {
             console.log(error);
@@ -178,6 +182,7 @@
             toastr.info(language.lbl_enter_one_time_password);
             $("#areaPhone").hide();
             $("#areaCode").show();
+            $("#back_button_login").show();
             $("#o1").focus();
           });
       } else {
@@ -194,6 +199,7 @@
         localStorage.setItem("auth_user", phoneNumber);
         $("#areaPhone").hide();
         $("#areaCode").show();
+            $("#back_button_login").show();
         $("#o1").focus();
       }
     }
@@ -344,7 +350,13 @@
       $("#remember").attr("checked", true);
     }
   });
-  
+  function backtologin(){
+    console.log(backtologin);
+    $("#areaPhone").show();
+    $("#areaCode").hide();
+    $("#back_button_login").hide();
+    $("#phoneNumber").focus();
+  }
 </script>
 </body>
 </html>

@@ -1946,7 +1946,7 @@ span.obg {
 	display: inline-block;
 	width: 100%;
 	margin-top: 0;
-	font-family: verdana;
+    font-family: 'Inter', sans-serif;
 }
 .drop-down select {
 	width: 100%;
@@ -1985,6 +1985,7 @@ span.obg {
     box-sizing: border-box;
     list-style: none;
     background-size: 20px;
+    font-family: 'Inter', sans-serif;
 }
 .drop-down .select-list li span:hover, .drop-down .select-list li span:focus {
 	opacity: 1; background-color:#A6A5B8;
@@ -4139,4 +4140,12 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 #taskdetails .medium-popup {
 	width: 768px !important;
 	height: 550px;
+}
+#back_button_login img{
+	width: 25px;
+	height: 25px;
+    margin-bottom: 5px;
+}
+#back_button_login h5{
+	display: inline-block;
 }
