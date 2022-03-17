@@ -307,7 +307,7 @@ input[type="checkbox"]:checked + label::before {
 }
 .side-navbar nav ul li {
 	list-style: none;
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 .side-navbar nav ul li a {
 	display: block;
@@ -320,7 +320,7 @@ input[type="checkbox"]:checked + label::before {
 	-ms-transition: 0.2s linear;
 	-o-transition: 0.2s linear;
 	transition: 0.2s linear;
-	font-size: 15px;
+	font-size: 14px;
 	font-weight: 500;
 }
 .side-navbar nav ul li a:hover {
@@ -352,7 +352,7 @@ input[type="checkbox"]:checked + label::before {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: 500;
-	font-size: 25px;
+	font-size: 20px;
 	line-height: 25px;
 	color: #2A3757;
 }
@@ -360,7 +360,7 @@ input[type="checkbox"]:checked + label::before {
     font-family: Inter;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 24px;
     color: #526884;
     font-weight: 500;
@@ -466,13 +466,13 @@ input[type="checkbox"]:checked + label::before {
 	align-items: center;
 }
 .title-head h2 {
-	font-family: Inter;
-	font-style: normal;
-	font-weight: bold;
-	font-size: 30px;
-	line-height: 50px;
-	color: #20204F;
-	margin: 0;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 50px;
+    color: #20204F;
+    margin: 0;
 }
 .title-head .nbtn {
 	position: absolute;
@@ -557,7 +557,7 @@ dfn i {
 	color: #fff;
 	padding: 7px 20px;
 	border-radius: 30px;
-	font-size: 15px;
+	font-size: 13px;
 	font-weight: 500;
 }
 .orange-btn button:hover {
@@ -569,7 +569,7 @@ dfn i {
 	color: #F36A10;
 	padding: 7px 20px;
 	border-radius: 30px;
-	font-size: 15px;
+	font-size: 13px;
 	font-weight: 500;
 }
 .border-btn button:hover {
@@ -583,7 +583,7 @@ dfn i {
 	color: #fff;
 	padding: 7px 20px;
 	border-radius: 30px;
-	font-size: 15px;
+	font-size: 13px;
 	font-weight: 500;
 }
 .danger-btn button:hover {
@@ -595,7 +595,7 @@ dfn i {
 	color: #F13637;
 	padding: 7px 20px;
 	border-radius: 30px;
-	font-size: 15px;
+	font-size: 13px;
 	font-weight: 500;
 }
 .dborder-btn button:hover {
@@ -611,13 +611,13 @@ dfn i {
 	position: relative;
 }
 .role-content h4 {
-	font-family: Inter;
-	font-style: normal;
-	font-weight: 600;
-	font-size: 16px;
-	line-height: 26px;
-	word-wrap: break-word;
-	min-height: auto;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 26px;
+    word-wrap: break-word;
+    min-height: auto;
 }
 .role-content p {
 	font-family: Inter;
@@ -645,7 +645,7 @@ dfn i {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: normal;
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 20px;
 	color: #787895;
 	text-align: left;
@@ -663,7 +663,7 @@ dfn i {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: normal;
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 20px;
 	text-align: left;
 	vertical-align: middle;
@@ -675,8 +675,8 @@ dfn i {
 	font-family: Inter;
 	font-style: normal;
 	font-weight: 600;
-	font-size: 18px;
-	line-height: 26px;
+	font-size: 16px;
+	line-height: 25px;
 	color: #20204F;
 	text-align: left;
 	margin: 0;
@@ -1092,23 +1092,24 @@ span.c-comment i {
 	border-radius: 30px;
 }
 .tbtn a {
-	background: #F9F9FB;
-	color: #20204F;
-	font-size: 14px;
-	padding: 5px 15px;
-	border-radius: 30px;
+    background: #F9F9FB;
+    color: #20204F;
+    font-size: 12px;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-weight: 500;
 }
 .role-content a:hover {
 	background: #20204F;
 	color: #fff;
 }
 span.percent-label {
-	font-family: Inter;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 14px;
-	line-height: 20px;
-	color: #20204F;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: #20204F;
 }
 .switch {
 	border: solid 2px #eee;
@@ -1166,11 +1167,11 @@ span.percent-label {
 
 .topsearch .form-control {
 	padding: 7px;
-	font-size: 14px;
+	font-size: 13px;
 }
 .popup .topsearch .form-control {
 	padding: 10px;
-	font-size: 14px;
+	font-size: 13px;
 }
 .popup .sort-select {
 	padding: 10px;
@@ -1664,10 +1665,10 @@ span.obg {
 	display: inline-block;
 }
 .popup h4 {
-	color: #20204F;
-	font-size: 18px;
-	font-weight: 600;
-	margin-bottom: 15px;
+    color: #20204F;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 .add-comment {
 	display: flex;
@@ -1926,7 +1927,7 @@ span.obg {
 	border: 1px solid #ced4da;
 	background: url(../images/arrow-back.png) no-repeat;
 	width: 100%;
-	font-size: 14px;
+	font-size: 13px;
 	color: #9A9A9A;
 	height: auto;
 	border-radius: 5px;
@@ -2032,7 +2033,7 @@ span.obg {
 	transition: background ease 0.2s;
 	color: #898FA3;
 	padding: 7px 20px;
-    font-size: 15px;
+    font-size: 12px;
 }
 .tabs .tab {
 	-webkit-box-ordinal-group: 100;
@@ -2095,10 +2096,11 @@ span.obg {
 	text-align: left;
 }
 .tab td {
-	color: #52575D;
-	font-weight: normal;
-	padding: 0 5px;
-	text-align: left;
+    color: #52575D;
+    font-weight: normal;
+    padding: 0 5px;
+    text-align: left;
+    font-size: 12px;
 }
 .tab tr:hover {
 	background: #EEF6FF;
@@ -2128,14 +2130,16 @@ span.obg {
 	margin-right: 10px;
 }
 .task-tbox h4 {
-	font-weight: 600;
-	color: #20204F;
-	margin: 0;
+    font-weight: 600;
+    color: #20204F;
+    margin: 0;
+    font-size: 18px;
 }
 .task-tbox p {
-	color: #20204F;
-	margin: 0;
-	font-weight: 500;
+    color: #20204F;
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
 }
 .comments h4 {
 	font-size: 18px;
@@ -3307,9 +3311,10 @@ form#multiple {
     justify-content: right;
 }
 .course_details .wrapper .course_head .header_content {
-	margin: 0;
-	color: #20204f;
-	font-weight: bold;
+    margin: 0;
+    color: #20204f;
+    font-weight: 600;
+    font-size: 20px;
 }
 .course_details .wrapper .course_head .header_breadcrumbs {
 	color: #97a5ba;
@@ -3383,7 +3388,7 @@ form#multiple {
   line-height: 14px;
   min-width: 55px;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 12px;
 }
 /* round button */
 
@@ -3653,13 +3658,15 @@ option:not(:first-of-type) {
 	background: #e5e5f1;
 	margin-bottom: 15px;
 }
-#rolebox .cleft h4{
+#rolebox .cleft h4 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 52px;
+    font-size: 14px;
+    line-height: 20px;
 }
 #rolebox .cright .icon_counts{
     background-color: black;
@@ -3971,9 +3978,9 @@ li.dashed {
 	background: #f9f9fb !important;
 	padding: 0px !important;
 }
-#caselists .main_mod_title{	
+#caselists .main_mod_title {
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
 }
 #caselists .main_mod_sub_title{
 	font-size: 14px;

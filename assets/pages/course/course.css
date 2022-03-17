@@ -75,10 +75,11 @@
     margin-top: 7px;
     margin-left: 0px;
 }
-.sub_module .module_input p{
-    position: absolute;
-    margin-top: 9px;
-    margin-left: 4px;
+.sub_module .module_input p {
+	position: absolute;
+	margin-top: 9px;
+	margin-left: 4px;
+	font-size: 14px;
 }
 .disp_none{
     display: none;
@@ -303,10 +304,11 @@
     border: 1px solid #D3D2DC;
 }
 #course_box .module {
-    padding: 5px 5px 10px 10px;
-    border-radius: 5px;
-    float: left !important;
-    background: white;
+	padding: 5px 5px 10px 10px;
+	border-radius: 5px;
+	float: left !important;
+	background: white;
+	font-size: 13px;
 }
 #course_box{
     background: #f9f9fb !important;
