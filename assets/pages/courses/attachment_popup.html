@@ -4,24 +4,33 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
   <div class="col-md-12 p-3" style="padding-top: 0rem !important;">
-    <div class="course_module_content" style="overflow-y: scroll;height: 400px;overflow-x: hidden;">
-    <div id="dropzone">
-      <form id="demo-upload2" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
-        <div id="upload-2-queue" class="queue pt-3 uploaded_display"></div>
-        <div id="upload-2-dropzone"></div>
+    <div class="course_module_content" id="course_module_attachment" style="overflow-y: scroll;height: 400px;overflow-x: hidden;display: none;">
+      <div id="dropzone">
+        <form id="demo-upload2" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
+          <div id="upload-2-queue" class="queue pt-3 uploaded_display"></div>
+          <div id="upload-2-dropzone"></div>
 
-        <DIV id="preview-template" style="display: none;">
-        <DIV class="dz-preview dz-file-preview">
-        <DIV class="dz-image"><IMG data-dz-thumbnail=""></DIV>
-        <DIV class="dz-details">
-        <DIV class="dz-size"><SPAN data-dz-size=""></SPAN></DIV>
-        <DIV class="dz-filename"><SPAN data-dz-name=""></SPAN></DIV></DIV>
-        <DIV class="dz-progress"><SPAN class="dz-upload" 
-        data-dz-uploadprogress=""></SPAN></DIV>
-        <DIV class="dz-error-message"><SPAN data-dz-errormessage=""></SPAN></DIV>
-
-      </form>
-    </div>
+          <div id="preview-template" style="display: none;">
+            <div class="dz-preview dz-file-preview">
+              <div class="dz-image"><img data-dz-thumbnail=""></div>
+              <div class="dz-details">
+                <div class="dz-size">
+                  <span data-dz-size=""></span>
+                </div>
+                <div class="dz-filename">
+                  <span data-dz-name=""></span>
+                </div>
+              </div>
+              <div class="dz-progress">
+                <span class="dz-upload" data-dz-uploadprogress=""></span>
+              </div>
+              <div class="dz-error-message">
+                <span data-dz-errormessage=""></span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="tab p-0">
       <div class="table-section">
@@ -47,6 +56,12 @@
   setTimeout(function(){
     var cid = document.getElementById("course_param").getAttribute("data-cid");
     var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+    var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+    if(show_input == "true"){
+       $("#course_module_attachment").attr("style", "display:block");
+    }else{
+       $("#course_module_attachment").attr("style", "display:none");
+    }
     get_module_details(cid, module_id);
   }, 0);
   
@@ -196,6 +211,8 @@ function get_module_details(cid, module_id){
                                   </li>`;
                 }
           });
+        }else{
+          module_attachments_html += `<li class="has-children is-open">NO Attachment Found!</li>`;
         }
 
         $("#course_module_content").empty();

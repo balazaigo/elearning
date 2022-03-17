@@ -52,7 +52,7 @@ var listItens = document.querySelectorAll('.draggable');
 });
 
 function toinput(e){
-    if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
+    /*if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
       e.previousSibling.value = ''; 
     }
     if(e.innerHTML == "Add Module Name"){
@@ -60,7 +60,28 @@ function toinput(e){
     }
     e.setAttribute("style","display:none");
     e.previousSibling.setAttribute("style","display:block");
-    e.previousSibling.focus();
+    e.previousSibling.focus();*/
+    if(e.tagName == "P"){
+        if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
+          e.previousSibling.value = ''; 
+        }
+        if(e.innerHTML == "Add Module Name"){
+          e.previousSibling.value = ''; 
+        }
+        e.setAttribute("style","display:none");
+        e.previousSibling.setAttribute("style","display:block");
+        e.previousSibling.focus();
+    }else{
+        if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
+          e.parentElement.previousSibling.value = ''; 
+        }
+        if(e.innerHTML == "Add Module Name"){
+          e.parentElement.previousSibling.value = ''; 
+        }
+        e.parentElement.setAttribute("style", "display:none");
+        e.parentElement.previousSibling.setAttribute("style","display:block");
+        e.parentElement.previousSibling.focus();
+    }
 }
 function get_module_details(cid, module_id, mytagArray){
   $.ajax({
@@ -121,7 +142,7 @@ function totext(e){
       }else if(first_five_char_class === "sub_m"){
         var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
         var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
-        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[2].firstChild.getAttribute("data-module_id");
+        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-module_id");
         get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
 
@@ -136,10 +157,21 @@ function totext(e){
         post_json_dat(url, get_submodule_level_values, method, e, message);
       }
     }
-    e.nextSibling.innerHTML = e.value; 
+    if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
+        e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput(this);">`;
+        e.setAttribute("style","display:none");
+        e.nextSibling.setAttribute("style","display:block");
+        e.nextSibling.focus();
+    }else{
+        e.nextSibling.innerHTML = e.value;
+        e.setAttribute("style","display:none");
+        e.nextSibling.setAttribute("style","display:block");
+        e.nextSibling.focus();
+    }
+    /*e.nextSibling.innerHTML = e.value; 
     e.setAttribute("style","display:none");
     e.nextSibling.setAttribute("style","display:block");
-    e.nextSibling.focus();
+    e.nextSibling.focus();*/
 }
 
 function get_submodule_level_val(class_module_main_level, class_module_sub_level, ele_val, parent_id_val){
@@ -174,13 +206,18 @@ function post_json_dat(url, data, call_method, e, message){
   .then((response) => response.json())
   .then((json) => {
     var module_name = "";
-    el_1 = e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild;//edit
-    el_2 = e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild;//delete
-    el_3 = e.parentElement.parentElement.childNodes[9].firstChild;//tags
-    el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
+    //el_1 = e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild;//edit
+    //el_2 = e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild;//delete
+    console.log(e.parentElement.parentElement.childNodes)
+      el_1 = e.parentElement.parentElement.childNodes[1].childNodes[1];//edit
+      el_2 = e.parentElement.parentElement.childNodes[4].childNodes[1].firstChild.firstChild;//delete
+    el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
+    //el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
     el_5 = e.parentElement.parentElement.childNodes[5].firstChild;//attachment
     el_6 = e.parentElement.parentElement.childNodes[6].firstChild;//comment
     el_7 = e.parentElement.parentElement.childNodes[7].firstChild;//assign
+    el_8 = e.parentElement.parentElement.childNodes[8].firstChild;//tag
+    el_9 = e.parentElement.parentElement.childNodes[9].firstChild;//add
 
     el_li_0 = e.parentElement.parentElement.childNodes[0];
     el_li_1 = e.parentElement.parentElement.childNodes[1];
@@ -191,27 +228,31 @@ function post_json_dat(url, data, call_method, e, message){
     el_li_6 = e.parentElement.parentElement.childNodes[6];
     el_li_7 = e.parentElement.parentElement.childNodes[7];
     el_li_8 = e.parentElement.parentElement.childNodes[8];
-    el_li_8 = e.parentElement.parentElement.childNodes[9];
+    el_li_9 = e.parentElement.parentElement.childNodes[9];
     el_1.setAttribute("data-flinkto", "courseslistlevel");
     if(json.module_id != undefined || json.module_id != null){
       e.setAttribute("data-module_id", json.module_id);
       el_1.setAttribute("data-module_id", json.module_id);
       el_2.setAttribute("data-module_id", json.module_id);
       el_3.setAttribute("data-module_id", json.module_id);
-      el_4.setAttribute("data-module_id", json.module_id);
+      //el_4.setAttribute("data-module_id", json.module_id);
       el_5.setAttribute("data-module_id", json.module_id);
       el_6.setAttribute("data-module_id", json.module_id);
       el_7.setAttribute("data-module_id", json.module_id);
+      el_8.setAttribute("data-module_id", json.module_id);
+      el_9.setAttribute("data-module_id", json.module_id);
     }
     if(json.course_id != undefined || json.course_id != null){
       e.setAttribute("data-cid", json.course_id);
       el_1.setAttribute("data-cid", json.course_id);
       el_2.setAttribute("data-cid", json.course_id);
       el_3.setAttribute("data-cid", json.course_id);
-      el_4.setAttribute("data-cid", json.course_id);
+      //el_4.setAttribute("data-cid", json.course_id);
       el_5.setAttribute("data-cid", json.course_id);
       el_6.setAttribute("data-cid", json.course_id);
       el_7.setAttribute("data-cid", json.course_id);
+      el_8.setAttribute("data-cid", json.course_id);
+      el_9.setAttribute("data-cid", json.course_id);
     }
     if(json.can_access == false){
       el_li_0.style.cssText = "pointer-events: none";
@@ -252,7 +293,12 @@ function post_json_dat(url, data, call_method, e, message){
     }else if (num > 4){
       var result_textMsg = "Level:";
     }
-    toastr.success(result_textMsg+" "+module_name+" Created.");
+    if(call_method == "POST"){
+      toastr.success("Created successfully.");
+    }else{
+      toastr.success("Updated successfully.");
+    }
+    //
   })
   .catch(function (error) {
     console.log("Requestfailed", error);
@@ -547,7 +593,12 @@ function show_tag_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
-    modal.toggle();
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false");
+    }else{
+      document.getElementById("course_param").setAttribute("data-show_input", "true");
+    }
+    modal.show();
   });
 }
 
@@ -559,6 +610,11 @@ function show_attachment_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false");
+    }else{
+      document.getElementById("course_param").setAttribute("data-show_input", "true");
+    }
     modal.toggle();
   });
 }
@@ -570,6 +626,11 @@ function show_message_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false");
+    }else{
+      document.getElementById("course_param").setAttribute("data-show_input", "true");
+    }
     modal.toggle();
   });
 }
@@ -581,12 +642,19 @@ function show_assignee_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false");
+    }else{
+      document.getElementById("course_param").setAttribute("data-show_input", "true");
+    }
     modal.toggle();
   });
 }
 $(document).ready(function(){
   $('#popup_course_icon').on('hidden.bs.modal', function () {
+    setTimeout(function(){
       $('#course_id').trigger('click');
+    }, 0);
   });
   var course_len = $("#course_box > div").length;
   console.log(course_len);
@@ -828,32 +896,61 @@ function delete_module_confirm(e){
   var toastr_message = result_textMsg+" "+module_name+" Deleted successfully.";
   var module_id = e.dataset.module_id;
   var module_name = e.dataset.name;
-  loadAlertModal(toastr_message, module_id, module_name);
+  var case_id = e.dataset.case_id;
+  loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, num);
 }
-  function loadAlertModal(toastr_message, module_id, module_name){
+  function loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, level_num){
     $('#mAlert').on('shown.bs.modal', function (event) {
       $("#mAlertCancel").focus();
       $(document).on('click', '#mAlertDelete', function(e) {
-        var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
-        var method = "DELETE";
-        $.ajax({
-          url: url_api,
-          type: method,
-          dataType: 'json',
-          headers: {
-            "Authorization": "Bearer " + getUserInfo().access_token,
-            "Content-Type": "application/json"
-          },
-          success:function(response){
+        if(case_id !== "null" || case_id !== "undefined"){
+
+          var url = API_CONTENT_URL + '/course_module/'+module_id+'/';
+          var method = "PUT";
+
+          var data = {
+            module_name: String(module_name),
+            level: parseInt(level_num), 
+            course_id:String(document.getElementById("course_id").value),
+            case_id:null
+          };
+          fetch(url, {
+            method: method,
+            body: JSON.stringify(data),
+            headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+          })
+          .then((response) => response.json())
+          .then((json) => {
+            toastr.success("Case Deleted successfully");
             $("#mAlertCancel").click();
-            $("#course_id").trigger("click");
-            toastr.success(toastr_message);
-          },
-          error: function(error){
-            toastr.error("Response Error: " + error.message);
-            console.log(error);
-          }
-        });
+              $("#course_id").trigger("click");
+            //getCoursePage(e);
+          })
+          .catch(function (error) {
+            console.log("Requestfailed", error);
+          });
+        }else{
+          var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
+          var method = "DELETE";
+          $.ajax({
+            url: url_api,
+            type: method,
+            dataType: 'json',
+            headers: {
+              "Authorization": "Bearer " + getUserInfo().access_token,
+              "Content-Type": "application/json"
+            },
+            success:function(response){
+              $("#mAlertCancel").click();
+              $("#course_id").trigger("click");
+              toastr.success(toastr_message);
+            },
+            error: function(error){
+              toastr.error("Response Error: " + error.message);
+              console.log(error);
+            }
+          });
+        }
       });
       //mAlertCancel
       $(document).on('click', '#mAlertCancel', function() {
@@ -1121,6 +1218,12 @@ function add_module(e, id, mod_level){
       $(".mod-section").show();
       $(".mod-sub_section").show();
       $(".mod-case_study").show();
+    }
+    console.log(mod_level);
+    if(mod_level == "sub_sub"){
+      $(".mod-section").hide();
+    }else{
+      $(".mod-section").show();
     }
     $("#clicked_event").attr("data-click_id", id);
     $("#clicked_event").attr("data-click_level", mod_level);

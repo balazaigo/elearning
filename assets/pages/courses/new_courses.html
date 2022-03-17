@@ -367,6 +367,7 @@
         start_date: { required: true },
         end_date: { required: true },
         member: { required: true },
+        description: { required: true },
       },
       messages: {
         coursesName: {
@@ -384,6 +385,9 @@
         start_date: { required: "Please select starting date" },
         end_date: { required: "Please select ending date" },
         member: { required: "Please selct a member" },
+        description: {
+          required: "Please enter a Description",
+        },
       },
       errorElement: "em",
       errorPlacement: function (error, element) {

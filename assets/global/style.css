@@ -3979,6 +3979,9 @@ li.dashed {
 	background: #f9f9fb !important;
 	padding: 0px !important;
 }
+#caselists .case_list_module_box li{
+	cursor: pointer;
+}
 #caselists .main_mod_title {
     font-weight: 600;
     font-size: 16px;

@@ -41,7 +41,7 @@
 			      </div>
 			    </div>
 			</form>
-			<div class="modal-footer">
+			<div class="modal-footer" id="course_module_save_btn">
 			  <span class="custom-btn nbtn">
 			    <button type="button" class="btn btn-success" id="saveAssignee">Save</button>
 			  </span>
@@ -78,12 +78,19 @@ $(document).ready(function(){
 	setTimeout(function(){
 		var cid = document.getElementById("course_param").getAttribute("data-cid");
 		var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+		var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+		if(show_input == "true"){
+			 $("#frmAssignee").attr("style", "display:block");
+			 $("#course_module_save_btn").attr("style", "display:block");
+		}else{
+			 $("#frmAssignee").attr("style", "display:none");
+			 $("#course_module_save_btn").attr("style", "display:none");
+		}
   		var AssignCourseId = window.sharedAssignCourseId;
   		if(cid === null){
   			cid = AssignCourseId;
   		}
 		get_assignee_details(cid, module_id);
-
 	}, 0);
 
   $("#saveAssignee").on("click", function() {
