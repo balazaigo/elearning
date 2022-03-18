@@ -1134,7 +1134,6 @@ $( ".module-section" ).draggable({
 $( ".main_mod_empty" ).droppable({
     accept: ".module-section",
     drop: function( event, ui ) {
-      alert(1);
        var droppable = $(this);
        var draggable = ui.draggable;
        var draggable_id = draggable.attr("id");
