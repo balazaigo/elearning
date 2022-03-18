@@ -278,6 +278,7 @@ function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
           $("#pagination-container-to").show();
           $("#pagination-container-by").show();
         }
+        console.log(getUserInfo().role);
       var html = template(data, assignTOBY);
       $('#' + htmlID).html(html);
       loadAlertModal();
@@ -335,10 +336,15 @@ function template(data, tagTOBY) {
       html += `</li><li>`;
       
       if(item.status == '2' || item.status == '3') {
-        html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
+        if(getUserInfo().role == "Admin"){
+          html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
+        }
       } else {
-        html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.name+`" data-url="`+item.id+`/"
+
+        if(getUserInfo().role == "Admin"){
+          html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.name+`" data-url="`+item.id+`/"
                    class="dropdown-item red">&nbsp;Delete</a>`;
+        }
       }
       html += `</li>
           </ul>
@@ -483,17 +489,25 @@ function loadAlertModal(){
       }
     });
   });
-
+  $("#myCheck").prop("checked", false);
   $("input[name='chk']").on("click", function (e) {
     var isFalse = false;
+    var checked_length = 0;
     $("input[name='chk']:not(.parentcheck)").each( function () {
       if($(this).is(":checked") == true) {
         isFalse = true;
+        checked_length++;
       }
     });
+    console.log(checked_length);
+    if(checked_length < $("input[name='chk']:not(.parentcheck)").length){
+      isFalse = false;
+    }
     if(!isFalse) {
       //parentcheck
       $("#myCheck").prop("checked", false);
+    }else{
+      $("#myCheck").prop("checked", true);
     }
   });
 

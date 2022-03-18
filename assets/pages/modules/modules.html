@@ -126,7 +126,7 @@
                 <thead>
                   <tr>
                     <th><div class="form-check">
-                      <input class="form-check-input parentcheck_module_list" name="chk" type="checkbox" value="" id="myCheck" onclick="selects();">
+                      <input class="form-check-input parentcheck" name="chk" type="checkbox" value="" id="myCheck" onclick="selects();">
                       <label class="form-check-label" for="myCheck" role="button">
                       </label>
                     </div></th>
@@ -315,7 +315,31 @@
       callback: function(data, pagination) {
         var html = template(data);
         $('#listData').html(html);
+
+        $("#myCheck").prop("checked", false);
         // loadAlertModal();
+        $("input[name='chk']").on("click", function (e) {
+          var isFalse_mod = false;
+          var checked_length_mod = 0;
+          $("input[name='chk']:not(.parentcheck)").each( function () {
+            if($(this).is(":checked") == true) {
+              isFalse_mod = true;
+              checked_length_mod++;
+            }else{
+              console.log(checked_length_mod);
+            }
+          });
+          console.log(checked_length_mod);
+          if(checked_length_mod < $("input[name='chk']:not(.parentcheck)").length){
+            isFalse_mod = false;
+          }
+          if(!isFalse_mod) {
+            //parentcheck
+            $("#myCheck").prop("checked", false);
+          }else{
+            $("#myCheck").prop("checked", true);
+          }
+        });
       }
     });
 
@@ -407,9 +431,9 @@
     e.classList.add('cardactive');
   }
   
-  $("input[name='chk']").on("click", function (e) {
+ /* $("input[name='chk']").on("click", function (e) {
     var isFalse_mod = false;
-    $("input[name='chk']:not(.parentcheck_module_list)").each( function () {
+    $("input[name='chk']:not(.parentcheck)").each( function () {
       if($(this).is(":checked") == true) {
         isFalse_mod = true;
       }
@@ -418,7 +442,7 @@
       //parentcheck
       $("#myCheck").prop("checked", false);
     }
-  });
+  });*/
   $( document ).ready(function() {
 
       $.validator.addMethod("pattern", function (value, element, param) {

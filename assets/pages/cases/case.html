@@ -61,8 +61,8 @@
           <div class="col-md-12 mb-3">
             <div class="form-floating">
               <input type="text" id="case_description" name="description" class="form-control counter"
-                placeholder=" " maxlength="1024" minlength="4"/>
-              <span class="charcounter">0 Char</span>
+                placeholder=" " maxlength="256" minlength="4"/>
+              <span class="charcounter">256 Char</span>
               <label for="description">One line description</label>
             </div>
           </div>
@@ -228,7 +228,7 @@
         description: {
           required: "Please enter a description",
           minlength: "Description must consist of at least 1 characters",
-          maxlength: "Description must consist of max of 20 characters",
+          maxlength: "Description must consist of max of 256 characters",
         },
         case_type: { required: "Please select the Case type" },
         assign_to: { required: "Please select Assign To" },
@@ -597,7 +597,7 @@ function editCase(e){
     });
     //To Display character length in add Case description
     $('.counter').keyup(function () {
-      var cuChar = $(this).val().length;
+      var cuChar = Number(256) -$(this).val().length;
       $(this).next("span.charcounter").html(cuChar + " Char");
     });
     //To Display entered case name as Tags for tags field

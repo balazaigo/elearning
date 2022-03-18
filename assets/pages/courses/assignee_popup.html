@@ -55,7 +55,7 @@
 		              <th>ASSIGNED BY</th>
 		              <th>START DATE</th>
 		              <th>END DATE</th>
-                  	  <th>STATUS</th>
+                  	  <!--<th>STATUS</th>-->
 		              <th class="text-center">DELETE</th>
 		            </tr>
 		          </thead>
@@ -231,7 +231,7 @@ function get_assignee_details(cid, module_id){
 					    assignee_html += '<td class="wrap">'+ val.assigned_by_name +'</td>';
 					    assignee_html += '<td>'+ val.start_date +'</td>';
 					    assignee_html += '<td>'+ val.end_date +'</td>';
-					    assignee_html += '<td>'+ getStatus(val.status) +'</td>';
+					    //assignee_html += '<td>'+ getStatus(val.status) +'</td>';
 					    assignee_html += '<td class="text-center"><span><i class="far fa-trash-alt" id="'+val.id+'" onclick="deleteAssigneeMember(this);"></i></span></td>'
 					    assignee_html += '</tr>';
 			      });

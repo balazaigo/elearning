@@ -410,9 +410,10 @@ function get_breadcrumbs(){
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(data){
+        console.log(data);
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
-        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="cases" data-case_id="${data.case_id}"><a href="#" data-flinkto="cases" data-case_id="${data.case_id}">${data.course_name}</a></li>`;
+        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="caseslist" data-case_id="${data.case_id}" ><a href="#" data-flinkto="caseslist" data-case_id="${data.case_id}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
               brd_crumbs += `<li class="breadcrumb-item" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}"><a href="#" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;

@@ -2700,7 +2700,7 @@ to {
 .case-section h4 {
 	font-size: 18px;
 }
-#case_ind_name_input{
+#case_ind_name_input, #chapter_ind_name_input{
     border: 1px solid #d6d6d6;
     border-radius: 5px;
     padding-left: 10px;
@@ -3979,7 +3979,7 @@ li.dashed {
 	background: #f9f9fb !important;
 	padding: 0px !important;
 }
-#caselists .case_list_module_box li{
+#caselists .case_list_module_box li, #chapterList .case_list_module_box li{
 	cursor: pointer;
 }
 #caselists .main_mod_title {

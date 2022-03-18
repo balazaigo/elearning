@@ -75,7 +75,7 @@ $(document).on("submit", "#member-create-form", function (e) {
     last_name: "",
     phone_number: "",
     roles_name: "",
-    status: 0,
+    status: 1,
     mc_status: 0,
     image: "",
   };
@@ -123,7 +123,15 @@ $("#member-email").prop('disabled', true);
       },
       success: function(response){
         $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
-        toastr.success("New member record successfully saved!");
+        if(Method == "POST"){
+          toastr.success("New member record successfully saved!");
+        }else{
+          toastr.success("Member record successfully updated!");
+        }
+        if(response.id && response.id == getUserInfo().id){
+          const auth = new Auth();
+          auth.logOut();
+        }
         $(".cancel-member-create-form").click();
         doSearch();
       },

@@ -117,7 +117,7 @@
                 <thead>
                   <tr>
                     <th><div class="form-check">
-                      <input class="form-check-input parentcheck_chapter_list" name="chk" type="checkbox" value="" id="myCheck" onclick="selects();">
+                      <input class="form-check-input parentcheck" name="chk" type="checkbox" value="checkchapter" id="myCheck" onclick="selects();">
                       <label class="form-check-label" for="myCheck" role="button">
                       </label>
                     </div></th>               
@@ -295,7 +295,8 @@ var frmvalidatorfrm;
   }
   
   $( document ).ready(function() {
-    $("input[name='chk']").on("click", function (e) {
+
+    /*$("input[name='chk']").on("click", function (e) {
       var isFalse_mod = false;
       $("input[name='chk']:not(.parentcheck_chapter_list)").each( function () {
         if($(this).is(":checked") == true) {
@@ -306,7 +307,7 @@ var frmvalidatorfrm;
         //parentcheck
         $("#myCheck").prop("checked", false);
       }
-    });
+    });*/
     $('.cm-capitalize').each(function () { $(this).capitalize(); });
     $('.cm-uppercase').each(function () { $(this).upperCase(); });
     $('.cm-replaceSpace').each(function () { $(this).replaceSpace(); });
@@ -553,6 +554,29 @@ var frmvalidatorfrm;
       var modal = $(this);
       modal.find('.modal-content input').val(null);
       modal.find('.modal-content #mAlertName').html("Loading...");
+    });
+    $("#myCheck").prop("checked", false);
+    $("input[name='chk']").on("click", function (e) {
+      var isFalse_mod = false;
+      var checked_length_mod = 0;
+      $("input[name='chk']:not(.parentcheck)").each( function () {
+        if($(this).is(":checked") == true) {
+          isFalse_mod = true;
+          checked_length_mod++;
+        }else{
+          console.log(checked_length_mod);
+        }
+      });
+      console.log(checked_length_mod);
+      if(checked_length_mod < $("input[name='chk']:not(.parentcheck)").length){
+        isFalse_mod = false;
+      }
+      if(!isFalse_mod) {
+        //parentcheck
+        $("#myCheck").prop("checked", false);
+      }else{
+        $("#myCheck").prop("checked", true);
+      }
     });
   }
 
