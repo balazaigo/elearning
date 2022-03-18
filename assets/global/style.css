@@ -4152,3 +4152,7 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 #back_button_login h5{
 	display: inline-block;
 }
+#saveAssignee{
+    float: right;
+    margin-bottom: 10px;
+}

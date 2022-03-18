@@ -22,32 +22,62 @@
   setTimeout(function(){
    let cid = document.getElementById("course_param").getAttribute("data-cid");
    let module_id = document.getElementById("course_param").getAttribute("data-module_id");
+   let case_id = document.getElementById("course_param").getAttribute("data-case_id");
+   let chapter_id = document.getElementById("course_param").getAttribute("data-chapter_id");
+   let chapter_topic_id = document.getElementById("course_param").getAttribute("data-chapter_topic_id");
     var show_input = document.getElementById("course_param").getAttribute("data-show_input");
     if(show_input == "true"){
-       $("#tag__inputs").attr("style", "display:block");
+       $(".tag__inputs").attr("style", "display:block");
+       $(".showmore").attr("style", "display:block");
+       get_module_details(cid, module_id);
+    }else if(show_input == "false-chapter"){
+       $(".tag__inputs").attr("style", "display:none");
+       $(".showmore").attr("style", "display:none");
+       get_module_details(chapter_id, chapter_topic_id);
     }else{
-       $("#tag__inputs").attr("style", "display:none");
+       $(".tag__inputs").attr("style", "display:none");
+       $(".showmore").attr("style", "display:none");
+       get_module_details(case_id, module_id);
     }
-    get_module_details(cid, module_id);
   }, 0);
 
   function get_module_details(cid, module_id){
+    var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+    if(show_input == "true"){
+      var URL = API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id;
+    }else if(show_input == "false-chapter"){
+      var URL = API_CONTENT_URL + '/chapter_topic_tags/?chapter_id='+cid+'&chapter_topic_id='+module_id;
+    }else{
+      var URL = API_CONTENT_URL + '/case_tags/?case_id='+cid+'&module_id='+module_id
+    }
     $.ajax({
-      url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
+      url: URL,
       type: 'get',
       dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(response){
         var course_tags = response;
         var tag_list ="";
         var tag_list_str = "";
             for(var i = 0; i < course_tags.length; i++){
-              tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes" data-tag="'+course_tags[i].tag_name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
-              tag_list_str += course_tags[i].tag_name+",";
+              if(show_input == "true"){
+                tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes" data-tag="'+course_tags[i].tag_name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
+                tag_list_str += course_tags[i].tag_name+",";
+              }else{
+                tag_list += '<li>'+course_tags[i].name+'<span class="tag__removes" data-tag="'+course_tags[i].name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
+                tag_list_str += course_tags[i].name+",";
+              }
             }
+            console.log(course_tags.length);
             if(course_tags.length > 2){
               $(".showmore").attr("style", "display:block");
             }else{
-              $(".showmore").attr("style", "display:none");
+              if(course_tags.length === 0){
+                $(".showmore").text("No Tags Found!");
+                $(".showmore").attr("style", "left:100px");
+              }else{
+                $(".showmore").attr("style", "display:none");
+              } 
             }
         document.getElementById("tag__List_append").innerHTML = tag_list;
         document.getElementById("tag__values").value = tag_list_str;
@@ -102,6 +132,8 @@ document.addEventListener("keyup", function(e){
         data: JSON.stringify(tag_data),
         contentType: "application/json; charset=utf-8",
         success:function(response){
+                $(".showmore").text("More >>");
+                $(".showmore").attr("style", "left:none;");
           const newTag = ` <li>${currentTag}<span class="tag__removes" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";

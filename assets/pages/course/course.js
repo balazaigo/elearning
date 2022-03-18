@@ -102,7 +102,7 @@ function get_module_details(cid, module_id, mytagArray){
             url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
             type: 'POST',
             data: JSON.stringify(tag_data),
-            contentType: "application/json; charset=utf-8",
+            headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
             success:function(response){
             },
             error: function(error) {
@@ -593,8 +593,13 @@ function show_tag_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
-    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
+      document.getElementById("course_param").setAttribute("data-case_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id"));
+    }else if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false-chapter");
+      document.getElementById("course_param").setAttribute("data-chapter_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id"));
+      document.getElementById("course_param").setAttribute("data-chapter_topic_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_topic_id"));
     }else{
       document.getElementById("course_param").setAttribute("data-show_input", "true");
     }
@@ -610,8 +615,13 @@ function show_attachment_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
-    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
+      document.getElementById("course_param").setAttribute("data-case_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id"));
+    }else if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false-chapter");
+      document.getElementById("course_param").setAttribute("data-chapter_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id"));
+      document.getElementById("course_param").setAttribute("data-chapter_topic_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_topic_id"));
     }else{
       document.getElementById("course_param").setAttribute("data-show_input", "true");
     }
@@ -626,8 +636,13 @@ function show_message_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
-    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
+      document.getElementById("course_param").setAttribute("data-case_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id"));
+    }else if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false-chapter");
+      document.getElementById("course_param").setAttribute("data-chapter_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id"));
+      document.getElementById("course_param").setAttribute("data-chapter_topic_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_topic_id"));
     }else{
       document.getElementById("course_param").setAttribute("data-show_input", "true");
     }
@@ -642,8 +657,13 @@ function show_assignee_popup(e){
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
-    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined"){
+    if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
+      document.getElementById("course_param").setAttribute("data-case_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id"));
+    }else if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id") !== "undefined"){
+      document.getElementById("course_param").setAttribute("data-show_input", "false-chapter");
+      document.getElementById("course_param").setAttribute("data-chapter_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_id"));
+      document.getElementById("course_param").setAttribute("data-chapter_topic_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_chapter_topic_id"));
     }else{
       document.getElementById("course_param").setAttribute("data-show_input", "true");
     }
@@ -899,75 +919,212 @@ function delete_module_confirm(e){
   var case_id = e.dataset.case_id;
   loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, num);
 }
-  function loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, level_num){
-    $('#mAlert').on('shown.bs.modal', function (event) {
-      $("#mAlertCancel").focus();
-      $(document).on('click', '#mAlertDelete', function(e) {
-        if(case_id !== "null" || case_id !== "undefined"){
 
-          var url = API_CONTENT_URL + '/course_module/'+module_id+'/';
-          var method = "PUT";
-
-          var data = {
-            module_name: String(module_name),
-            level: parseInt(level_num), 
-            course_id:String(document.getElementById("course_id").value),
-            case_id:null
-          };
-          fetch(url, {
-            method: method,
-            body: JSON.stringify(data),
-            headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-          })
-          .then((response) => response.json())
-          .then((json) => {
-            toastr.success("Case Deleted successfully");
+function loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, level_num){
+  $('#mAlert').on('shown.bs.modal', function (event) {
+    $("#mAlertCancel").focus();
+    $(document).on('click', '#mAlertDelete', function(e) {
+        var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
+        var method = "DELETE";
+        $.ajax({
+          url: url_api,
+          type: method,
+          dataType: 'json',
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token,
+            "Content-Type": "application/json"
+          },
+          success:function(response){
             $("#mAlertCancel").click();
-              $("#course_id").trigger("click");
-            //getCoursePage(e);
-          })
-          .catch(function (error) {
-            console.log("Requestfailed", error);
-          });
-        }else{
-          var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
-          var method = "DELETE";
-          $.ajax({
-            url: url_api,
-            type: method,
-            dataType: 'json',
-            headers: {
-              "Authorization": "Bearer " + getUserInfo().access_token,
-              "Content-Type": "application/json"
-            },
-            success:function(response){
-              $("#mAlertCancel").click();
-              $("#course_id").trigger("click");
-              toastr.success(toastr_message);
-            },
-            error: function(error){
-              toastr.error("Response Error: " + error.message);
-              console.log(error);
-            }
-          });
-        }
-      });
-      //mAlertCancel
-      $(document).on('click', '#mAlertCancel', function() {
-        $(document).off('click', '#mAlertCancel');
-        $(document).off('click', '#mAlertDelete');
-      });
-      
+            $("#course_id").trigger("click");
+            toastr.success(toastr_message);
+          },
+          error: function(error){
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
     });
-    
-    //hidden.bs.modal 
-    $('#mAlert').on('hidden.bs.modal', function (event) {
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
       $(document).off('click', '#mAlertCancel');
       $(document).off('click', '#mAlertDelete');
-      var modal = $(this);
-      modal.find('.modal-content input').val(null);
-      modal.find('.modal-content #mAlertName').html("Loading...");
     });
+    
+  });
+  
+  //hidden.bs.modal 
+  $('#mAlert').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
+}
+//To Get all values for Delete Case Study(modules inside cases)
+function delete_module_confirm_cases(e){
+  var element = e;
+  $("#mAlertName").text(e.dataset.name);
+  var module_name = e.dataset.name;
+  var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
+  var num = "";
+  if(classList[2] == 'main_mod'){
+    num = 0;
+  }else{
+    var index = classList[1].lastIndexOf("_");
+    var res_1 = Number(classList[1].substr(index+1));
+    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length - 8);
+    num = String(result).match(/\./g).length;
+  }
+  if(num === 0){
+    var result_textMsg = "Module:";
+  }else if(num === 1){
+    var result_textMsg = "Chapter:";
+  }else if(num === 2){
+    var result_textMsg = "Lesson:";
+  }else if(num === 3){
+    var result_textMsg = "Topic:";
+  }else if (num === 4){
+    var result_textMsg = "Sub Topic:";
+  }else if (num > 4){
+    var result_textMsg = "Level:";
+  }
+  var toastr_message = result_textMsg+" "+module_name+" Deleted successfully.";
+  var module_id = e.dataset.module_id;
+  var module_name = e.dataset.name;
+  var case_id = e.dataset.case_id;
+  loadAlertModal_delete_case(toastr_message, module_id, module_name, case_id, num);
+}
+//To Delete Case Study(modules inside cases) removing modules inside case By case_id as null
+function loadAlertModal_delete_case(toastr_message, module_id, module_name, case_id, level_num){
+  $('#mAlert').on('shown.bs.modal', function (event) {
+    $("#mAlertCancel").focus();
+    $(document).on('click', '#mAlertDelete', function(e) {
+        var url = API_CONTENT_URL + '/course_module/'+module_id+'/';
+        var method = "PUT";
+
+        var data = {
+          module_name: String(module_name),
+          level: parseInt(level_num), 
+          course_id:String(document.getElementById("course_id").value),
+          case_id:null
+        };
+        fetch(url, {
+          method: method,
+          body: JSON.stringify(data),
+          headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+        })
+        .then((response) => response.json())
+        .then((json) => {
+          toastr.success("Case Deleted successfully");
+          $("#mAlertCancel").click();
+            $("#course_id").trigger("click");
+          //getCoursePage(e);
+        })
+        .catch(function (error) {
+          console.log("Requestfailed", error);
+        });
+    });
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+    });
+    
+  });
+  
+  //hidden.bs.modal 
+  $('#mAlert').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
+}
+
+//To Get all values for Delete Chapter
+function delete_module_confirm_chapters(e){
+  var element = e;
+  $("#mAlertName").text(e.dataset.name);
+  var module_name = e.dataset.name;
+  var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
+  var num = "";
+  if(classList[2] == 'main_mod'){
+    num = 0;
+  }else{
+    var index = classList[1].lastIndexOf("_");
+    var res_1 = Number(classList[1].substr(index+1));
+    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length - 8);
+    num = String(result).match(/\./g).length;
+  }
+  if(num === 0){
+    var result_textMsg = "Module:";
+  }else if(num === 1){
+    var result_textMsg = "Chapter:";
+  }else if(num === 2){
+    var result_textMsg = "Lesson:";
+  }else if(num === 3){
+    var result_textMsg = "Topic:";
+  }else if (num === 4){
+    var result_textMsg = "Sub Topic:";
+  }else if (num > 4){
+    var result_textMsg = "Level:";
+  }
+  var toastr_message = result_textMsg+" "+module_name+" Deleted successfully.";
+  var module_id = e.dataset.module_id;
+  var module_name = e.dataset.name;
+  var case_id = e.dataset.case_id;
+  loadAlertModal_delete_chapter(toastr_message, module_id, module_name, case_id, num);
+}
+//To Delete Chapter
+function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, case_id, level_num){
+  $('#mAlert').on('shown.bs.modal', function (event) {
+    $("#mAlertCancel").focus();
+    $(document).on('click', '#mAlertDelete', function(e) {
+          var chapter_data = {
+              "case_id": String(case_id),
+              "course_id": String(document.getElementById("course_id").value),
+              "case_module_id": String(module_id)
+          }
+          console.log(chapter_data);
+        $.ajax({
+          url: API_CONTENT_URL + '/cases/remove/chapter/',
+          type: 'POST',
+          data: JSON.stringify(chapter_data),
+          headers: {
+            "Authorization": "Bearer " + getUserInfo().access_token,
+            "Content-Type": "application/json"
+          },
+          success:function(response){
+            console.log(response);
+            toastr.success("Deleted Successfully.");
+            $("#mAlertCancel").click();
+            $("#course_id").trigger("click");
+          },
+          error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+          }
+        });
+    });
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+    });
+    
+  });
+  
+  //hidden.bs.modal 
+  $('#mAlert').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
 }
 
 $( ".module-section" ).draggable({
@@ -977,6 +1134,7 @@ $( ".module-section" ).draggable({
 $( ".main_mod_empty" ).droppable({
     accept: ".module-section",
     drop: function( event, ui ) {
+      alert(1);
        var droppable = $(this);
        var draggable = ui.draggable;
        var draggable_id = draggable.attr("id");
@@ -1022,6 +1180,37 @@ $( ".main_mod_empty" ).droppable({
               template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${numItems}${json.module_id}', 'sub');"></li></ul></div>`;
            $(this).before(template);
           hide_show_container();
+      })
+      .catch(function (error) {
+        console.log("Requestfailed", error);
+      });
+    }
+});
+$(".module-section").click(function(){
+  if($('.main_mod').length  == 0){
+       var numItems = $('.main_mod').length+1;
+       var container_size = document.getElementById("course_box").classList[0];
+       var style_none = "display:block;";
+       if(container_size == "col-lg-8"){
+         style_none = "display:none;";
+       }
+        var url = API_CONTENT_URL + '/course_module/';
+        var method = "POST";
+        var get_submodule_level_values = {
+          module_name: String("Introduction"),
+          level: parseInt(numItems), 
+          course_id:String(document.getElementById("course_id").value),
+          parent_id:null
+        };
+
+      fetch(url, {
+        method: method,
+        body: JSON.stringify(get_submodule_level_values),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        $("#course_id").trigger("click");
       })
       .catch(function (error) {
         console.log("Requestfailed", error);

@@ -4,11 +4,20 @@ $(document).ready(function(){
   });
   CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds';
   CKEDITOR.config.allowedContent = true;
-get_content_details();
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
     let cid = document.getElementById("course_module_id").getAttribute("data-cid");
     let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    let mod_type = document.getElementById("course_module_id").getAttribute("data-mod_type");
+    let can_edit = document.getElementById("course_module_id").getAttribute("data-can_edit");
+    if(can_edit == "false"){
+      document.getElementById("tabtwo").checked = true;
+      $("#tabone").hide();
+      $('label[for="tabone"]').hide();
+      $(".search_mt").hide();
+    }else{
+      get_content_details();
+    }
     var dropzone = new Dropzone('#demo-upload', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
@@ -120,7 +129,7 @@ get_content_details();
             }
         }
     }
-
+    if(can_edit != "false"){
     $.ajax({
       url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
       type: 'get',
@@ -148,6 +157,7 @@ get_content_details();
         }
       }
     });
+  }
 
 $("#global_search_module").keyup(function() { 
     get_search_details();
@@ -161,6 +171,8 @@ $("#role-loader").css("display", "none");
 $("#rolebox").css("display", "flex");
 });
 function get_search_details(){
+    let can_edit = document.getElementById("course_module_id").getAttribute("data-can_edit");
+  if(can_edit != "false"){
     var tagName = $("#global_search_module").val();
     var active_tab_type = $("#active_li li.active").attr('id');
     $.ajax({
@@ -400,6 +412,7 @@ function get_search_details(){
         
       }
     });
+  }
 }
 function get_breadcrumbs(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");

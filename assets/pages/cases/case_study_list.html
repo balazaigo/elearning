@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                 <div class="dropdown-select">
-                    <select class="sort-select form-control" id="case_list" name="case_list" onchange="searchParam()">
+                    <select class="sort-select form-control" id="case_list2" name="case_list2" onchange="searchParam()">
                       <option value="">All Case study</option>
                     </select>
                   </div>                    
@@ -60,11 +60,11 @@
   </div>
 
   <!--popup start-->
-  <div id="createcases" class="overlay" style="display:none;">
+  <div id="createcases_2" class="overlay" style="display:none;">
     <div class="popup pt-3">
       <h4 class="mb-3" id="create_case_text">Create Case</h4>
       <span class="close">×</span>
-      <form method="post" id="frmNewCase" name="frmNewCase" enctype="multipart/form-data">
+      <form method="post" id="frmNewCase2" name="frmNewCase2" enctype="multipart/form-data">
         <input type="hidden" name="case_id" id="case_id" value="">
         <div class="row">
           <div class="col-md-12 mb-3">
@@ -108,14 +108,14 @@
             </div>
           </div>
           <div class="col-md-12 mb-3">
-            <label for="tags2" class="tags2-label d-none">Add a tag</label>
-            <select class="form-control tags2" id="tags2" name="tags[]" multiple="multiple" style="width:100%"></select>
+            <label for="tags3" class="tags3-label d-none">Add a tag</label>
+            <select class="form-control tags3" id="tags3" name="tags[]" multiple="multiple" style="width:100%"></select>
           </div>
         </div>
       </form>
 
         <div class="row">
-          <div class="col-12 pt-3 pb-3 wauto">  <span class="orange-btn nbtn">
+          <div class="col-12 pt-3 pb-3 wauto">   <span class="orange-btn nbtn">
             <button class="add-case_save" id="create_case_save_text">Create</button>
             </span> </div>
         </div>
@@ -144,7 +144,7 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                 <div class="dropdown-select">
-                    <select class="sort-select form-control" id="case_list" name="case_list" onchange="searchParam()">
+                    <select class="sort-select form-control" id="case_list2" name="case_list2" onchange="searchParam()">
                       <option value="">All Case study</option>
                     </select>
                   </div>                    
@@ -165,7 +165,7 @@
         </div>
       </div>-->
       <div class="whitebg col-md-12 mt-3">
-        <div class="row" id="case-box">
+        <div class="row" id="case-box2">
          <!-- <div class="col-md-4">
             <div class="role-content cases-card mb-4">
               <div class="row">
@@ -232,6 +232,9 @@
   <span class="orange-btn nbtn" style="float: right;">
     <button type="button" class="btn btn-success" id="selectCase">Select Case</button>
   </span>
+  <span class="orange-btn nbtn" style="float: right;">
+    <button class="add-case_save add-case_2" id="add_case">Create Case</button>
+  </span>
 </div>
 
 <script type="text/javascript">
@@ -244,7 +247,7 @@
       }
       return param.test(value);
     }, "Check your inputs");
-    var frmvalidatorfrm = $("#frmNewCase").validate({
+    var frmvalidatorfrm2 = $("#frmNewCase2").validate({
       rules: {
         case_name: { required: true, minlength: 1, maxlength: 256 },
         description: { required: true, minlength: 1, maxlength: 256 },
@@ -281,39 +284,100 @@
         $(element).removeClass("is-invalid");
       }
     });
+    $(document).ready(function(){
 
-  $(".add-case").click(function(){
+  $("<link/>", {
+     rel: "stylesheet",
+     type: "text/css",
+     href: "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+  }).appendTo("head");  
+  $.getScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
+    //getAssignMember(member_id);
+    var URL = API_CONTENT_URL + "/tags/";
+    var $tagsControl = $('.tags3').select2({
+      dropdownParent: $('.admin_course'),
+      placeholder: "Add a tag",
+      dropdownCssClass: "select2Font",
+      tokenSeparators: [','],
+      tags: true,
+      multiple: true,
+      allowClear: true,
+      ajax: {
+        url: URL,
+        dataType: 'json',
+        type: "GET",
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        quietMillis: 50,
+        data: function (params) {
+          return {
+            term: $.trim(params.term)
+          };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return {
+                text: item,
+                id: item
+              }
+            })
+          };
+        },
+        cache: true,
+      },
+      createTag: function (params) {
+        var term = $.trim(params.term);
+        if (term === '') {
+          return null;
+        }
+        return {
+          id: term,
+          text: term,
+          newTag: true
+        };
+      },
+      maximumSelectionLength: 64,
+      minimumInputLength: 3,
+      formatSelectionTooBig: function (limit) {
+        return "Too many selected items, Only 64 tags allowed."
+      },
+      formatNoMatches: "add new tag and hit ENTER-KEY",
+      escapeMarkup: function (markup) {
+        return markup;
+      }
+    });
+  });
+  $(".add-case_2").click(function(){
     window.sharedEditCaseId = "";
-    $( '#frmNewCase' ).each(function(){
+    $( '#frmNewCase2' ).each(function(){
         this.reset();
-        frmvalidatorfrm.resetForm();
-        $('#frmNewCase .form-control').removeClass('is-invalid');
+        frmvalidatorfrm2.resetForm();
+        $('#frmNewCase2 .form-control').removeClass('is-invalid');
     });
     var tags_empty = [];
-    $("#tags2").html("");
-    $("#tags2").val(tags_empty).change();
-    $("#createcases").addClass("overlay_target");
-    $("#createcases").attr("style","display:block");
+    $("#tags3").html("");
+    $("#tags3").val(tags_empty).change();
+    $("#createcases_2").addClass("overlay_target");
+    $("#createcases_2").attr("style","display:block");
     $("#create_case_text").text("Create Case");
     $("#create_case_save_text").text("Create");
   });
   $(".close").click(function(){
-    $("#createcases").removeClass("overlay_target");
-    $("#createcases").attr("style","display:none");
-    window.sharedEditCaseId = "";
-  })
+    $("#createcases_2").removeClass("overlay_target");
+    $("#createcases_2").attr("style","display:none");
+  });
   function searchParam(){
     var search_param = "";
     var search_inp_val = document.getElementById("search_data").value;
     if(search_inp_val !== ''){
         search_param += "?search="+search_inp_val;
     }
-    var case_list_val = document.getElementById("case_list").value;
-    if(case_list_val !== ""){
+    var case_list2_val = document.getElementById("case_list2").value;
+    if(case_list2_val !== ""){
         if(search_param == ""){
-            search_param += "?id="+case_list_val;
+            search_param += "?id="+case_list2_val;
         }else{
-            search_param += "&id="+case_list_val;
+            search_param += "&id="+case_list2_val;
         }
     }
     var sort_recent_val = document.getElementById("sort_recent").value;
@@ -468,13 +532,13 @@ function get_pagination(parameter){
   
   }
 function template(data){
-    $('#case-box').empty();
+    $('#case-box2').empty();
     console.log(data);
 
-      $("#case_list").empty();
-      $("#case_list").append("<option value=''>All Case study</option>");
+      $("#case_list2").empty();
+      $("#case_list2").append("<option value=''>All Case study</option>");
       $.each(data, function( i, val ) {
-        $("#case_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
+        $("#case_list2").append("<option value='"+val.id+"'>"+val.name+"</option>");
       });
     data.forEach(function (element, index) {
         if (Object.keys(element).length > 0) {
@@ -509,71 +573,13 @@ function template(data){
             </div>
           </div>`;
 
-          $('#case-box').append(td);
+          $('#case-box2').append(td);
         }
     });
 }   
 /*********Case List section Ends***********************/
-/**********Case Edit section Starts ****************/
-function editCase(e){
-
-    $( '#frmNewCase' ).each(function(){
-        this.reset();
-        frmvalidatorfrm.resetForm();
-        $('#frmNewCase .form-control').removeClass('is-invalid');
-    });
-    window.sharedEditCaseId = e.dataset.case_id;
-    console.log(window.sharedEditCaseId);
-    if(window.sharedEditCaseId){
-      console.log(window.sharedEditCaseId);
-      $("#createcases").attr("style","display:block");
-      $("#createcases").addClass("overlay_target");
-      $("#create_case_text").text("Edit Case");
-      $("#create_case_save_text").text("Update");
-      var url = API_CONTENT_URL + `/cases/`+window.sharedEditCaseId+`/`;
-      fetch(url, {
-        method: "GET",
-        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        $("#case_name").val(data.name);
-        $("#case_description").val(data.description);
-        $("#case_short_code").val(data.short_code);
-        getAssignMember(data.member_id);
-        $("#case_type option[value='"+data.type+"']").prop('selected', true);
-
-        if(data.tags.length > 0){
-          var tag_array_2 = [];
-          $.each(data.tags, function (i, val) {
-            tag_array_2.push(val.name);
-          })
-          var tags_empty = [];
-          if (tag_array_2) {
-            $("#tags2").html("");
-            $("#tags2").val(tags_empty).change();
-            $.each(tag_array_2, function (i, val) {
-              $("#tags2").append("<option value='" + val + "'>" + val + "</option>");
-            });
-            $("#tags2").val(tag_array_2).change();
-          }
-        }
-      })
-      .catch(function(error){
-        console.log("Requestfailed", error);
-      });
-    }
-}
-/**********Case Edit section Ends ****************/
 /****** Create Case View section Starts *************/
-  $("<link/>", {
-     rel: "stylesheet",
-     type: "text/css",
-     href: "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
-  }).appendTo("head");  
-  $.getScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
-  var frmvalidatorfrm;
+  var frmvalidatorfrm2;
 
   function getAssignMember(member_id){
       $.ajax({
@@ -595,7 +601,7 @@ function editCase(e){
       });
   }
 
-  $("#mAlertDelete").click(function(){
+  /*$("#mAlertDelete").click(function(){
     console.log("test");
     var url = $("#mAlertURL").val();
     $.ajax({
@@ -620,8 +626,9 @@ function editCase(e){
         console.log(error);
       }
     });
-  });
+  });*/
   $(document).ready(function(){
+
 
     $("#case_name").on("blur", function () {
       var str = $(this).val();
@@ -630,62 +637,8 @@ function editCase(e){
       getTagSuggest(str);
     });
     var search_param = "";
-    get_pagination(search_param);
     var member_id = "";
-    getAssignMember(member_id);
-    var URL = API_CONTENT_URL + "/tags/";
-    var $tagsControl = $('.tags2').select2({
-      dropdownParent: $('#createcases'),
-      placeholder: "Add a tag",
-      dropdownCssClass: "select2Font",
-      tokenSeparators: [','],
-      tags: true,
-      multiple: true,
-      allowClear: true,
-      ajax: {
-        url: URL,
-        dataType: 'json',
-        type: "GET",
-        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
-        quietMillis: 50,
-        data: function (params) {
-          return {
-            term: $.trim(params.term)
-          };
-        },
-        processResults: function (data) {
-          return {
-            results: $.map(data, function (item) {
-              return {
-                text: item,
-                id: item
-              }
-            })
-          };
-        },
-        cache: true,
-      },
-      createTag: function (params) {
-        var term = $.trim(params.term);
-        if (term === '') {
-          return null;
-        }
-        return {
-          id: term,
-          text: term,
-          newTag: true
-        };
-      },
-      maximumSelectionLength: 64,
-      minimumInputLength: 3,
-      formatSelectionTooBig: function (limit) {
-        return "Too many selected items, Only 64 tags allowed."
-      },
-      formatNoMatches: "add new tag and hit ENTER-KEY",
-      escapeMarkup: function (markup) {
-        return markup;
-      }
-    });
+    get_pagination(search_param);
   /****** Create Case View section Ends *************/
 
   /****** Create Case Save section Starts *************/
@@ -704,16 +657,16 @@ function editCase(e){
       });
     });
     $("#create_case_save_text").on("click", function () {
-      var isValidForm = frmvalidatorfrm.form();
+      var isValidForm = frmvalidatorfrm2.form();
       if (isValidForm) {
         var tags = "";
-        if($("#tags2").val()){
-          if($("#tags2").val().length === 0) {
+        if($("#tags3").val()){
+          if($("#tags3").val().length === 0) {
             alert("Tags field cannot empty please choice atleast one tag!");
             return false;
           }else{
 
-            tags = $("#tags2").val().join(",");
+            tags = $("#tags3").val().join(",");
           }
         }
         var formData = new FormData();
@@ -749,9 +702,9 @@ function editCase(e){
             console.log(response)
             toastr.success("New Case was successfully saved.");
             $(".close").trigger("click");
-            $("#createcases").attr("style","display:none");
+            $("#createcases_2").attr("style","display:none");
 
-            $("#createcases").removeClass("overlay_target");
+            $("#createcases_2").removeClass("overlay_target");
             var parameter = "";
             get_pagination(parameter);
             window.sharedEditCaseId = "";
@@ -777,12 +730,12 @@ function editCase(e){
         var tags = response.tags;
         var tags_empty = [];
         if (tags) {
-          $("#tags2").html("");
-          $("#tags2").val(tags_empty).change();
+          $("#tags3").html("");
+          $("#tags3").val(tags_empty).change();
           $.each(tags, function (i, val) {
-            $("#tags2").append("<option value='" + val + "'>" + val + "</option>");
+            $("#tags3").append("<option value='" + val + "'>" + val + "</option>");
           });
-          $("#tags2").val(tags).change();
+          $("#tags3").val(tags).change();
         }
       }
     });

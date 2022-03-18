@@ -82,6 +82,11 @@ $(document).ready(function(){
 		if(show_input == "true"){
 			 $("#frmAssignee").attr("style", "display:block");
 			 $("#course_module_save_btn").attr("style", "display:block");
+		}else if(show_input == "false-chapter"){
+			 $("#frmAssignee").attr("style", "display:none");
+			 $("#course_module_save_btn").attr("style", "display:none");
+			cid = document.getElementById("course_param").getAttribute("data-chapter_id");
+			module_id = document.getElementById("course_param").getAttribute("data-chapter_topic_id");
 		}else{
 			 $("#frmAssignee").attr("style", "display:none");
 			 $("#course_module_save_btn").attr("style", "display:none");
@@ -188,9 +193,17 @@ function get_assignee_details(cid, module_id){
 		$("#assigned_table").hide();
 		$("#assignto_all_sub_row").hide();
 	}else{
-		url = API_CONTENT_URL + '/available/assignees/'+module_id;
-		$("#assigned_table").show();
-		$("#assignto_all_sub_row").show();
+		var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+		console.log(show_input);
+		if(show_input == "true"){
+			url = API_CONTENT_URL + '/available/assignees/'+module_id;
+		}else if(show_input == "false-chapter"){
+			url = API_CONTENT_URL + '/available/chapter_topic_assignees/'+module_id;
+		}else{
+			url = API_CONTENT_URL + '/available/case_module_assignees/'+module_id;
+		}
+			$("#assigned_table").show();
+			$("#assignto_all_sub_row").show();
 	}
 	$.ajax({
 		url: url,

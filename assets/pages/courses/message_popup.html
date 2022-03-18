@@ -42,9 +42,16 @@ $(document).ready(function(){
 		var cid = document.getElementById("course_param").getAttribute("data-cid");
 		var module_id = document.getElementById("course_param").getAttribute("data-module_id");
 		var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+	    let chapter_id = document.getElementById("course_param").getAttribute("data-chapter_id");
+	    let chapter_topic_id = document.getElementById("course_param").getAttribute("data-chapter_topic_id");
 		if(show_input == "true"){
 			 $("#message").attr("style", "display:block");
 			 $("#course_module_msg_save").attr("style", "display:block");
+		}else if(show_input == "false-chapter"){
+			 $("#message").attr("style", "display:none");
+			 $("#course_module_msg_save").attr("style", "display:none");
+			cid = document.getElementById("course_param").getAttribute("data-chapter_id");
+			module_id = document.getElementById("course_param").getAttribute("data-chapter_topic_id");
 		}else{
 			 $("#message").attr("style", "display:none");
 			 $("#course_module_msg_save").attr("style", "display:none");
@@ -125,8 +132,17 @@ $.validator.addMethod("pattern", function( value, element, param ) {
     }
   });
 function get_message_details(cid, module_id){
+
+		var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+		if(show_input == "true"){
+			var URL = API_CONTENT_URL + '/module_comments/?module_id='+module_id;
+		}else if(show_input == "false-chapter"){
+			var URL = API_CONTENT_URL + '/chapter_topic_comments/?chapter_topic_id='+module_id;
+		}else{
+			var URL = API_CONTENT_URL + '/case_module_comments/?case_module_id='+module_id;
+		}
 	$.ajax({
-		url: API_CONTENT_URL + '/module_comments/?module_id='+module_id,
+		url: URL,
 		type: 'get',
 		dataType: 'json',
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -143,6 +159,9 @@ function get_message_details(cid, module_id){
 		      	});
 		      $("#user_comments").html(member_comments_html);
 		      $("#message").val("");
+			}else{
+				var member_comments_html = "<div class='alert text-center text-danger'>No Records Found!</div>";
+				$("#user_comments").html(member_comments_html);
 			}
 			/*if(response.module_assignees.length > 0){
 		      $("#assignedMember").empty();
