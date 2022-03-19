@@ -328,7 +328,7 @@ async function getCoursePage(e) {
   .then((response) => response.json())
   .then((data) => {
     get_list( data.children, newDIV, 1);
-    newDiv2 = $("<div class='module module_"+(data.children.length+Number(1))+" main_mod_empty no_child ui-droppable' style='margin-bottom:0px;'></div>");
+    //newDiv2 = $("<div class='module module_"+(data.children.length+Number(1))+" main_mod_empty no_child ui-droppable' style='margin-bottom:0px;'></div>");
     /*newUl2 = $("<ul class='main_module module_opacity'>");
     newUl2.append("<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
     newUl2.append("<li class='expand_img_icon  disp_in_block flt_left'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>");
@@ -340,10 +340,10 @@ async function getCoursePage(e) {
     newUl2.append("<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)'></li>");
     newUl2.append("<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li>");
     newUl2.append("<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag'></li>");*/
-    newUl2 = $("<ul class='level-top drag_drop_show_hide' style='margin-bottom:0px;'></ul>");
-    newUl2.append(`<li class="dashed qa_dashed qa_droppable"><div class="ac drag_drop_qa"><span class="drag"><a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a></span><span class="para"><p class="drag_drop_qa_text">Drag and Drop Section</p></span></div></li>`);
-    newDiv2.append(newUl2);
-    newDIV.append(newDiv2);
+    //newUl2 = $("<ul class='level-top drag_drop_show_hide' style='margin-bottom:0px;'></ul>");
+    //newUl2.append(`<li class="dashed qa_dashed qa_droppable"><div class="ac drag_drop_qa"><span class="drag"><a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a></span><span class="para"><p class="drag_drop_qa_text">Drag and Drop Section</p></span></div></li>`);
+    //newDiv2.append(newUl2);
+    //newDIV.append(newDiv2);
     parent_div.append(newDIV);
 
     var disp_prop_mod = "display:block;";

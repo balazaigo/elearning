@@ -5,8 +5,8 @@ $(document).on("click", "#trigger-role-create-form", function () {
     return false;
   }
   $("#role_id_edit").val("");
-  $("#save-role-create-form").text("Save");
-  $("#role_type_name").text("Add New Role");
+  $("#save-role-create-form").text("Create");
+  $("#role_type_name").text("Create Role");
   getRoleRights();
   window.sharedEditCourseId = "";
   $("#role-create-form-container").css({ visibility: "visible", opacity: 1 });
@@ -262,3 +262,9 @@ function _validateRoleRights(el, fieldValue) {
 
   return hasError;
 }
+$(document).ready(function(){
+  $('.counter').on("keyup", function () {alert(1);
+    var cuChar = Number(256) - $(this).val().length;
+    $("span.charcounter").html(cuChar + " Char(s)");
+  });
+})

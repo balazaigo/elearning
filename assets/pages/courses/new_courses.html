@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title">Add a new course</h5>
+  <h5 class="modal-title" id="create_course">Create course</h5>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
@@ -12,7 +12,7 @@
         <div class="form-floating">
           <input type="text" id="coursesName" name="coursesName" class="form-control cm-capitalize"
             placeholder="Name of the course">
-          <label for="coursesName">Master Course Name</label>
+          <label for="coursesName">Course Name</label>
         </div>
       </div>
       <div class="col-md-12 mb-3">
@@ -87,8 +87,8 @@
       <div class="col-md-12 mb-3">
         <div class="form-floating">
           <input type="text" id="description" name="description" class="form-control counter"
-            placeholder="One line description" maxlength="1024" minlength="4"/>
-          <span class="charcounter">0 Char</span>
+            placeholder="One line description" maxlength="256" minlength="4"/>
+          <span class="charcounter">256 Char(s)</span>
           <label for="description">One line description</label>
         </div>
       </div>
@@ -98,10 +98,10 @@
 </div>
 <div class="modal-footer">
   <span class="custom-btn nbtn">
-    <button type="button" class="btn btn-success" id="saveCoursesNew">Save & New</button>
+    <button type="button" class="btn btn-success" id="saveCoursesNew">Create & New</button>
   </span>
   <span class="orange-btn nbtn">
-    <button type="button" class="btn btn-primary" id="saveCoursesClose">Save & Close</button>
+    <button type="button" class="btn btn-primary" id="saveCoursesClose">Create & Close</button>
   </span>
 </div>
 <script type="text/javascript">
@@ -125,10 +125,10 @@
         }
       });
     });
-    $('.counter').keyup(function () {
+    /*$('.counter').keyup(function () {
       var cuChar = $(this).val().length;
-      $(this).next("span.charcounter").html(cuChar + " Char");
-    });
+      $("span.charcounter").html(cuChar + " Char(s)");
+    });*/
     $("#coursesName").on("blur", function () {
       var str = $(this).val();
       var acpref = str.substring(0, 4);
@@ -181,6 +181,7 @@
       },
       maximumSelectionLength: 64,
       minimumInputLength: 3,
+      maximumInputLength: 256,
       formatSelectionTooBig: function (limit) {
         return "Too many selected items, Only 64 tags allowed."
       },
@@ -247,7 +248,8 @@
   var editCourseId = window.sharedEditCourseId;
   if(editCourseId !== ""){
       $("#saveCoursesNew").css("display","none");
-      $("#saveCoursesClose").text("Update & Close");
+      $("#saveCoursesClose").text("Update");
+      $("#create_course").text("Edit Course");
       $("#course_id").val(editCourseId);
       $.ajax({
         url: API_CONTENT_URL + '/course/' + editCourseId +'/',
@@ -262,6 +264,10 @@
             $("#coursesName").val(response.name);
             $("#coursesID").val(response.course_id_prefix);
             $("#description").val(response.description);
+            if(response.description) {
+              var cuChar = Number(256) - $("#description").val().length;
+              $("#description").next("span.charcounter").html(cuChar + " Char(s)");
+            }
             if(response.category_id){
               getCategory(response.category_id, subCategory, response.sub_category_id);
             }
@@ -367,7 +373,7 @@
         start_date: { required: true },
         end_date: { required: true },
         member: { required: true },
-        description: { required: true },
+        description: { required: true, minlength: 4, maxlength: 256 },
       },
       messages: {
         coursesName: {
@@ -387,6 +393,8 @@
         member: { required: "Please selct a member" },
         description: {
           required: "Please enter a Description",
+          minlength: "Course ID Prefix must consist of at least 4 characters",
+          maxlength: "Course ID Prefix must consist of max of 256 characters",
         },
       },
       errorElement: "em",
@@ -600,4 +608,10 @@
       }
     }
   }
+
+    //To Display character length in add Case description
+    $('.counter').keyup(function () {
+      var cuChar = Number(256) -$(this).val().length;
+      $("span.charcounter").html(cuChar + " Char(s)");
+    });
 </script>

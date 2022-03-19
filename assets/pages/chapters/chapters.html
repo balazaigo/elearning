@@ -6,7 +6,7 @@
             <div class="round"><img src="../assets/images/course-1.svg" alt="chapters" /></div>
             <h4>Create your first chapters</h4>
             <span class="orange-btn nbtn">
-              <button class="add-case"><i class="fas fa-plus"></i> Create Chapters</button>
+              <button class="add-case"><i class="fas fa-plus"></i> Create Chapter</button>
             </span>
           </div>
         </div>
@@ -29,18 +29,18 @@
               </div>
           </div>
 
-          <div class="col-md-12 mb-3">
+          <!--<div class="col-md-12 mb-3">
             <div class="form-floating">
               <input type="text" id="short_code" name="short_code" class="form-control cm-replaceSpace" placeholder=" ">
               <label for="short_code">Short Code</label>
             </div>
-          </div>
+          </div>-->
 
           <div class="col-md-12 mb-3">
             <div class="form-floating">
               <input type="text" id="description" name="description" class="form-control counter"
-                placeholder=" " maxlength="1024" minlength="4"/>
-              <span class="charcounter">0 Char</span>
+                placeholder=" " maxlength="256" minlength="4"/>
+              <span class="charcounter">256 Char(s)</span>
               <label for="description">One line description</label>
             </div>
           </div>
@@ -64,7 +64,7 @@
         <h2>Chapters 
         <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
         <span class="orange-btn nbtn">
-          <button class="add-case"><i class="fas fa-plus"></i> Create Chapters</button>
+          <button class="add-case"><i class="fas fa-plus"></i> Create Chapter</button>
         </span>
       </div>
     </div>
@@ -124,7 +124,7 @@
                     <th>NAME</th>
                     <th>CASE NAME</th>
                     <th>COURSE NAME</th>
-                    <th>GROUP NAME</th>
+                    <th>MODULE NAME</th>
                     <th>ACTIONS</th>
                   </tr>
                 </thead>
@@ -247,7 +247,7 @@ var frmvalidatorfrm;
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
             
         if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
-          html += `<li><a class="dropdown-item green" data-chapter_id='${item.id}' data-chapter_name='${item.name}' data-short_code='${item.short_code}' data-description='${item.description}' onClick='editChapter(this);'>&nbsp;Edit</a></li>`;
+          html += `<li><a class="dropdown-item green" data-chapter_id='${item.id}' data-chapter_name='${item.name}'  data-description='${item.description}' onClick='editChapter(this);'>&nbsp;Edit</a></li>`;
         } else {
           html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
         }
@@ -313,17 +313,17 @@ var frmvalidatorfrm;
     $('.cm-replaceSpace').each(function () { $(this).replaceSpace(); });
   
     $('.counter').on("keyup", function () {
-      var cuChar = $(this).val().length;
-      $(this).next("span.charcounter").html(cuChar + " Char");
+      var cuChar = Number(256) - $(this).val().length;
+      $("span.charcounter").html(cuChar + " Char(s)");
     });
   
-    $("#chapter_name").on("blur", function () {
+    /*$("#chapter_name").on("blur", function () {
       var str = $(this).val();
       if(!$("#short_code").val()) {
         var acpref = str.substring(0, 4);
         $("#short_code").val(acpref.str_replace(' ', '-').toUpperCase());
       }
-    });
+    });*/
 
       $.validator.addMethod("pattern", function (value, element, param) {
         if (this.optional(element)) { return true; }
@@ -335,8 +335,8 @@ var frmvalidatorfrm;
       window.frmvalidatorfrm = $("#frmNewChapter").validate({
         rules: {
           chapter_name: { required: true, minlength: 1, maxlength: 256 },
-          description: { required: true, minlength: 1, maxlength: 256 },
-          short_code: { required: true, maxlength: 256 },
+          description: { required: true, minlength: 4, maxlength: 256 },
+          //short_code: { required: true, maxlength: 256 },
         },
         messages: {
           chapter_name: {
@@ -346,13 +346,13 @@ var frmvalidatorfrm;
           },
           description: {
             required: "Please enter a description",
-            minlength: "Description must consist of at least 1 characters",
-            maxlength: "Description must consist of max of 20 characters",
+            minlength: "Description must consist of at least 4 characters",
+            maxlength: "Description must consist of max of 256 characters",
           },
-          short_code: { 
+          /*short_code: { 
             required: "Please enter a code",
             maxlength: "Your case name must consist of max of 256 characters",
-          },
+          },*/
         },
         errorElement: "em",
         errorPlacement: function (error, element) {
@@ -383,17 +383,17 @@ var frmvalidatorfrm;
       $("#create_chapter_text").text("Create Chapter");
       $("#create_chapter_save_text").text("Create");
 
-      $('.counter').on("keyup", function () {
+      /*$('.counter').on("keyup", function () {
         var cuChar = $(this).val().length;
         $(this).next("span.charcounter").html(cuChar + " Char");
-      });
+      });*/
       
     });
     $(".close").click(function(){
       $("#createchapter").removeClass("overlay_target");
       $("#createchapter").attr("style","display:none");
       window.sharedEditChapterId = "";
-      $("span.charcounter").html("0 Char");
+      //$("span.charcounter").html("0 Char");
     });
     
     $(".btnReset").on("click", function(){
@@ -439,7 +439,7 @@ var frmvalidatorfrm;
       if (isValidForm) {
         var formData = new FormData();
         formData.append("name", $("#chapter_name").val());
-        formData.append("short_code", $("#short_code").val());
+        //formData.append("short_code", $("#short_code").val());
         formData.append("description", $("#description").val());
         var chapter_id = window.sharedEditChapterId;
         var URL = API_CONTENT_URL + "/chapters/";
@@ -467,7 +467,7 @@ var frmvalidatorfrm;
             $("#createchapter").attr("style","display:none");
             $("#createchapter").removeClass("overlay_target");
             window.sharedEditChapterId = "";
-            $("span.charcounter").html("0 Char");
+            $("span.charcounter").html("256 Char(s)");
             doSearch();
           },
           error: function (error) {
@@ -490,15 +490,16 @@ var frmvalidatorfrm;
     if(window.sharedEditChapterId){
       $("#createchapter").attr("style","display:block");
       $("#createchapter").addClass("overlay_target");
-      $("#create_chapter_text").html("Edit : <small>" + e.dataset.chapter_name.substring(0, 50)) + "</small>";
+      //$("#create_chapter_text").html("Edit : <small>" + e.dataset.chapter_name.substring(0, 50)) + "</small>";
+      $("#create_chapter_text").html("Edit Chapter");
       $("#create_chapter_save_text").text("Update");
       $("#chapter_id").val(e.dataset.chapter_id);
       $("#chapter_name").val(e.dataset.chapter_name);
-      $("#short_code").val(e.dataset.short_code);
+      //$("#short_code").val(e.dataset.short_code);
       $("#description").val(e.dataset.description);
       if(e.dataset.description) {
-        var cuChar = $("#description").val().length;
-        $("#description").next("span.charcounter").html(cuChar + " Char");
+        var cuChar = Number(256) - $("#description").val().length;
+        $("span.charcounter").html(cuChar + " Char(s)");
       }
       //description
     }

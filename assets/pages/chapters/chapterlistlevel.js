@@ -131,7 +131,7 @@
         var tag_list ="";
         var tag_list_str = "";
         for(var i = 0; i < chapter_tags.length; i++){
-          tag_list += '<li>'+chapter_tags[i].name+'<span class="tag__removes tag__removes2" data-tag="'+chapter_tags[i].name+'" data-tagid="'+chapter_tags[i].id+'">×</span></li>';
+          tag_list += '<li>'+chapter_tags[i].name+'<span class="tag__removes tag__removes_chap_level" data-tag="'+chapter_tags[i].name+'" data-tagid="'+chapter_tags[i].id+'">×</span></li>';
           tag_list_str += chapter_tags[i].name+",";
         }
         document.getElementById("tag__List_append").innerHTML = tag_list;
@@ -579,7 +579,21 @@ $('ul.tab-s li').click(function(){
 /*******************multiple tag list************************/
 document.addEventListener("keyup", function(e){
     if (e.keyCode === 13 && e.target.classList.contains("tag__inputs_chap_level")) {
+      var errorMsg = "";
     const currentTag = e.target.value;
+    if(currentTag.length > 256 || currentTag.length < 3){
+      
+      $(".tag__inputs_chap_level").next("span").remove();
+      if(currentTag.length > 256){
+          errorMsg = "Maximum 256 characters allowed";
+      }else{console.log(3);
+          errorMsg = "Minimum 3 characters allowed";
+      }
+      $(".tag__inputs_chap_level").after(`<span class='field-error'>${errorMsg}</span>`);
+      return;
+    }else{
+      $(".tag__inputs_chap_level").next("span.field-error").remove();
+    }
     if(currentTag){
       const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
       const hiddenInputOldValue = hiddenInput.value;
@@ -587,7 +601,24 @@ document.addEventListener("keyup", function(e){
       const existingTags = getExistingTagAsArray(hiddenInputOldValue);
       const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
       
-      if(isTagExistAlready){ return; }
+      if(isTagExistAlready){ 
+        errorMsg = "Tag Name already Exist";
+        $(".tag__inputs_chap_level").after(`<span class='field-error'>${errorMsg}</span>`);
+        return; 
+      }else{
+        $(".tag__inputs_chap_level").next("span.field-error").remove();
+      }
+      if(hiddenInputOldValue.length > 0){
+        var tag_array_name = hiddenInputOldValue.split(',');
+        console.log(tag_array_name);
+        if(tag_array_name.length > 63){ 
+          errorMsg = "Only 64 tags allowed";
+          $(".tag__inputs_chap_level").after(`<span class='field-error'>${errorMsg}</span>`);
+          return; 
+        }else{
+          $(".tag__inputs_chap_level").next("span.field-error").remove();
+        }
+      }
       
       if(hiddenInputOldValue){
         hiddenInput.value = hiddenInputOldValue + "," + currentTag;
@@ -608,7 +639,7 @@ document.addEventListener("keyup", function(e){
         data: JSON.stringify(tag_data),
         headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
         success:function(response){
-          const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes2" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
+          const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes_chap_level" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
           var sum = 0;
@@ -627,7 +658,7 @@ document.addEventListener("keyup", function(e){
 });
 
 document.addEventListener("click", function(e){
-    if (e.target.classList.contains("tag__removes2")) {
+    if (e.target.classList.contains("tag__removes_chap_level")) {
     const currentTag = e.target.dataset.tag;
     const hiddenInput = e.target.parentElement.parentElement.nextElementSibling.nextElementSibling;  
     const hiddenInputOldValue = hiddenInput.value;
@@ -873,7 +904,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
               data: JSON.stringify(content_data),
               headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
               success:function(response){
-                toastr.success("Content has been Converted to Audio.");
+                toastr.success("Convertion process is initiated.");
               },
               error: function(error){
                 toastr.error("Response Error: " + error.message);

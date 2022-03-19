@@ -9,7 +9,7 @@
             <h4>Create your first Case</h4>
             
             <span class="orange-btn nbtn">
-            <button class="add-case"><i class="fas fa-plus"></i> Add Case</button>
+            <button class="add-case"><i class="fas fa-plus"></i> Create Case</button>
             </span>
           </div>
 
@@ -28,17 +28,17 @@
         <div class="row">
           <div class="col-md-12 mb-3">
               <div class="form-floating">
-                <input type="text" id="case_name" name="case_name" class="form-control cm-capitalize" placeholder=" ">
+                <input type="text" id="case_name" name="case_name" class="form-control cm-capitalize" placeholder=" " onchange="onchange_caseName(this);">
                 <label for="case_name">Name of the Case</label>
               </div>
           </div>
 
-          <div class="col-md-12 mb-3">
+          <!--<div class="col-md-12 mb-3">
               <div class="form-floating">
                 <input type="text" id="case_short_code" name="case_short_code" class="form-control cm-replaceSpace" placeholder=" ">
                 <label for="case_short_code">Case ID</label>
               </div>
-          </div>
+          </div>-->
           <div class="col-md-12 mb-3">
             <div class="form-floating">
               <select class="sort-select form-control" id="case_type" name="case_type">
@@ -59,16 +59,16 @@
             </div>
           </div>
           <div class="col-md-12 mb-3">
+            <label for="tags2" class="tags2-label d-none">Add a tag</label>
+            <select class="form-control tags2" id="tags2" name="tags[]" multiple="multiple" style="width:100%" min-length="3" max-length="256"></select>
+          </div>
+          <div class="col-md-12 mb-3">
             <div class="form-floating">
               <input type="text" id="case_description" name="description" class="form-control counter"
                 placeholder=" " maxlength="256" minlength="4"/>
-              <span class="charcounter">256 Char</span>
+              <span class="charcounter">256 Char(s)</span>
               <label for="description">One line description</label>
             </div>
-          </div>
-          <div class="col-md-12 mb-3">
-            <label for="tags2" class="tags2-label d-none">Add a tag</label>
-            <select class="form-control tags2" id="tags2" name="tags[]" multiple="multiple" style="width:100%"></select>
           </div>
         </div>
       </form>
@@ -89,7 +89,7 @@
       <div class="col-12 title-head mb-3">
         <h2>Cases <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
         <span class="orange-btn nbtn">
-        <button class="add-case"><i class="fas fa-plus"></i> Add Case</button>
+        <button class="add-case"><i class="fas fa-plus"></i> Create Case</button>
         </span> 
       </div>
     </div>
@@ -198,6 +198,8 @@
 <script type="text/javascript">
   /*********Case List section Starts***********************/
     //To Validate Add Case Fields
+
+  var frmvalidatorfrm;
     $.validator.addMethod("pattern", function (value, element, param) {
       if (this.optional(element)) { return true; }
       if (typeof param === "string") {
@@ -208,8 +210,8 @@
     var frmvalidatorfrm = $("#frmNewCase").validate({
       rules: {
         case_name: { required: true, minlength: 1, maxlength: 256 },
-        description: { required: true, minlength: 1, maxlength: 256 },
-        case_short_code: { maxlength: 256 },
+        description: { required: true, minlength: 4, maxlength: 256 },
+        //case_short_code: { maxlength: 256 },
         case_type: { required: true },
         assign_to: { required: true },
       },
@@ -220,14 +222,14 @@
           maxlength: "Your case name must consist of max of 256 characters",
         },
 
-        case_short_code: {
+        //case_short_code: {
           //required: "Please enter a Case Name",
           //minlength: "Your case ID must consist of at least 1 characters",
-          maxlength: "Your case ID must consist of max of 256 characters",
-        },
+          //maxlength: "Your case ID must consist of max of 256 characters",
+        //},
         description: {
           required: "Please enter a description",
-          minlength: "Description must consist of at least 1 characters",
+          minlength: "Description must consist of at least 4 characters",
           maxlength: "Description must consist of max of 256 characters",
         },
         case_type: { required: "Please select the Case type" },
@@ -487,7 +489,11 @@ function editCase(e){
         console.log(data);
         $("#case_name").val(data.name);
         $("#case_description").val(data.description);
-        $("#case_short_code").val(data.short_code);
+        if(data.description) {
+          var cuChar = Number(256) - $("#case_description").val().length;
+          $("#case_description").next("span.charcounter").html(cuChar + " Char(s)");
+        }
+        //$("#case_short_code").val(data.short_code);
         getAssignMember(data.member_id);
         $("#case_type option[value='"+data.type+"']").prop('selected', true);
 
@@ -512,6 +518,44 @@ function editCase(e){
       });
     }
 }
+function onchange_caseName(e) {
+  if(e.value != ''){
+
+    var url_api = API_CONTENT_URL + '/cases_list/';
+    var method = "GET";
+    $.ajax({
+      url: url_api,
+      type: method,
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        console.log(response);
+        var case_name_exist = false;
+          $.each(response, function( i, val ) {
+              console.log(e.value +"--"+ val.name);
+            if(e.value == val.name){
+              case_name_exist = true;
+            }
+          });
+          console.log(case_name_exist);
+          if(case_name_exist){
+            $("#case_name").val("");
+            $("#case_name").focus();
+            var tags_empty = [];
+            $("#tags2").html("");
+            $("#tags2").val(tags_empty).change();
+            toastr.error("Case Name already Exists!");
+          }
+      },
+      error: function(error){
+        //toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+  }
+}
 /**********Case Edit section Ends ****************/
 /****** Create Case View section Starts *************/
   $("<link/>", {
@@ -520,7 +564,6 @@ function editCase(e){
      href: "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
   }).appendTo("head");  
   $.getScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
-  var frmvalidatorfrm;
 
   function getAssignMember(member_id){
       $.ajax({
@@ -569,6 +612,7 @@ function editCase(e){
     });
   });
   $(document).ready(function(){
+
     //TO Get Cases list for search case dropdown
     var url_api = API_CONTENT_URL + '/cases_list/';
     var method = "GET";
@@ -596,15 +640,15 @@ function editCase(e){
       }
     });
     //To Display character length in add Case description
-    $('.counter').keyup(function () {
+    $('#case_description').keyup(function () {
       var cuChar = Number(256) -$(this).val().length;
-      $(this).next("span.charcounter").html(cuChar + " Char");
+      $("span.charcounter").html(cuChar + " Char(s)");
     });
     //To Display entered case name as Tags for tags field
     $("#case_name").on("blur", function () {
       var str = $(this).val();
-      var acpref = str.substring(0, 4);
-      $("#case_short_code").val(acpref.str_replace(' ', '-').toUpperCase());
+      //var acpref = str.substring(0, 4);
+      //$("#case_short_code").val(acpref.str_replace(' ', '-').toUpperCase());
       getTagSuggest(str);
     });
     var search_param = "";
@@ -656,6 +700,7 @@ function editCase(e){
       },
       maximumSelectionLength: 64,
       minimumInputLength: 3,
+      maximumInputLength: 256,
       formatSelectionTooBig: function (limit) {
         return "Too many selected items, Only 64 tags allowed."
       },
@@ -681,68 +726,107 @@ function editCase(e){
         }
       });
     });
-    $("#create_case_save_text").on("click", function () {
-      var isValidForm = frmvalidatorfrm.form();
-      if (isValidForm) {
-        var tags = "";
-        if($("#tags2").val()){
-          if($("#tags2").val().length === 0) {
-            alert("Tags field cannot empty please choice atleast one tag!");
-            return false;
-          }else{
+    $("#create_case_save_text").on("click", function (e) {
+        var isValidForm = frmvalidatorfrm.form();
+        if (isValidForm) {
+          var case_id = window.sharedEditCaseId;
+          if($("#case_name").val() != ''){
+            var url_api = API_CONTENT_URL + '/cases_list/';
+            var method = "GET";
+            $.ajax({
+              url: url_api,
+              type: method,
+              headers: {
+                "Authorization": "Bearer " + getUserInfo().access_token,
+                "Content-Type": "application/json"
+              },
+              success:function(response){
+                var case_name_exist = false;
+                  $.each(response, function( i, val ) {
+                      if(case_id != ""){
+                        if($("#case_name").val() == val.name && case_id != val.id){
+                          case_name_exist = true;
+                        }
+                      }else{
+                        if($("#case_name").val() == val.name){
+                          case_name_exist = true;
+                        }
+                      }
+                  });
+                  if(case_name_exist){
+                    $("#case_name").val("");
+                    $("#case_name").focus();
+                    var tags_empty = [];
+                    $("#tags2").html("");
+                    $("#tags2").val(tags_empty).change();
+                    toastr.error("Case Name already Exists!");
+                  }else{
+                      var tags = "";
+                      if($("#tags2").val()){
+                        if($("#tags2").val().length === 0) {
+                          alert("Tags field cannot empty please choice atleast one tag!");
+                          return false;
+                        }else{
 
-            tags = $("#tags2").val().join(",");
+                          tags = $("#tags2").val().join(",");
+                        }
+                      }
+                      var formData = new FormData();
+
+                      formData.append("name", $("#case_name").val());
+                      //formData.append("short_code", $("#case_short_code").val());
+                      formData.append("type", $("#case_type").find("option:selected").val());
+                      formData.append("member_id", $("#case_assign_to").find("option:selected").val());
+                      formData.append("description", $("#case_description").val());
+                      formData.append("tags", tags);
+
+                      var URL = API_CONTENT_URL + "/cases/";
+                      var method = "POST";
+                      var type = "POST";
+                      if(case_id != ""){
+                        var URL = API_CONTENT_URL + "/cases/"+case_id+"/";
+                        var method = "PUT";
+                        var type = "PUT";
+                      }
+                      $.ajax({
+                        url: URL,
+                        method: method,
+                        type: type, // For jQuery < 1.9
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        headers: {
+                          "Authorization": "Bearer " + getUserInfo().access_token
+                        },
+                        success: function (response) {
+                          if(method == "POST"){
+                            toastr.success("New Case was successfully saved.");
+                          }else{
+                            toastr.success("Case updated successfully.");
+                          }
+                          $(".close").trigger("click");
+                          $("#createcases").attr("style","display:none");
+
+                          $("#createcases").removeClass("overlay_target");
+                          var parameter = "";
+                          get_pagination(parameter);
+                          window.sharedEditCaseId = "";
+                        },
+                        error: function (error) {
+                          toastr.error("Response Error: " + error.message);
+                          console.log(error);
+                        }
+                      });
+                  }
+              },
+              error: function(error){
+                //toastr.error("Response Error: " + error.message);
+                console.log(error);
+              }
+            });
           }
         }
-        var formData = new FormData();
-
-        formData.append("name", $("#case_name").val());
-        formData.append("short_code", $("#case_short_code").val());
-        formData.append("type", $("#case_type").find("option:selected").val());
-        formData.append("member_id", $("#case_assign_to").find("option:selected").val());
-        formData.append("description", $("#case_description").val());
-        formData.append("tags", tags);
-        var case_id = window.sharedEditCaseId;
-        var URL = API_CONTENT_URL + "/cases/";
-        var method = "POST";
-        var type = "POST";
-        if(case_id != ""){
-          var URL = API_CONTENT_URL + "/cases/"+case_id+"/";
-          var method = "PUT";
-          var type = "PUT";
-        }
-
-        $.ajax({
-          url: URL,
-          method: method,
-          type: type, // For jQuery < 1.9
-          cache: false,
-          contentType: false,
-          processData: false,
-          data: formData,
-          headers: {
-            "Authorization": "Bearer " + getUserInfo().access_token
-          },
-          success: function (response) {
-            if(method == "POST"){
-              toastr.success("New Case was successfully saved.");
-            }else{
-              toastr.success("Case updated successfully.");
-            }
-            $(".close").trigger("click");
-            $("#createcases").attr("style","display:none");
-
-            $("#createcases").removeClass("overlay_target");
-            var parameter = "";
-            get_pagination(parameter);
-            window.sharedEditCaseId = "";
-          },
-          error: function (error) {
-            toastr.error("Response Error: " + error.message);
-            console.log(error);
-          }
-        });
-      }
     });
 
   /****** Create Case Save section Ends *************/

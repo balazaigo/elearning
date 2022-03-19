@@ -66,6 +66,9 @@
 #course_box .user_img_icon, #course_box .message_img_icon, #course_box .attach_img_icon{
 	position: relative;
 }
+#course_box li{
+  cursor: pointer;
+}
 #course_box .icon_counts{
     position: absolute;
     background-color: black;
@@ -178,17 +181,21 @@
 	color: #97a5ba;
 	font-size: 16px;
 	font-weight: 400;
-	margin-top: 10px;
+	margin-top: 12px;
 	display: block;
 }
 #module_breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
-    padding-top: 10px;
+    padding-top: 12px;
 }
 #module_breadcrumbs {
     padding-left: 0rem !important;
+    margin-top: -9px;
 }
 .course_module_details .course_head_right ul{
   float: right;
+}
+.course_module_details{
+      padding-left: 25px;
 }
 .image_content img{
   width: 100%;

@@ -14,7 +14,7 @@
               <!--
               <li id="member-bulk-upload"> <span class="border-btn"><a href="#addusers"><button><i class="fas fa-plus"></i> Bulk Upload</button></a></span></li>
               -->
-              <li id="member-add"> <span class="orange-btn"><button id="trigger-member-create-form"> <i class="fas fa-plus"></i> Add Member </button></span> </li>
+              <li id="member-add"> <span class="orange-btn"><button id="trigger-member-create-form"> <i class="fas fa-plus"></i> Create Member </button></span> </li>
             </ul>
           </div>
         </div>
@@ -99,6 +99,7 @@
                       <th>EMAIL</th>
                       <th>PHONE NO</th>
                       <th>ROLE</th>
+                      <th>STATUS</th>
                       <th>ACTIONS</th>
                     </tr>
                   </thead>
@@ -124,7 +125,7 @@
 <!-- Member Create Form Start -->
 <div id="member-create-form-container" class="overlay">
   <div class="popup">
-    <h4 id="member_type_name">Add New Member</h4>
+    <h4 id="member_type_name">Create Member</h4>
     <span class="cancel-member-create-form close" href="#">&times;</span>
     <form class="pop-form" id="member-create-form">
       <div class="row mb-3">
@@ -211,11 +212,15 @@
       </div>
       <div class="row">
         <input type="hidden" id="member-id_edit" value=""/>
-        <div class="col-12 pt-3 pb-3 wauto"> <span class="border-btn nbtn">
-          <button class="cancel-member-create-form" type="button"> Cancel </button>
-          </span> <span class="orange-btn nbtn">
-          <button id="save-member-create-form" type="submit">Save</button>
-          </span> </div>
+        <div class="col-12 pt-3 pb-3 wauto"> 
+          <!-- We don't need close button, because there is close icon. In All popup same Procedure followed-->
+          <!--<span class="border-btn nbtn">
+            <button class="cancel-member-create-form" type="button"> Cancel </button>
+          </span> -->
+          <span class="orange-btn nbtn">
+            <button id="save-member-create-form" type="submit">Create</button>
+          </span> 
+        </div>
       </div>
     </form>
   </div>
@@ -481,9 +486,11 @@ function gridMembers(tagID, htmlID, assignTOBY){
 }
 
 function template(data, pagination) {
+  console.log();
   var html = '';
   if(data.length > 0) {
     $.each(data, function(index, item) {
+      console.log(getUserInfo().id +'=='+ item.id);
       html += '<tr>';
       
       html += `
@@ -501,6 +508,7 @@ function template(data, pagination) {
       html += '<td>'+ item.email_id +'</td>';
       html += '<td>'+ item.phone_number +'</td>';
       html += '<td><span class="green-shade"><a href="#">'+ item.role_name +'</a></span></td>';
+      html += '<td>'+ getStatus(item.status)+'</td>';
       html += `
         <td class="text-center">
         <div class="dropdown ahide">
@@ -513,29 +521,37 @@ function template(data, pagination) {
         if(processRights("Add/Edit Member") === false) {
           html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
         } else {
-          html += `<li><a class="dropdown-item green" onClick="editMembers('${item.id}');">&nbsp;Edit</a></li>`;
+          if(getUserInfo().id == item.id){
+            html += `<li><a class="dropdown-item green" onClick="editMembers('${item.id}');">&nbsp;Edit</a></li>`;
+          }else{
+            html += `<li><a class="dropdown-item red disabled">&nbsp;Edit</a></li>`;
+          }
         }
       } else {
-        html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
+          if(getUserInfo().id == item.id){
+            html += `<li><a class="dropdown-item green" onClick="editMembers('${item.id}');">&nbsp;Edit</a></li>`;
+          }else{
+            html += `<li><a class="dropdown-item red disabled">&nbsp;Edit</a></li>`;
+          }
+      }
+
+      
+      if(processRights("Delete Member") === false || getUserInfo().id === item.id) {
+        html += `<li><a class="dropdown-item red disabled">&nbsp;Disable<a></li>`;
+      } else {
+        if(item.status == '0' || item.status == '1') {
+          html += `<li><a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a></li>`;
+        } else if(item.status == '2') {
+          html += `<li><a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enable</a></li>`;
+        } else {
+          html += `<li><a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enable</a></li>`;
+          html += `<li><a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a></li>`;
+        }
       }
 
       html += `<li>`;
       
-      if(processRights("Delete Member") === false) {
-        html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
-      } else {
-        if(item.status == '0' || item.status == '1') {
-          html += `<a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>`;
-        } else if(item.status == '2') {
-          html += `<a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enabled</a>`;
-        } else {
-          html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
-        }
-      }
-
-      html += `</li><li>`;
-      
-      if(item.status == '2' || item.status == '3') {
+      if(item.status == '3') {
         html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
       } else {
         if(processRights("Delete Member") === false) {
@@ -723,6 +739,26 @@ function loadAlertModal(){
 
 }
 
+function getStatus(sCode){
+  /* 0 - New, 1 - Active,  2 - Inactive, 3 - Delete, 4 - completed */
+  switch(sCode) {
+    case 0:
+      return '<span class="badge bg-info">Enabled</span>';    
+      break;
+    case 1:
+      return '<span class="badge bg-info">Enabled</span>';
+      break;
+    case 2:
+      return '<span class="badge bg-warning">Disabled</span>';    
+      break;
+    case 3:
+      return '<span class="badge bg-danger">Deleted</span>';    
+      break;
+    default:
+      return '<span class="badge bg-primary">None</span>';    
+      break;
+  }
+}
 </script>
 
 <div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">

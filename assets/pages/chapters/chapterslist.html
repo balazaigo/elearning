@@ -1,8 +1,24 @@
-<div class="container-fluid">
+<div class="container-fluid case_details">
     <div class="row">
         <div class="col-12 title-head mb-3">
         <div class="row w-100">
-          <div class="col-md-8">
+          <div class="wrapper">
+            <input type="hidden" id="chapter_id_name" data-flinkto="chapters" />
+            <input type="hidden" id="chapter_id_mod" data-flinkto="chapterslist">
+            <div class="left_icon" data-flinkto="chapters">
+              <img src="../assets/images/left_arrow.png" class="arrow_icon" data-flinkto="chapters">
+            </div>
+            <div class="course_head">
+              <h4 class="header_content" id="chapter_ind_name_text"></h4>
+
+              <input type="text" id="chapter_ind_name_input" onblur="toTextHeader_chapter();" value="" style="display: none;">
+               <a id="chapter_text_edit_img_header" onclick="toInputHeader_chapter();"><img src="../assets/images/pen-edit.jpg"></a>
+              <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
+              <h4 id="chapter_ind_desc_text" class="case_ind_desc_text"></h4>
+            </div>
+          </div>
+
+          <!--<div class="col-md-8">
             <input type="hidden" id="chapter_id_name" data-flinkto="chapters" />
             <input type="hidden" id="chapter_id_mod" data-flinkto="chapterslist">
             <h2>
@@ -14,12 +30,12 @@
                 <span id="chapter_ind_desc_text"></span>
             </h2>
 
-                </div> 
-                <div class="col-md-4 p-0 side-btn">
+                </div> -->
+                <!--<div class="col-md-4 p-0 side-btn">
                     <ul>
-                        <li> <span class="orange-btn"><a href="#"><!--<button>Save</button>--></a></span> </li>                
+                        <li> <span class="orange-btn"><a href="#"><button>Save</button></a></span> </li>                
                     </ul>
-                  </div>               
+                  </div> -->              
             </div>           
           
         </div>
@@ -146,8 +162,8 @@
                   }else{
                     newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li></li>");
                   }
-                  newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);'></li>");
                   newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                  newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);'></li>");
               }else{
                     var class_name = $parent.parent().prop('className').split(" ");
                     var first_five_char_class = class_name[1].substring(0,5);
@@ -210,8 +226,8 @@
                       }else{
                         newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li></li>");
                       }
-                      newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);'></li>");
                       newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                      newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);'></li>");
                 //}
     
               }
@@ -598,8 +614,8 @@
                   newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
-                  newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "</ul>";
                   newHTML += "</div>";
                   $(e).closest('.main_mod').removeClass("no_child");
@@ -626,8 +642,8 @@
                   newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li></li>";
-                  newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_id='' data-chapter_topic_id=''></li>";
+                  newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
                   newHTML += "</ul>";
                   newHTML += "</div>";
                   e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -678,8 +694,8 @@
       newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
       newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
       newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
-      newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);'></li>";
       newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag'></li>";
+      newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_chapter_mod(this);'></li>";
       newHTML += "</ul>";
       newHTML += "</div>";
   
@@ -778,8 +794,8 @@
     newHTML += "<li class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
     newHTML += "<li class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
     newHTML += "<li class='user_img_icon disp_in_block flt_right'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li></li>";
-    newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
     newHTML += "<li class='frame_img_icon disp_in_block flt_right'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_chapter_mod(this)' data-getresult='tag' data-chapter_id='' data-chapter_topic_id=''></li>";
+    newHTML += "<li class='plus_img_icon disp_in_block flt_right'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></li>";
     newHTML += "</ul>";
     newHTML += "</div>";
     $("#case_box").append(newHTML);
@@ -812,7 +828,7 @@ function toTextHeader_chapter(){
     }
     $.ajax({
       url: API_CONTENT_URL + "/chapters/"+chapter_id+"/",
-      type: 'PATCH',
+      type: 'PUT',
       data: JSON.stringify(chapter_data),
       headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
       success:function(response){

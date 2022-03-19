@@ -1,11 +1,11 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-12 title-head mb-3">
-        <h2>Master Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
+        <h2>Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
         <input type="hidden" data-flinkto="courses" id="courses_page">
         <span class="orange-btn nbtn">
           <button type="button" class="btn btn-primary" id="btnAddCourse" data-course_id="">
-            <i class="fas fa-plus"></i> Add Master Course
+            <i class="fas fa-plus"></i> Create Course
           </button>
         </span>
       </div>
@@ -17,7 +17,7 @@
           <div class="row">
             <div class="col-lg-4 col-md-4">
               <div class="searchbar">
-                <h4>All Master Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
+                <h4>All Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
               </div>
             </div>
             <div class="col-lg-8 col-md-8 top-btn">
@@ -30,7 +30,7 @@
                 <div class="col-lg-3 col-md-3">
                   <div class="dropdown-select">
                     <select class="sort-select" id="courses_list" name="courses_list" onchange="searchParam()">
-                      <option value="">Select Master Course</option>
+                      <option value="">Select Course</option>
                     </select>
                   </div>
                 </div>
@@ -137,6 +137,9 @@
     } else {
       window.sharedAssignCourseId = e.dataset.course_id;
       $('.modal-content').load(url,function(result){
+      document.getElementById("course_param").setAttribute("data-cid", e.dataset.course_id);
+      document.getElementById("course_param").setAttribute("data-show_input", "true");
+      document.getElementById("course_param").setAttribute("data-course_assignee", "true");
         modal.show();
       });
     }

@@ -196,6 +196,8 @@ function get_module_details(case_id, case_module_id){
                                   </li>`;
                 }
           });
+        }else{
+          module_attachments_html += `<div class='alert text-center text-danger'>No Records Found!</div>`;
         }
 
         $("#course_module_content").empty();

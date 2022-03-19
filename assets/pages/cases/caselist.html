@@ -1,27 +1,54 @@
-<div class="container-fluid">
+<div class="container-fluid case_details">
     <div class="row">
         <div class="col-12 title-head mb-3">
         <div class="row w-100">
-            	<div class="col-md-8">
+
+          <div class="wrapper">
+            <input type="hidden" data-flinkto="cases" id="case_id_name"/>
+            <input type="hidden" id="member_id" val=""/>
+            <input type="hidden" id="case_id_mod" data-flinkto="caseslist">
+            <div class="left_icon" data-flinkto="cases">
+              <img src="../assets/images/left_arrow.png" class="arrow_icon" data-flinkto="cases">
+            </div>
+            <div class="course_head">
+              <h4 class="header_content" id="case_ind_name_text"></h4>
+
+              <input type="text" id="case_ind_name_input" onblur="toTextHeader();" value="" style="display: none;">
+               <a id="text_edit_img_header" onclick="toInputHeader();"><img src="../assets/images/pen-edit.jpg"></a>
+              <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
+              <h4 id="case_ind_desc_text" class="case_ind_desc_text"></h4>
+            </div>
+            <!--<div class="course_head_right">
+              <ul>
+                <li> <div class="col-6 cleft tbtn course_header_box" id="course_id_prefix"> </div>
+                 <span class="border-btn"><a href="#">
+                  <button id="course_id_prefix"></button>
+                  </a></span> 
+                </li>
+              </ul>
+            </div>-->
+            <input type="hidden" data-flinkto="caseslist" id="case_details" onload="get_case_module(this);" />
+        </div>
+            	<!--<div class="col-md-8">
                     <input type="hidden" data-flinkto="cases" id="case_id_name"/>
                     <input type="hidden" id="member_id" val=""/>
                     <input type="hidden" id="case_id_mod" data-flinkto="caseslist">
                 <h2><span class="back"><a  data-flinkto="cases"><i class="fas fa-arrow-left" data-flinkto="cases"></i></a></span> <small id="case_ind_name_text"></small>
                     <input type="text" id="case_ind_name_input" onblur="toTextHeader();" value="" style="display: none;">
                      <a id="text_edit_img_header" onclick="toInputHeader();"><img src="../assets/images/pen-edit.jpg"></a>
-                    <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> 
+                    <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> -->
                     <!-- in this page we don't need breadcumbs, So Commented it-->
                     <!--<span><a href="#">Breadcumbs1</a> <a href="#">Breadcumbs2</a></span> -->
-                    <span id="case_ind_desc_text"></span>
+                   <!-- <span id="case_ind_desc_text"></span>
                 </h2>
-                </div> 
-                <div class="col-md-4 p-0 side-btn">
+                </div> -->
+                <!--<div class="col-md-4 p-0 side-btn">
                     <ul>
-                      <li> <span class="orange-btn"><a href="#">
+                      <li> <span class="orange-btn"><a href="#">-->
                         <!--<button>Save</button>-->
-                        </a></span> </li>                
+                        <!--</a></span> </li>                
                     </ul>
-                  </div>               
+                  </div> -->              
             </div>           
           
         </div>
@@ -146,8 +173,8 @@ function get_list_mod( a, $parent , level_count_inc) {
               }else{
                 newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li></li>");
               }
-              newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);'></li>");
               newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
+              newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);'></li>");
           }else{
                 var class_name = $parent.parent().prop('className').split(" ");
                 var first_five_char_class = class_name[1].substring(0,5);
@@ -211,8 +238,8 @@ function get_list_mod( a, $parent , level_count_inc) {
                   }else{
                     newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li></li>");
                   }
-                  newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>");
                   newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
+                  newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>");
             }
 
           }
@@ -637,8 +664,8 @@ function add_sub_case_mod(e){
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 $(e).closest('.main_mod').removeClass("no_child");
@@ -666,8 +693,8 @@ function add_sub_case_mod(e){
                 newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
+                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
                 newHTML += "</ul>";
                 newHTML += "</div>";
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
@@ -720,8 +747,8 @@ function add_sub_sub_case_mod(e){
     newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
     newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
     newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
-    newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>";
     newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag'></li>";
+    newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>";
     newHTML += "</ul>";
     newHTML += "</div>";
 

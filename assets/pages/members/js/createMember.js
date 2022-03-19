@@ -16,8 +16,8 @@ $(document).on("click", "#trigger-member-create-form", function () {
   $("#member-phoneNo").prop('disabled', true);
   $("#member-role").prop('selected', false);
   $("#member-role").prop('disabled', true);
-  $("#member_type_name").text("Add New Member");
-  $("#save-member-create-form").text("Save");
+  $("#member_type_name").text("Create Member");
+  $("#save-member-create-form").text("Create");
   $("#member-create-form-container").css({ visibility: "visible", opacity: 1 });
 });
 

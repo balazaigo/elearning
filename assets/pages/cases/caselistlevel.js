@@ -418,7 +418,8 @@ function get_breadcrumbs(){
             breadcrumbs_data.forEach(function (elements, index) {
               brd_crumbs += `<li class="breadcrumb-item" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}"><a href="#" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
-                  document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
+                  //document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
+                  document.getElementById("course_header_module").innerHTML = elements.module_name;
               }
             });
         }
@@ -517,7 +518,7 @@ function get_module_details_case_module(){
                                       </div>
                                       <div class="col-md-12 p-3 mtag">
                                         <div class="tag__container">
-                                          <input type="text" class="tag__input" placeholder="+ Add Tag">
+                                          <input type="text" class="tag__input tag__inputs_course_module" placeholder="+ Add Tag">
                                           <ul class="tag__List">`;
                                           module_tags.forEach(function (element, index) {
                                             module_tags_html +=`<li>${element.tag_name}</li>`;
@@ -579,8 +580,22 @@ $('ul.tab-s li').click(function(){
   
 /*******************multiple tag list************************/
 document.addEventListener("keyup", function(e){
-    if (e.keyCode === 13 && e.target.classList.contains("tag__inputs2")) {
+    if (e.keyCode === 13 && e.target.classList.contains("tag_inputs_case_module")) {
+      var errorMsg = "";
     const currentTag = e.target.value;
+    if(currentTag.length > 256 || currentTag.length < 3){
+      
+      $(".tag_inputs_case_module").next("span").remove();
+      if(currentTag.length > 256){
+          errorMsg = "Maximum 256 characters allowed";
+      }else{console.log(3);
+          errorMsg = "Minimum 3 characters allowed";
+      }
+      $(".tag_inputs_case_module").after(`<span class='field-error'>${errorMsg}</span>`);
+      return;
+    }else{
+      $(".tag_inputs_case_module").next("span.field-error").remove();
+    }
     if(currentTag){
       const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
       const hiddenInputOldValue = hiddenInput.value;
@@ -588,8 +603,24 @@ document.addEventListener("keyup", function(e){
       const existingTags = getExistingTagAsArray(hiddenInputOldValue);
       const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
       
-      if(isTagExistAlready){ return; }
-      
+      if(isTagExistAlready){ 
+        errorMsg = "Tag Name already Exist";
+        $(".tag_inputs_case_module").after(`<span class='field-error'>${errorMsg}</span>`);
+        return; 
+      }else{
+        $(".tag_inputs_case_module").next("span.field-error").remove();
+      }
+      if(hiddenInputOldValue.length > 0){
+        var tag_array_name = hiddenInputOldValue.split(',');
+        console.log(tag_array_name);
+        if(tag_array_name.length > 63){ 
+          errorMsg = "Only 64 tags allowed";
+          $(".tag_inputs_case_module").after(`<span class='field-error'>${errorMsg}</span>`);
+          return; 
+        }else{
+          $(".tag_inputs_case_module").next("span.field-error").remove();
+        }
+      }
       if(hiddenInputOldValue){
         hiddenInput.value = hiddenInputOldValue + "," + currentTag;
       }else{
@@ -874,7 +905,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
               data: JSON.stringify(content_data),
               headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
               success:function(response){
-                toastr.success("Content has been Converted to Audio.");
+                toastr.success("Convertion process is initiated.");
               },
               error: function(error){
                 toastr.error("Response Error: " + error.message);

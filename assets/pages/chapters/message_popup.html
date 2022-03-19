@@ -135,6 +135,9 @@ function get_chapter_msg_message_details(chapter_id, chapter_topic_id){
 		      	});
 		      $("#user_comments").html(member_comments_html);
 		      $("#message").val("");
+			}else{
+				var member_comments_html = "<div class='alert text-center text-danger'>No Records Found!</div>";
+				$("#user_comments").html(member_comments_html);
 			}
 		}
 	});

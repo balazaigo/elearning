@@ -36,7 +36,7 @@
 			      <div class="col-md-12 mb-3">
                     <div class="form-check p-0" >
                       <input class="form-check-input parentcheck" name="assignto_all_sub" type="checkbox" value="assignto_all_sub" id="assignto_all_sub">
-                      <label class="form-check-label" for="assignto_all_sub"> Assign Member to all Sub Module's</label>
+                      <label class="form-check-label" for="assignto_all_sub">Assign Member to Sub-Modules</label>
                     </div>
 			      </div>
 			    </div>
@@ -79,6 +79,7 @@ $(document).ready(function(){
 		var cid = document.getElementById("course_param").getAttribute("data-cid");
 		var module_id = document.getElementById("course_param").getAttribute("data-module_id");
 		var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+		var course_assignee = document.getElementById("course_param").getAttribute("data-course_assignee");
 		if(show_input == "true"){
 			 $("#frmAssignee").attr("style", "display:block");
 			 $("#course_module_save_btn").attr("style", "display:block");
@@ -101,10 +102,10 @@ $(document).ready(function(){
   $("#saveAssignee").on("click", function() {
 	var cid = document.getElementById("course_param").getAttribute("data-cid");
 	var module_id = document.getElementById("course_param").getAttribute("data-module_id");
-	var AssignCourseId = window.sharedAssignCourseId;
+	/*var AssignCourseId = window.sharedAssignCourseId;
 	if(cid === null){
 		cid = AssignCourseId;
-	}
+	}*/
     var isValidForm = frmvalidatorfrm.form();
     if(isValidForm){
 		var formData = new FormData();
@@ -141,9 +142,15 @@ $(document).ready(function(){
 					get_assignee_details(cid, module_id);
 				}
 		    },
-		    error: function(error) {
-		      	toastr.error("Response Error: " + error.message);
-		      	console.log(error);
+		    error: function(xhr, status, error) {
+  				var err = eval("(" + xhr.responseText + ")");
+  				if(err.error){
+			      	toastr.error(err.error);
+			      	console.log(error);
+  				}else{
+			      	toastr.error("Response Error: " + error.message);
+			      	console.log(error);
+  				}
 		    }
 	  });
     }
@@ -187,8 +194,13 @@ $(document).ready(function(){
     }
   });
 function get_assignee_details(cid, module_id){
+	var course_assignee = document.getElementById("course_param").getAttribute("data-course_assignee");
 	var url = "";
-	if(module_id === null){
+	if(course_assignee == "true"){
+		url = API_CONTENT_URL + '/course/assignees/'+cid;
+		$("#assigned_table").show();
+		$("#assignto_all_sub_row").show();
+	}else if(module_id === null){
 		url = API_CONTENT_URL + '/course/assignees/'+cid;
 		$("#assigned_table").hide();
 		$("#assignto_all_sub_row").hide();
@@ -205,6 +217,7 @@ function get_assignee_details(cid, module_id){
 			$("#assigned_table").show();
 			$("#assignto_all_sub_row").show();
 	}
+	window.sharedAssignCourseId = "";
 	$.ajax({
 		url: url,
 		type: 'get',

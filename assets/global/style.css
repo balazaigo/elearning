@@ -2705,7 +2705,7 @@ to {
     border-radius: 5px;
     padding-left: 10px;
     font-size: 18px;
-    line-height: 2;
+    line-height: 1;
 
 }
 a.login-btn {
@@ -3291,39 +3291,39 @@ form#multiple {
 .course_details .row_head{
     margin-bottom: 0rem!important;
 }
-.course_details .wrapper {
+.course_details .wrapper , .case_details .wrapper{
 	display: grid;
 	grid-template-columns: repeat(25, 1fr);
 	grid-gap: 10px;
 	grid-auto-rows: minmax(80px, auto);
 }
-.course_details .wrapper .left_icon{
+.course_details .wrapper .left_icon, , .case_details .wrapper .left_icon{
     grid-column: span 1;
 }
-.course_details .wrapper .course_head {
+.course_details .wrapper .course_head, .case_details .wrapper .course_head {
 	grid-column: span 17;
 	margin-left: 0;
 }
-.course_details .wrapper .save_drft_btn {
+.course_details .wrapper .save_drft_btn, .case_details .wrapper .save_drft_btn {
     grid-column: span 2;
     text-align: right;
     display: flex;
     align-items: center;
     justify-content: right;
 }
-.course_details .wrapper .course_head .header_content {
+.course_details .wrapper .course_head .header_content, .case_details .wrapper .course_head .header_content {
     margin: 0;
     color: #20204f;
     font-weight: 600;
     font-size: 20px;
 }
-.course_details .wrapper .course_head .header_breadcrumbs {
+.course_details .wrapper .course_head .header_breadcrumbs, .case_details .wrapper .course_head .case_ind_desc_text{
 	color: #97a5ba;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	margin-top: 13px;
 	display: block;
-	margin: 0;
+	/*margin: 0;*/
 }
 .course{
 	/*width: 100%;*/
@@ -3337,25 +3337,25 @@ form#multiple {
     margin-bottom: 100px;
 }
 
-.course_details .wrapper .course_head_right .header_breadcrumbs {
+.course_details .wrapper .course_head_right .header_breadcrumbs, .case_details .wrapper .course_head_right .header_breadcrumbs {
 	color: #97a5ba;
 	font-size: 18px;
 	font-weight: 400;
 	margin-top: 10px; 
 	display: block;
 }
-.course_details .wrapper .course_head_right {
+.course_details .wrapper .course_head_right, .case_details .wrapper .course_head_right {
     grid-column: span 7;
     margin-left: 0;
     margin-top: -12px;
 }
-.course_details .wrapper .course_header_box{
+.course_details .wrapper .course_header_box, .case_details .wrapper .course_header_box{
 	display: inline;
 }
-.course_details .wrapper .course_header_box a{
+.course_details .wrapper .course_header_box a, .case_details .wrapper .course_header_box a{
 	display: inline-block;
 }
-.course_details .wrapper .course_header_box img{
+.course_details .wrapper .course_header_box img, .case_details .wrapper .course_header_box img{
     width: 40px;
     float: right;
     margin-top: -12px;
@@ -3463,8 +3463,9 @@ table td.wrap {word-wrap:break-word;}
 .custom-btn button {
 	padding: 7px 20px;
 	border-radius: 30px;
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 500;
+	border:none;
 }
 label.tags-label {
   color:#9A9A9A;
@@ -3739,6 +3740,14 @@ option:not(:first-of-type) {
 }
 .cases-card {
 	border: 1px solid #ccc !important;
+}
+.cases-card h4, .cases-card p { 
+	height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 .caselist ul {
 	padding: 0px;
@@ -4155,4 +4164,7 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 #saveAssignee{
     float: right;
     margin-bottom: 10px;
+}
+#case_ind_name_text, #chapter_ind_name_text{
+	display: inline-block;
 }

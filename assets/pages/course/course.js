@@ -678,7 +678,7 @@ $(document).ready(function(){
   });
   var course_len = $("#course_box > div").length;
   console.log(course_len);
-  if(course_len < 2){
+  if(course_len == 0){
     //$("#clicked_event").attr("data-click_id", id);
     //$("#clicked_event").attr("data-click_level", mod_level);
     $("#course_box").removeClass( "col-md-12" ).addClass( "col-md-8" );
