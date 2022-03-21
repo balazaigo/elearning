@@ -3927,6 +3927,11 @@ li.dashed {
 .chapter_list_table td{
 	cursor: pointer;
 }
+.chapter_list_table tr td:nth-child(2), .chapter_list_table tr td:nth-child(3) , .chapter_list_table tr td:nth-child(4) , .chapter_list_table tr td:nth-child(5) {
+    text-overflow: ellipsis;
+    max-width: 100px;
+    overflow-x: hidden;
+}
 .br-right {
 	border-right: 1px solid #ccc;
 }
@@ -4167,4 +4172,13 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 }
 #case_ind_name_text, #chapter_ind_name_text{
 	display: inline-block;
+}
+#caselists p, #chapterList p, #course_box p{
+    width: 35%;
+    height: 30px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

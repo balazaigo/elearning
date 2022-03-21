@@ -37,6 +37,7 @@ $(document).ready(function(){
 
     });
     get_breadcrumbs();
+    get_content_details();
     //setTimeout(, 1000);
     var minSteps = 6,
         maxSteps = 60,
