@@ -757,7 +757,7 @@ function moduleDesktopPreview(cid){
 function get_list_preview( a, $parent , level_count_inc, prev_type) {
   var mod_width = "width:93%;";
   if(prev_type == "mobile"){
-    mod_width = "width:87%;";
+    mod_width = "width:100%;";
   }
   var levels = '';
   var newDIV = $("<div></div>");
