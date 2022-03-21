@@ -143,11 +143,12 @@ function getRolesOptions(target) {
 function renderRoleOptions(roles, target) {
   let html = "";
 
+    html += `<option value="" selected disabled>Select Role</option>`;
   $.each(roles, function (index, role) {
     html += `<option value="${role.id}" >${role.name}</option>`;
   });
   if(html == ""){
-    html += `<option value="" selected disabled>Select Role</option>`;
+   // html += `<option value="" selected disabled>Select Role</option>`;
   }
   $(`${target}`).empty();
   $(`${target}`).append(html);

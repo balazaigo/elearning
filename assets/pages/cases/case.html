@@ -590,7 +590,11 @@ function onchange_caseName(e) {
     var url = $("#mAlertURL").val();
     $.ajax({
       url: API_CONTENT_URL + '/cases/' + url,
-      type: 'DELETE',
+      //type: 'DELETE',
+      type: 'PATCH',
+      data: JSON.stringify({
+        "status": 3
+      }),
       headers: {
         "Authorization": "Bearer " + getUserInfo().access_token
       },

@@ -923,7 +923,7 @@ function delete_module_confirm(e){
 function loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, level_num){
   $('#mAlert').on('shown.bs.modal', function (event) {
     $("#mAlertCancel").focus();
-    $(document).on('click', '#mAlertDelete', function(e) {
+    $("#mAlertDelete").on('click', '#mAlertDelete', function(e) {
         var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
         var method = "DELETE";
         $.ajax({

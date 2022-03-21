@@ -228,8 +228,8 @@ var frmvalidatorfrm;
         html += `
         <td>
           <div class="form-check">
-            <input class="form-check-input" name="chk" type="checkbox" value="`+ item.id +`" id="chk_`+ item.id +`">
-            <label class="form-check-label" for="chk_`+ item.id +`" role="button"> </label>
+            <input class="form-check-input" name="chk" type="checkbox" value="`+ item.id +`" id="chk_`+ item.id +sno+`">
+            <label class="form-check-label" for="chk_`+ item.id +sno+`" role="button"> </label>
           </div>
         </td>
         `;
@@ -564,8 +564,6 @@ var frmvalidatorfrm;
         if($(this).is(":checked") == true) {
           isFalse_mod = true;
           checked_length_mod++;
-        }else{
-          console.log(checked_length_mod);
         }
       });
       console.log(checked_length_mod);

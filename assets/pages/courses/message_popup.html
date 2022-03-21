@@ -152,10 +152,18 @@ function get_message_details(cid, module_id){
 		      $("#user_comments").empty();
 				var member_comments_html = "";
 		      	$.each( response, function( i, val ) {
-		      		member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+		      		if(show_input == "false-chapter"){
+		      			member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+								            <div class="add-comment"> 
+								              <p class="w-100" style="word-break: break-all;">${val.comment}</p>
+								            </div>`;
+					}else{
+
+		      			member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
 								            <div class="add-comment"> 
 								              <p class="w-100" style="word-break: break-all;">${val.comments}</p>
 								            </div>`;
+					}
 		      	});
 		      $("#user_comments").html(member_comments_html);
 		      $("#message").val("");

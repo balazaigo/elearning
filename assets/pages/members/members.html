@@ -212,6 +212,7 @@
       </div>
       <div class="row">
         <input type="hidden" id="member-id_edit" value=""/>
+        <input type="hidden" id="member_status" value=""/>
         <div class="col-12 pt-3 pb-3 wauto"> 
           <!-- We don't need close button, because there is close icon. In All popup same Procedure followed-->
           <!--<span class="border-btn nbtn">
@@ -347,9 +348,7 @@ $(function () {
               counter = counter + 1;
         var filename = this.files[initial].name;
         if(filename){
-          console.log(filename);
           splitfilename = filename.split(".");
-          console.log(filename);
           if(splitfilename[0]){
           filenamenew = splitfilename[0].substring(0, 10);
           filenamenew = filenamenew.replace(/[\/-]+/g, '');
@@ -480,17 +479,15 @@ function gridMembers(tagID, htmlID, assignTOBY){
         }
       var html = template(data, pagination);
       $('#' + htmlID).html(html);
-      loadAlertModal();
+      loadAlertModalDeleteMember();
     }
   });
 }
 
 function template(data, pagination) {
-  console.log();
   var html = '';
   if(data.length > 0) {
     $.each(data, function(index, item) {
-      console.log(getUserInfo().id +'=='+ item.id);
       html += '<tr>';
       
       html += `
@@ -516,29 +513,28 @@ function template(data, pagination) {
             <i class="fas fa-ellipsis-v"></i></button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">`;
 
-      if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '4') {
+      if(item.status == '0' || item.status == '1' || item.status == '2' || item.status == '3'  || item.status == '4') {
         //Add/Edit Member
         if(processRights("Add/Edit Member") === false) {
           html += `<li><a class="dropdown-item green disabled">&nbsp;Edit</a></li>`;
         } else {
-          if(getUserInfo().id == item.id){
+          //if(getUserInfo().id == item.id){
             html += `<li><a class="dropdown-item green" onClick="editMembers('${item.id}');">&nbsp;Edit</a></li>`;
-          }else{
-            html += `<li><a class="dropdown-item red disabled">&nbsp;Edit</a></li>`;
-          }
+          //}else{
+            //html += `<li><a class="dropdown-item red disabled">&nbsp;Edit</a></li>`;
+          //}
         }
       } else {
-          if(getUserInfo().id == item.id){
+          //if(getUserInfo().id == item.id){
+            //html += `<li><a class="dropdown-item green" onClick="editMembers('${item.id}');">&nbsp;Edit</a></li>`;
+          //}else{
             html += `<li><a class="dropdown-item green" onClick="editMembers('${item.id}');">&nbsp;Edit</a></li>`;
-          }else{
-            html += `<li><a class="dropdown-item red disabled">&nbsp;Edit</a></li>`;
-          }
+          //}
       }
-
       
       if(processRights("Delete Member") === false || getUserInfo().id === item.id) {
         html += `<li><a class="dropdown-item red disabled">&nbsp;Disable<a></li>`;
-      } else {
+      }else {
         if(item.status == '0' || item.status == '1') {
           html += `<li><a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a></li>`;
         } else if(item.status == '2') {
@@ -554,7 +550,7 @@ function template(data, pagination) {
       if(item.status == '3') {
         html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
       } else {
-        if(processRights("Delete Member") === false) {
+        if(processRights("Delete Member") === false || getUserInfo().id === item.id) {
           html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
         } else {
           html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.first_name+ ` ` +item.last_name+`" data-url="`+item.id+`/" class="dropdown-item red">&nbsp;Delete</a>`;
@@ -593,6 +589,7 @@ function editMembers(id){
   $("#member-fName").val("");
   $("#member-lName").val("");
   $("#member-phoneNo").val("");
+  $("#member_status").val("");
   $("#member_type_name").text("Edit Member");
   $("#member-email").prop('disabled', true);
   $("#save-member-create-form").text("Update");
@@ -610,11 +607,13 @@ function editMembers(id){
         $("#member-fName").val(response.first_name);
         $("#member-lName").val(response.last_name);
         $("#member-phoneNo").val(response.phone_number);
+        $("#member_status").val(response.status);
         $("#member-fName").prop('disabled', false);
         $("#member-lName").prop('disabled', false);
         $("#member-phoneNo").prop('disabled', false);
         $("#member-create-form-container").addClass("overlay_target");
         if(response.roles_name){
+            $("#member-role option[value='']").prop('selected', false);
           setTimeout(function(){
             $("#member-role option[value='"+response.roles_name+"']").prop('selected', true);
             $("#member-role").prop('disabled', false);
@@ -627,7 +626,7 @@ function editMembers(id){
       }
     });
 }
-function loadAlertModal(){
+function loadAlertModalDeleteMember(){
   $('#mAlert').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var recipientID = button.data('url');
@@ -637,8 +636,24 @@ function loadAlertModal(){
     modal.find('.modal-content #mAlertName').html(name);
     $("#mAlertCancel").focus();
     //mAlertDelete
-    $(document).on('click', '#mAlertDelete', function() {
+    //mAlertCancel
+    /*$(document).on('click', '#mAlertCancel', function() {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete_mem');
+    });*/
+    
+  });
+  
+    $(document).on('click', '#mAlertDelete_mem', function(e) {
+      e.preventDefault();
       var url = $("#mAlertURL").val();
+      var me = $(this);
+      if ( me.data('requestRunning') ) {
+          return;
+      }
+      me.data('requestRunning', true);
+
+      me.data('requestRunning', true);
       $.ajax({
         url: API_BASE_URL + '/member/' + url,
         type: 'PATCH',
@@ -654,24 +669,19 @@ function loadAlertModal(){
           $("#mAlertCancel").click();
           doSearch();
         },
+        complete: function() {
+            me.data('requestRunning', false);
+        },
         error: function(error) {
           toastr.error("Response Error: " + error.message);
           console.log(error);
         }
       });
     });
-    //mAlertCancel
-    $(document).on('click', '#mAlertCancel', function() {
-      $(document).off('click', '#mAlertCancel');
-      $(document).off('click', '#mAlertDelete');
-    });
-    
-  });
-  
   //hidden.bs.modal	
   $('#mAlert').on('hidden.bs.modal', function (event) {
-    $(document).off('click', '#mAlertCancel');
-    $(document).off('click', '#mAlertDelete');
+    //$(document).off('click', '#mAlertCancel');
+    //$(document).off('click', '#mAlertDelete_mem');
     var modal = $(this);
     modal.find('.modal-content input').val(null);
     modal.find('.modal-content #mAlertName').html("Loading...");
@@ -778,7 +788,7 @@ function getStatus(sCode){
           <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
         </span>
         <span class="danger-btn nbtn">
-          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+          <button type="button" id="mAlertDelete_mem" class="btn btn-danger">Yes Delete</button>
         </span>
       </div>
     </div>

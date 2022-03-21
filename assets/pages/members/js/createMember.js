@@ -10,6 +10,7 @@ $(document).on("click", "#trigger-member-create-form", function () {
   $("#member-lName").val("");
   $("#member-phoneNo").val("");
   $("#member-id_edit").val("");
+  $("#member-status").val("");
   $("#member-email").prop('disabled', false);
   $("#member-fName").prop('disabled', true);
   $("#member-lName").prop('disabled', true);
@@ -68,14 +69,17 @@ $(document).on("submit", "#member-create-form", function (e) {
   const formInputs = form.serializeArray();
 
   let formHasError = false;
-
+  let status = 1;
+  if($("#member_status").val()){
+    status = $("#member_status").val();
+  }
   let formData = {
     email_id: "",
     first_name: "",
     last_name: "",
     phone_number: "",
     roles_name: "",
-    status: 1,
+    status: status,
     mc_status: 0,
     image: "",
   };

@@ -415,7 +415,7 @@ function get_chapter_breadcrumbs(){
         var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="chapterslist" data-chapter_id="${data.chapter_id}"><a href="#" data-flinkto="chapterslist" data-chapter_id="${data.chapter_id}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
-              brd_crumbs += `<li class="breadcrumb-item" data-flinkto="chapterslistlevel" data-chapter_id="${elements.course_id}" data-chapter_topic_id="${elements.module_id}"><a href="#" data-flinkto="chapterslistlevel" data-chapter_id="${elements.course_id}" data-chapter_topic_id="${elements.module_id}">${elements.module_name}</a></li>`;
+              brd_crumbs += `<li class="breadcrumb-item" data-flinkto="chapterlistlevel" data-chapter_id="${elements.course_id}" data-chapter_topic_id="${elements.module_id}"><a href="#" data-flinkto="chapterlistlevel" data-chapter_id="${elements.course_id}" data-chapter_topic_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
                   document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
               }

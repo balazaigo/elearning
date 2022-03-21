@@ -1,4 +1,9 @@
 $(document).ready(function(){
+
+  document.getElementById("tabtwo").checked = true;
+  $("#tabone").hide();
+  $('label[for="tabone"]').hide();
+  $(".search_mt").hide();
   var editor  = CKEDITOR.replace("editor1",{
     height: 300,
   });
@@ -8,16 +13,7 @@ $(document).ready(function(){
   $("#rolebox").css("display", "none");
     let cid = document.getElementById("course_module_id").getAttribute("data-cid");
     let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
-    let mod_type = document.getElementById("course_module_id").getAttribute("data-mod_type");
-    let can_edit = document.getElementById("course_module_id").getAttribute("data-can_edit");
-    if(can_edit == "false"){
-      document.getElementById("tabtwo").checked = true;
-      $("#tabone").hide();
-      $('label[for="tabone"]').hide();
-      $(".search_mt").hide();
-    }else{
-      get_content_details();
-    }
+    get_module_details();
     var dropzone = new Dropzone('#demo-upload', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
@@ -40,10 +36,8 @@ $(document).ready(function(){
         }
 
     });
-
     get_breadcrumbs();
     //setTimeout(, 1000);
-    get_search_details();
     var minSteps = 6,
         maxSteps = 60,
         timeBetweenSteps = 100,
@@ -129,7 +123,6 @@ $(document).ready(function(){
             }
         }
     }
-    if(can_edit != "false"){
     $.ajax({
       url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id,
       type: 'get',
@@ -157,7 +150,6 @@ $(document).ready(function(){
         }
       }
     });
-  }
 
 $("#global_search_module").keyup(function() { 
     get_search_details();
@@ -172,7 +164,6 @@ $("#rolebox").css("display", "flex");
 });
 function get_search_details(){
     let can_edit = document.getElementById("course_module_id").getAttribute("data-can_edit");
-  if(can_edit != "false"){
     var tagName = $("#global_search_module").val();
     var active_tab_type = $("#active_li li.active").attr('id');
     $.ajax({
@@ -412,28 +403,50 @@ function get_search_details(){
         
       }
     });
-  }
 }
 function get_breadcrumbs(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
     var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    var can_edit = false;
     $.ajax({
       url: API_CONTENT_URL + '/breadcrumbs/'+cid+'/'+module_id,
       type: 'GET',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(data){
-        console.log(data);
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
         var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}"><a data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
+              if(elements.case_id && elements.is_case_preview  == true){
+                document.getElementById("tabtwo").checked = true;
+                $("#tabone").hide();
+                $('label[for="tabone"]').hide();
+                $(".search_mt").hide();
+              }else if(elements.chapter_id && elements.is_chapter_preview == true){
+                document.getElementById("tabtwo").checked = true;
+                $("#tabone").hide();
+                $('label[for="tabone"]').hide();
+                $(".search_mt").hide();
+              }else{
+                document.getElementById("tabone").checked = true;
+                $("#tabone").show();
+                $('label[for="tabone"]').show();
+                $(".search_mt").show();
+                can_edit = true;
+              }
               brd_crumbs += `<li class="breadcrumb-item" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}"><a href="#" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
                   document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
               }
             });
+            if(breadcrumbs_data[breadcrumbs_data.length-1].is_case_preview == false && breadcrumbs_data[breadcrumbs_data.length-1].is_chapter_preview == false){
+              get_search_details();
+            }
+            //if(breadcrumbs_data.breadcrumbs_data.length-1 )
+        }
+        if(can_edit){
         }
         document.getElementById("module_breadcrumbs").innerHTML = brd_crumbs;
       }

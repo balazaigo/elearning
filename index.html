@@ -191,7 +191,8 @@
       }
     } else {
       if(phoneNumber.match(pattern) == null) {
-        toastr.error(language.error_invalid_number);
+        console.log(language.error_invalid_number)
+        toastr.error(language.error_invalid_mail);
         document.getElementById("phoneNumber").focus();
       } else {
         toastr.info(language.lbl_enter_one_time_password);

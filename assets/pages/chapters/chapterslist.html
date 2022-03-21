@@ -376,7 +376,7 @@
         }
         
       }
-  
+
       if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
           e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
           e.setAttribute("style","display:none");
@@ -455,7 +455,7 @@
       var name = "";
       if(e.parentElement.parentElement.childNodes.length > 3){
         el_1 = e.parentElement.parentElement.childNodes[3].childNodes[1].firstChild.firstChild;//edit
-        el_2 = e.parentElement.parentElement.childNodes[3].childNodes[1].childNodes[1].firstChild;//delete
+        el_2 = e.parentElement.parentElement.childNodes[3].childNodes[1].childNodes[0].firstChild;//delete
         el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
         //el_4 = e.parentElement.parentElement.childNodes[4].firstChild;//progress
         el_5 = e.parentElement.parentElement.childNodes[4].firstChild;//attachment
