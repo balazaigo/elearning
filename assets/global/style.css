@@ -4173,12 +4173,3 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 #case_ind_name_text, #chapter_ind_name_text{
 	display: inline-block;
 }
-#caselists p, #chapterList p, #course_box p{
-    width: 35%;
-    height: 30px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}

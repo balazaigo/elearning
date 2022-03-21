@@ -586,7 +586,6 @@ function onchange_caseName(e) {
   }
 
   $("#mAlertDelete").click(function(){
-    console.log("test");
     var url = $("#mAlertURL").val();
     $.ajax({
       url: API_CONTENT_URL + '/cases/' + url +'/',
@@ -596,7 +595,8 @@ function onchange_caseName(e) {
         "status": 3
       }),
       headers: {
-        "Authorization": "Bearer " + getUserInfo().access_token
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
       },
       success:function(response){
         $("#role-loader").addClass("disp_block");

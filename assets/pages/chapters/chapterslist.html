@@ -118,6 +118,11 @@
               var level_count = a[i].name.split("/").length - 1;
               if(a[i].parent_id == null){
                 var n = a[i].name.lastIndexOf('/');
+                var dots = "";
+                if(a[i].name.length > 130){
+                    dots = "...";
+                }
+                var input_value_substr = a[i].name.substring(0, 130)+dots;
                 var input_value = a[i].name.substring(n + 1);
                 var prevent_click = "";
                 if(a[i].can_access == false){
@@ -143,7 +148,7 @@
                 if(a[i].is_qa == true){
                   newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"' data-chapter_name='"+chapter_name+"' data-chapter_name='"+input_value+"'></li>");
                 }
-                  newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='"+input_value+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' data-flinkto='chapterlistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"' class='main_mod_title'>"+input_value+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
+                  newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='"+input_value+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' data-flinkto='chapterlistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"' class='main_mod_title'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
                 newUl.append("<li class='expand_img_icon  disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
                   newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
                   //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
@@ -173,6 +178,11 @@
                       var levels = $parent.parent().attr('id')+"."+a[i].level;
                     }
                     var n = a[i].name.lastIndexOf('/');
+                    var dots = "";
+                    if(a[i].name.length > 130){
+                        dots = "...";
+                    }
+                    var input_value_substr = a[i].name.substring(0, 130)+dots;
                     var input_value = a[i].name.substring(n + 1);
                     var prevent_click = "";
                     if(a[i].can_access == false){
@@ -205,7 +215,7 @@
                     if(a[i].is_qa == true){
                       newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"' data-chapter_name='"+chapter_name+"' data-chapter_name='"+input_value+"'></li>");
                     }
-                  newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='"+input_value+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='chapterlistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'>"+input_value+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
+                  newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='"+input_value+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='chapterlistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
                   //if(a[i].is_qa == false){
                       newUl.append("<li class='expand_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
     
