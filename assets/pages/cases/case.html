@@ -589,7 +589,7 @@ function onchange_caseName(e) {
     console.log("test");
     var url = $("#mAlertURL").val();
     $.ajax({
-      url: API_CONTENT_URL + '/cases/' + url,
+      url: API_CONTENT_URL + '/cases/' + url +'/',
       //type: 'DELETE',
       type: 'PATCH',
       data: JSON.stringify({
