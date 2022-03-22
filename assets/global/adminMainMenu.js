@@ -494,10 +494,10 @@ function get_list( a, $parent , level_count_inc) {
             var n = a[i].module_name;
 
             var dots = "";
-            if(a[i].module_name.length > 130){
+            if(a[i].module_name.length > 75){
                 dots = "...";
             }
-            var input_value_substr = a[i].module_name.substring(0, 130)+dots;
+            var input_value_substr = a[i].module_name.substring(0, 75)+dots;
             var input_value = a[i].module_name;
             var prevent_click = "";
             if(a[i].can_access == false){
@@ -624,10 +624,10 @@ function get_list( a, $parent , level_count_inc) {
                 }
               var n = a[i].module_name;
               var dots = "";
-              if(a[i].module_name.length > 130){
+              if(a[i].module_name.length > 75){
                   dots = "...";
               }
-              var input_value_substr = a[i].module_name.substring(0, 130)+dots;
+              var input_value_substr = a[i].module_name.substring(0, 75)+dots;
               var input_value = a[i].module_name
               var prevent_click = "";
               if(a[i].can_access == false){

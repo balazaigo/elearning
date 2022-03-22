@@ -119,10 +119,10 @@
               if(a[i].parent_id == null){
                 var n = a[i].name.lastIndexOf('/');
                 var dots = "";
-                if(a[i].name.length > 130){
+                if(a[i].name.length > 75){
                     dots = "...";
                 }
-                var input_value_substr = a[i].name.substring(0, 130)+dots;
+                var input_value_substr = a[i].name.substring(0, 75)+dots;
                 var input_value = a[i].name.substring(n + 1);
                 var prevent_click = "";
                 if(a[i].can_access == false){
@@ -179,10 +179,10 @@
                     }
                     var n = a[i].name.lastIndexOf('/');
                     var dots = "";
-                    if(a[i].name.length > 130){
+                    if(a[i].name.length > 75){
                         dots = "...";
                     }
-                    var input_value_substr = a[i].name.substring(0, 130)+dots;
+                    var input_value_substr = a[i].name.substring(0, 75)+dots;
                     var input_value = a[i].name.substring(n + 1);
                     var prevent_click = "";
                     if(a[i].can_access == false){

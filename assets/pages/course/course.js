@@ -769,7 +769,7 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
             var color = "color:#F36A10;";
-            newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1;border-left-style: dashed;border-left-color: #d9d7d7;'></div>");
+            newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1;'></div>");
             newUl = $("<ul class='main_module module_opacity' style='opacity:1;padding-bottom: 0px;border-style: none;'></ul>");
             newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p></li>");
             var module_data_html  = get_module_details_preview(a[i]);
@@ -800,7 +800,7 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
             console.log(num+"= "+input_value)
-            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='"+mod_width+"border-left-style: dashed;border-left-color: #d9d7d7;'>");
+            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='"+mod_width+"'>");
             newUl = $("<ul class='sub_module' style='padding-bottom: 0px;border-style: none;'></ul>");
             const [module_content, module_attachments] = get_module_details_preview(a[i]);
             newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p>"+module_content+"</li>");
@@ -1491,3 +1491,13 @@ $(".module-sec").click(function(e){
     }
   }
 });
+/*$(document).mouseup(function(e) 
+{
+    var container = $("#mp_courseData");
+
+    // if the target of the click isn't the container nor a descendant of the container
+    if (!container.is(e.target) && container.has(e.target).length === 0) 
+    {
+        $("#mobile_preview").hide();
+    }
+});*/

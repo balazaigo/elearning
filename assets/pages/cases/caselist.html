@@ -128,10 +128,10 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
           if(a[i].parent_id == null){
             var n = a[i].module_name.lastIndexOf('/');
             var dots = "";
-            if(a[i].module_name.length > 130){
+            if(a[i].module_name.length > 75){
                 dots = "...";
             }
-            var input_value_substr = a[i].module_name.substring(0, 130)+dots;
+            var input_value_substr = a[i].module_name.substring(0, 75)+dots;
             var input_value = a[i].module_name.substring(n + 1);
             var prevent_click = "";
             if(a[i].can_access == false){
@@ -192,10 +192,10 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
                 }
                 var n = a[i].module_name.lastIndexOf('/');
                 var dots = "";
-                if(a[i].module_name.length > 130){
+                if(a[i].module_name.length > 75){
                     dots = "...";
                 }
-                var input_value_substr = a[i].module_name.substring(0, 130)+dots;
+                var input_value_substr = a[i].module_name.substring(0, 75)+dots;
                 var input_value = a[i].module_name.substring(n + 1);
                 var prevent_click = "";
                 if(a[i].can_access == false){
