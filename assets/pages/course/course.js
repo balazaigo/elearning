@@ -695,9 +695,20 @@ $(document).ready(function(){
 });
 function moduleMobilePreview(cid){
 
-  $("#mobile_preview").addClass("overlay_target");
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/course/course_preview_desktop.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          document.getElementById("course_param").setAttribute("data-cid", cid);
+          $(".modal-lg").attr("style","max-width: 25%;");
+          $(".dpc-closeh").attr("style","width: 94.2%;border-radius: 15px !important;background-color: unset;");
+          $("#popup_course_icon").attr("style","top: 20px;");
+          $(".desktop_prev_container audio").attr("style","width: 100%;");
+          $("#content-courseModule").attr("style","height: 650px;overflow: hidden;");
+          modal.toggle();
+        });
+  /*$("#mobile_preview").addClass("overlay_target");
   var course_id = $("#dp_course_id").val();
-  console.log(course_id);
     var url = API_CONTENT_URL + `/course_module_detail/?course_id=`+cid;
     fetch(url, {
       method: "GET",
@@ -721,10 +732,22 @@ function moduleMobilePreview(cid){
       get_list_preview( data.module_detail, newDIVs, 1, "mobile");
       var outerHtml = newDIVs.prop('outerHTML');
       document.getElementById("mp_courseData").innerHTML = course_data_html+outerHtml;
-    });
+    });*/
 }
 function moduleDesktopPreview(cid){
-  $("#desktop_preview").addClass("overlay_target");
+
+        const container = document.getElementById("popup_course_icon");
+        const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/course/course_preview_desktop.html?t=` + Math.floor(Date.now() / 1000);
+        $('.modal-content').load(url,function(result){
+          document.getElementById("course_param").setAttribute("data-cid", cid);
+          $(".modal-lg").attr("style","max-width: 88%;");
+          //$(".dpc-closeh").attr("style","width: 94.2%;border-radius: 15px !important;background-color: unset;");
+          $("#popup_course_icon").attr("style","top: 20px;");
+          $("#content-courseModule").attr("style","height: 650px;overflow: hidden;");
+          modal.toggle();
+        });
+  /*$("#desktop_preview").addClass("overlay_target");
   var course_id = $("#dp_course_id").val();
   console.log(course_id);
     var url = API_CONTENT_URL + `/course_module_detail/?course_id=`+cid;
@@ -751,7 +774,7 @@ function moduleDesktopPreview(cid){
       get_list_preview( data.module_detail, newDIVs, 1, "desktop");
       var outerHtml = newDIVs.prop('outerHTML');
       document.getElementById("dp_courseData").innerHTML = course_data_html+outerHtml;
-    });
+    });*/
 }
 /***************Course Modules Get Json and assign Tree structured format and Design Starts Here*************/
 function get_list_preview( a, $parent , level_count_inc, prev_type) {
@@ -1491,13 +1514,3 @@ $(".module-sec").click(function(e){
     }
   }
 });
-/*$(document).mouseup(function(e) 
-{
-    var container = $("#mp_courseData");
-
-    // if the target of the click isn't the container nor a descendant of the container
-    if (!container.is(e.target) && container.has(e.target).length === 0) 
-    {
-        $("#mobile_preview").hide();
-    }
-});*/

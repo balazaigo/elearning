@@ -4173,3 +4173,17 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 #case_ind_name_text, #chapter_ind_name_text{
 	display: inline-block;
 }
+.desktop_prev_container audio{
+	/*width: 100%;
+    height: 650px;
+    overflow: auto;*/
+}
+.desktop_prev_container{
+    height: 650px;
+    overflow: auto;
+}
+/*.desktop_prev_container .btn-close{
+	right: 7px;
+    padding: 15px;
+    position: absolute;
+}*/
