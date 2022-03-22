@@ -290,3 +290,8 @@ $( document ).ready(function() {
 	"use strict";
   $(init);
 });
+//window.onbeforeunload = function() {
+  //alert(1);
+        //return "Dude, are you sure you want to leave? Think of the kittens!";
+        //window.location = SITE_URL_PROTOCOL+'/admin';
+    //}
