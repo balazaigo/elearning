@@ -310,7 +310,7 @@ function get_pagination(parameter){
         pageNumber: 'page',
         pageSize: 'per_page',
       },  
-      pageSize: 10,
+      pageSize: 6,
       ajax: {
         beforeSend: function(request) {
           request.setRequestHeader("Authorization", "Bearer " + getUserInfo().access_token);
