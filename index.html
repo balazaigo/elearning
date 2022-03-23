@@ -114,12 +114,18 @@
 <script src="./assets/config.js"></script> 
 <script src="./assets/global/custom.js"></script>
 <script type="text/javascript">
-  /*$(document).ready(function(){
+  $(document).ready(function(){
     if(localStorage.getItem("auth_data") !== null){
-      window.location = SITE_URL_PROTOCOL+'/admin';
+      //window.location = SITE_URL_PROTOCOL+'/home?page=dashboard/dashboard';
+      localStorage.removeItem("auth");
+      localStorage.removeItem("auth_type");
+      localStorage.removeItem("auth_user");
+      localStorage.removeItem("auth_data");
+      localStorage.removeItem("system_rights");
+      window.location.replace(SITE_URL_PROTOCOL);
     }
     console.log(localStorage.getItem("auth_data"));
-  });*/
+  });
   firebase.initializeApp(window.firebaseConfig);
   var googleUser = {};
   var startApp = function() {

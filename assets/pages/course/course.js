@@ -880,7 +880,7 @@ function get_module_details_preview(module_data){
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${API_CONTENT_URL}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls preload='none' width="600" poster=""><source id='mp4' src="${API_CONTENT_URL}${element.attachment}" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${API_CONTENT_URL}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
                         module_attachments_html +=`<audio controls><source src="${API_CONTENT_URL}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){

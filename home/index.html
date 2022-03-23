@@ -336,7 +336,13 @@
         document.querySelector("." + target).style.display = "none";
       }
       $(function(){
-        var History = window.History;
+        if(getUserInfo().id){
+          var page = get_url_value('page');
+          if(!page){
+          window.location.href = `${SITE_URL_PROTOCOL}home/?page=dashboard/dashboard`;
+          }
+        }
+        var History = window.History;console.log(History);
         if (History.enabled) {
           var page = get_url_value('page');
           var path = page ? page : 'dashboard';
@@ -356,7 +362,9 @@
         History.Adapter.bind(window, 'statechange', function() {
           var State = History.getState(); 
           // Do ajax
-          load_page_content(State.data.path);
+          if(State.data.path){
+            load_page_content(State.data.path);
+          }
           if(State.data.path == "roles/roles"){
             getRoles();
           }
@@ -373,8 +381,9 @@
           
           var urlPath = $(this).attr('href');
           var title = $(this).text(); 
-          
-          History.pushState({path: urlPath}, title, './?page=' + urlPath); // When we do this, History.Adapter will also execute its contents.    
+          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "chapters/chapters" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "task/task" || urlPath == "members/members"){
+              History.pushState({path: urlPath}, title, './?page=' + urlPath); // When we do this, History.Adapter will also execute its contents.    
+            }
         });
         
         function load_page_content(page) {
