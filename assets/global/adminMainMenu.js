@@ -1000,7 +1000,6 @@ async function getCourseKnowledgecheck(e){
   );
 }
 function handleTopMenuClick(e) {
-  console.log(e.target.dataset.flinkto);
   switch (e.target.dataset.flinkto) {
     case "dashboard":
       getDashboardPage();

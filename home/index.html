@@ -43,6 +43,8 @@
     <!-- Toastr -->
     <link href="../assets/global/toastr/toastr.min.css" rel="stylesheet" />
     <!-- EOF Toastr -->
+    
+    <script defer src="../assets/global/jquery.history.js"></script>
     <script defer src="../assets/global/language.js"></script>
     <script defer src="../assets/global/auth.js"></script>
   </head>
@@ -59,14 +61,16 @@
         </div>
         <ul class="text-white w-100 pt-4" id="navRight">
           <li>
-            <a href="#" data-flinkto="dashboard"
-              ><img class="menuicon" src="../assets/images/dash.svg" alt="Dashboard" />
+            <!--<a href="#" data-flinkto="dashboard">-->
+              <a href="dashboard/dashboard" data-flinkto="dashboard">
+              <img class="menuicon" src="../assets/images/dash.svg" alt="Dashboard" />
               <span class="mx-2" data-flinkto="dashboard">Dashboard</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="cases"
-              ><img class="menuicon" src="../assets/images/course.svg" alt="Cases" />
+            <!--<a href="#" data-flinkto="cases">-->
+              <a href="cases/case" data-flinkto="cases">
+              <img class="menuicon" src="../assets/images/course.svg" alt="Cases" />
               <span class="mx-2" data-flinkto="cases">Cases</span></a
             >
           </li>
@@ -78,32 +82,38 @@
           </li>-->
           <!-- this is for chapter page But renamed as module-->
           <li>
-            <a href="#" data-flinkto="chapters"
-              ><img class="menuicon" src="../assets/images/course.svg" alt="Chapters" />
+            <!--<a href="#" data-flinkto="chapters">-->
+              <a href="chapters/chapters" data-flinkto="chapters">
+              <img class="menuicon" src="../assets/images/course.svg" alt="Chapters" />
               <span class="mx-2" data-flinkto="chapters">Modules</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="roles" rel="View Role"
-              ><img class="menuicon" src="../assets/images/roles.svg" alt="roles" />
+            <!--<a href="#" data-flinkto="roles" rel="View Role">-->
+              <a href="roles/roles" data-flinkto="roles">
+              <img class="menuicon" src="../assets/images/roles.svg" alt="roles" />
               <span class="mx-2" data-flinkto="roles">Roles</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="courses" rel="course"
-              ><img class="menuicon" src="../assets/images/course.svg" alt="course" />
+            <!--<a href="#" data-flinkto="courses" rel="course">-->
+              <a href="courses/courses" data-flinkto="courses">
+              <img class="menuicon" src="../assets/images/course.svg" alt="course" />
               <span class="mx-2" data-flinkto="courses">Courses</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="task" rel="task"
-              ><img class="menuicon" src="../assets/images/task.svg" alt="task" />
+            <!--<a href="#" data-flinkto="task" rel="task">-->
+              <a href="task/task" data-flinkto="task">
+              <img class="menuicon" src="../assets/images/task.svg" alt="task" />
               <span class="mx-2" data-flinkto="task">Task</span></a
             >
           </li>
           <li>
-            <a href="#" data-flinkto="members" rel="View Member"
-              ><img class="menuicon" src="../assets/images/roles.svg" alt="members" />
+              <!--<a href="#" data-flinkto="members" rel="View Member">-->
+
+              <a href="members/members" data-flinkto="members">
+              <img class="menuicon" src="../assets/images/roles.svg" alt="members" />
               <span class="mx-2" data-flinkto="members">Members</span></a
             >
           </li>
@@ -314,26 +324,80 @@
     <script src="../assets/global/fileup.js"></script>
     <script src="../assets/pages/courses/fileUpCourse.js"></script>
     <script type="text/javascript">
-      /*function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82) e.preventDefault(); };
-
-      $(document).ready(function(){
-           $(document).on("keydown", disableF5);
-      });*/
       $( document ).ready(function() {
-
-        //window.history.pushState("", "", SITE_URL_PROTOCOL);
-        $('a[href="#"]').click( function(e) { e.preventDefault(); });
-        getDashboardPage();
+        //$('a[href="#"]').click( function(e) { e.preventDefault(); });
+        //getDashboardPage();
       });
       $(document).ajaxStop(function(event, xhr, ajaxOptions, data) {
         setUserInfo ( window.getUserInfo() );
       });
-    </script>
-    <script>
       function closeText(_this){
         const target = _this.id;
         document.querySelector("." + target).style.display = "none";
       }
+      $(function(){
+        var History = window.History;
+        if (History.enabled) {
+          var page = get_url_value('page');
+          var path = page ? page : 'dashboard';
+          // Load the page
+          load_page_content(path);
+          if(page == "roles/roles"){
+            getRoles();
+          }
+          if(page == "courses/courses"){
+            $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courses.js`, function() {});   
+          }
+        } else {
+          return false;
+        }
+        
+        // Content update and back/forward button handler
+        History.Adapter.bind(window, 'statechange', function() {
+          var State = History.getState(); 
+          // Do ajax
+          load_page_content(State.data.path);
+          if(State.data.path == "roles/roles"){
+            getRoles();
+          }
+          if(State.data.path == "courses/courses"){
+            $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courses.js`, function() {});   
+          }
+          // Log the history object to your browser's console
+          History.log(State);
+        });
+      
+        // Navigation link handler
+        $('body').on('click', 'li a', function(e) {
+          e.preventDefault();
+          
+          var urlPath = $(this).attr('href');
+          var title = $(this).text(); 
+          
+          History.pushState({path: urlPath}, title, './?page=' + urlPath); // When we do this, History.Adapter will also execute its contents.    
+        });
+        
+        function load_page_content(page) {
+          $.ajax({  
+            type: 'post',
+            url: '../assets/pages/'+ page + '.html',
+            data: {},           
+            success: function(response) {
+              $('#app-admin').html(response);
+            }
+          });
+        }
+        
+        function get_url_value(variable) {
+           var query = window.location.search.substring(1);
+           var vars = query.split("&");
+           for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+           }
+           return(false);
+          }        
+      });
       </script>
   </body>
 </html>

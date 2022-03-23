@@ -208,7 +208,7 @@ function post_json_dat(url, data, call_method, e, message){
     var module_name = "";
     //el_1 = e.parentElement.nextSibling.childNodes[1].childNodes[0].firstChild;//edit
     //el_2 = e.parentElement.nextSibling.childNodes[1].childNodes[1].firstChild;//delete
-    console.log(e.parentElement.parentElement.childNodes)
+    //console.log(e.parentElement.parentElement.childNodes)
       el_1 = e.parentElement.parentElement.childNodes[1].childNodes[1];//edit
       el_2 = e.parentElement.parentElement.childNodes[4].childNodes[1].firstChild.firstChild;//delete
     el_3 = e.parentElement.parentElement.childNodes[8].firstChild;//tags
@@ -343,7 +343,7 @@ function add_sub(e, section){
   var result = Number(classList[1].substr(index+1));
   var url = API_CONTENT_URL + '/course_module/';
   var method = "POST";
-  console.log(section);
+  //console.log(section);
   if(section == "Sub Section"){
 
     var parent_id = e.getAttribute("data-module_id");
@@ -475,8 +475,8 @@ function get_submodule_level_val_sub(class_module_main_level, class_module_sub_l
   return data_course_module;
 }
 function add_sub_sub(e, section){
-  console.log(e);
-  console.log(section);
+  //console.log(e);
+  //console.log(section);
 
   var classList = e.className.split(/\s+/);
   if(classList[2] == 'main_mod'){
@@ -490,7 +490,7 @@ function add_sub_sub(e, section){
     var class_module_sub_level = e.classList[2];
     var parent_id = e.getAttribute("data-module_id");
     get_submodule_level_values = get_submodule_level_val_sub(class_module_main_level, class_module_sub_level, parent_id);
-    console.log(get_submodule_level_values);
+    //console.log(get_submodule_level_values);
   }
   /*var get_submodule_level_values = {
     module_name: String("Introduction new"),
@@ -677,7 +677,7 @@ $(document).ready(function(){
     }, 0);
   });
   var course_len = $("#course_box > div").length;
-  console.log(course_len);
+  //console.log(course_len);
   if(course_len == 0){
     //$("#clicked_event").attr("data-click_id", id);
     //$("#clicked_event").attr("data-click_level", mod_level);
@@ -822,7 +822,7 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             }
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
-            console.log(num+"= "+input_value)
+            //console.log(num+"= "+input_value)
             newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='"+mod_width+"'>");
             newUl = $("<ul class='sub_module' style='padding-bottom: 0px;border-style: none;'></ul>");
             const [module_content, module_attachments] = get_module_details_preview(a[i]);
@@ -1111,7 +1111,7 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
               "course_id": String(document.getElementById("course_id").value),
               "case_module_id": String(module_id)
           }
-          console.log(chapter_data);
+          //console.log(chapter_data);
         $.ajax({
           url: API_CONTENT_URL + '/cases/remove/chapter/',
           type: 'POST',
@@ -1121,7 +1121,7 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
             "Content-Type": "application/json"
           },
           success:function(response){
-            console.log(response);
+            //console.log(response);
             toastr.success("Deleted Successfully.");
             $("#mAlertCancel").click();
             $("#course_id").trigger("click");
@@ -1168,9 +1168,9 @@ $( ".main_mod_empty" ).droppable({
        }
         var classList_1 = $(this).attr('class').split(' ')[1];
         var index = classList_1.lastIndexOf("_");
-        console.log(index);
+        //console.log(index);
         var result = Number(classList_1.substr(index+1))+ Number(1);
-        console.log(result);
+        //console.log(result);
         var url = API_CONTENT_URL + '/course_module/';
         var method = "POST";
         var get_submodule_level_values = {
@@ -1418,7 +1418,7 @@ function add_module(e, id, mod_level){
     var element = document.querySelector('[data-unique_id="'+id+'"]');
     var module_id =  element.getAttribute("data-module_id");
     var selected_case_id = element.getAttribute("data-unique_case_id");
-    console.log(selected_case_id);
+    //console.log(selected_case_id);
     if(selected_case_id !== "null" && selected_case_id !== "undefined" ){
       $(".mod-module").show();
       $(".mod-section").hide();
@@ -1430,7 +1430,7 @@ function add_module(e, id, mod_level){
       $(".mod-sub_section").show();
       $(".mod-case_study").show();
     }
-    console.log(mod_level);
+    //console.log(mod_level);
     if(mod_level == "sub_sub"){
       $(".mod-section").hide();
     }else{

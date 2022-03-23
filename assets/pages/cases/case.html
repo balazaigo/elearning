@@ -334,7 +334,6 @@ function get_pagination(parameter){
 
         $("#role-loader").removeClass("disp_block");
         $("#role-loader").addClass("disp_none");
-        console.log(parameter);
         if(data.length === 0){
           if(parameter != ""){
             $("#nodataFound_course").attr("style", "display:block");
@@ -472,9 +471,7 @@ function editCase(e){
         $('#frmNewCase .form-control').removeClass('is-invalid');
     });
     window.sharedEditCaseId = e.dataset.case_id;
-    console.log(window.sharedEditCaseId);
     if(window.sharedEditCaseId){
-      console.log(window.sharedEditCaseId);
       $("#createcases").attr("style","display:block");
       $("#createcases").addClass("overlay_target");
       $("#create_case_text").text("Edit Case");
@@ -486,7 +483,6 @@ function editCase(e){
       })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         $("#case_name").val(data.name);
         $("#case_description").val(data.description);
         if(data.description) {
@@ -531,15 +527,12 @@ function onchange_caseName(e) {
         "Content-Type": "application/json"
       },
       success:function(response){
-        console.log(response);
         var case_name_exist = false;
           $.each(response, function( i, val ) {
-              console.log(e.value +"--"+ val.name);
             if(e.value == val.name){
               case_name_exist = true;
             }
           });
-          console.log(case_name_exist);
           if(case_name_exist){
             $("#case_name").val("");
             $("#case_name").focus();
@@ -572,7 +565,6 @@ function onchange_caseName(e) {
         dataType: 'json',
         headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
         success: function (response) {
-          console.log("response:", response);
           $("#case_assign_to").empty();
           $("#case_assign_to").append("<option value=''>Select Assign To</option>");
           $.each(response.data, function (i, val) {
@@ -628,7 +620,6 @@ function onchange_caseName(e) {
         "Content-Type": "application/json"
       },
       success:function(response){
-        console.log(response);
         var chapters_list_template = "";
         if(response.length > 0){
           $("#case_list").empty();

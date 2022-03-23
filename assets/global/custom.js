@@ -179,7 +179,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
 
 /**************Drag and Drop*************/
 function init() {
-  console.log("init");
+  //console.log("init");
   $('a[href="#"]').click( function(e) { e.preventDefault(); });
   if($( ".droppable-area1" ).length > 0) {
     $(".droppable-area1")
