@@ -240,7 +240,7 @@
         localStorage.setItem("auth_type", "phone");
         localStorage.setItem("auth_user", user.uid); //replace the uid with email address
         setTimeout(function() {
-          window.location.href = `${SITE_URL_PROTOCOL}home/`;
+          window.location.href = `${SITE_URL_PROTOCOL}home/?page=dashboard/dashboard`;
         }, 2000);
       })
       .catch(function(error) {
@@ -285,7 +285,7 @@
             toastr.success("Welcome : " + email_id);
             processRememberMe();
             setTimeout(function() {
-              window.location.href = `${SITE_URL_PROTOCOL}home/`;
+              window.location.href = `${SITE_URL_PROTOCOL}home/?page=dashboard/dashboard`;
             }, 1500);
           }
         },
@@ -330,7 +330,7 @@
             toastr.success("Welcome : " + email_id);
             processRememberMe();
             setTimeout(function() {
-              window.location.href = `${SITE_URL_PROTOCOL}home/`;
+              window.location.href = `${SITE_URL_PROTOCOL}home/?page=dashboard/dashboard`;
             }, 1500);
           }
         },

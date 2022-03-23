@@ -379,7 +379,7 @@
         
         function load_page_content(page) {
           $.ajax({  
-            type: 'post',
+            type: 'get',
             url: '../assets/pages/'+ page + '.html',
             data: {},           
             success: function(response) {
