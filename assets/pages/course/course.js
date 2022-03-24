@@ -946,7 +946,7 @@ function delete_module_confirm(e){
 function loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, level_num){
   $('#mAlert').on('shown.bs.modal', function (event) {
     $("#mAlertCancel").focus();
-    $("#mAlertDelete").on('click', '#mAlertDelete', function(e) {
+    $("#mAlertDelete").click(function(e){
         var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
         var method = "DELETE";
         $.ajax({
@@ -971,7 +971,7 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
     //mAlertCancel
     $(document).on('click', '#mAlertCancel', function() {
       $(document).off('click', '#mAlertCancel');
-      $(document).off('click', '#mAlertDelete');
+      //$(document).off('click', '#mAlertDelete');
     });
     
   });
@@ -979,7 +979,7 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
   //hidden.bs.modal 
   $('#mAlert').on('hidden.bs.modal', function (event) {
     $(document).off('click', '#mAlertCancel');
-    $(document).off('click', '#mAlertDelete');
+   // $(document).off('click', '#mAlertDelete');
     var modal = $(this);
     modal.find('.modal-content input').val(null);
     modal.find('.modal-content #mAlertName').html("Loading...");
@@ -1023,7 +1023,7 @@ function delete_module_confirm_cases(e){
 function loadAlertModal_delete_case(toastr_message, module_id, module_name, case_id, level_num){
   $('#mAlert').on('shown.bs.modal', function (event) {
     $("#mAlertCancel").focus();
-    $(document).on('click', '#mAlertDelete', function(e) {
+    $("#mAlertDelete").click(function(e){
         var url = API_CONTENT_URL + '/course_module/'+module_id+'/';
         var method = "PUT";
 
@@ -1052,7 +1052,7 @@ function loadAlertModal_delete_case(toastr_message, module_id, module_name, case
     //mAlertCancel
     $(document).on('click', '#mAlertCancel', function() {
       $(document).off('click', '#mAlertCancel');
-      $(document).off('click', '#mAlertDelete');
+     // $(document).off('click', '#mAlertDelete');
     });
     
   });
@@ -1060,7 +1060,7 @@ function loadAlertModal_delete_case(toastr_message, module_id, module_name, case
   //hidden.bs.modal 
   $('#mAlert').on('hidden.bs.modal', function (event) {
     $(document).off('click', '#mAlertCancel');
-    $(document).off('click', '#mAlertDelete');
+    //$(document).off('click', '#mAlertDelete');
     var modal = $(this);
     modal.find('.modal-content input').val(null);
     modal.find('.modal-content #mAlertName').html("Loading...");
@@ -1105,7 +1105,7 @@ function delete_module_confirm_chapters(e){
 function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, case_id, level_num){
   $('#mAlert').on('shown.bs.modal', function (event) {
     $("#mAlertCancel").focus();
-    $(document).on('click', '#mAlertDelete', function(e) {
+    $("#mAlertDelete").click(function(e){
           var chapter_data = {
               "case_id": String(case_id),
               "course_id": String(document.getElementById("course_id").value),
@@ -1135,7 +1135,7 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
     //mAlertCancel
     $(document).on('click', '#mAlertCancel', function() {
       $(document).off('click', '#mAlertCancel');
-      $(document).off('click', '#mAlertDelete');
+      //$(document).off('click', '#mAlertDelete');
     });
     
   });
@@ -1143,7 +1143,7 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
   //hidden.bs.modal 
   $('#mAlert').on('hidden.bs.modal', function (event) {
     $(document).off('click', '#mAlertCancel');
-    $(document).off('click', '#mAlertDelete');
+   // $(document).off('click', '#mAlertDelete');
     var modal = $(this);
     modal.find('.modal-content input').val(null);
     modal.find('.modal-content #mAlertName').html("Loading...");

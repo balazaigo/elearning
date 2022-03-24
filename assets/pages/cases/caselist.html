@@ -86,6 +86,7 @@
   </div>
 </div>
 <script type="text/javascript">
+
     $(document).ready(function(){
         setTimeout(function(){
             let case_id = document.getElementById("case_id_name").getAttribute("data-case_id");
@@ -101,14 +102,56 @@
                         if(response.description.length > 75){
                             dots = "...";
                         }
+                        var result = response.children.length + 1;
                         $("#case_ind_name_text").text(response.case_name);
                         $("#case_ind_desc_text").text(response.description.substring(0, 75)+dots);
                         $("#member_id").val(response.member_id);
-                        var newDIV = $("<div class='course case_list_module_box' id='case_box'></div>");
+                        var newDIV = $("<div class='course case_list_module_box sortable' id='case_box'></div>");
                         var outerHtml = '';
                         get_list_mod( response.children, newDIV, 1, response.case_name);
+                        newHTML = "<div class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
+                        newHTML += "<ul class='main_module module_opacity'>";
+                        newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
+                        newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>";
+                        newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                        //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                        newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                        //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+                        newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                        newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                        newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li></li>";
+                        newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
+                        newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
+                        newHTML += "</ul>";
+                        newHTML += "</div>";
+                        newDIV.append(newHTML);
                         var outerHtml = newDIV.prop('outerHTML');
                         document.getElementById("caselists").innerHTML = outerHtml;
+
+                        /*var listItens = document.querySelectorAll('.draggable');
+                        console.log(listItens);
+                        [].forEach.call(listItens, function(item) {
+                          console.log("draggable");
+                          addEventsDragAndDrop(item);
+                        });*/
+                        /*$('.sortable').nestedSortable({
+                          forcePlaceholderSize: true,
+                          disableParentChange:false,
+                          doNotClear:false,
+                          handle: 'ul',
+                          items: 'div',
+                          helper: 'clone',
+                          toleranceElement: '> ul',
+                          isTree: true,
+                          expandOnHover: 700,
+                          startCollapsed: false,
+                          listType:"div",
+                          tolerance: 'pointer',
+                          drop: function(e){
+                            console.log(e);
+                            console.log('Relocated item');
+                          }
+                        });*/
                     },
                     error: function(error) {
                         toastr.error("Response Error: " + error.message);
@@ -139,16 +182,16 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
             }
             if(a[i].is_qa == true){
                 if (a[i].children.length > 0){
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod' id='"+a[i].level+"' style='opacity:1'></div>");
                 }else{
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod' id='"+a[i].level+"' style='opacity:1'></div>");
                 }
             }else{
 
                 if (a[i].children.length > 0){
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod has_child draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod has_child' id='"+a[i].level+"'  style='opacity:1'></div>");
                 }else{
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod no_child draggable' id='"+a[i].level+"' draggable='true' style='opacity:1'></div>");
+                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod no_child' id='"+a[i].level+"'  style='opacity:1'></div>");
                 }
             }
             newUl = $("<ul class='main_module module_opacity' style='opacity:1'></ul>");
@@ -626,28 +669,28 @@ function check_value_case_mod(e){
             e.parentElement.parentElement.parentElement.classList.remove('no_child');
             e.parentElement.parentElement.parentElement.classList.add('main_mod');
             e.parentElement.parentElement.parentElement.classList.add('no_child');
-            e.parentElement.parentElement.parentElement.classList.add('draggable');
+            //e.parentElement.parentElement.parentElement.classList.add('draggable');
             e.parentElement.parentElement.parentElement.setAttribute("style","opacity:1");
             if(e.parentElement.previousSibling.nodeName == "#text"){
-                e.parentElement.parentElement.childNodes[1].firstChild.setAttribute('draggable','true');
+                //e.parentElement.parentElement.childNodes[1].firstChild.setAttribute('draggable','true');
             }else{
-                e.parentElement.previousSibling.firstChild.setAttribute("draggable","true");
+                //e.parentElement.previousSibling.firstChild.setAttribute("draggable","true");
             }
         }
         var result = Number(classList[1].substr(index+1)) + Number(1);
     }else{
         e.parentElement.parentElement.parentElement.classList.remove('main_mod');
         e.parentElement.parentElement.parentElement.classList.add('main_mod_empty');
-        e.parentElement.parentElement.parentElement.classList.remove('draggable');
+        //e.parentElement.parentElement.parentElement.classList.remove('draggable');
         e.parentElement.parentElement.setAttribute("style","opacity:0.5");
         if(e.parentElement.previousSibling.firstChild !== null){
-          e.parentElement.previousSibling.firstChild.setAttribute("draggable","true");
+          //e.parentElement.previousSibling.firstChild.setAttribute("draggable","true");
         }
     }
-    var listItens = document.querySelectorAll('.draggable');
+    /*var listItens = document.querySelectorAll('.draggable');
     [].forEach.call(listItens, function(item) {
       addEventsDragAndDrop(item);
-    });
+    });*/
 
 }
 function add_sub_case_mod(e){
@@ -893,4 +936,55 @@ function toTextHeader(){
         toastr.error("Case Name Should not be empty.");
   }
 }
+
+/*var remove = document.querySelector('.draggable');
+function dragStart(e) {
+  dragSrcEl = this;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/html', this.innerHTML);
+};
+ 
+function dragEnter(e) {
+  this.classList.add('over');
+}
+ 
+function dragLeave(e) {
+  e.stopPropagation();
+  this.classList.remove('over');
+}
+ 
+function dragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  return false;
+}
+ 
+function dragDrop(e) {
+  console.log(this);
+  console.log(dragSrcEl);
+  //console.log(e.dataTransfer.getData('text/html'));
+  if (dragSrcEl != this) {
+    dragSrcEl.innerHTML = this.innerHTML;
+    this.innerHTML = e.dataTransfer.getData('text/html');
+  }
+  return false;
+}
+ 
+function dragEnd(e) {
+  var listItens = document.querySelectorAll('.draggable');
+  [].forEach.call(listItens, function(item) {
+    item.classList.remove('over');
+  });
+  this.style.opacity = '1';
+}
+ 
+function addEventsDragAndDrop(el) {
+  el.addEventListener('dragstart', dragStart, false);
+  el.addEventListener('dragenter', dragEnter, false);
+  el.addEventListener('dragover', dragOver, false);
+  el.addEventListener('dragleave', dragLeave, false);
+  el.addEventListener('drop', dragDrop, false);
+  el.addEventListener('dragend', dragEnd, false);
+}*/
+
 </script>
