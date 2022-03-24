@@ -329,7 +329,7 @@
         if(item.status == '0' || item.status == '1') {
           html += `<a id="disabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>`;
         } else if(item.status == '2') {
-          html += `<a id="enabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enabled</a>`;
+          html += `<a id="enabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enable</a>`;
         } else {
           html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
         }
@@ -406,6 +406,14 @@
       modal.find('.modal-content #mAlertName').html(name);
       $("#mAlertCancel").focus();
       //mAlertDelete
+      //mAlertCancel
+      $(document).on('click', '#mAlertCancel', function() {
+        $(document).off('click', '#mAlertCancel');
+        $(document).off('click', '#mAlertDelete');
+      });
+      
+    });
+    
       $(document).on('click', '#mAlertDelete', function() {
         var url = $("#mAlertURL").val();
         $.ajax({
@@ -420,6 +428,7 @@
           },
           success:function(response){
             $("#mAlertCancel").click();
+            toastr.success("Task Deleted successfully");
             doSearch();
           },
           error: function(error) {
@@ -428,14 +437,6 @@
           }
         });
       });
-      //mAlertCancel
-      $(document).on('click', '#mAlertCancel', function() {
-        $(document).off('click', '#mAlertCancel');
-        $(document).off('click', '#mAlertDelete');
-      });
-      
-    });
-    
     //hidden.bs.modal 
     $('#mAlert').on('hidden.bs.modal', function (event) {
       $(document).off('click', '#mAlertCancel');
@@ -458,6 +459,7 @@
           "Content-Type": "application/json"
         },
         success:function(response){
+          toastr.success("Task Disabled successfully");
           doSearch();
         },
         error: function(error) {
@@ -481,6 +483,7 @@
           "Content-Type": "application/json"
         },
         success:function(response){
+          toastr.success("Task Enabled successfully");
           doSearch();
         },
         error: function(error) {

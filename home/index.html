@@ -62,14 +62,14 @@
         <ul class="text-white w-100 pt-4" id="navRight">
           <li>
             <!--<a href="#" data-flinkto="dashboard">-->
-              <a href="dashboard/dashboard" data-flinkto="dashboard">
+              <a href="dashboard/dashboard" data-flinkto="dashboard" class="dashboard">
               <img class="menuicon" src="../assets/images/dash.svg" alt="Dashboard" />
               <span class="mx-2" data-flinkto="dashboard">Dashboard</span></a
             >
           </li>
           <li>
             <!--<a href="#" data-flinkto="cases">-->
-              <a href="cases/case" data-flinkto="cases">
+              <a href="cases/case" data-flinkto="cases" class="cases">
               <img class="menuicon" src="../assets/images/course.svg" alt="Cases" />
               <span class="mx-2" data-flinkto="cases">Cases</span></a
             >
@@ -83,28 +83,28 @@
           <!-- this is for chapter page But renamed as module-->
           <li>
             <!--<a href="#" data-flinkto="chapters">-->
-              <a href="chapters/chapters" data-flinkto="chapters">
+              <a href="chapters/chapters" data-flinkto="chapters" class="chapters">
               <img class="menuicon" src="../assets/images/course.svg" alt="Chapters" />
               <span class="mx-2" data-flinkto="chapters">Modules</span></a
             >
           </li>
           <li>
             <!--<a href="#" data-flinkto="roles" rel="View Role">-->
-              <a href="roles/roles" data-flinkto="roles">
+              <a href="roles/roles" data-flinkto="roles" class="roles">
               <img class="menuicon" src="../assets/images/roles.svg" alt="roles" />
               <span class="mx-2" data-flinkto="roles">Roles</span></a
             >
           </li>
           <li>
             <!--<a href="#" data-flinkto="courses" rel="course">-->
-              <a href="courses/courses" data-flinkto="courses">
+              <a href="courses/courses" data-flinkto="courses" class="courses">
               <img class="menuicon" src="../assets/images/course.svg" alt="course" />
               <span class="mx-2" data-flinkto="courses">Courses</span></a
             >
           </li>
           <li>
             <!--<a href="#" data-flinkto="task" rel="task">-->
-              <a href="task/task" data-flinkto="task">
+              <a href="task/task" data-flinkto="task" class="task">
               <img class="menuicon" src="../assets/images/task.svg" alt="task" />
               <span class="mx-2" data-flinkto="task">Task</span></a
             >
@@ -112,7 +112,7 @@
           <li>
               <!--<a href="#" data-flinkto="members" rel="View Member">-->
 
-              <a href="members/members" data-flinkto="members">
+              <a href="members/members" data-flinkto="members" class="members">
               <img class="menuicon" src="../assets/images/roles.svg" alt="members" />
               <span class="mx-2" data-flinkto="members">Members</span></a
             >
@@ -311,6 +311,7 @@
     <!-- Paginations  -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script> 
+    <script src="../assets/global/jquery.mjs.nestedSortable.js"></script>
     <script src="../assets/global/toastr/toastr.min.js"></script>
     <script src="../assets/global/jquery.multiselect.js"></script>
     <script src="../assets/global/helper.js"></script>
@@ -327,6 +328,12 @@
       $( document ).ready(function() {
         //$('a[href="#"]').click( function(e) { e.preventDefault(); });
         //getDashboardPage();
+        if(processRights("View Role") === false) {
+          $(".roles").hide();
+        }
+        if(processRights("View Member") === false) {
+          $(".members").hide();
+        }
       });
       $(document).ajaxStop(function(event, xhr, ajaxOptions, data) {
         setUserInfo ( window.getUserInfo() );
