@@ -960,7 +960,7 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
           success:function(response){
             $("#mAlertCancel").click();
             $("#course_id").trigger("click");
-            toastr.success(toastr_message);
+            toastr.success("Deleted Successfully");
           },
           error: function(error){
             toastr.error("Response Error: " + error.message);
