@@ -152,10 +152,14 @@
                 newUl.append("<li class='expand_img_icon  disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
                   newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
                   //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
+                  var preven_click_attachment = prevent_click;
+                  if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
+                    preven_click_attachment = "pointer-events:none;";
+                  }
                   if(a[i].attachment_count > 0){
-                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
                   }else{
-                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
                   }
                   if(a[i].comment_count > 0){
                     newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
@@ -221,10 +225,14 @@
     
                       newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
                       //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
+                      var preven_click_attachment = prevent_click;
+                      if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
+                        preven_click_attachment = "pointer-events:none;";
+                      }
                       if(a[i].attachment_count > 0){
-                        newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                        newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
                       }else{
-                        newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
+                        newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'></li>");
                       }
                       if(a[i].comment_count > 0){
                         newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_chapter_mod(this)' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
@@ -601,6 +609,7 @@
       }else{
           var inp_val = x[1].childNodes[1].innerHTML;
       }
+      var prevent_click = "pointer-events:none;";
       if(inp_val != ''){
           var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
           if(classList[2] == 'main_mod'){
@@ -613,7 +622,6 @@
                   }else{
                       var result = Number(e.parentElement.parentElement.childNodes.length)- Number(8);
                   }
-                  var prevent_click = "pointer-events:none;";
                   newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
                   newHTML += "<ul class='sub_module'>";
                   newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";

@@ -1,15 +1,35 @@
  $(document).ready(function(){
-  var editor  = CKEDITOR.replace("editor1",{
-    height: 300,
-  });
-  CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds,hcard,justify,hcard';
-  CKEDITOR.config.allowedContent = true;
-  CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About';
-  get_content_details_case_module();
+  if(processRights("Write Content") === false){
+    $("#editor1").hide();
+    $("#saveCases").hide();
+    $("#convertToAudio").hide();
+  }else{
+    var editor  = CKEDITOR.replace("editor1",{
+      height: 300,
+    });
+    CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds,hcard,justify,hcard';
+    CKEDITOR.config.allowedContent = true;
+    CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About';
+    get_content_details_case_module();
+  }
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
     let case_id = document.getElementById("case_details").getAttribute("data-case_id");
     let case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+    var acceptedFiles = "";
+    if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
+      $("#demo-upload_case_module").hide();
+    }
+    if(processRights("Add Audio") === true){
+      acceptedFiles += "Audio/*,";
+    }
+    if(processRights("Add Slide") === true){
+      acceptedFiles += "Image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
+    }
+    if(processRights("Add Video") === true){
+      acceptedFiles += "Video/*,";
+    }
+    acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
     var dropzone = new Dropzone('#demo-upload_case_module', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
@@ -17,6 +37,7 @@
         thumbnailWidth: 120,
         maxFilesize: 3,
         filesizeBase: 1000,
+        acceptedFiles: acceptedFiles,
         thumbnail: function(file, dataUrl) {
             if (file.previewElement) {
               file.previewElement.classList.remove("dz-file-preview");

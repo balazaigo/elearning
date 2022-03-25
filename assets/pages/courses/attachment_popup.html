@@ -66,6 +66,17 @@
     }
     get_module_details(cid, module_id);
   }, 0);
+  var acceptedFiles = "";
+  if(processRights("Add Audio") === true){
+    acceptedFiles += "Audio/*,";
+  }
+  if(processRights("Add Slide") === true){
+    acceptedFiles += "Image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
+  }
+  if(processRights("Add Video") === true){
+    acceptedFiles += "Video/*,";
+  }
+  acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
   
     var dropzone2 = new Dropzone('#demo-upload2', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
@@ -74,6 +85,7 @@
         thumbnailWidth: 120,
         maxFilesize: 3,
         filesizeBase: 1000,
+        acceptedFiles: acceptedFiles,
         thumbnail: function(file, dataUrl) {
             if (file.previewElement) {
               file.previewElement.classList.remove("dz-file-preview");

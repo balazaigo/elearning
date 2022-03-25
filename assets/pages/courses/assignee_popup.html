@@ -173,7 +173,7 @@ $(document).ready(function(){
     messages: {     
       start_date: {required: "Please select starting date" },      
       end_date: {required: "Please select ending date" },      
-      member: {required: "Please selct a member" },      
+      member: {required: "Please select member" },      
     },
     errorElement: "em",
     errorPlacement: function ( error, element ) {
@@ -224,7 +224,32 @@ function get_assignee_details(cid, module_id){
 		dataType: 'json',
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
 		success:function(response){
-			console.log(response);
+			console.log('getresponse', response);
+
+			if(response.start_date){
+				$(".course_module_content #start_date").attr("min", response.start_date);
+				$(".course_module_content #end_date").attr("min", response.start_date);
+			}else{
+			    var dtToday = new Date();
+
+			    var month = dtToday.getMonth() + 1;
+			    var day = dtToday.getDate();
+			    var year = dtToday.getFullYear();
+
+			    if(month < 10)
+			        month = '0' + month.toString();
+			    if(day < 10)
+			        day = '0' + day.toString();
+
+			    var maxDate = year + '-' + month + '-' + day; 
+				$(".course_module_content #start_date").attr("min", maxDate);
+				$(".course_module_content #end_date").attr("min", maxDate);
+			}
+			if(response.end_date){
+				$(".course_module_content #start_date").attr("max", response.end_date);
+				$(".course_module_content #end_date").attr("max", response.end_date);
+			}
+
 			var available_assignees_temp, module_assignees_temp = "";
 			if(response.available_assignees.length > 0){
 		      $("#member").empty();
@@ -314,6 +339,9 @@ function getStatus(sCode){
 }
 function checkdate(){
 	var start_date = $("#start_date").val();
+	if(start_date){
+		$(".course_module_content #end_date").attr("min", start_date);
+	}
 	var end_date   = $("#end_date").val();
 	console.log(start_date);
 	console.log(end_date);

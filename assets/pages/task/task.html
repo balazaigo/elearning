@@ -404,17 +404,17 @@
       var modal = $(this);
       modal.find('.modal-content input').val(recipientID);
       modal.find('.modal-content #mAlertName').html(name);
-      $("#mAlertCancel").focus();
+      $("#mAlertCanceltask").focus();
       //mAlertDelete
       //mAlertCancel
-      $(document).on('click', '#mAlertCancel', function() {
-        $(document).off('click', '#mAlertCancel');
-        $(document).off('click', '#mAlertDelete');
+      $(document).on('click', '#mAlertCanceltask', function() {
+        $(document).off('click', '#mAlertCanceltask');
+        $(document).off('click', '#mAlertDeletetask');
       });
       
     });
     
-      $(document).on('click', '#mAlertDelete', function() {
+      $(document).on('click', '#mAlertDeletetask', function() {
         var url = $("#mAlertURL").val();
         $.ajax({
           url: API_CONTENT_URL + '/task/' + url,
@@ -427,7 +427,7 @@
             "Content-Type": "application/json"
           },
           success:function(response){
-            $("#mAlertCancel").click();
+            $("#mAlertCanceltask").click();
             toastr.success("Task Deleted successfully");
             doSearch();
           },
@@ -439,8 +439,8 @@
       });
     //hidden.bs.modal 
     $('#mAlert').on('hidden.bs.modal', function (event) {
-      $(document).off('click', '#mAlertCancel');
-      $(document).off('click', '#mAlertDelete');
+      $(document).off('click', '#mAlertCanceltask');
+      $(document).off('click', '#mAlertDeletetask');
       var modal = $(this);
       modal.find('.modal-content input').val(null);
       modal.find('.modal-content #mAlertName').html("Loading...");
@@ -1145,10 +1145,10 @@ function update_comments(user_message, task_id, course_id, module_id, case_id, c
       </div>
       <div class="modal-footer justify-content-center">
         <span class="dborder-btn nbtn">
-          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="mAlertCanceltask" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
         </span>
         <span class="danger-btn nbtn">
-          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+          <button type="button" id="mAlertDeletetask" class="btn btn-danger">Yes Delete</button>
         </span>
       </div>
     </div>

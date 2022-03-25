@@ -1514,3 +1514,28 @@ $(".module-sec").click(function(e){
     }
   }
 });
+
+/*$( "#course_box .module" ).draggable({
+  revert: "invalid",
+  stack: ".draggable",
+  connectToSortable: "#course_box"
+});
+
+$('#course_box').sortable({
+  accept: ".module",
+  revert: true,
+  update: function(event, ui) {
+    var item = ui.item;
+    var target = ui.item.prev();
+    console.log(target);
+  }
+});
+$( "#course_box" ).droppable({
+  accept: ".module",
+  drop: function( event, ui ) {
+     var droppable = $(this);
+     var draggable = ui.draggable;
+     var draggable_id = draggable.attr("id");
+     var numItems = $('.main_mod').length;
+   }
+});*/

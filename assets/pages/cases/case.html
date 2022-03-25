@@ -198,7 +198,9 @@
 <script type="text/javascript">
   /*********Case List section Starts***********************/
     //To Validate Add Case Fields
-
+  if(processRights("Add Course") === false || processRights("Define Course") === false) {
+    $(".add-case").hide();
+  }
   var frmvalidatorfrm;
     $.validator.addMethod("pattern", function (value, element, param) {
       if (this.optional(element)) { return true; }
@@ -434,6 +436,10 @@ function template(data){
           if(element.description.length > 75){
             dots = "...";
           }
+          var disabled = "";
+          if(processRights("Add Course") === false || processRights("Define Course") === false) {
+            disabled = "disabled";
+          }
           var td = `<div class="col-md-4">
             <div class="role-content cases-card mb-4">
               <div class="row">
@@ -443,7 +449,7 @@ function template(data){
                     <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                       <li><a class="dropdown-item green" href="#" data-case_id='${element.id}' data-case_name='${element.name}' onClick='editCase(this);'>Edit</a></li>
-                      <li><a class="dropdown-item red" href="#mAlert" id="delete_${element.id}"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${element.name}" data-url="${element.id}">Delete</a></li>
+                      <li><a class="dropdown-item red ${disabled}" href="#mAlert" id="delete_${element.id}"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${element.name}" data-url="${element.id}">Delete</a></li>
                     </ul>
                   </div>
                 </div>
@@ -465,6 +471,11 @@ function template(data){
 /**********Case Edit section Starts ****************/
 //TO display case data to edit when click edit
 function editCase(e){
+
+  if(processRights("Add Course") === false || processRights("Define Course") === false) {
+    toastr.error(window.language.error_no_access);
+      return false;
+  }else{
     $( '#frmNewCase' ).each(function(){
         this.reset();
         frmvalidatorfrm.resetForm();
@@ -513,6 +524,7 @@ function editCase(e){
         console.log("Requestfailed", error);
       });
     }
+  }
 }
 function onchange_caseName(e) {
   if(e.value != ''){

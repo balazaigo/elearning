@@ -49,7 +49,17 @@
     var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
     get_module_details(case_id, case_module_id);
   }, 0);
-  
+  var acceptedFiles = "";
+  if(processRights("Add Audio") === true){
+    acceptedFiles += "Audio/*,";
+  }
+  if(processRights("Add Slide") === true){
+    acceptedFiles += "Image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
+  }
+  if(processRights("Add Video") === true){
+    acceptedFiles += "Video/*,";
+  }
+  acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
     var dropzoneCase = new Dropzone('#demo-upload3', {
         previewTemplate: document.querySelector('#preview-template_case').innerHTML,
         parallelUploads: 2,
@@ -57,6 +67,7 @@
         thumbnailWidth: 120,
         maxFilesize: 3,
         filesizeBase: 1000,
+        acceptedFiles: acceptedFiles,
         thumbnail: function(file, dataUrl) {
             if (file.previewElement) {
               file.previewElement.classList.remove("dz-file-preview");

@@ -4,15 +4,39 @@ $(document).ready(function(){
   $("#tabone").hide();
   $('label[for="tabone"]').hide();
   $(".search_mt").hide();
-  var editor  = CKEDITOR.replace("editor1",{
-    height: 300,
-  });
-  CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds';
-  CKEDITOR.config.allowedContent = true;
+  if(processRights("Write Content") === false){
+    $("#editor1").hide();
+    $("#saveCourses").hide();
+    $("#convertToAudio").hide();
+  }else{
+    var editor  = CKEDITOR.replace("editor1",{
+      height: 300,
+    });
+    CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds,hcard,justify,hcard';
+    CKEDITOR.config.allowedContent = true;
+    CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About';
+    get_content_details();
+    /*CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds';
+    CKEDITOR.config.allowedContent = true;*/
+  }
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
     let cid = document.getElementById("course_module_id").getAttribute("data-cid");
     let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
+      $("#demo-upload").hide();
+    }
+    var acceptedFiles = "";
+    if(processRights("Add Audio") === true){
+      acceptedFiles += "Audio/*,";
+    }
+    if(processRights("Add Slide") === true){
+      acceptedFiles += "Image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
+    }
+    if(processRights("Add Video") === true){
+      acceptedFiles += "Video/*,";
+    }
+    acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
     get_module_details();
     var dropzone = new Dropzone('#demo-upload', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
@@ -21,6 +45,7 @@ $(document).ready(function(){
         thumbnailWidth: 120,
         maxFilesize: 3,
         filesizeBase: 1000,
+        acceptedFiles: acceptedFiles,
         thumbnail: function(file, dataUrl) {
             if (file.previewElement) {
               file.previewElement.classList.remove("dz-file-preview");
@@ -37,7 +62,6 @@ $(document).ready(function(){
 
     });
     get_breadcrumbs();
-    get_content_details();
     //setTimeout(, 1000);
     var minSteps = 6,
         maxSteps = 60,
