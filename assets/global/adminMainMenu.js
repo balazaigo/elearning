@@ -436,10 +436,10 @@ async function getCoursePage(e) {
                                   </div>
                                   <div class="modal-footer justify-content-center">
                                     <span class="dborder-btn nbtn">
-                                      <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+                                      <button type="button" id="mAlertCancelCM" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
                                     </span>
                                     <span class="danger-btn nbtn">
-                                      <button type="button" id="mAlertDelete" class="btn btn-danger" data-cid="" data-module_id="">Yes Delete</button>
+                                      <button type="button" id="mAlertDeleteCM" class="btn btn-danger" data-cid="" data-module_id="">Yes Delete</button>
                                     </span>
                                   </div>
                                 </div>

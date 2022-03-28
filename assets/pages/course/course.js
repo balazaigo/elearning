@@ -945,8 +945,8 @@ function delete_module_confirm(e){
 
 function loadAlertModal_delete_course(toastr_message, module_id, module_name, case_id, level_num){
   $('#mAlert').on('shown.bs.modal', function (event) {
-    $("#mAlertCancel").focus();
-    $("#mAlertDelete").click(function(e){
+    $("#mAlertCancelCM").focus();
+    $("#mAlertDeleteCM").click(function(e){
         var url_api = API_CONTENT_URL + '/course_module/'+module_id+'/';
         var method = "DELETE";
         $.ajax({
@@ -958,7 +958,7 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
             "Content-Type": "application/json"
           },
           success:function(response){
-            $("#mAlertCancel").click();
+            $("#mAlertCancelCM").click();
             $("#course_id").trigger("click");
             toastr.success("Deleted Successfully");
           },
@@ -968,18 +968,18 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
           }
         });
     });
-    //mAlertCancel
-    $(document).on('click', '#mAlertCancel', function() {
-      $(document).off('click', '#mAlertCancel');
-      //$(document).off('click', '#mAlertDelete');
+    //mAlertCancelCM
+    $(document).on('click', '#mAlertCancelCM', function() {
+      $(document).off('click', '#mAlertCancelCM');
+      $(document).off('click', '#mAlertDeleteCM');
     });
     
   });
   
   //hidden.bs.modal 
   $('#mAlert').on('hidden.bs.modal', function (event) {
-    $(document).off('click', '#mAlertCancel');
-   // $(document).off('click', '#mAlertDelete');
+    $(document).off('click', '#mAlertCancelCM');
+    $(document).off('click', '#mAlertDeleteCM');
     var modal = $(this);
     modal.find('.modal-content input').val(null);
     modal.find('.modal-content #mAlertName').html("Loading...");
@@ -1022,8 +1022,8 @@ function delete_module_confirm_cases(e){
 //To Delete Case Study(modules inside cases) removing modules inside case By case_id as null
 function loadAlertModal_delete_case(toastr_message, module_id, module_name, case_id, level_num){
   $('#mAlert').on('shown.bs.modal', function (event) {
-    $("#mAlertCancel").focus();
-    $("#mAlertDelete").click(function(e){
+    $("#mAlertCancelCM").focus();
+    $("#mAlertDeleteCM").click(function(e){
         var url = API_CONTENT_URL + '/course_module/'+module_id+'/';
         var method = "PUT";
 
@@ -1041,7 +1041,7 @@ function loadAlertModal_delete_case(toastr_message, module_id, module_name, case
         .then((response) => response.json())
         .then((json) => {
           toastr.success("Case Deleted successfully");
-          $("#mAlertCancel").click();
+          $("#mAlertCancelCM").click();
             $("#course_id").trigger("click");
           //getCoursePage(e);
         })
@@ -1049,18 +1049,18 @@ function loadAlertModal_delete_case(toastr_message, module_id, module_name, case
           console.log("Requestfailed", error);
         });
     });
-    //mAlertCancel
-    $(document).on('click', '#mAlertCancel', function() {
-      $(document).off('click', '#mAlertCancel');
-     // $(document).off('click', '#mAlertDelete');
+    //mAlertCancelCM
+    $(document).on('click', '#mAlertCancelCM', function() {
+      $(document).off('click', '#mAlertCancelCM');
+      $(document).off('click', '#mAlertDeleteCM');
     });
     
   });
   
   //hidden.bs.modal 
   $('#mAlert').on('hidden.bs.modal', function (event) {
-    $(document).off('click', '#mAlertCancel');
-    //$(document).off('click', '#mAlertDelete');
+    $(document).off('click', '#mAlertCancelCM');
+    $(document).off('click', '#mAlertDeleteCM');
     var modal = $(this);
     modal.find('.modal-content input').val(null);
     modal.find('.modal-content #mAlertName').html("Loading...");
@@ -1104,8 +1104,8 @@ function delete_module_confirm_chapters(e){
 //To Delete Chapter
 function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, case_id, level_num){
   $('#mAlert').on('shown.bs.modal', function (event) {
-    $("#mAlertCancel").focus();
-    $("#mAlertDelete").click(function(e){
+    $("#mAlertCancelCM").focus();
+    $("#mAlertDeleteCM").click(function(e){
           var chapter_data = {
               "case_id": String(case_id),
               "course_id": String(document.getElementById("course_id").value),
@@ -1123,7 +1123,7 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
           success:function(response){
             //console.log(response);
             toastr.success("Deleted Successfully.");
-            $("#mAlertCancel").click();
+            $("#mAlertCancelCM").click();
             $("#course_id").trigger("click");
           },
           error: function(error) {
@@ -1132,18 +1132,18 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
           }
         });
     });
-    //mAlertCancel
-    $(document).on('click', '#mAlertCancel', function() {
-      $(document).off('click', '#mAlertCancel');
-      //$(document).off('click', '#mAlertDelete');
+    //mAlertCancelCM
+    $(document).on('click', '#mAlertCancelCM', function() {
+      $(document).off('click', '#mAlertCancelCM');
+      $(document).off('click', '#mAlertDeleteCM');
     });
     
   });
   
   //hidden.bs.modal 
   $('#mAlert').on('hidden.bs.modal', function (event) {
-    $(document).off('click', '#mAlertCancel');
-   // $(document).off('click', '#mAlertDelete');
+    $(document).off('click', '#mAlertCancelCM');
+    $(document).off('click', '#mAlertDeleteCM');
     var modal = $(this);
     modal.find('.modal-content input').val(null);
     modal.find('.modal-content #mAlertName').html("Loading...");
