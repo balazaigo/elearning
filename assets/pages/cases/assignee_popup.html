@@ -10,14 +10,14 @@
 			      <div class="col-md-6 mb-3">
 			        <div class="form-floating">
 			          <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date" 
-			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
+			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();" onkeydown="return false">
 			          <label for="start_date">Start Date</label>
 			        </div>
 			      </div>
 			      <div class="col-md-6 mb-3">
 			        <div class="form-floating">
 			          <input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date"
-			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
+			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();" onkeydown="return false">
 			          <label for="end_date">End Date</label>
 			        </div>
 			      </div>
@@ -41,7 +41,7 @@
 			      </div>
 			    </div>-->
 			</form>
-			<div class="modal-footer">
+			<div class="modal-footer save_assignee_sec">
 			  <span class="custom-btn nbtn">
 			    <button type="button" class="btn btn-success" id="saveAssignee">Save</button>
 			  </span>
@@ -75,6 +75,11 @@
 <input type="hidden" id="case_param">
 <script type="text/javascript">
 $(document).ready(function(){
+
+  if(processRights("Add/Edit Member") === false){
+    $("#frmAssignee").attr("style", "display:none;");
+    $(".save_assignee_sec").attr("style", "display:none;");
+  }
 	setTimeout(function(){
 		var case_id = document.getElementById("case_param").getAttribute("data-case_id");
 		var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");

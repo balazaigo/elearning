@@ -10,14 +10,14 @@
 			      <div class="col-md-6 mb-3">
 			        <div class="form-floating">
 			          <input type="date" id="start_date" name="start_date" class="form-control" placeholder="Start Date" 
-			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
+			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();" onkeydown="return false">
 			          <label for="start_date">Start Date</label>
 			        </div>
 			      </div>
 			      <div class="col-md-6 mb-3">
 			        <div class="form-floating">
 			          <input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date"
-			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();">
+			            onblur="if(this.value!==''){this.className='form-control hasdate'}" onchange="checkdate();" onkeydown="return false">
 			          <label for="end_date">End Date</label>
 			        </div>
 			      </div>
@@ -41,7 +41,7 @@
 			      </div>
 			    </div>
 			</form>
-			<div class="modal-footer" id="course_module_save_btn">
+			<div class="modal-footer save_assignee_sec" id="course_module_save_btn">
 			  <span class="custom-btn nbtn">
 			    <button type="button" class="btn btn-success" id="saveAssignee">Save</button>
 			  </span>
@@ -80,7 +80,11 @@ $(document).ready(function(){
 		var module_id = document.getElementById("course_param").getAttribute("data-module_id");
 		var show_input = document.getElementById("course_param").getAttribute("data-show_input");
 		var course_assignee = document.getElementById("course_param").getAttribute("data-course_assignee");
-		if(show_input == "true"){
+
+		if(processRights("Add/Edit Member") === false){
+		     $("#frmAssignee").attr("style", "display:none;");
+    		 $("#course_module_save_btn").attr("style", "display:none;");
+		}else if(show_input == "true"){
 			 $("#frmAssignee").attr("style", "display:block");
 			 $("#course_module_save_btn").attr("style", "display:block");
 		}else if(show_input == "false-chapter"){

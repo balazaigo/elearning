@@ -49,6 +49,10 @@
     var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
     get_module_details(case_id, case_module_id);
   }, 0);
+
+  if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
+    $("#demo-upload3").attr("style", "display:none;");
+  }
   var acceptedFiles = "";
   if(processRights("Add Audio") === true){
     acceptedFiles += "Audio/*,";

@@ -18,7 +18,7 @@
             
           </div>
         </div>
-        <div class="white-bg box-shadow p-3">
+        <div class="white-bg box-shadow p-3 add_comment_sec">
           <div class="col-md-12 mb-3 comments">
              <!--<div class="add-comment"><img src="../assets/images/Ellipse10.png">-->
 			<form method="post" class="" id="frmMessage" name="frmMessage" enctype="multipart/form-data">
@@ -28,7 +28,7 @@
             <!--</div>-->
           </div>
         </div>
-		<div class="modal-footer">
+		<div class="modal-footer add_comment_sec">
 		  <span class="custom-btn nbtn">
 		    <button type="button" class="btn btn-success" id="saveMessage">Save</button>
 		  </span>
@@ -38,6 +38,11 @@
 <input type="hidden" id="chapter_param">
 <script type="text/javascript">
 $(document).ready(function(){
+
+  if(processRights("Add Comments") === false) {
+    $('.add_comment_sec').css('display','none');
+    $("#user_comments").attr("style", "height:280px;");
+  }
 	setTimeout(function(){
 		var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
 		var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");

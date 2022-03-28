@@ -199,8 +199,11 @@
     if(processRights("Write Content") === false) {
       $('#files_task').css('pointer-events','none');
     } 
-    if(processRights("Add Audio") === false || processRights("Add Slide") === false || processRights("Add Video") === false) {
+    /*if(processRights("Add Audio") === false || processRights("Add Slide") === false || processRights("Add Video") === false) {
       $('#user_message').css('pointer-events','none');
+    }*/
+    if(processRights("Add Comments") === false) {
+      $('#user_message').css('display','none');
     }
     //load the courses list
     $.ajax({

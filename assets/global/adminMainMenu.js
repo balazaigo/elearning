@@ -580,7 +580,7 @@ function get_list( a, $parent , level_count_inc) {
               //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
               var preven_click_attachment = prevent_click;
               if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
-                preven_click_attachment = "pointer-events:none;";
+                //preven_click_attachment = "pointer-events:none;";
               }
               if(a[i].attachment_count > 0){
                 newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
@@ -710,7 +710,7 @@ function get_list( a, $parent , level_count_inc) {
                 //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                 var preven_click_attachment = prevent_click;
                 if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
-                  preven_click_attachment = "pointer-events:none;";
+                  //preven_click_attachment = "pointer-events:none;";
                 }
                 if(a[i].attachment_count > 0){
                   newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");

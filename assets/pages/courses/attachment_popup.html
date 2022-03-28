@@ -53,6 +53,9 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+  if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
+    $("#demo-upload2").attr("style", "display:none;");
+  }
   setTimeout(function(){
     var cid = document.getElementById("course_param").getAttribute("data-cid");
     var module_id = document.getElementById("course_param").getAttribute("data-module_id");

@@ -4,7 +4,7 @@
         <h2>Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
         <input type="hidden" data-flinkto="courses" id="courses_page">
         <span class="orange-btn nbtn">
-          <button type="button" class="btn btn-primary" id="btnAddCourse" data-course_id="">
+          <button type="button" class="btn btn-primary" id="btnAddCourses" data-course_id="">
             <i class="fas fa-plus"></i> Create Course
           </button>
         </span>
@@ -98,11 +98,14 @@
   $.getScript('https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js');
   
   $( document ).ready(function() {
+    if(processRights("Add Course") === false) {
+      $("#btnAddCourses").attr("style", "display:none;");
+    }
     const container = document.getElementById("addCourses");
     const modal = new bootstrap.Modal(container);
     var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/new_courses.html?t=` + Math.floor(Date.now() / 1000);
-    document.getElementById("btnAddCourse").addEventListener("click", function () {
-      if(processRights("Add Course") === false || processRights("Define Course") === false) {
+    document.getElementById("btnAddCourses").addEventListener("click", function () {
+      if(processRights("Add Course") === false) {
         toastr.error(window.language.error_no_access);
         return false;
       } else {

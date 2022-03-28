@@ -44,6 +44,9 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+  if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
+    $("#demo-upload3").attr("style", "display:none;");
+  }
   setTimeout(function(){
     var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
     var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
