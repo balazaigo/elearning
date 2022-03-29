@@ -15,29 +15,29 @@
         <div class="white-bg title-head br-5 p-3">
           <div class="container-fluid p-0">
           <div class="row">
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-3 col-md-3">
               <div class="searchbar">
-                <h4>All Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
+                <h4>List of Courses <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
               </div>
             </div>
-            <div class="col-lg-8 col-md-8 top-btn">
+            <div class="col-lg-9 col-md-9 top-btn">
               <div class="row">
                 <div class="col-lg-6 col-md-6">
                   <div class="topsearch relative">
-                    <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search"id="search_data" onblur="searchParam()">
+                    <input class="form-control form-control-dark w-100" type="text" placeholder="Search by Course Name" aria-label="Search"id="search_data" onblur="searchParam()">
                     <i class="fas fa-search"></i> </div>
                 </div>
                 <div class="col-lg-3 col-md-3">
                   <div class="dropdown-select">
                     <select class="sort-select" id="courses_list" name="courses_list" onchange="searchParam()">
-                      <option value="">Select Course</option>
+                      <option value=""> Course Category</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-3">
                   <div class="dropdown-select">
                     <select class="sort-select" id="sort_recent" onchange="searchParam()">
-                      <option value="">Sort By</option>
+                      <option value="">Course Type</option>
                       <option value="0">Recent</option>
                       <option value="4">Completed</option>
                       <option value="2">Onhold</option>
@@ -51,9 +51,99 @@
           </div>
         </div>
       </div>
-      <div class="whitebg col-md-12 mt-3">
-        <div class="row" id="course-box">
-          
+      <div class="whitebg col-md-12 mt-3 mb-3">
+        <div class="container-fluid course-cms p-0">
+          <div class="tabs p-0 mt-3">
+            <!--------------tab 1--------------->
+            <input type="radio" name="tabs" id="tabone" checked="checked">
+            <label for="tabone">All</label>
+            <div class="tab p-0">
+              <div class="table-section">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12">
+                    <div class="white-bg br-5 p-3">
+                      <div class="row">
+                 <div class="col-md-4">
+                <div class="role-content mb-4">
+                  <div class="row">
+                    <div class="col-6 cleft tbtn"> <a href="#">Version 1</a> </div>
+                    <div class="col-6 cright">
+                      <div class="dropdown ahide">
+                        <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                          <li><a class="dropdown-item green" href="#"><i class="far fa-trash-alt"></i> Delete</a></li>
+                          <li><a class="dropdown-item red" href="#"><i class="fas fa-edit"></i> Edit</a></li>
+                          <li><a class="dropdown-item red" href="#delete"><i class="fas fa-plus"></i> New Version</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <h6>Master Course</h6>
+                      <p>Lorem ipsum dolor sit amet, consectetur adip ipsum dolor sit amet, consectetur adip...</p>
+                      <p> <span class="c-comment"><i class="far fa-comment"></i> 01</span> <span class="c-comment"><i class="fas fa-paperclip"></i> 08</span> </p>                    
+                    </div>
+                  </div>
+                  
+                  <div class="row mt-2">
+                    <div class="col-6 cleft">
+                      <div class="members-amount"> 
+                        <p>For Month</p>
+                        <h4>₹ 14,799 <span><small>₹ 2,999</small></span></h4>
+                      </div>
+                    </div>
+                    <div class="col-6 cright">
+                      <span class="com-btn"> <a href="#">Fellowship</a> </span>
+                      <span class="tbtn"> <a href="#">Draft</a> </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+  <!--------------tab 1--------------->
+  
+  <!--------------tab 2--------------->
+            <input type="radio" name="tabs" id="tabtwo">
+            <label for="tabtwo">Published</label>
+            <div class="tab p-0">
+              <div class="table-section">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12">
+                    <div class="white-bg col-md-12 p-3 br-5">
+                      Published content goes here...
+                    </div>
+                  </div>                
+                </div>
+              </div>
+            </div>
+  <!--------------tab 2--------------->
+  
+  <!--------------tab 3--------------->
+            <input type="radio" name="tabs" id="tabthree">
+            <label for="tabthree">Drafts</label>
+            <div class="tab p-0">
+              <div class="table-section">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12">
+                    <div class="white-bg col-md-12 p-3 br-5">
+                      Drafts courses content goes here...
+                    </div>
+                  </div>                
+                </div>
+              </div>
+            </div>
+  <!--------------tab 3--------------->
+  
+  
+  
+          </div>
         </div>
       </div>
     </div>
