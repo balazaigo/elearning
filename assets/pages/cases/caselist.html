@@ -160,7 +160,11 @@
                             }
                             var module_id = item.children().eq(0).children().eq(1).children().eq(0).attr("data-case_module_id");
                             var level_number = item.index() + 1;
-                            var module_name = item.children().eq(0).children().eq(1).children().eq(1).attr("data-prev_val")
+                            if(item.children().eq(0).children().eq(1).children().eq(0).attr("data-flinkto")){
+                              var module_name = item.children().eq(0).children().eq(2).children().eq(1).attr("data-prev_val");
+                            }else{
+                              var module_name = item.children().eq(0).children().eq(1).children().eq(1).attr("data-prev_val");
+                            }
                             var get_submodule_level_values = {
                               module_name: String(module_name),
                               level: parseInt(level_number), 
@@ -168,7 +172,7 @@
                               parent_id:parent_id_val
                             }
 
-                            var url = API_CONTENT_URL + '/case_modules/'+module_id+'/';
+                            /*var url = API_CONTENT_URL + '/case_modules/'+module_id+'/';
                             var method = "PUT";
                             $.ajax({
                               url: url,
@@ -184,7 +188,7 @@
                                 toastr.error("Response Error: " + error.message);
                                 console.log(error);
                               }
-                            });
+                            });*/
                           
                           }
                         });
