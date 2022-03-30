@@ -452,18 +452,27 @@ function get_breadcrumbs(){
                 $("#tabone").hide();
                 $('label[for="tabone"]').hide();
                 $(".search_mt").hide();
+                $("#add_comment_section").hide();
               }else if(elements.chapter_id && elements.is_chapter_preview == true){
                 document.getElementById("tabtwo").checked = true;
                 $("#tabone").hide();
                 $('label[for="tabone"]').hide();
                 $(".search_mt").hide();
+                $("#add_comment_section").hide();
               }else{
                 document.getElementById("tabone").checked = true;
                 $("#tabone").show();
                 $('label[for="tabone"]').show();
                 $(".search_mt").show();
                 can_edit = true;
+                if(processRights("Add Comments") === false){
+                  $("#add_comment_section").hide();
+                }else{
+                  $("#add_comment_section").show();
+                }
               }
+
+  
               brd_crumbs += `<li class="breadcrumb-item" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}"><a href="#" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
                   document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
@@ -1054,12 +1063,6 @@ function get_message_details(cid, module_id){
 }
 
 $(document).ready(function(){
-  console.log(getUserInfo());
-  if(processRights("Add Comments") === false){
-    $("#add_comment_section").hide();
-  }else{
-    $("#add_comment_section").show();
-  }
   $("#saveMessage").on("click", function() {
   var cid = document.getElementById("course_module_id").getAttribute("data-cid");
   var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
