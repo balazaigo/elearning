@@ -896,6 +896,7 @@ function add_sub_case_study(e, selected_case_id, clicked_elem_level){
   }else{
     result = Number(classList[1].substr(index+1));
   }
+  var result = e.children[1].children.length+1;
   var url = API_CONTENT_URL + '/course_module/';
   var method = "POST";
 

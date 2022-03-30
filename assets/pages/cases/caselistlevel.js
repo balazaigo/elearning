@@ -21,13 +21,13 @@
       $("#demo-upload_case_module").hide();
     }
     if(processRights("Add Audio") === true){
-      acceptedFiles += "Audio/*,";
+      acceptedFiles += ".mp3, .wav,";
     }
     if(processRights("Add Slide") === true){
-      acceptedFiles += "Image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
+      acceptedFiles += "image/jpeg,image/png,image/gif,image/jpg,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
     }
     if(processRights("Add Video") === true){
-      acceptedFiles += "Video/*,";
+      acceptedFiles += ".mp4,.mkv,.avi,";
     }
     acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
     var dropzone = new Dropzone('#demo-upload_case_module', {

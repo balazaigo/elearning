@@ -8,6 +8,9 @@ $(document).ready(function(){
     $("#editor1").hide();
     $("#saveCourses").hide();
     $("#convertToAudio").hide();
+    let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+    let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    get_comment_details(cid, module_id);
   }else{
     var editor  = CKEDITOR.replace("editor1",{
       height: 300,
@@ -28,13 +31,13 @@ $(document).ready(function(){
     }
     var acceptedFiles = "";
     if(processRights("Add Audio") === true){
-      acceptedFiles += "Audio/*,";
+      acceptedFiles += ".mp3, .wav,";
     }
     if(processRights("Add Slide") === true){
-      acceptedFiles += "Image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
+      acceptedFiles += "image/jpeg,image/png,image/gif,image/jpg,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
     }
     if(processRights("Add Video") === true){
-      acceptedFiles += "Video/*,";
+      acceptedFiles += ".mp4,.mkv,.avi,";
     }
     acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
     get_module_details();
@@ -514,6 +517,7 @@ function get_module_details(){
         var module_content_html = "";
         var module_attachments_html = "";
         var module_tags_html = "";
+        var module_comments = response.module_comment;
         if(module_content.length > 0){
             module_content_html +=`<li class="has-children is-open"><ul class="acnav__list acnav__list--level2 wbg br-10"><li class="has-children mb-3">
                                 <div class="acnav__label acnav__label--level2">
@@ -581,6 +585,21 @@ function get_module_details(){
                                 </div>
                               </li>
                             </ul>`;
+        }
+        if(module_comments.length > 0){
+            $("#module_edit_comments").empty();
+            var member_comments_html = "";
+              $.each( module_comments, function( i, val ) {
+                  member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+                              <div class="add-comment"> 
+                                <p class="w-100" style="word-break: break-all;">${val.comments}</p>
+                              </div>`;
+              });
+            $("#module_edit_comments").html(member_comments_html);
+        }else{
+          $("#module_edit_comments").empty();
+          var member_comments_html = "<div class='alert text-center text-danger'>No Records Found!</div>";
+          $("#module_edit_comments").html(member_comments_html);
         }
 
         $("#course_module_content").empty();
@@ -970,3 +989,179 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         });
       });
       
+
+function get_message_details(cid, module_id){
+
+    var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+    if(show_input == "true"){
+      var URL = API_CONTENT_URL + '/module_comments/?module_id='+module_id;
+    }else if(show_input == "false-chapter"){
+      var URL = API_CONTENT_URL + '/chapter_topic_comments/?chapter_topic_id='+module_id;
+    }else{
+      var URL = API_CONTENT_URL + '/case_module_comments/?case_module_id='+module_id;
+    }
+  $.ajax({
+    url: URL,
+    type: 'get',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    success:function(response){
+      console.log(response);
+      if(response.length > 0){
+          $("#user_comments").empty();
+        var member_comments_html = "";
+            $.each( response, function( i, val ) {
+              if(show_input == "false-chapter"){
+                member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+                            <div class="add-comment"> 
+                              <p class="w-100" style="word-break: break-all;">${val.comment}</p>
+                            </div>`;
+          }else{
+
+                member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+                            <div class="add-comment"> 
+                              <p class="w-100" style="word-break: break-all;">${val.comments}</p>
+                            </div>`;
+          }
+            });
+          $("#user_comments").html(member_comments_html);
+          $("#message").val("");
+      }else{
+        var member_comments_html = "<div class='alert text-center text-danger'>No Records Found!</div>";
+        $("#user_comments").html(member_comments_html);
+      }
+      /*if(response.module_assignees.length > 0){
+          $("#assignedMember").empty();
+          var assignee_html = '';
+          $.each( response.module_assignees, function( i, val ) {
+            assignee_html += '<tr>';
+            assignee_html += '<td class="wrap">'+ val.assignee_name +'</td>';
+            assignee_html += '<td class="wrap">'+ val.assigned_by_name +'</td>';
+            assignee_html += '<td>'+ val.start_date +'</td>';
+            assignee_html += '<td>'+ val.end_date +'</td>';
+            assignee_html += '<td>'+ getStatus(val.status) +'</td>';
+            assignee_html += '<td class="text-center"><span><i class="far fa-trash-alt" id="'+val.id+'" onclick="deleteAssigneeMember(this);"></i></span></td>'
+            assignee_html += '</tr>';
+            <h4>Sri harsha raj kumar <span>A minute ago</span></h4>
+            <div class="add-comment"> <img src="../assets/images/Ellipse10.png">
+              <p>Lorem Ipsum Generator. Generate lorem ipsum in paragraphs, words or sentences. Italic and bold tags.Generates passages of lorem ipsum text suitable for use as placeholder copy in web pages, graphics, and more.</p>
+            </div>
+          });
+          $("#assignedMember").html(assignee_html);
+      }*/
+    }
+  });
+}
+
+$(document).ready(function(){
+  console.log(getUserInfo());
+  if(processRights("Add Comments") === false){
+    $("#add_comment_section").hide();
+  }else{
+    $("#add_comment_section").show();
+  }
+  $("#saveMessage").on("click", function() {
+  var cid = document.getElementById("course_module_id").getAttribute("data-cid");
+  var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    var isValidForm = frmvalidatorfrm.form();
+    if(isValidForm){
+      var user_details = getUserInfo();
+      var formData = new FormData();
+      formData.append("course_id",  cid);
+      formData.append("module_id", module_id);
+      formData.append("comments", $("#module_edit_message").val());
+    //formData.append("commented_member_id", user_details.id);
+    //formData.append("commented_member_name", user_details.name);
+
+    $.ajax({
+        url: API_CONTENT_URL + "/module_comments/",
+        method: "POST",
+        type: 'POST', // For jQuery < 1.9
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        headers: {
+            "Authorization" : "Bearer " + getUserInfo().access_token
+        },
+        success: function(response){
+          toastr.success("Comment saved Successfully.");
+          $("#module_edit_message").val("");
+          get_comment_details();
+        },
+        error: function(error) {
+            toastr.error("Response Error: " + error.message);
+            console.log(error);
+        }
+    });
+    }
+  });
+});
+$.validator.addMethod("pattern", function( value, element, param ) {
+    if ( this.optional( element ) ) { return true; }
+    if ( typeof param === "string" ) {
+      param = new RegExp( "^(?:" + param + ")$" );
+    }
+    return param.test( value );
+  }, "Check your inputs" );
+  var frmvalidatorfrm = $("#frmMessage").validate({
+    rules: {
+        module_edit_message: {
+            required: true
+        },
+    },
+    messages: {     
+      module_edit_message: {
+          required: "Enter your comments"
+      }   
+    },
+    errorElement: "em",
+    errorPlacement: function ( error, element ) {
+      error.addClass( "help-block" );
+      if ( element.prop( "type" ) === "checkbox" ) {
+        error.insertAfter( element.parent( "label" ) );
+      } else {
+        error.insertAfter( element );
+      }
+    },
+    highlight: function ( element, errorClass, validClass ) {
+      //$( element ).parents( ".col-md-12" ).addClass( "has-error" ).removeClass( "has-success" );
+      $(element).addClass("is-invalid");
+    },
+    unhighlight: function (element, errorClass, validClass) {
+     //$( element ).parents( ".col-md-12" ).addClass( "has-success" ).removeClass( "has-error" );
+     $(element).removeClass("is-invalid");
+    }
+  });
+  function get_comment_details(){
+    var cid = document.getElementById("course_module_id").getAttribute("data-cid");
+    var module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+    $.ajax({
+      url: API_CONTENT_URL + '/module/'+module_id,
+      type: 'get',
+      dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      success:function(response){console.log(response);
+        var module_comments = response.module_comment;
+        if(module_comments.length > 0){
+            $("#module_edit_comments").empty();
+            var member_comments_html = "";
+              $.each( module_comments, function( i, val ) {
+                  member_comments_html += `<h4 class="p-2">${val.commented_member_name}<span>&nbsp;&nbsp;${val.commented_date}</span></h4>
+                              <div class="add-comment"> 
+                                <p class="w-100" style="word-break: break-all;">${val.comments}</p>
+                              </div>`;
+              });
+            $("#module_edit_comments").html(member_comments_html);
+        }else{
+          $("#module_edit_comments").empty();
+          var member_comments_html = "<div class='alert text-center text-danger'>No Records Found!</div>";
+          $("#module_edit_comments").html(member_comments_html);
+        }
+      },
+      error: function(error) {
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+}

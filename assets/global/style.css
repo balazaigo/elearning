@@ -4195,6 +4195,7 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 }
 
 
+
 /*****************CMS CSS Start******************/
 .ct-admin a {
 	color: #787895;
@@ -4259,3 +4260,33 @@ li.sub-menu ul {
 	color: #787895;
 }
 /*****************CMS CSS End******************/
+.placeholder {
+	outline: 1px dashed #4183C4;
+}
+
+.mjs-nestedSortable-error {
+	background: #fbe3e4;
+	border-color: transparent;
+}
+
+ul.sortable,ul.sortable ul {
+	list-style-type: none;
+}
+#case_box ul, #course_box {
+	list-style-type: none;
+}
+
+.sortable li div {
+	margin: 0;
+	padding: 3px;
+}
+		
+li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+	border-color: #999;
+}
+
+#course_box span p, #course_box span input,#case_box span p, #case_box span input  {
+	margin-top: 10px;
+	margin-bottom:0px;
+}
+

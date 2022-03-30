@@ -51,6 +51,60 @@ var listItens = document.querySelectorAll('.draggable');
   addEventsDragAndDrop(item);
 });
 
+var ns = $('.coursesortable').nestedSortable({
+  scroll: true,
+  forcePlaceholderSize: true,
+  listType:"ul",
+  handle: 'div',
+  helper: 'clone',
+  items: 'li',
+  toleranceElement: 'div>',
+  opacity: .6,
+  placeholder: 'placeholder',
+  revert: 250,
+  isTree: true,
+  expandOnHover: 700,
+  startCollapsed: false,
+  update: function(event, ui){
+    var item = ui.item;
+    var target = ui.item.parent().parent();
+    var parent_id = target.attr("data-module_id");
+    var parent_id_val = "";
+    if(parent_id){
+      parent_id_val = String(parent_id);
+    }else{
+      parent_id_val = null;
+    }
+    var module_id = item.attr("data-module_id");
+    var level_number = item.index() + 1;
+    var module_name = item.children().eq(0).children().eq(1).children().eq(1).attr("data-prev_val")
+    var get_submodule_level_values = {
+      module_name: String(module_name),
+      level: parseInt(level_number), 
+      course_id:String(document.getElementById("course_id").value),
+      parent_id:parent_id_val
+    }
+
+    var url = API_CONTENT_URL + '/course_module/'+module_id+'/';
+    var method = "PUT";
+    $.ajax({
+      url: url,
+      type: method,
+      data: JSON.stringify(get_submodule_level_values),
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success:function(response){
+        console.log(response);
+        $("#course_id").trigger("click");
+      },
+      error: function(error) {
+        tags_response = "1";
+        toastr.error("Response Error: " + error.message);
+        console.log(error);
+      }
+    });
+    
+  }
+});
 function toinput(e){
     /*if(e.innerHTML.includes(". Chapter") || e.innerHTML.includes(". Lesson") || e.innerHTML.includes(". Topic") || e.innerHTML.includes(". Sub Topic") || e.innerHTML.includes("Level ") ){
       e.previousSibling.value = ''; 
@@ -142,7 +196,7 @@ function totext(e){
       }else if(first_five_char_class === "sub_m"){
         var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
         var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
-        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-module_id");
+        var parent_id = e.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute("data-module_id");
         get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
 
@@ -340,12 +394,11 @@ function check_value(e){
 function add_sub(e, section){
   var classList = e.className.split(/\s+/);
   var index = classList[1].lastIndexOf("_");
-  var result = Number(classList[1].substr(index+1));
   var url = API_CONTENT_URL + '/course_module/';
   var method = "POST";
   //console.log(section);
   if(section == "Sub Section"){
-
+    var result = e.children[1].children.length+1;
     var parent_id = e.getAttribute("data-module_id");
     var get_submodule_level_values = {
       module_name: String("Special Population 1"),
@@ -354,9 +407,10 @@ function add_sub(e, section){
       parent_id:parent_id
     };
   }else{
+  var result = Number(classList[1].substr(index+1));    
     var get_submodule_level_values = {
       module_name: String("Introduction new"),
-      level: parseInt(result), 
+      level: parseInt(result+1), 
       course_id:String(document.getElementById("course_id").value),
       parent_id:null
     };
@@ -452,10 +506,11 @@ function add_sub(e, section){
     }*/
 }
 
-function get_submodule_level_val_sub(class_module_main_level, class_module_sub_level, parent_id_val){
+function get_submodule_level_val_sub(class_module_main_level, class_module_sub_level, parent_id_val, element){
   var data_course_module = "";
   if(class_module_sub_level.indexOf('.') !== -1){
-      var level_number = (class_module_sub_level.split("_module")[0]).split(".")[class_module_sub_level.split(".").length-1];
+      //var level_number = (class_module_sub_level.split("_module")[0]).split(".")[class_module_sub_level.split(".").length-1];
+      var level_number = element.children[1].children.length+1;
       data_course_module = {
         module_name: String("Special Population 1"),
         level: parseInt(level_number), 
@@ -464,7 +519,9 @@ function get_submodule_level_val_sub(class_module_main_level, class_module_sub_l
       }
 
   }else{
-      var level_number = class_module_sub_level.split('_')[1];
+    //console.log(element.children[1].children.length);
+    var level_number = element.children[1].children.length+1;
+      //var level_number = class_module_sub_level.split('_')[1];
       data_course_module = {
         module_name: String("Special Population 1"),
         level: parseInt(level_number), 
@@ -483,13 +540,13 @@ function add_sub_sub(e, section){
 
   }else{
     var index = classList[1].lastIndexOf("_");
-    var result = Number(classList[1].substr(index+1));
+    //var result = Number(classList[1].substr(index+1));
     var url = API_CONTENT_URL + '/course_module/';
     var method = "POST";
     var class_module_main_level = e.classList[3];
     var class_module_sub_level = e.classList[2];
     var parent_id = e.getAttribute("data-module_id");
-    get_submodule_level_values = get_submodule_level_val_sub(class_module_main_level, class_module_sub_level, parent_id);
+    get_submodule_level_values = get_submodule_level_val_sub(class_module_main_level, class_module_sub_level, parent_id, e);
     //console.log(get_submodule_level_values);
   }
   /*var get_submodule_level_values = {
@@ -562,11 +619,11 @@ function add_sub_sub(e, section){
 
 /******* Expand and collapse main and sub module Levels Starts **************/
 function toggle_collapse_expand(e){
-    var childrendivs = [],
-    children = e.parentElement.parentElement.children;
+    var childrendivs = [];
+    var children = e.parentElement.parentElement.nextElementSibling.children;
     var action = e.innerHTML;
     for(var i = 0; i < children.length; i++){
-        if (children[i].tagName == "DIV") {
+        if (children[i].tagName == "LI") {
           if(children[i].classList.contains('disp_none')){
               e.src="../assets/images/arrow_up_icon.png";
               children[i].classList.add('disp_block');
@@ -676,7 +733,7 @@ $(document).ready(function(){
       $('#course_id').trigger('click');
     }, 0);
   });
-  var course_len = $("#course_box > div").length;
+  var course_len = $("#course_box > li").length;
   //console.log(course_len);
   if(course_len == 0){
     //$("#clicked_event").attr("data-click_id", id);
@@ -1210,7 +1267,6 @@ $( ".main_mod_empty" ).droppable({
 });
 $(".module-section").click(function(){
   if($('.main_mod').length  == 0){
-       var numItems = $('.main_mod').length+1;
        var container_size = document.getElementById("course_box").classList[0];
        var style_none = "display:block;";
        if(container_size == "col-lg-8"){
@@ -1220,7 +1276,7 @@ $(".module-section").click(function(){
         var method = "POST";
         var get_submodule_level_values = {
           module_name: String("Introduction"),
-          level: parseInt(numItems), 
+          level: 1, 
           course_id:String(document.getElementById("course_id").value),
           parent_id:null
         };
@@ -1239,169 +1295,6 @@ $(".module-section").click(function(){
       });
     }
 });
-/*
-$( ".main_mod_empty" ).droppable({
-    accept: ".module-section",
-    drop: function( event, ui ) {
-       var droppable = $(this);
-       var draggable = ui.draggable;
-       var draggable_id = draggable.attr("id");
-       var numItems = $('.module').length+1;
-       var container_size = document.getElementById("course_box").classList[0];
-       var style_none = "display:block;";
-       if(container_size == "col-lg-8"){
-         style_none = "display:none;";
-       }
-        var classList_1 = $(this).attr('class').split(' ')[1];
-        var index = classList_1.lastIndexOf("_");
-        console.log(index);
-        var result = Number(classList_1.substr(index+1));
-        console.log(result);
-        var url = API_CONTENT_URL + '/course_module/';
-        var method = "POST";
-        var get_submodule_level_values = {
-          module_name: String("Introduction"),
-          level: parseInt(result), 
-          course_id:String(document.getElementById("course_id").value),
-          parent_id:null
-        };
-
-      fetch(url, {
-        method: method,
-        body: JSON.stringify(get_submodule_level_values),
-        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-      })
-      .then((response) => response.json())
-      .then((json) => {
-           var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
-              template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
-              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
-              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
-              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
-              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
-              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${json.module_id}' data-cid='${json.course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Introduction' data-cid='${json.course_id}''  data-module_id='${json.module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
-              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
-              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
-              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
-
-           $(this).before(template);
-      })
-      .catch(function (error) {
-        console.log("Requestfailed", error);
-      });
-    }
-});
-
-$( ".module-sub_section" ).draggable({
-    revert: "invalid",
-    stack: ".draggable",
-    helper: 'clone'});
-$( ".sub_mods" ).droppable({
-    accept: ".module-sub_section",
-    drop: function( event, ui ) {
-       var droppable = $(this);
-       var draggable = ui.draggable;
-       var draggable_id = draggable.attr("id");
-       var numItems = $('.module').length+1;
-       var result = style_none = module_id = course_id = "test";
-       var class_module_level = $(this).attr('class').split(' ')[1];
-       console.log(class_module_level);
-       $(this).children("ul").attr("style", "z-index:0;");
-       var first_five_char_class = class_module_level.substring(0,5);
-       var get_submodule_level_values = '';
-       var url = API_CONTENT_URL + '/course_module/';
-       var method = "POST";
-       var class_module_main_level = $(this).attr('class').split(' ')[3];
-       var class_module_sub_level = $(this).attr('class').split(' ')[2];
-       var parent_id = $(this).parent().parent().find(".module").attr("data-module_id");
-       console.log($(this));
-       console.log(class_module_main_level);
-       console.log(class_module_sub_level);
-       console.log(parent_id);
-       event.preventDefault();
-       console.log(event.target.parentElement);
-       get_submodule_level_values = get_submodule_level_val(class_module_main_level, class_module_sub_level, e.value, parent_id);*/
-        /*var template =`<div class='module sub_module_${result} sub_${result} module_${result} no_child disp_block draggable ui-droppable' id='${result}' draggable='true'>`;
-              template += `<ul class='sub_module draggable ui-droppable'>`;
-              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
-              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Special Population 1' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${module_id}' data-cid='${course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Special Population 1'>Special Population 1</p></li>`;
-              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
-              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
-              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${module_id}' data-cid='${course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Special Population 1' data-cid='${course_id}''  data-module_id='${module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
-              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
-              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
-              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
-              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li></li>`;
-              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
-              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
-
-              template +=`<div class='module sub_module_${result} sub_${result} module_${result} no_child disp_block draggable ui-droppable' id='${result}' draggable='true'>`;
-              template += `<ul class='sub_module draggable ui-droppable'>`;
-              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
-              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Special Population 2' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${module_id}' data-cid='${course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Special Population 2'>Special Population 2</p></li>`;
-              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
-              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
-              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${module_id}' data-cid='${course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Special Population 2' data-cid='${course_id}''  data-module_id='${module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
-              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
-              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
-              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
-              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${module_id}' data-cid='${course_id}''></li></li>`;
-              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${module_id}' data-cid='${course_id}''></li>`;
-              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
-
-$(this.firstChild).append(template);
-//$(this).children()[0].append(template);*/
-           //$(this).children("ul")[0].append(template);
-       /*var container_size = document.getElementById("course_box").classList[0];
-       var style_none = "display:block;";
-       if(container_size == "col-lg-8"){
-         style_none = "display:none;";
-       }
-        var classList_1 = $(this).attr('class').split(' ')[1];
-        var index = classList_1.lastIndexOf("_");
-        console.log(index);
-        var result = Number(classList_1.substr(index+1));
-        console.log(result);
-        var url = API_CONTENT_URL + '/course_module/';
-        var method = "POST";
-        var get_submodule_level_values = {
-          module_name: String("Introduction"),
-          level: parseInt(result), 
-          course_id:String(document.getElementById("course_id").value),
-          parent_id:null
-        };
-
-      fetch(url, {
-        method: method,
-        body: JSON.stringify(get_submodule_level_values),
-        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-      })
-      .then((response) => response.json())
-      .then((json) => {
-           var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
-              template += `<ul class='main_module module_opacity' style='opacity:1'>`;
-              template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
-              template += `<li class='module_input disp_in_block flt_left' style=''><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='Introduction' onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='${json.module_id}' data-cid='${json.course_id}'><p onclick='toinput(this);' id='module_module_"${result}"' data-prev_val='Introduction'>Introduction</p></li>`;
-              template += `<li class='expand_img_icon disp_in_block flt_right' style=''><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></li>`;
-              template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
-              template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${json.module_id}' data-cid='${json.course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Introduction' data-cid='${json.course_id}''  data-module_id='${json.module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
-              //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
-              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
-              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub(this);'></li></ul></div>`;
-
-           $(this).before(template);
-      })
-      .catch(function (error) {
-        console.log("Requestfailed", error);
-      });*/
-    /*}
-});*/
 function hide_show_container(){
     $("#right_module_menu").hide();
     $("#course_box").removeClass( "col-md-8" ).addClass( "col-md-12" );
@@ -1450,59 +1343,48 @@ function add_module(e, id, mod_level){
     $("#right_module_menu").show();
 }
 $(".module-sec").click(function(e){
-  var e = this;
-  var clicked_elem_id = document.getElementById("clicked_event").getAttribute("data-click_id");
-  var clicked_elem_level = document.getElementById("clicked_event").getAttribute("data-click_level");
-  var element = document.querySelector('[data-unique_id="'+clicked_elem_id+'"]');
-  console.log(element.getAttribute("data-unique_case_id"));
-  /*console.log(clicked_elem_level);
-  console.log(clicked_elem_id);
-  console.log(e.childNodes);
-  console.log(e.childNodes[3]);*/
-  var selected_module = e.childNodes[3].textContent;
-  $("#right_module_menu").hide();
-  $("#course_box").removeClass( "col-md-8" ).addClass( "col-md-12" );
-  $("#course_box").removeClass( "col-lg-8" ).addClass( "col-lg-12" );
-  $(".elipsis_img_icon").attr("style", "display:none;");
-  $(".dots_img_icon").attr("style", "display:inline_block;");
-  $(".attach_img_icon").attr("style", "display:inline_block;");
-  $(".message_img_icon").attr("style", "display:inline_block;");
-  $(".user_img_icon").attr("style", "display:inline_block;");
-  $(".frame_img_icon").attr("style", "display:inline_block;");
-  $(".plus_img_icon").attr("style", "display:inline_block;");
-  if(element.getAttribute("data-unique_case_id") == "null" && selected_module == "Module"){
-    toastr.error("Chapter can only be added for Case Levels");
-    return false;
-  }
-  if(clicked_elem_level == "sub_sub" && selected_module == "Section"){
-    toastr.error("Can't add Section inside Sub Module");
-  }else{
-    if(selected_module == "Section" || selected_module == "Sub Section"){
-      if(clicked_elem_level == "sub"){
-        add_sub(element, selected_module);
-      }else{
-        add_sub_sub(element, selected_module);
-      }
-    }else if(selected_module == "Module"){
-       /* if(clicked_elem_level == "sub"){
-          add_sub_module(element, selected_module);
+  if($('.main_mod').length  > 0){
+    var e = this;
+    var clicked_elem_id = document.getElementById("clicked_event").getAttribute("data-click_id");
+    var clicked_elem_level = document.getElementById("clicked_event").getAttribute("data-click_level");
+    var element = document.querySelector('[data-unique_id="'+clicked_elem_id+'"]');
+    console.log(element.getAttribute("data-unique_case_id"));
+    /*console.log(clicked_elem_level);
+    console.log(clicked_elem_id);
+    console.log(e.childNodes);
+    console.log(e.childNodes[3]);*/
+    var selected_module = e.childNodes[3].textContent;
+    $("#right_module_menu").hide();
+    $("#course_box").removeClass( "col-md-8" ).addClass( "col-md-12" );
+    $("#course_box").removeClass( "col-lg-8" ).addClass( "col-lg-12" );
+    $(".elipsis_img_icon").attr("style", "display:none;");
+    $(".dots_img_icon").attr("style", "display:inline_block;");
+    $(".attach_img_icon").attr("style", "display:inline_block;");
+    $(".message_img_icon").attr("style", "display:inline_block;");
+    $(".user_img_icon").attr("style", "display:inline_block;");
+    $(".frame_img_icon").attr("style", "display:inline_block;");
+    $(".plus_img_icon").attr("style", "display:inline_block;");
+    if(element.getAttribute("data-unique_case_id") == "null" && selected_module == "Module"){
+      toastr.error("Chapter can only be added for Case Levels");
+      return false;
+    }
+    if(clicked_elem_level == "sub_sub" && selected_module == "Section"){
+      toastr.error("Can't add Section inside Sub Module");
+    }else{
+      if(selected_module == "Section" || selected_module == "Sub Section"){
+        if(clicked_elem_level == "sub"){
+          add_sub(element, selected_module);
         }else{
-          add_sub_sub_module(element, selected_module);
-        }*/
-
-      /*if(processRights("Add Course") === false || processRights("Define Course") === false) {
-        toastr.error(window.language.error_no_access);
-        return false;
-      } else {*/
+          add_sub_sub(element, selected_module);
+        }
+      }else if(selected_module == "Module"){
         const container = document.getElementById("popup_course_icon");
         const modal = new bootstrap.Modal(container);
         var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/module_list.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
           modal.show();
         });
-      //}
-
-    }else if(selected_module == "Case Study"){
+      }else if(selected_module == "Case Study"){
         const container = document.getElementById("popup_course_icon");
         const modal = new bootstrap.Modal(container);
         var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/case_study_list.html?t=` + Math.floor(Date.now() / 1000);
@@ -1511,17 +1393,62 @@ $(".module-sec").click(function(e){
           $("#popup_course_icon").attr("style","top: 20px;");
           modal.show();
         });
+      }
     }
   }
 });
 
-/*$( "#course_box .module" ).draggable({
-  revert: "invalid",
-  stack: ".draggable",
-  connectToSortable: "#course_box"
+$(document).ready(function() {
+  /*$('#course_box').sortable({
+    helper: 'clone',
+    items: 'ul',
+    toleranceElement: '> ul',
+    forcePlaceholderSize: true,
+    disableParentChange:false,
+    doNotClear:false,
+    isTree: true,
+    expandOnHover: 700,
+    startCollapsed: false,
+    listType:"ul",
+    tolerance: 'pointer',
+    drag: function(e){
+      console.log(e);
+      console.log('dragged item');
+    },
+    drop: function(e){
+      console.log(e);
+      console.log('Relocated item');
+    }
+  });*/
+
+      /*var ns = $('ul.sortable').nestedSortable({
+        forcePlaceholderSize: true,
+        handle: 'div',
+        helper: 'clone',
+        items: 'li',
+        opacity: .6,
+        placeholder: 'placeholder',
+        revert: 250,
+        tabSize: 25,
+        tolerance: 'pointer',
+        toleranceElement: '> div',
+        maxLevels: 4,
+        isTree: true,
+        expandOnHover: 700,
+        startCollapsed: false,
+        change: function(){
+          console.log('Relocated item');
+        }
+      });*/
 });
 
-$('#course_box').sortable({
+/*$( ".module" ).draggable({
+  revert: "invalid",
+  stack: ".draggable",
+  connectToSortable: "ul"
+});
+
+$('.course, .module, main_module, sub_module').sortable({
   accept: ".module",
   revert: true,
   update: function(event, ui) {
@@ -1530,8 +1457,32 @@ $('#course_box').sortable({
     console.log(target);
   }
 });
-$( "#course_box" ).droppable({
+$( ".course, .module, main_module, sub_module" ).droppable({
   accept: ".module",
+  drop: function( event, ui ) {
+     var droppable = $(this);
+     var draggable = ui.draggable;
+     var draggable_id = draggable.attr("id");
+     var numItems = $('.main_mod').length;
+   }
+});*/
+/*
+$( ".sub_mods" ).draggable({
+  revert: "invalid",
+  stack: ".draggable",
+  connectToSortable: ".main_module"
+});
+$('.main_module').sortable({
+  accept: ".sub_mods",
+  revert: true,
+  update: function(event, ui) {
+    var item = ui.item;
+    var target = ui.item.prev();
+    console.log(target);
+  }
+});
+$( ".main_module" ).droppable({
+  accept: ".sub_mods",
   drop: function( event, ui ) {
      var droppable = $(this);
      var draggable = ui.draggable;

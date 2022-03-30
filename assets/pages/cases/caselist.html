@@ -76,10 +76,10 @@
       </div>
       <div class="modal-footer justify-content-center">
         <span class="dborder-btn nbtn">
-          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="mAlertCancelCaseMod" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
         </span>
         <span class="danger-btn nbtn">
-          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes Delete</button>
+          <button type="button" id="mAlertDeleteCaseMod" class="btn btn-danger">Yes Delete</button>
         </span>
       </div>
     </div>
@@ -102,56 +102,92 @@
                         if(response.description.length > 75){
                             dots = "...";
                         }
-                        var result = response.children.length + 1;
+                        if(response.children !== null){
+                          var result = response.children.length + 1;
+                        } else{
+                          var result = 1;
+                        }
                         $("#case_ind_name_text").text(response.case_name);
                         $("#case_ind_desc_text").text(response.description.substring(0, 75)+dots);
                         $("#member_id").val(response.member_id);
-                        var newDIV = $("<div class='course case_list_module_box sortable' id='case_box'></div>");
+                        var newDIV = $("<ul class='course case_list_module_box sortablecase' id='case_box'></ul>");
                         var outerHtml = '';
-                        get_list_mod( response.children, newDIV, 1, response.case_name);
-                        newHTML = "<div class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
-                        newHTML += "<ul class='main_module module_opacity'>";
-                        newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                        newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>";
-                        newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                        if(response.children !== null){
+                          get_list_mod( response.children, newDIV, 1, response.case_name);
+                        }
+                        newHTML = "<li class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
+                        newHTML += "<div>";
+                        newHTML += "<span class='course_img_icon disp_in_block flt_left' style='pointer-events:none;'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
+                        newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
+                        newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
                         //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-                        newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                        newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                         //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                        newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                        newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                        newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li></li>";
-                        newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
-                        newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                        newHTML += "</ul>";
+                        newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                        newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                        newHTML += "<span class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                        newHTML += "<span class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></span>";
+                        newHTML += "<span class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
                         newHTML += "</div>";
+                        newHTML += "</li>";
                         newDIV.append(newHTML);
                         var outerHtml = newDIV.prop('outerHTML');
                         document.getElementById("caselists").innerHTML = outerHtml;
 
-                        /*var listItens = document.querySelectorAll('.draggable');
-                        console.log(listItens);
-                        [].forEach.call(listItens, function(item) {
-                          console.log("draggable");
-                          addEventsDragAndDrop(item);
-                        });*/
-                        /*$('.sortable').nestedSortable({
+                        var ns = $('.sortablecase').nestedSortable({
+                          scroll: true,
                           forcePlaceholderSize: true,
-                          disableParentChange:false,
-                          doNotClear:false,
+                          listType:"ul",
                           handle: 'div',
-                          items: 'div',
                           helper: 'clone',
-                          toleranceElement: '> div',
+                          items: 'li',
+                          toleranceElement: 'div>',
+                          opacity: .6,
+                          placeholder: 'placeholder',
+                          revert: 250,
                           isTree: true,
                           expandOnHover: 700,
                           startCollapsed: false,
-                          listType:"div",
-                          tolerance: 'pointer',
-                          drop: function(e){
-                            console.log(e);
-                            console.log('Relocated item');
+                          update: function(event, ui){
+                            var item = ui.item;
+                            var target = ui.item.parent().parent();
+                            var parent_id = target.children().eq(0).children().eq(1).children().eq(0).attr("data-case_module_id");
+                            var parent_id_val = "";
+                            if(parent_id){
+                              parent_id_val = String(parent_id);
+                            }else{
+                              parent_id_val = null;
+                            }
+                            var module_id = item.children().eq(0).children().eq(1).children().eq(0).attr("data-case_module_id");
+                            var level_number = item.index() + 1;
+                            var module_name = item.children().eq(0).children().eq(1).children().eq(1).attr("data-prev_val")
+                            var get_submodule_level_values = {
+                              module_name: String(module_name),
+                              level: parseInt(level_number), 
+                              case_id:String(document.getElementById("case_id_name").getAttribute("data-case_id")),
+                              parent_id:parent_id_val
+                            }
+
+                            var url = API_CONTENT_URL + '/case_modules/'+module_id+'/';
+                            var method = "PUT";
+                            $.ajax({
+                              url: url,
+                              type: method,
+                              data: JSON.stringify(get_submodule_level_values),
+                              headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+                              success:function(response){
+                                console.log(response);
+                                $("#case_id_mod").trigger("click");
+                              },
+                              error: function(error) {
+                                tags_response = "1";
+                                toastr.error("Response Error: " + error.message);
+                                console.log(error);
+                              }
+                            });
+                          
                           }
-                        });*/
+                        });
                     },
                     error: function(error) {
                         toastr.error("Response Error: " + error.message);
@@ -182,54 +218,56 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
             }
             if(a[i].is_qa == true){
                 if (a[i].children.length > 0){
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod' id='"+a[i].level+"' style='opacity:1'></div>");
+                    newDIV = $("<li class='module module_"+a[i].level+" main_mod' id='"+a[i].level+"' style='opacity:1'></li>");
                 }else{
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod' id='"+a[i].level+"' style='opacity:1'></div>");
+                    newDIV = $("<li class='module module_"+a[i].level+" main_mod' id='"+a[i].level+"' style='opacity:1'></li>");
                 }
             }else{
 
                 if (a[i].children.length > 0){
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod has_child' id='"+a[i].level+"'  style='opacity:1'></div>");
+                    newDIV = $("<li class='module module_"+a[i].level+" main_mod has_child' id='"+a[i].level+"'  style='opacity:1'></li>");
                 }else{
-                    newDIV = $("<div class='module module_"+level_count_inc+" main_mod no_child' id='"+a[i].level+"'  style='opacity:1'></div>");
+                    newDIV = $("<li class='module module_"+a[i].level+" main_mod no_child' id='"+a[i].level+"'  style='opacity:1'></li>");
                 }
             }
             newUl = $("<ul class='main_module module_opacity' style='opacity:1'></ul>");
-            newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
+            newUlDIV = $("<div></div>");
+            newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></span>");
 
             if(a[i].is_qa == true){
-              newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></li>");
+              newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></span>");
 
-              newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
+              newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>");
             }else{
-              newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>");
+              newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>");
             }
-            newUl.append("<li class='expand_img_icon  disp_in_block flt_right'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
+            newUlDIV.append("<span class='expand_img_icon  disp_in_block flt_right'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>");
               //newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
-              newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
+              newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
               //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
               var preven_click_attachment = prevent_click;
               if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
                 //preven_click_attachment = "pointer-events:none;";
               }
               if(a[i].attachment_count > 0){
-                newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></span>");
               }else{
-                newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
+                newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
               }
               if(a[i].comment_count > 0){
-                newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+                newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></span>");
               }else{
-                newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
+                newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
               }
               if(a[i].assign_count > 0){
-                newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+                newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></span>");
               }else{
-                newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li></li>");
+                newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
               }
-              newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
-              newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);'></li>");
+              newUlDIV.append("<span class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
+              newUlDIV.append("<span class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);'></span>");
               //newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton4' data-bs-toggle='dropdown' aria-expanded='false'><img src='../assets/images/plus-icon.png' class='plus_icon' ></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton4'><li><a data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='add_sub_case_mod(this)'>Add Section / Sub Section</a></li><li><a class='dropdown-item red' onClick='add_sub_kc(this)'>Add knowledgecheck</a></li></ul></li>");
+            newDIV.append(newUlDIV);
           }else{
                 var class_name = $parent.parent().prop('className').split(" ");
                 var first_five_char_class = class_name[1].substring(0,5);
@@ -257,68 +295,74 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
                 } else{
                     title_font = 'main_mod_sub_title';
                 }
+              var lev_mod = level_count_inc - 1;
                 if(a[i].is_qa == true){
                     if (a[i].children.length > 0){
-                        newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+"  disp_block' id='"+levels+"' style=''>");
+                        newDIV = $("<li class='module sub_module_"+levels+" sub_"+levels+" module_"+lev_mod+"  disp_block' id='"+levels+"' style=''></li>");
                     }else{
-                        newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+"  disp_block' id='"+levels+"' style=''>");
+                        newDIV = $("<li class='module sub_module_"+levels+" sub_"+levels+" module_"+lev_mod+"  disp_block' id='"+levels+"' style=''></li>");
                     }
                 }else{
                     if (a[i].children.length > 0){
-                        newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" has_child disp_block' id='"+levels+"' style=''>");
+                        newDIV = $("<li class='module sub_module_"+levels+" sub_"+levels+" module_"+lev_mod+" has_child disp_block' id='"+levels+"' style=''></li>");
                     }else{
-                        newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" no_child disp_block' id='"+levels+"' style=''>");
+                        newDIV = $("<li class='module sub_module_"+levels+" sub_"+levels+" module_"+lev_mod+" no_child disp_block' id='"+levels+"' style=''></li>");
                     }
                 }
               newUl = $("<ul class='sub_module'></ul>");
-              newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></li>");
+              newUlDIV = $("<div></div>");
+              newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></span>");
 
                 if(a[i].is_qa == true){
-                  newUl.append("<li class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></li>");
-                  newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </li>");
+                  newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></span>");
+                  newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </span>");
                 }else{
-                  newUl.append("<li class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </li>");
+                  newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </span>");
                 }
               if(a[i].is_qa == false){
-                  newUl.append("<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>");
+                  newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>");
 
                   //newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
-                  newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
+                  newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
                   //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                   var preven_click_attachment = prevent_click;
                   if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
                     //preven_click_attachment = "pointer-events:none;";
                   }
                   if(a[i].attachment_count > 0){
-                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></li>");
+                    newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].attachment_count+"</span></span>");
                   }else{
-                    newUl.append("<li class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
+                    newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
                   }
                   if(a[i].comment_count > 0){
-                    newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></li>");
+                    newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].comment_count+"</span></span>");
                   }else{
-                    newUl.append("<li class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
+                    newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
                   }
                   if(a[i].assign_count > 0){
-                    newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></li></li>");
+                    newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><span class='icon_counts'>"+a[i].assign_count+"</span></span>");
                   }else{
-                    newUl.append("<li class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li></li>");
+                    newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup_case_mod(this)' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
                   }
-                  newUl.append("<li class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></li>");
-                  newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>");
+                  newUlDIV.append("<span class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'></span>");
+                  newUlDIV.append("<span class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></span>");
                   
               //newUl.append("<li class='plus_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton4' data-bs-toggle='dropdown' aria-expanded='false'><img src='../assets/images/plus-icon.png' class='plus_icon' ></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton4'><li><a data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='add_sub_case_mod(this)'>Add Section / Sub Section</a></li><li><a class='dropdown-item red' onClick='add_sub_kc(this)'>Add knowledgecheck</a></li></ul></li>");
             }
+            newDIV.append(newUlDIV);
 
           }
           if(level_count === 0){  
             newDIV.append(newUl);
             $parent.append(newDIV);
 
-            level_count_inc++;
+            //level_count_inc++;
           }else{
             newDIV.append(newUl);
             $parent.append(newDIV);
+          }
+          if(a[i].parent_id === null){
+            level_count_inc++;
           }
           if (a[i].children){
               get_list_mod( a[i].children, newUl, level_count_inc, case_name);
@@ -331,11 +375,11 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
 
 /******* Expand and collapse main and sub module Levels Starts **************/
 function toggle_collapse_expand_case_mod(e){
-    var childrendivs = [],
-    children = e.parentElement.parentElement.children;
+    var childrendivs = [];
+    var children = e.parentElement.parentElement.nextElementSibling.children;
     var action = e.innerHTML;
     for(var i = 0; i < children.length; i++){
-        if (children[i].tagName == "DIV") {
+        if (children[i].tagName == "LI") {
           if(children[i].classList.contains('disp_none')){
               e.src="../assets/images/arrow_down_icon.png";
               children[i].classList.add('disp_block');
@@ -451,7 +495,7 @@ function totext_case_mod(e){
       }else if(first_five_char_class === "sub_m"){
         var class_module_main_level = e.parentElement.parentElement.parentElement.classList[3];
         var class_module_sub_level = e.parentElement.parentElement.parentElement.classList[2];
-        var parent_id = e.parentElement.parentElement.parentElement.parentElement.childNodes[1].firstChild.getAttribute("data-case_module_id");
+        var parent_id = e.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].children[1].children[0].getAttribute("data-case_module_id");
         get_submodule_level_values = get_submodule_level_val_case_mod(class_module_main_level, class_module_sub_level, e.value, parent_id);
       }
 
@@ -674,9 +718,11 @@ function check_value_case_mod(e){
         var index = classList[1].lastIndexOf("_");
         if(classList[2] == 'main_mod_empty'){
             e.parentElement.parentElement.parentElement.classList.remove('main_mod_empty');
+            e.parentElement.parentElement.parentElement.classList.remove('mjs-nestedSortable-leaf');
             e.parentElement.parentElement.parentElement.classList.remove('no_child');
             e.parentElement.parentElement.parentElement.classList.add('main_mod');
             e.parentElement.parentElement.parentElement.classList.add('no_child');
+            e.parentElement.parentElement.parentElement.classList.add('mjs-nestedSortable-leaf');
             //e.parentElement.parentElement.parentElement.classList.add('draggable');
             e.parentElement.parentElement.parentElement.setAttribute("style","opacity:1");
             if(e.parentElement.previousSibling.nodeName == "#text"){
@@ -715,30 +761,41 @@ function add_sub_case_mod(e){
             if(e.parentElement.parentElement.parentElement.parentElement.childNodes[e.parentElement.parentElement.parentElement.parentElement.childNodes.length-1].classList !== undefined && e.parentElement.parentElement.parentElement.parentElement.childNodes[e.parentElement.parentElement.parentElement.parentElement.childNodes.length-1].classList[2] == 'main_mod_empty'){
               var main_mod_level = e.parentElement.parentElement.parentElement.classList[1];
                 var index = classList[1].lastIndexOf("_");
-                var result = Number(classList[1].substr(index+1));
+
+                //var result = e.children[1].children.length+1;
                 if(e.parentElement.parentElement.childNodes[0].nodeName == '#text'){
                     var result = Number(e.parentElement.parentElement.childNodes.length)- Number(18);
                 }else{
                     var result = Number(e.parentElement.parentElement.childNodes.length)- Number(8);
                 }
-                newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
-                newHTML += "<ul class='sub_module'>";
-                newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"' data-case_id=''  data-case_module_id=''>Level "+result+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                if(e.parentElement.parentElement.nextElementSibling){
+                  var result = e.parentElement.parentElement.nextElementSibling.children.length+1;
+                }else{
+                  var result = 1;
+                }
+                newHTML = "<li class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
+                newHTML += "<div>";
+                newHTML += "<span class='course_img_icon disp_in_block flt_left' style='pointer-events:none;'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
+                newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"' data-case_id=''  data-case_module_id=''>Level "+result+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
+                newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
                 //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                 //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "</ul>";
+                newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
                 newHTML += "</div>";
+                newHTML += "</li>";
                 $(e).closest('.main_mod').removeClass("no_child");
                 $(e).closest('.main_mod').addClass("has_child");
-                e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
+                if(e.parentElement.parentElement.nextElementSibling){
+                  e.parentElement.parentElement.nextElementSibling.insertAdjacentHTML('beforeend', newHTML);
+                }else{
+                  e.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', "<ul class='sub_module'></ul>");
+                  e.parentElement.parentElement.nextElementSibling.insertAdjacentHTML('beforeend', newHTML);
+                }
 
                 var class_module_main_level = main_mod_level;
                 var class_module_sub_level = "sub_"+result;
@@ -748,23 +805,46 @@ function add_sub_case_mod(e){
             }
             if((e.parentElement.parentElement.parentElement.childNodes[0].nodeName == '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 3) ||  (e.parentElement.parentElement.parentElement.childNodes[0].nodeName != '#text' && e.parentElement.parentElement.parentElement.childNodes.length == 1)){
                 var index = classList[1].lastIndexOf("_");
+                //var result = Number(classList[1].substr(index+1));
+                //var result = Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length) + Number(1);
+                var result = e.parentElement.parentElement.parentElement.parentElement.children.length+1;
+                newHTML = "<li class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
+                newHTML += "<div>";
+                newHTML += "<span class='course_img_icon disp_in_block flt_left' style='pointer-events:none;'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
+                newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
+                newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
+                //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+                //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
+                newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "</div>";
+                newHTML += "</li>";
+                e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
+            }else{
+              var index = classList[1].lastIndexOf("_");
                 var result = Number(classList[1].substr(index+1));
                 var result = Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length) + Number(1);
-                newHTML = "<div class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
-                newHTML += "<ul class='main_module module_opacity'>";
-                newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-                newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>";
-                newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+                var result = e.parentElement.parentElement.parentElement.parentElement.children.length+1;
+                newHTML = "<li class='module module_"+result+" main_mod_empty no_child' style='opacity:0.5;'>";
+                newHTML += "<div>";
+                newHTML += "<span class='course_img_icon disp_in_block flt_left' style='pointer-events:none;'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
+                newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
+                newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
                 //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-                newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                 //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-                newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></li></li>";
-                newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></li>";
-                newHTML += "</ul>";
+                newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag' data-case_id='' data-case_module_id=''></span>";
+                newHTML += "<span class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
                 newHTML += "</div>";
+                newHTML += "</li>";
+                console.log("empty_mod");
                 e.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
             }
         }
@@ -784,7 +864,12 @@ function add_sub_sub_case_mod(e){
     var classList = e.parentElement.parentElement.parentElement.className.split(/\s+/);
     var index = classList[1].lastIndexOf("_");
     var res_1 = Number(classList[1].substr(index+1));
-    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.childNodes.length - 8);
+    //var result = e.children[1].children.length+1;
+    if(e.parentElement.parentElement.nextElementSibling){
+      var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.nextElementSibling.children.length+1);
+    }else{
+      var result = classList[1].substr(index+1)+"."+Number(1);
+    }
     var num = String(result).match(/\./g).length;
     var result_text = "";
     var result_textMsg = "";
@@ -804,25 +889,30 @@ function add_sub_sub_case_mod(e){
       result_text = "Level "+result;
       result_textMsg = "Level";
 
-    newHTML = "<div class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
-    newHTML += "<ul class='sub_module'>";
-    newHTML += "<li class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></li>";
-    newHTML += "<li class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></li>";
-    newHTML += "<li class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></li>";
+    newHTML = "<li class='module sub_module_"+result+" sub_"+result+" "+main_mod_level+" no_child'>";
+    newHTML += "<div class='sub_module'>";
+    newHTML += "<span class='course_img_icon disp_in_block flt_left' style='pointer-events:none;'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
+    newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
+    newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
     //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-    newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
+    newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
     //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
-    newHTML += "<li class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon'></li>";
-    newHTML += "<li class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon'></li>";
-    newHTML += "<li class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon'></li>";
-    newHTML += "<li class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag'></li>";
-    newHTML += "<li class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></li>";
-    newHTML += "</ul>";
+    newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon'></span>";
+    newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon'></span>";
+    newHTML += "<span class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon'></span>";
+    newHTML += "<span class='frame_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup_case_mod(this)' data-getresult='tag'></span>";
+    newHTML += "<span class='plus_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick='add_sub_sub_case_mod(this);'></span>";
     newHTML += "</div>";
+    newHTML += "</li>";
 
     $(e).closest('.module').removeClass("no_child");
     $(e).closest('.module').addClass("has_child");
-    e.parentElement.parentElement.insertAdjacentHTML('beforeend', newHTML);
+    if(e.parentElement.parentElement.nextElementSibling){
+      e.parentElement.parentElement.nextElementSibling.insertAdjacentHTML('beforeend', newHTML);
+    }else{
+      e.parentElement.parentElement.parentElement.insertAdjacentHTML('beforeend', "<ul></ul>");
+      e.parentElement.parentElement.nextElementSibling.insertAdjacentHTML('beforeend', newHTML);
+    }
     var class_module_main_level = main_mod_level;
     var class_module_sub_level = "sub_"+result;
     var input_val = "Level "+result;
@@ -860,12 +950,12 @@ function delete_case_module_confirm(e){
   var toastr_message = case_module_name+" Deleted successfully.";
   var case_module_id = e.dataset.case_module_id;
   var case_module_name = e.dataset.module_name;
-  loadAlertModal(toastr_message, case_module_id, case_module_name);
+  loadAlertModalCaseMod(toastr_message, case_module_id, case_module_name);
 }
-  function loadAlertModal(toastr_message, module_id, module_name){
+  function loadAlertModalCaseMod(toastr_message, module_id, module_name){
     $('#mAlert').on('shown.bs.modal', function (event) {
-      $("#mAlertCancel").focus();
-      $(document).on('click', '#mAlertDelete', function(e) {console.log(e);
+      $("#mAlertCancelCaseMod").focus();
+      $(document).on('click', '#mAlertDeleteCaseMod', function(e) {console.log(e);
         console.log(module_id);
         var url_api = API_CONTENT_URL + '/case_modules/'+module_id+'/';
         var method = "DELETE";
@@ -878,7 +968,7 @@ function delete_case_module_confirm(e){
             "Content-Type": "application/json"
           },
           success:function(response){
-            $("#mAlertCancel").click();
+            $("#mAlertCancelCaseMod").click();
             $("#case_id_mod").trigger("click");
             toastr.success("Deleted Successfully.");
           },
@@ -889,17 +979,17 @@ function delete_case_module_confirm(e){
         });
       });
       //mAlertCancel
-      $(document).on('click', '#mAlertCancel', function() {
-        $(document).off('click', '#mAlertCancel');
-        $(document).off('click', '#mAlertDelete');
+      $(document).on('click', '#mAlertCancelCaseMod', function() {
+        $(document).off('click', '#mAlertCancelCaseMod');
+        $(document).off('click', '#mAlertDeleteCaseMod');
       });
       
     });
     
     //hidden.bs.modal 
     $('#mAlert').on('hidden.bs.modal', function (event) {
-      $(document).off('click', '#mAlertCancel');
-      $(document).off('click', '#mAlertDelete');
+      $(document).off('click', '#mAlertCancelCaseMod');
+      $(document).off('click', '#mAlertDeleteCaseMod');
       var modal = $(this);
       modal.find('.modal-content input').val(null);
       modal.find('.modal-content #mAlertName').html("Loading...");
