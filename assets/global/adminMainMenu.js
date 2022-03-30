@@ -1024,20 +1024,6 @@ async function getCourseKnowledgecheck(e){
 }
 
 
-/******************Cms starts******************/
-async function getAssessmentPage() {  
-  $("#app-admin").load(
-    `${SITE_URL_PROTOCOL}/assets/pages/assessment/assessment.html`,
-    function (resp, status, xhr) {
-      if (status == "success" && xhr.status == 200) {
-      } else {
-        console.log("Something error happend");
-      }
-    }
-  );
-}
-/******************Cms end******************/
-
 function handleTopMenuClick(e) {
   switch (e.target.dataset.flinkto) {
     case "dashboard":
@@ -1157,10 +1143,6 @@ function handleTopMenuClick(e) {
         getChapterListLevelPage(e);
         break; 
         
-    case "assessment":
-        getAssessmentPage(e);
-        break; 
-
     case "settings":
         getTestPage();
         break;
