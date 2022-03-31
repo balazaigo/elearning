@@ -39,7 +39,19 @@ CKEDITOR.editorConfig = function( config ) {
 		'/',
 		{ name: 'others', groups: [ 'others' ] }
 	];*/
-
+config.toolbarGroups = [
+        { name: 'forms' },
+        { name: 'tools' },
+        { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
+        { name: 'others' },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+        { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+        { name: 'styles' },
+        { name: 'links', groups: [ 'Link', 'Unlink', 'Anchor' ] },
+        { name: 'insert' },
+        { name: 'colors' },
+        { name: 'about' }
+    ];
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	//config.allowedContent = true;
 
