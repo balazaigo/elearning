@@ -71,7 +71,7 @@
               <div class="dropdown-select">
                 <select class="form-control sort-select" id="status">
                   <option value="">Status</option>
-                  <option value="0">New</option>
+                  <!--<option value="0">New</option>-->
                   <option value="1">Active</option>
                   <option value="2">InActive</option>
                   <option value="3">Delete</option>
@@ -83,7 +83,7 @@
         </div>
       </div>
       </div>
-      <div class="tabs white-bg p-3 mt-3">
+      <div class="tabs white-bg p-3 mt-3 task_table">
         <input type="radio" class="btnRadio" name="tabs" id="tabone" checked="checked">
         <label for="tabone">Assigned To</label>
         <div class="tab p-0">
@@ -91,12 +91,12 @@
             <table class="table table-bordered responsive">
               <thead>
                 <tr>
-                  <th>
+                  <!--<th>
                     <div class="form-check">
                       <input class="form-check-input parentcheck" name="chk" type="checkbox" value="flexCheckDefault1" id="myCheck" onClick="selects()">
                       <label class="form-check-label" for="myCheck"> </label>
                     </div>
-                  </th>
+                  </th>-->
                   <th>TASK ID</th>
                   <th>NAME OF THE TASK</th>
                   <th>ASSIGNED TO</th>
@@ -123,10 +123,10 @@
             <table class="table table-bordered responsive">
               <thead>
                 <tr>
-                  <th><div class="form-check">
+                  <!--<th><div class="form-check">
                       <input class="form-check-input parentcheck" name="chk" type="checkbox" value="" id="myCheckBy" onClick="selects()" >
                       <label class="form-check-label" for="myCheck"> </label>
-                    </div></th>
+                    </div></th>-->
                   <th>TASK ID</th>
                   <th>NAME OF THE TASK</th>
                   <th>ASSIGNED BY</th>
@@ -302,14 +302,14 @@ function template(data, tagTOBY) {
     $.each(data, function(index, item) {
       html += '<tr>';
       
-      html += `
+      /*html += `
       <td>
         <div class="form-check">
           <input class="form-check-input" name="chk" type="checkbox" value="`+ item.id +`" id="chk_`+ item.id +`">
           <label class="form-check-label" for="chk_`+ item.id +`"> </label>
         </div>
       </td>
-      `;
+      `;*/
       html += '<td><span class="badge bg-success gridTaskID">#'+ item.id +'</span></td>';
       html += '<td class="wrap">'+ item.name +'</td>';
       html += '<td>'+ item['assigned_to'] +'</td>';

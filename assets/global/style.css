@@ -3640,12 +3640,26 @@ option:not(:first-of-type) {
     border-radius: 10px;
 }
 #role-create-form input, #role-create-form textarea, #role-create-form select, #member-create-form input, #member-create-form select{
-	padding-top: 20px
+	padding-top: 20px;
 }
-#role-create-form .form-floating label, #member-create-form .form-floating label{
+#role-create-form input, #role-create-form textarea, #role-create-form select{
+	margin-bottom: 10px;
+}
+#member-create-form .form-floating label{
     top: -13px;
     font-size: 13px;
     left: -1px;
+}
+#role-create-form .form-floating label{
+    top: -16px;
+    font-size: 13px;
+    left: 5px;
+    background: white;
+    padding-top: 0px;
+    padding-left: 5px;
+}
+#role-create-form textarea{
+    background-color: transparent;
 }
 #member-create-form .search_email .form-floating label{
 	z-index: 999;
@@ -3722,6 +3736,9 @@ option:not(:first-of-type) {
 .certificate_pagination{
     float: right;
     margin-right: 29px;
+}
+#role-description{
+	min-height: 125px;
 }
 /*************cases start*****************/
 #createcases .popup {
@@ -4223,4 +4240,32 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 	margin-top: 10px;
 	margin-bottom:0px;
 }
-
+.task_table th,.task_table td{
+	padding: 10px;
+}
+.chapter_table th, .chapter_table td{
+	padding: 12px;
+}
+.chapter_table_box{
+	background:	white;
+}
+#addCourses .pos_btn-close{
+	position: absolute;
+    padding: 28px 0px 28px 0px !important;
+    width: 0.5em;
+    height: 0.5em;
+    right: -6px;
+}
+#addCourses .attach_file{
+	position: relative;
+}
+.course_file_input_box{
+    background-color: #e9e8ed;
+    width: 97%;
+    margin-left: 12px;
+    border-radius: 4px;
+    text-align: center;
+}
+.course_file_input_box .custom-file{
+	width: auto;
+}

@@ -323,10 +323,12 @@ function _validateMemberPhoneNo(el, fieldValue) {
     errorMsg = `Phone No is required`;
     hasError = true;
   } else if (fieldValue && fieldValue < minValue) {
-    errorMsg = `Phone No should not be less than ${minValue}`;
+    //errorMsg = `Phone No should not be less than ${minValue}`;
+    errorMsg = `Enter a valid Phone No`;
     hasError = true;
   } else if (fieldValue && fieldValue > maxValue) {
-    errorMsg = `Phone No should not be greater than ${maxValue}`;
+    //errorMsg = `Phone No should not be greater than ${maxValue}`;
+    errorMsg = `Enter a valid Phone No`;
     hasError = true;
   } else {
     errorMsg = "";

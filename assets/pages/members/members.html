@@ -82,7 +82,7 @@
                 <table class="table table-bordered responsive">
                   <thead>
                     <tr>
-                      <th> <div class="form-check">
+                      <!--<th> <div class="form-check">
                           <input
                             class="form-check-input parentcheck"
                             name="chk"
@@ -93,7 +93,7 @@
                           />
                           <label class="form-check-label" for="myCheck"> </label>
                         </div>
-                      </th>
+                      </th>-->
                       <th>S.No</th>
                       <th>NAME</th>
                       <th>EMAIL</th>
@@ -490,14 +490,14 @@ function template(data, pagination) {
     $.each(data, function(index, item) {
       html += '<tr>';
       
-      html += `
+     /* html += `
       <td>
         <div class="form-check">
           <input class="form-check-input" name="chk" type="checkbox" value="`+ item.id +`" id="chk_`+ item.id +`">
           <label class="form-check-label" for="chk_`+ item.id +`"> </label>
         </div>
       </td>
-      `;
+      `;*/
       item.m_image = item.m_image.replace("http:", "");
       item.m_image = item.m_image.replace("https:", "");
       html += '<td><span class="">'+ (pagination.pageSize * (pagination.pageNumber - 1) + index + 1) +'</span></td>';

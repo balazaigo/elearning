@@ -21,9 +21,20 @@ function searchParam(){
         }
     }
     get_pagination(search_param);
+    $(".btnReset").removeClass("d-none");
+    if(search_param == ""){
+      $(".btnReset").removeClass("d-none");
+    }
 }
 $( document ).ready(function() {
 
+    $(".btnReset").on("click", function(){
+      $("#search_data, #courses_list, #sort_recent").val(null);
+      searchParam();
+      setTimeout(function() {
+        $(".btnReset").addClass("d-none");
+      }, 500);
+    });
   //load the courses list
   $.ajax({
     url: API_CONTENT_URL + '/course_list/',

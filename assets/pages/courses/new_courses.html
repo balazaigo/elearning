@@ -41,14 +41,19 @@
         </div>
       </div>
 
-      <div class="col-md-12 mb-3">
+      <div class="col-md-12 mb-3 course_file_input_box">
         <label class="custom-file">
           <input type="file" id="courseFile" name="courseFile[]" multiple class="form-control"
             placeholder="Design documents">
           <span class="filename">Design documents</span>
         </label>
       </div>
-
+<!--
+      <div class="col-md-12 mb-3">
+        <label class="custom-file"><div class="input_file_box filename"><input type="file" id="courseFile" name="courseFile[]" multiple class="form-control" placeholder="Design documents">Design documents</div>
+        </label>
+      </div>
+-->
       <div class="col-md-12 mb-3" id="course_attachment">
       </div>
 
@@ -193,18 +198,20 @@
     });
 
     $("input:file").change(function () {
-      var fappend = 'Design documents';
+      //var fappend = 'Design documents';
+      var fappend = '';
       for (var i = 0; i < this.files.length; i++) {
         var fileName = this.files[i].name;
-        fappend += '<span class="name">' + fileName.replace("C:\\fakepath\\", '') + '</span>';
+        fappend += '<span class="name attach_file">' + fileName.replace("C:\\fakepath\\", '') + '<span class="btn-close pos_btn-close" onclick=removeAttachemntCourse(this);></span></span>';
       }
-      if (i > 4) {
-        $(".filename").html("Design documents");
-        alert("Only 5 files accepted!");
+      if (i > 5) {
         $("#courseFile").val(null);
+        //$(".filename").html("Design documents");
+        alert("Only 5 files accepted!");
         return false;
       } else {
-        $(".filename").html(fappend);
+        $(".attach_file").remove();
+        $(".course_file_input_box").append(fappend);
       }
     });
 
@@ -394,8 +401,8 @@
         member: { required: "Please select member" },
         description: {
           required: "Please enter a Description",
-          minlength: "Course ID Prefix must consist of at least 4 characters",
-          maxlength: "Course ID Prefix must consist of max of 256 characters",
+          minlength: "Description must consist of at least 4 characters",
+          maxlength: "Description must consist of max of 256 characters",
         },
       },
       errorElement: "em",
@@ -615,4 +622,17 @@
       var cuChar = Number(256) -$(this).val().length;
       $("span.charcounter").html(cuChar + " Char(s)");
     });
+    function removeAttachemntCourse(e){
+        var dt = new DataTransfer();
+        var input = document.getElementById('courseFile');
+        e.parentElement.remove();
+        var { files } = input;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (file.name !== e.parentElement.textContent){
+              dt.items.add(file);
+            }
+            input.files = dt.files;
+        }
+    }
 </script>

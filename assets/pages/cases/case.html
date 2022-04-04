@@ -99,7 +99,9 @@
           <div class="row w-100">
             <div class="col-lg-4 col-md-4">
               <div class="searchbar">
-                <h4>All Case Studies <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
+                <h4>All Case Studies 
+                  <a class="btn btn-sm btn-danger btnReset d-none" style="position:relative;top:2px;float:right">Reset</a>
+                  <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
               </div>
             </div>
             <div class="col-lg-8 col-md-8 top-btn">
@@ -195,6 +197,7 @@
     </div>
   </div>
 </div>
+
 <script type="text/javascript">
   /*********Case List section Starts***********************/
     //To Validate Add Case Fields
@@ -276,6 +279,7 @@
   });
   //To get Searching parameters
   function searchParam(){
+
     var search_param = "";
     var search_inp_val = document.getElementById("search_data").value;
     if(search_inp_val !== ''){
@@ -298,6 +302,10 @@
         }
     }
     get_pagination(search_param);
+    $(".btnReset").removeClass("d-none");
+    if(search_param == ""){
+      $(".btnReset").removeClass("d-none");
+    }
 }
 //To Paginate case list Data
 function get_pagination(parameter){
@@ -620,6 +628,14 @@ function onchange_caseName(e) {
     });
   });
   $(document).ready(function(){
+
+    $(".btnReset").on("click", function(){
+      $("#search_data, #case_list, #sort_recent").val(null);
+      searchParam();
+      setTimeout(function() {
+        $(".btnReset").addClass("d-none");
+      }, 500);
+    });
 
     //TO Get Cases list for search case dropdown
     var url_api = API_CONTENT_URL + '/cases_list/';
