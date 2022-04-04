@@ -212,12 +212,22 @@ function totext(e){
       }
     }
     if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
-        e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput(this);">`;
+        var dots = "";
+        if(e.value.length > 75){
+            dots = "...";
+        }
+        var input_value_substr = e.value.substring(0, 75)+dots;
+        e.nextSibling.innerHTML = input_value_substr +`<img src="../assets/images/pen-edit.jpg" onclick="toinput(this);">`;
         e.setAttribute("style","display:none");
         e.nextSibling.setAttribute("style","display:block");
         e.nextSibling.focus();
     }else{
-        e.nextSibling.innerHTML = e.value;
+        var dots = "";
+        if(e.value.length > 75){
+            dots = "...";
+        }
+        var input_value_substr = e.value.substring(0, 75)+dots;
+        e.nextSibling.innerHTML = input_value_substr;
         e.setAttribute("style","display:none");
         e.nextSibling.setAttribute("style","display:block");
         e.nextSibling.focus();

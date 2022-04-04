@@ -89,7 +89,12 @@
                     if(response.description.length > 75){
                         dots = "...";
                     }
-                    $("#chapter_ind_name_text").text(response.chapter_name);
+                    var dots2 = "";
+                    if(response.chapter_name.length > 75){
+                        dots2 = "...";
+                    }
+                    $("#chapter_ind_name_text").text(response.chapter_name.substring(0, 75)+dots2);
+                    $("#chapter_ind_name_text").attr('data-prev_val',response.chapter_name);
                     $("#chapter_ind_desc_text").text(response.description.substring(0, 75)+dots);
                     var newDIV = $("<ul class='course case_list_module_box sortablechapter' id='case_box'></ul>");
                     var outerHtml = '';
@@ -465,12 +470,22 @@
           item.setAttribute("style","pointer-events:unset;");
       });
       if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
-          e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
+          var dots = "";
+          if(e.value.length > 75){
+              dots = "...";
+          }
+          var input_value_substr = e.value.substring(0, 75)+dots;
+          e.nextSibling.innerHTML = input_value_substr +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
           e.setAttribute("style","display:none");
           e.nextSibling.setAttribute("style","display:block");
           e.nextSibling.focus();
       }else{
-          e.nextSibling.innerHTML = e.value;
+          var dots = "";
+          if(e.value.length > 75){
+              dots = "...";
+          }
+          var input_value_substr = e.value.substring(0, 75)+dots;
+          e.nextSibling.innerHTML = input_value_substr;
           e.setAttribute("style","display:none");
           e.nextSibling.setAttribute("style","display:block");
           e.nextSibling.focus();
@@ -916,7 +931,7 @@
   });
 
  function toInputHeader_chapter(){
-  $("#chapter_ind_name_input").val($("#chapter_ind_name_text").text());
+  $("#chapter_ind_name_input").val($("#chapter_ind_name_text").attr("data-prev_val"));
   $("#chapter_ind_name_input").attr("style", "display:inline-block");
   $("#chapter_ind_name_input").focus();
   $("#chapter_ind_name_text").attr("style", "display:none");
@@ -925,7 +940,20 @@
 function toTextHeader_chapter(){
   let chapter_id = document.getElementById("chapter_id_name").getAttribute("data-chapter_id");
   if($("#chapter_ind_name_input").val() !==""){
-    $("#chapter_ind_name_text").text($("#chapter_ind_name_input").val());
+    var chapter_header_inp_val = $("#chapter_ind_name_input").val();
+    if(chapter_header_inp_val.length > 256){
+        toastr.error("Chapter Name should consist of maximum 256 character.");
+      $("#chapter_ind_name_input").attr("style", "display:none");
+      $("#chapter_ind_name_text").attr("style", "display:inline-block");
+      $("#chapter_text_edit_img_header").attr("style", "display:inline-block");
+      return false;
+    }
+    var dots = "";
+    if(chapter_header_inp_val.length > 75){
+        dots = "...";
+    }
+    $("#chapter_ind_name_text").attr("data-prev_val", chapter_header_inp_val);
+    $("#chapter_ind_name_text").text(chapter_header_inp_val.substring(0, 75)+dots);
     $("#chapter_ind_name_input").attr("style", "display:none");
     $("#chapter_ind_name_text").attr("style", "display:inline-block");
     $("#chapter_text_edit_img_header").attr("style", "display:inline-block");

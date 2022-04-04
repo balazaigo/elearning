@@ -102,12 +102,17 @@
                         if(response.description.length > 75){
                             dots = "...";
                         }
+                        var dots2 = "";
+                        if(response.case_name.length > 75){
+                            dots2 = "...";
+                        }
                         if(response.children !== null){
                           var result = response.children.length + 1;
                         } else{
                           var result = 1;
                         }
-                        $("#case_ind_name_text").text(response.case_name);
+                        $("#case_ind_name_text").text(response.case_name.substring(0, 75)+dots2);
+                        $("#case_ind_name_text").attr('data-prev_val',response.case_name);
                         $("#case_ind_desc_text").text(response.description.substring(0, 75)+dots);
                         $("#member_id").val(response.member_id);
                         var newDIV = $("<ul class='course case_list_module_box sortablecase' id='case_box'></ul>");
@@ -519,14 +524,24 @@ function totext_case_mod(e){
     var childList = e.parentElement.parentElement.childNodes
     childList.forEach(function(item){
         item.setAttribute("style","pointer-events:unset;");
-    });
+    })
     if(e.nextElementSibling.childNodes[1] && e.nextElementSibling.childNodes[1].tagName == "IMG"){
-        e.nextSibling.innerHTML = e.value +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
+        var dots = "";
+        if(e.value.length > 75){
+            dots = "...";
+        }
+        var input_value_substr = e.value.substring(0, 75)+dots;
+        e.nextSibling.innerHTML = input_value_substr +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
         e.setAttribute("style","display:none");
         e.nextSibling.setAttribute("style","display:block");
         e.nextSibling.focus();
     }else{
-        e.nextSibling.innerHTML = e.value;
+        var dots = "";
+        if(e.value.length > 75){
+            dots = "...";
+        }
+        var input_value_substr = e.value.substring(0, 75)+dots;
+        e.nextSibling.innerHTML = input_value_substr;
         e.setAttribute("style","display:none");
         e.nextSibling.setAttribute("style","display:block");
         e.nextSibling.focus();
@@ -1000,7 +1015,7 @@ function delete_case_module_confirm(e){
     });
 }
  function toInputHeader(){
-  $("#case_ind_name_input").val($("#case_ind_name_text").text());
+  $("#case_ind_name_input").val($("#case_ind_name_text").attr("data-prev_val"));
   $("#case_ind_name_input").attr("style", "display:inline-block");
   $("#case_ind_name_input").focus();
   $("#case_ind_name_text").attr("style", "display:none");
@@ -1009,7 +1024,20 @@ function delete_case_module_confirm(e){
 function toTextHeader(){
   let case_id = document.getElementById("case_id_name").getAttribute("data-case_id");
   if($("#case_ind_name_input").val() !==""){
-    $("#case_ind_name_text").text($("#case_ind_name_input").val());
+    var case_header_inp_val = $("#case_ind_name_input").val();
+    if(case_header_inp_val.length > 256){
+        toastr.error("Case Name should consist of maximum 256 character.");
+      $("#case_ind_name_input").attr("style", "display:none");
+      $("#case_ind_name_text").attr("style", "display:inline-block");
+      $("#text_edit_img_header").attr("style", "display:inline-block");
+      return false;
+    }
+    var dots = "";
+    if(case_header_inp_val.length > 75){
+        dots = "...";
+    }
+    $("#case_ind_name_text").attr("data-prev_val", case_header_inp_val);
+    $("#case_ind_name_text").text(case_header_inp_val.substring(0, 75)+dots);
     $("#case_ind_name_input").attr("style", "display:none");
     $("#case_ind_name_text").attr("style", "display:inline-block");
     $("#text_edit_img_header").attr("style", "display:inline-block");

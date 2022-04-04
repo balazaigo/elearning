@@ -88,7 +88,7 @@
       <div class="container-fluid p-0 task_table">
         <div class="tabs white-bg p-3 mt-3">
           <input type="radio" class="btnRadio" name="tabs" id="tabone" checked="checked">
-          <label for="tabone">Assigned To</label>
+          <label for="tabone">My Tasks</label>
           <div class="tab p-0">
             <div class="table-section">
               <table class="table table-bordered responsive">
@@ -120,7 +120,7 @@
             </div>
           </div>
           <input type="radio" class="btnRadio" name="tabs" id="tabtwo">
-          <label for="tabtwo">Assigned By</label>
+          <label for="tabtwo">Assigned By Me</label>
           <div class="tab p-0">
             <div class="table-section">
               <table class="table table-bordered responsive">
@@ -155,24 +155,29 @@
   </div>
 </div>
 <script type="text/javascript">
-  $.ajax({
-    url: API_CONTENT_URL + '/task_count',
-    type: 'get',
-    dataType: 'json',
-    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-    success:function(response){
-      $("#active_task_count").html(response.active_task_count);
-      $("#onhold_task_count").html(response.onhold_task_count);
-      $("#finished_task_count").html(response.finished_task_count);
-    }
-  });
-  
+  function getTask_counts(){
+    $.ajax({
+      url: API_CONTENT_URL + '/task_count',
+      type: 'get',
+      dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      success:function(response){
+        $("#active_task_count").html(response.active_task_count);
+        $("#onhold_task_count").html(response.onhold_task_count);
+        $("#finished_task_count").html(response.finished_task_count);
+      }
+    });
+  }
   function doSearch(){
     $('.btnRadio').each(function(index, element) {
       if($(element).prop("checked")) {
         if($(element).prop("id") == "tabone") {
+          var param_task = "?self=1";
+          getTask_counts(param_task);
           gridAssigned("pagination-container-to", "data-assignedTo", "assigned_to", "true");
         } else {
+          var param_task = "?self=0";
+          getTask_counts(param_task);
           gridAssigned("pagination-container-by", "data-assignedBy", "assigned_by", "false");        
         }
       }
@@ -180,6 +185,8 @@
   }
   
   $( document ).ready(function() {
+    var param_task = "?self=1";
+    getTask_counts(param_task);
     $(".btnReset").on("click", function(){
       $("#status, #courses_list, #searchText").val(null);
       doSearch();
@@ -230,6 +237,8 @@
       gridAssigned("pagination-container-to", "data-assignedTo", "assigned_to", "true");
     }
   
+    var param_task = "?self=1";
+    getTask_counts(param_task);
   });
   
   function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
@@ -310,7 +319,19 @@
         </td>
         `;*/
         html += '<td><span class="badge bg-success gridTaskID">#'+ item.id +'</span></td>';
-        html += '<td class="wrap">'+ item.name +'</td>';
+        if(item.case_id && item.case_module_id){
+          html += '<td class="wrap" data-flinkto="caselistlevel" data-case_id="'+item.case_id+'" data-case_module_id="'+item.case_module_id+'" role="button">'+ item.name +'</td>';
+        }else if(item.case_id){
+          html += '<td class="wrap" data-flinkto="caseslist" data-case_id="'+item.case_id+'" role="button">'+ item.name +'</td>';
+        }else if(item.chapter_id && item.chapter_topic_id){
+          html += '<td class="wrap" data-flinkto="chapterlistlevel" data-chapter_id="'+item.chapter_id+'" data-chapter_topic_id="'+item.chapter_topic_id+'" role="button">'+ item.name +'</td>';
+        }else if(item.chapter_id){
+          html += '<td class="wrap" data-flinkto="chapterslist" data-chapter_id="'+item.chapter_id+'" role="button">'+ item.name +'</td>';
+        }else if(item.course_id && item.module_id){
+          html += '<td class="wrap" data-flinkto="courseslistlevel" data-cid="'+item.course_id+'" data-module_id="'+item.module_id+'" role="button">'+ item.name +'</td>';
+        }else if(item.course_id){
+          html += '<td class="wrap" data-flinkto="course" data-cid="'+item.course_id+'" role="button">'+ item.name +'</td>';
+        }
         html += '<td>'+ item['assigned_to'] +'</td>';
         html += '<td>'+ item.end_date +'</td>';
         html += '<td>'+ getStatus(item.status) +'</td>';
@@ -521,6 +542,9 @@
 
 function checkdate(){
   var start_date = $("#start_date_task").val();
+  if(start_date){
+    $("#end_date_task").attr("min", start_date);
+  }
   var end_date   = $("#end_date_task").val();
   if(start_date !== '' && end_date !== ''){
     var sdate = new Date(start_date[2], start_date[1] - 1, start_date[0]);

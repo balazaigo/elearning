@@ -3317,6 +3317,11 @@ form#multiple {
     font-weight: 600;
     font-size: 20px;
 }
+.course_details .wrapper .course_head .header_content, .case_details .wrapper .course_head .header_content {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 .course_details .wrapper .course_head .header_breadcrumbs, .case_details .wrapper .course_head .case_ind_desc_text{
 	color: #97a5ba;
 	font-size: 16px;
@@ -3944,7 +3949,7 @@ li.dashed {
 .chapter_list_table td{
 	cursor: pointer;
 }
-.chapter_list_table tr td:nth-child(2), .chapter_list_table tr td:nth-child(3) , .chapter_list_table tr td:nth-child(4) , .chapter_list_table tr td:nth-child(5) {
+.chapter_list_table tr td:nth-child(1), .chapter_list_table tr td:nth-child(2) , .chapter_list_table tr td:nth-child(3) , .chapter_list_table tr td:nth-child(4) {
     text-overflow: ellipsis;
     max-width: 100px;
     overflow-x: hidden;
@@ -4268,4 +4273,8 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 }
 .course_file_input_box .custom-file{
 	width: auto;
+}
+#module_breadcrumbs li{
+    max-width: 100%;
+    overflow-wrap: anywhere;
 }

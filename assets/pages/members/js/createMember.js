@@ -312,7 +312,8 @@ function _validateMemberPhoneNo(el, fieldValue) {
   let hasError = false;
   const minValue = 0;
   const maxValue = 9999999999;
-
+  const min_length = 10;
+  const max_length = 10;
   resetFieldError(el);
 
   const regex = /^\s*$/;
@@ -322,11 +323,11 @@ function _validateMemberPhoneNo(el, fieldValue) {
   } else if (!fieldValue) {
     errorMsg = `Phone No is required`;
     hasError = true;
-  } else if (fieldValue && fieldValue < minValue) {
+  } else if (fieldValue && fieldValue.length > 10) {
     //errorMsg = `Phone No should not be less than ${minValue}`;
     errorMsg = `Enter a valid Phone No`;
     hasError = true;
-  } else if (fieldValue && fieldValue > maxValue) {
+  } else if (fieldValue && fieldValue.length < 10) {
     //errorMsg = `Phone No should not be greater than ${maxValue}`;
     errorMsg = `Enter a valid Phone No`;
     hasError = true;
