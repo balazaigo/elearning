@@ -33,9 +33,9 @@
 
       <div class="row">
         <div class="col-lg-8 col-md-8">
-            <div class="white-bg col-md-12 p-3 br-5 caselist">
+            <div class="white-bg col-md-12 p-3 br-5 caselist" id="sortable_qa">
                 <!-----Dragg and drop section start------>
-                <ul class="level-top drag_drop_show_hide">    
+                <!--<ul class="level-top drag_drop_show_hide">    
                     <li class="dashed qa_dashed qa_droppable">
                         <div class="ac drag_drop_qa">
                         <span class="drag">
@@ -46,7 +46,7 @@
                         </span>                        
                         </div>
                     </li>
-                </ul>
+                </ul>-->
                 <!-----Dragg and drop section  end------>
 
                 <!--Questions mcq Start-->
@@ -380,6 +380,45 @@ $( ".qa_droppable" ).droppable({
     }
 });
 /*** drag and drop action Ends ***/
+
+$("#sortable_qa").sortable({
+
+    items: ".ques-box:not(.unsortable)",
+    update: function( event, ui ) {
+      console.log(ui.item.index());
+       var droppable = $(this);
+      //saveQuestion(el);
+      //console.log($(this).find('#question_input:first').get( 0 ));
+        $(this).find('#question_input:first').attr("name", "question_"+(Number(ui.item.index())+Number(1)));
+
+      saveQuestion( $(this).find('#question_input:first').get( 0 ));
+
+        let case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+        let case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+        get_json_quest_and_answer(case_id, case_module_id);
+      //var draggable = ui.draggable;
+
+
+    }
+});
+$("#sortable_qa").disableSelection();
+/*** drag and drop action starts ***/
+/*$( ".ques-box" ).draggable({
+    revert: "invalid",
+    stack: ".draggable",
+    helper: 'clone'});
+$( ".caselist" ).droppable({
+    accept: ".ques-box",
+    drop: function( event, ui ) {
+      console.log('asasf');
+       var droppable = $(this);
+       var draggable = ui.draggable;
+       //var draggable_id = draggable.attr("id");
+       //var numItems = $('.ques-box').length+1;
+       //get_ques_ans_template(draggable_id, numItems);
+    }
+});*/
+/*** drag and drop action Ends ***/
 /*** click action starts ***/
 $(".module_ques_select").click(function(){
        var draggable_id = $(this).attr("id");
@@ -399,6 +438,21 @@ function get_json_quest_and_answer(case_id, case_module_id){
       .then((data) => {
           var template_question = "";
           if(data.module_questions.length > 0){
+
+        $(".caselist").empty();
+        template_question +=`
+                <ul class="level-top drag_drop_show_hide">    
+                    <li class="dashed qa_dashed qa_droppable">
+                        <div class="ac drag_drop_qa">
+                        <span class="drag">
+                            <a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a>
+                        </span>
+                        <span class="para">
+                            <p class="drag_drop_qa_text">Drag and Drop the Question</p>
+                        </span>                        
+                        </div>
+                    </li>
+                </ul>`;
             $.each(data.module_questions, function (ques_i, ques_val) {
               var numItems = ques_i+1;
               var typeClass = "";
@@ -409,27 +463,27 @@ function get_json_quest_and_answer(case_id, case_module_id){
               }else if(ques_val.type == 3){
                 typeClass = "mcq";
               }
-              template_question += `<div class="ques-box mb-3 ${typeClass} question_${numItems}">
-                <div class="ques-head quest_head_${numItems}">
-                    <span class="drag drag_${numItems}">
+              template_question += `<div class="ques-box mb-3 ${typeClass} question_${ques_val.level}">
+                <div class="ques-head quest_head_${ques_val.level}">
+                    <span class="drag drag_${ques_val.level}">
                         <a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a>
                     </span>
-                    <span class="question ques_${numItems}">
+                    <span class="question ques_${ques_val.level}">
                         <a href="#"><img src="../assets/images/question.jpg" class="question_icon"></a>
                     </span>
-                    <span class="ques-title quest_tit_${numItems}">
-                        Question ${numItems}
+                    <span class="ques-title quest_tit_${ques_val.level}">
+                        Question ${ques_val.level}
                     </span>
                 </div>
 
                 <div class="row mt-2">
                   <div class="col-md-12">
                       <div class="form-floating">
-                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" value="${ques_val.question}" onblur="saveQuestion(this)" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}"/>
+                        <input type="text" name="question_${ques_val.level}" class="question_input_${ques_val.level}" id="question_input" placeholder="Complete question will be shown" value="${ques_val.question}" onblur="saveQuestion(this)" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}"/>
                       </div>
                   </div>
                 </div>
-                <div class="accordion mt-2 accordion_${numItems}" id="accordionExample">
+                <div class="accordion mt-2 accordion_${ques_val.level}" id="accordionExample">
                     <div class="">
                       <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body p-2">
@@ -446,13 +500,13 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         //To Append True or false answers
                         template_question += `<li class="mt-2">`;
                         template_question += `<div class="form-check p-0">`;
-                        template_question += `<input id="opt_${ans_i}_${numItems}" type="radio" name="opt_${numItems}" value="opt_${ans_i}_${numItems}">`;
-                        template_question += `<label for="opt_${ans_i}_${numItems}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
-                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_${ans_i}_${numItems}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
+                        template_question += `<input id="opt_${ans_i}_${ques_val.level}" type="radio" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}">`;
+                        template_question += `<label for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
+                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
                         template_question += `</div>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
-                        template_question += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_${ans_i}_ckb_${numItems}" onclick="insert_answer(this)" ${checked}>`;
+                        template_question += `<input type="checkbox" name="opt_ckb_${ques_val.level}" id="opt_${ans_i}_ckb_${ques_val.level}" onclick="insert_answer(this)" ${checked}>`;
                         template_question += `<div class="switch--toggle"></div>`;
                         template_question += `</label>`;
                         template_question += `</span>`;
@@ -461,13 +515,13 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         //To Append multiple choice answers
                         template_question += `<li class="mt-2">`;
                         template_question += `<div class="form-check p-0">`;
-                        template_question += `<input class="form-check-input" id="opt_${ans_i}_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_${ans_i}_${numItems}" >`;
-                        template_question += `<label class="form-check-label" for="opt_${ans_i}_${numItems}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
-                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_${ans_i}_${numItems}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
+                        template_question += `<input class="form-check-input" id="opt_${ans_i}_${ques_val.level}" type="checkbox" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}" >`;
+                        template_question += `<label class="form-check-label" for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
+                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
                         template_question += `</div>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
-                        template_question += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_${ans_i}_multiple_${numItems}" onclick="insert_answer(this)"  ${checked}><div class="switch--toggle"></div>`;
+                        template_question += `<input type="checkbox" name="opt_multiple_${ques_val.level}" id="opt_${ans_i}_multiple_${ques_val.level}" onclick="insert_answer(this)"  ${checked}><div class="switch--toggle"></div>`;
                         template_question += `</label>`;
                         template_question += `</span>`;
                         template_question += `</li>`;
@@ -475,13 +529,13 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         //To Append mcq answers
                         template_question += `<li class="mt-2">`;
                         template_question += `<div class="form-check p-0">`;
-                        template_question += `<input id="opt_${ans_i}_${numItems}" type="radio" name="opt_${numItems}" value="opt_${ans_i}_${numItems}">`;
-                        template_question += `<label for="opt_${ans_i}_${numItems}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
-                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_${ans_i}_${numItems}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
+                        template_question += `<input id="opt_${ans_i}_${ques_val.level}" type="radio" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}">`;
+                        template_question += `<label for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
+                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
                         template_question += `</div>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
-                        template_question += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_${ans_i}_ckb_${numItems}" onclick="insert_answer(this)" ${checked}>`;
+                        template_question += `<input type="checkbox" name="opt_ckb_${ques_val.level}" id="opt_${ans_i}_ckb_${ques_val.level}" onclick="insert_answer(this)" ${checked}>`;
                         template_question += `<div class="switch--toggle"></div>`;
                         template_question += `</label>`;
                         template_question += `</span>`;
@@ -507,7 +561,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
 function get_ques_ans_template(draggable_id, numItems){
    var droppable_template = "";
    if(draggable_id == "mcq"){
-      droppable_template = `<div class="ques-box mb-3 mcq question_${numItems}">
+      droppable_template = `<div class="ques-box mb-3 mcq question_${numItems} unsortable">
                 <div class="ques-head quest_head_${numItems}">
                     <span class="drag drag_${numItems}">
                         <a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a>
@@ -591,7 +645,7 @@ function get_ques_ans_template(draggable_id, numItems){
                   </div>
             </div>`;
    }else if(draggable_id == "multiplechoice"){
-      droppable_template = `<div class="ques-box mb-3 multiplechoice question_${numItems}">
+      droppable_template = `<div class="ques-box mb-3 multiplechoice question_${numItems} unsortable">
                 <div class="ques-head quest_head_${numItems}">
                     <span class="drag drag_${numItems}">
                         <a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a>
@@ -674,7 +728,7 @@ function get_ques_ans_template(draggable_id, numItems){
                   </div>
             </div>`;
    }else if(draggable_id == "trueorfalse"){
-      droppable_template = `<div class="ques-box mb-3 trueorfalse question_${numItems}">
+      droppable_template = `<div class="ques-box mb-3 trueorfalse question_${numItems} unsortable">
                 <div class="ques-head quest_head_${numItems}">
                     <span class="drag drag_${numItems}">
                         <a href="#"><img src="../assets/images/course-icon.png" class="course_icon"></a>
@@ -870,6 +924,8 @@ function saveQuestion(el){
   if(el.value){
     var quest_id = $(el).attr("data-quest_id");
     var quest_type = $(el).attr("data-ques_type");
+    var quest_level = $(el).attr("name").replace("question_", "");
+    console.log(quest_level);
     var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
     var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
     var URL = API_CONTENT_URL + "/questions/";
@@ -879,13 +935,15 @@ function saveQuestion(el){
       var URL = API_CONTENT_URL + "/questions/"+quest_id+"/";
       var method = "PUT";
       var type = "PUT";
+    }else{
+        $(el).closest(".ques-box").removeClass("unsortable");
     }
-
     var formData = new FormData();
     formData.append("question", el.value);
     formData.append("type", quest_type);
     formData.append("case_id", case_id);
     formData.append("case_module_id", case_module_id);
+    formData.append("level", quest_level);
     $.ajax({
       url: URL,
       method: method,

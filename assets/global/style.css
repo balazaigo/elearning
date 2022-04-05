@@ -4278,3 +4278,9 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
     max-width: 100%;
     overflow-wrap: anywhere;
 }
+
+#mAlert .modal-title{
+    width: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

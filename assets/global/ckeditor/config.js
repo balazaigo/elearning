@@ -53,6 +53,14 @@ config.toolbarGroups = [
         { name: 'about' }
     ];
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+	config.wordcount = {
+
+	    // Whether or not you want to show the Word Count
+	    showWordCount: true,
+
+	    // Whether or not you want to show the Char Count
+	    showCharCount: true,
+	};
 	//config.allowedContent = true;
 
 	// Remove some buttons provided by the standard plugins, which are
