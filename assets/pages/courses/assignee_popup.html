@@ -210,7 +210,6 @@ function get_assignee_details(cid, module_id){
 		$("#assignto_all_sub_row").hide();
 	}else{
 		var show_input = document.getElementById("course_param").getAttribute("data-show_input");
-		console.log(show_input);
 		if(show_input == "true"){
 			url = API_CONTENT_URL + '/available/assignees/'+module_id;
 		}else if(show_input == "false-chapter"){

@@ -385,40 +385,12 @@ $("#sortable_qa").sortable({
 
     items: ".ques-box:not(.unsortable)",
     update: function( event, ui ) {
-      console.log(ui.item.index());
-       var droppable = $(this);
-      //saveQuestion(el);
-      //console.log($(this).find('#question_input:first').get( 0 ));
-        $(this).find('#question_input:first').attr("name", "question_"+(Number(ui.item.index())+Number(1)));
-
-      saveQuestion( $(this).find('#question_input:first').get( 0 ));
-
-        let case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
-        let case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
-        get_json_quest_and_answer(case_id, case_module_id);
-      //var draggable = ui.draggable;
-
-
+       var draggable = ui.item[0];
+      draggable.children[1].children[0].children[0].children[0].setAttribute("name", "question_"+Number(ui.item.index()));
+      saveQuestion( draggable.children[1].children[0].children[0].children[0], true);
     }
 });
 $("#sortable_qa").disableSelection();
-/*** drag and drop action starts ***/
-/*$( ".ques-box" ).draggable({
-    revert: "invalid",
-    stack: ".draggable",
-    helper: 'clone'});
-$( ".caselist" ).droppable({
-    accept: ".ques-box",
-    drop: function( event, ui ) {
-      console.log('asasf');
-       var droppable = $(this);
-       var draggable = ui.draggable;
-       //var draggable_id = draggable.attr("id");
-       //var numItems = $('.ques-box').length+1;
-       //get_ques_ans_template(draggable_id, numItems);
-    }
-});*/
-/*** drag and drop action Ends ***/
 /*** click action starts ***/
 $(".module_ques_select").click(function(){
        var draggable_id = $(this).attr("id");
@@ -480,7 +452,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
                 <div class="row mt-2">
                   <div class="col-md-12">
                       <div class="form-floating">
-                        <input type="text" name="question_${ques_val.level}" class="question_input_${ques_val.level}" id="question_input" placeholder="Complete question will be shown" value="${ques_val.question}" onblur="saveQuestion(this)" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}"/>
+                        <input type="text" name="question_${ques_val.level}" class="question_input_${ques_val.level}" id="question_input" placeholder="Complete question will be shown" value="${ques_val.question}" onblur="saveQuestion(this, false)" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}"/>
                       </div>
                   </div>
                 </div>
@@ -578,7 +550,7 @@ function get_ques_ans_template(draggable_id, numItems){
                 <div class="row mt-2">
                   <div class="col-md-12">
                       <div class="form-floating">
-                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this)" data-ques_type="3"/>
+                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this, false)" data-ques_type="3"/>
                       </div>
                   </div>
                 </div>
@@ -662,7 +634,7 @@ function get_ques_ans_template(draggable_id, numItems){
                 <div class="row mt-2">
                   <div class="col-md-12">
                       <div class="form-floating">
-                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown"  onblur="saveQuestion(this)" data-ques_type="2"/>
+                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown"  onblur="saveQuestion(this, false)" data-ques_type="2"/>
                       </div>
                   </div>
                 </div>
@@ -745,7 +717,7 @@ function get_ques_ans_template(draggable_id, numItems){
                 <div class="row mt-2">
                   <div class="col-md-12">
                       <div class="form-floating">
-                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this)" data-ques_type="1"/>
+                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this, false)" data-ques_type="1"/>
                       </div>
                   </div>
                 </div>
@@ -921,7 +893,7 @@ function toText(e){
   }
 }
 //To Save Questions
-function saveQuestion(el){
+function saveQuestion(el, update){
   if(el.value){
     var quest_id = $(el).attr("data-quest_id");
     var quest_type = $(el).attr("data-ques_type");
@@ -960,6 +932,11 @@ function saveQuestion(el){
         toastr.success("Question was successfully saved.");
         if(response.id){
           $(el).attr("data-quest_id", response.id);
+        }
+        if(update == true){
+          let case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+          let case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+          get_json_quest_and_answer(case_id, case_module_id);
         }
       },
       error: function (error) {

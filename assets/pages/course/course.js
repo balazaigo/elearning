@@ -650,7 +650,7 @@ function toggle_collapse_expand(e){
 }
 function toggle_collapse_expand_preview(e){
     var childrendivs = [];
-    var children = e.parentElement.parentElement.parentElement.nextElementSibling.children;
+    var children = e.parentElement.parentElement.parentElement.parentElement.children;
     var action = e.innerHTML;
     for(var i = 0; i < children.length; i++){
         if (children[i].tagName == "DIV") {
@@ -881,12 +881,6 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             var color = "color:#F36A10;";
             newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1;'></div>");
             newUl = $("<ul class='main_module module_opacity' style='opacity:1;padding-bottom: 0px;border-style: none;'></ul>");
-            console.log(a[i].case_id);
-            if(a[i].case_id){
-              newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p><span style='float:right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></span></li>");
-            }else{
-              newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p></li>");
-            }
             var module_data_html  = get_module_details_preview(a[i]);
             newUl.append(module_data_html);
           }else{
@@ -916,20 +910,24 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             var input_value = a[i].module_name.substring(n + 1);
             //console.log(num+"= "+input_value)
             var display_prop = "";
-            /*if(a[i].case_id){
-              var display_prop = "disp_none";
+            if($parent.parent().attr("uChapterId")){
+              display_prop = "disp_none";
             }else{
-              var display_prop = "disp_block";
-            }*/
-            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+display_prop+"' id='"+levels+"' style='"+mod_width+"'>");
+              display_prop = "disp_block";
+            }
+            if(a[i].chapter_id && ($parent.parent().attr("uChapterId") == "null" || $parent.parent().attr("uChapterId") == null || $parent.parent().attr("uChapterId") == "")){
+              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+display_prop+"' id='"+levels+"' uChapterId='"+a[i].chapter_id+"' style='"+mod_width+"'>");
+            }else{
+              newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+display_prop+"' id='"+levels+"' uChapterId='' style='"+mod_width+"'>");
+            }
+            
             newUl = $("<ul class='sub_module' style='padding-bottom: 0px;border-style: none;'></ul>");
             const [module_content, module_attachments] = get_module_details_preview(a[i]);
-            console.log(a[i].case_id);
-            /*if(a[i].case_id){
+            if(a[i].chapter_id && ($parent.parent().attr("uChapterId") == "null" || $parent.parent().attr("uChapterId") == null || $parent.parent().attr("uChapterId") == "") && a[i].children.length > 0){
               newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b><span style='float:right'><img style='width:20px;height:20px;' src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_preview(this);'></span></p>"+module_content+"</li>");
-            }else{*/
+            }else{
               newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p>"+module_content+"</li>");
-            //}
+            }
             newUl.append(module_attachments);
           }
           if(level_count === 0){  
