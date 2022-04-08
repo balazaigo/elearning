@@ -115,7 +115,7 @@
   var frmvalidatorfrm;
 
   $(document).ready(function () {
-
+    $("#start_date").attr("min", new Date().toISOString().split("T")[0]);
     $('.cm-capitalize').each(function () { $(this).capitalize(); });
     $('.cm-uppercase').each(function () { $(this).upperCase(); });
     $('.cm-replaceSpace').each(function () { $(this).replaceSpace(); });
