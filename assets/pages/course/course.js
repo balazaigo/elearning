@@ -915,6 +915,7 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
             //console.log(num+"= "+input_value)
+            var display_prop = "";
             /*if(a[i].case_id){
               var display_prop = "disp_none";
             }else{
