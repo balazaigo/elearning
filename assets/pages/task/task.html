@@ -653,6 +653,11 @@ function getTaskDetails(id){
         var end_date = task_det.end_date;
         $("#start_date_task").val(start_date);
         $("#end_date_task").val(end_date);
+
+        $("#start_date_task").attr("min", start_date);
+        $("#end_date_task").attr("min", start_date);
+        $("#start_date_task").attr("max", end_date);
+        $("#end_date_task").attr("max", end_date);
         $("#task_id").val(task_det.id);
         if(task_det.module_id){
           $("#module_id").val(task_det.module_id);

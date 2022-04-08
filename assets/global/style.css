@@ -4284,3 +4284,7 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
     text-overflow: ellipsis;
     overflow: hidden;
 }
+#chapter_list_ul{
+    height: 400px !important;
+    overflow: scroll;
+}
