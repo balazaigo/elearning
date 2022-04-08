@@ -437,9 +437,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
       .then((response) => response.json())
       .then((data) => {
           var template_question = "";
-          if(data.module_questions.length > 0){
-
-        $(".caselist").empty();
+          
         template_question +=`
                 <ul class="level-top drag_drop_show_hide">    
                     <li class="dashed qa_dashed qa_droppable">
@@ -453,6 +451,9 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         </div>
                     </li>
                 </ul>`;
+          if(data.module_questions.length > 0){
+
+        $(".caselist").empty();
             $.each(data.module_questions, function (ques_i, ques_val) {
               var numItems = ques_i+1;
               var typeClass = "";

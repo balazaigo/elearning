@@ -616,7 +616,7 @@ document.addEventListener("keyup", function(e){
       $(".tag__inputs_chap_level").next("span.field-error").remove();
     }
     if(currentTag){
-      const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInput = e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling;
       const hiddenInputOldValue = hiddenInput.value;
       
       const existingTags = getExistingTagAsArray(hiddenInputOldValue);
@@ -661,7 +661,7 @@ document.addEventListener("keyup", function(e){
         headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
         success:function(response){
           const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes_chap_level" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
-          e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.target.parentElement.nextElementSibling.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
           var sum = 0;
           $('#tag__List_append li').each(function() {
@@ -677,7 +677,84 @@ document.addEventListener("keyup", function(e){
     }
     }
 });
-
+function addTagBtnchapterModule(e){
+  
+      var errorMsg = "";
+    const currentTag = e.parentElement.parentElement.children[0].children[0].value;
+    if(currentTag.length > 256 || currentTag.length < 3){
+      
+      $(".tag__inputs_chap_level").next("span").remove();
+      if(currentTag.length > 256){
+          errorMsg = "Maximum 256 characters allowed";
+      }else{console.log(3);
+          errorMsg = "Minimum 3 characters allowed";
+      }
+      $(".tag__inputs_chap_level").after(`<span class='field-error'>${errorMsg}</span>`);
+      return;
+    }else{
+      $(".tag__inputs_chap_level").next("span.field-error").remove();
+    }
+    if(currentTag){
+      const hiddenInput = e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInputOldValue = hiddenInput.value;
+      
+      const existingTags = getExistingTagAsArray(hiddenInputOldValue);
+      const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
+      
+      if(isTagExistAlready){ 
+        errorMsg = "Tag Name already Exist";
+        $(".tag__inputs_chap_level").after(`<span class='field-error'>${errorMsg}</span>`);
+        return; 
+      }else{
+        $(".tag__inputs_chap_level").next("span.field-error").remove();
+      }
+      if(hiddenInputOldValue.length > 0){
+        var tag_array_name = hiddenInputOldValue.split(',');
+        console.log(tag_array_name);
+        if(tag_array_name.length > 63){ 
+          errorMsg = "Only 64 tags allowed";
+          $(".tag__inputs_chap_level").after(`<span class='field-error'>${errorMsg}</span>`);
+          return; 
+        }else{
+          $(".tag__inputs_chap_level").next("span.field-error").remove();
+        }
+      }
+      
+      if(hiddenInputOldValue){
+        hiddenInput.value = hiddenInputOldValue + "," + currentTag;
+      }else{
+        hiddenInput.value = currentTag;       
+      }
+      
+      let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+      let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
+      var tag_data = {
+          "name": currentTag,
+          "chapter_topic_id": chapter_topic_id,
+          "chapter_id": chapter_id
+      }
+      $.ajax({
+        url: API_CONTENT_URL + '/chapter_topic_tags/?chapter_id='+chapter_id+'&chapter_topic_id='+chapter_topic_id,
+        type: 'POST',
+        data: JSON.stringify(tag_data),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+        success:function(response){
+          const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes_chap_level" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
+          e.parentElement.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.parentElement.parentElement.children[0].children[0].value = "";
+          var sum = 0;
+          $('#tag__List_append li').each(function() {
+             sum += $(this).height();
+          });
+          if(sum > 80){
+            $(".show-more").css('display','block');
+          }else{
+            $(".show-more").css('display','none');
+          }
+        }
+      });
+    }
+}
 document.addEventListener("click", function(e){
     if (e.target.classList.contains("tag__removes_chap_level")) {
     const currentTag = e.target.dataset.tag;

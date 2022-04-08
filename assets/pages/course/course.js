@@ -648,6 +648,26 @@ function toggle_collapse_expand(e){
         }
     }
 }
+function toggle_collapse_expand_preview(e){
+    var childrendivs = [];
+    var children = e.parentElement.parentElement.parentElement.nextElementSibling.children;
+    var action = e.innerHTML;
+    for(var i = 0; i < children.length; i++){
+        if (children[i].tagName == "DIV") {
+          if(children[i].classList.contains('disp_none')){
+              e.src="../assets/images/arrow_up_icon.png";
+              children[i].classList.add('disp_block');
+              children[i].classList.remove('disp_none');
+              childrendivs.push(children[i]);
+          }else{
+              e.src="../assets/images/arrow_down_icon.png";
+              children[i].classList.add('disp_none');
+              children[i].classList.remove('disp_block');
+              childrendivs.push(children[i]);
+          }
+        }
+    }
+}
 function show_tag_popup(e){
   //var offsets = e.getBoundingClientRect();
   //var offset_box = document.getElementById("course_box").getBoundingClientRect();
@@ -861,7 +881,12 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             var color = "color:#F36A10;";
             newDIV = $("<div class='module module_"+level_count_inc+" main_mod draggable' id='"+a[i].level+"' draggable='true' style='opacity:1;'></div>");
             newUl = $("<ul class='main_module module_opacity' style='opacity:1;padding-bottom: 0px;border-style: none;'></ul>");
-            newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p></li>");
+            console.log(a[i].case_id);
+            if(a[i].case_id){
+              newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p><span style='float:right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'></span></li>");
+            }else{
+              newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p></li>");
+            }
             var module_data_html  = get_module_details_preview(a[i]);
             newUl.append(module_data_html);
           }else{
@@ -890,10 +915,20 @@ function get_list_preview( a, $parent , level_count_inc, prev_type) {
             var n = a[i].module_name.lastIndexOf('/');
             var input_value = a[i].module_name.substring(n + 1);
             //console.log(num+"= "+input_value)
-            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" disp_block' id='"+levels+"' style='"+mod_width+"'>");
+            /*if(a[i].case_id){
+              var display_prop = "disp_none";
+            }else{
+              var display_prop = "disp_block";
+            }*/
+            newDIV = $("<div class='module sub_module_"+levels+" sub_"+levels+" module_"+(level_count_inc - 1)+" "+display_prop+"' id='"+levels+"' style='"+mod_width+"'>");
             newUl = $("<ul class='sub_module' style='padding-bottom: 0px;border-style: none;'></ul>");
             const [module_content, module_attachments] = get_module_details_preview(a[i]);
-            newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p>"+module_content+"</li>");
+            console.log(a[i].case_id);
+            /*if(a[i].case_id){
+              newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b><span style='float:right'><img style='width:20px;height:20px;' src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_preview(this);'></span></p>"+module_content+"</li>");
+            }else{*/
+              newUl.append("<li style='background-color: white;'><p class='mb-0' style='padding:15px;"+color+"'><b>"+input_value+" :</b></p>"+module_content+"</li>");
+            //}
             newUl.append(module_attachments);
           }
           if(level_count === 0){  

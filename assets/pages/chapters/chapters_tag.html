@@ -5,7 +5,11 @@
         <div class="row">
           <div class="col-md-12 p-3 mtag tag_cont_box">
             <div class="tag__container">
-              <input type="text" class="tag__inputs tag__inputs_chap_mod" placeholder="+ Add Tag">
+              <div style="width: auto;float: left;">
+                <input type="text" class="tag__inputs tag__inputs_chap_mod" placeholder="+ Add Tag">
+              </div>
+              <span class="orange-btn nbtn" style="margin-left: 15px;"><button onclick="addTagBtnChapter(this)"><i class="fas fa-plus"></i>Add</button>
+              </span>
               <ul class="tag__List content hideContent" id="tag__List_append">
               </ul>
               <div class="show-more showmore">More >></div>
@@ -90,7 +94,7 @@ document.addEventListener("keyup", function(e){
       $(".tag__inputs_chap_mod").next("span.field-error").remove();
     }
     if(currentTag){
-      const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInput = e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling;
       const hiddenInputOldValue = hiddenInput.value;
       
       const existingTags = getExistingTagAsArray(hiddenInputOldValue);
@@ -136,14 +140,83 @@ document.addEventListener("keyup", function(e){
           $(".showmore").text("More >>");
           $(".showmore").attr("style", "left:none;");
           const newTag = ` <li>${currentTag}<span class="tag__removes_chapter" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
-          e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.target.parentElement.nextElementSibling.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
         }
       });
     }
     }
 });
+function addTagBtnChapter(e){
 
+      var errorMsg = "";
+    const currentTag = e.parentElement.parentElement.children[0].children[0].value;
+    if(currentTag.length > 256 || currentTag.length < 3){
+      
+      $(".tag__inputs_chap_mod").next("span").remove();
+      if(currentTag.length > 256){
+          errorMsg = "Maximum 256 characters allowed";
+      }else{console.log(3);
+          errorMsg = "Minimum 3 characters allowed";
+      }
+      $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
+      return;
+    }else{
+      $(".tag__inputs_chap_mod").next("span.field-error").remove();
+    }
+    if(currentTag){
+      const hiddenInput =  e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInputOldValue = hiddenInput.value;
+      
+      const existingTags = getExistingTagAsArray(hiddenInputOldValue);
+      const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
+      
+      if(isTagExistAlready){ 
+        errorMsg = "Tag Name already Exist";
+        $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
+        return; 
+      }else{
+        $(".tag__inputs_chap_mod").next("span.field-error").remove();
+      }
+      if(hiddenInputOldValue.length > 0){
+        var tag_array_name = hiddenInputOldValue.split(',');
+        console.log(tag_array_name);
+        if(tag_array_name.length > 63){ 
+          errorMsg = "Only 64 tags allowed";
+          $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
+          return; 
+        }else{
+          $(".tag__inputs_chap_mod").next("span.field-error").remove();
+        }
+      }
+      
+      if(hiddenInputOldValue){
+        hiddenInput.value = hiddenInputOldValue + "," + currentTag;
+      }else{
+        hiddenInput.value = currentTag;       
+      }
+     let chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+     let chapter_topic_id_val = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
+      var tag_data = {
+          "name": currentTag,
+          "chapter_topic_id": chapter_topic_id_val,
+          "chapter_id": chapter_id
+      }
+      $.ajax({
+        url: API_CONTENT_URL + '/chapter_topic_tags/?chapter_id='+chapter_id+'&chapter_topic_id='+chapter_topic_id_val,
+        type: 'POST',
+        data: JSON.stringify(tag_data),
+        contentType: "application/json; charset=utf-8",
+        success:function(response){
+          $(".showmore").text("More >>");
+          $(".showmore").attr("style", "left:none;");
+          const newTag = ` <li>${currentTag}<span class="tag__removes_chapter" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
+          e.parentElement.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.parentElement.parentElement.children[0].children[0].value = "";
+        }
+      });
+    }
+}
 document.addEventListener("click", function(e){
     if (e.target.classList.contains("tag__removes_chapter")) {
     const currentTag = e.target.dataset.tag;

@@ -113,7 +113,7 @@
       <div class="whitebg col-md-12">
         <div class="container-fluid p-0">
           <div class="table-section chapter_table">
-              <table class="table table-bordered responsive">
+              <table class="table table-bordered responsive" style="table-layout:fixed;">
                 <thead>
                   <tr>
                     <!--<th><div class="form-check">
@@ -237,10 +237,26 @@ var frmvalidatorfrm;
         </td>
         `;*/
         //html += '<td><span class="badge bg-success gridTaskID">#'+ item.short_code +'</span></td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.name +'</td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.cases +'</td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.courses +'</td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.groups +'</td>';
+        var dots = "";
+        if(item.name.length > 75){
+          dots = "...";
+        }
+        var dotscases = "";
+        if(item.cases.length > 30){
+          dotscases = "...";
+        }
+        var dotscourses = "";
+        if(item.courses.length > 30){
+          dotscourses = "...";
+        }
+        var dotsgroups = "";
+        if(item.groups.length > 30){
+          dotsgroups = "...";
+        }
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.name.substring(0, 75)+dots +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.cases.substring(0, 30)+dotscases +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.courses.substring(0, 30)+dotscourses +'</td>';
+        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.groups.substring(0, 30)+dotsgroups +'</td>';
         //html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.description +'</td>';
         html += `
           <td class="text-right">

@@ -322,3 +322,8 @@
     border:2px dashed #161515;
     opacity: 0.5;
 }
+#course_module_content_preview .module{
+
+    overflow-wrap: break-word;
+    overflow: hidden;
+}

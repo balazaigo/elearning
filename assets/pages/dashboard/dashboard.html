@@ -88,7 +88,7 @@
         <label for="tabone">My Tasks Me</label>
         <div class="tab p-0">
           <div class="table-section">
-            <table class="table table-bordered responsive">
+            <table class="table table-bordered responsive" style="table-layout:fixed;">
               <thead>
                 <tr>
                   <!--<th>
@@ -318,10 +318,10 @@ function template(data, tagTOBY) {
       </td>
       `;*/
 
-          var dots = "";
-          if(item.name.length > 75){
-            dots = "...";
-          }
+      var dots = "";
+      if(item.name.length > 75){
+        dots = "...";
+      }
       html += '<td><span class="badge bg-success gridTaskID">#'+ item.id +'</span></td>';
       if(item.case_id && item.case_module_id){
         html += '<td class="wrap" data-flinkto="caselistlevel" data-case_id="'+item.case_id+'" data-case_module_id="'+item.case_module_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';

@@ -622,7 +622,7 @@ document.addEventListener("keyup", function(e){
       $(".tag_inputs_case_module").next("span.field-error").remove();
     }
     if(currentTag){
-      const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInput = e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling;
       const hiddenInputOldValue = hiddenInput.value;
       
       const existingTags = getExistingTagAsArray(hiddenInputOldValue);
@@ -666,7 +666,7 @@ document.addEventListener("keyup", function(e){
         headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
         success:function(response){
           const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes2" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
-          e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.target.parentElement.nextElementSibling.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
           var sum = 0;
           $('#tag__List_append li').each(function() {
@@ -683,6 +683,74 @@ document.addEventListener("keyup", function(e){
     }
 });
 
+function addTagBtncaseLevel(e){
+  var errorMsg = "";
+    const currentTag = e.parentElement.parentElement.children[0].children[0].value;
+    if(currentTag.length > 256 || currentTag.length < 3){
+      
+      $(".tag_inputs_case_module").next("span").remove();
+      if(currentTag.length > 256){console.log(256);
+          errorMsg = "Maximum 256 characters allowed";
+      }else{console.log(3);
+          errorMsg = "Minimum 3 characters allowed";
+      }
+      $(".tag_inputs_case_module").after(`<span class='field-error'>${errorMsg}</span>`);
+      return;
+    }else{
+      $(".tag_inputs_case_module").next("span.field-error").remove();
+    }
+    if(currentTag){
+      const hiddenInput = e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInputOldValue = hiddenInput.value;
+      
+      const existingTags = getExistingTagAsArray(hiddenInputOldValue);
+      const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
+      
+      if(isTagExistAlready){ 
+        errorMsg = "Tag Name already Exist";
+        $(".tag_inputs_case_module").after(`<span class='field-error'>${errorMsg}</span>`);
+        return; 
+      }else{
+        $(".tag_inputs_case_module").next("span.field-error").remove();
+      }
+      if(hiddenInputOldValue.length > 0){
+        var tag_array_name = hiddenInputOldValue.split(',');
+        console.log(tag_array_name);
+        if(tag_array_name.length > 63){ 
+          errorMsg = "Only 64 tags allowed";
+          $(".tag_inputs_case_module").after(`<span class='field-error'>${errorMsg}</span>`);
+          return; 
+        }else{
+          $(".tag_inputs_case_module").next("span.field-error").remove();
+        }
+      }
+      if(hiddenInputOldValue){
+        hiddenInput.value = hiddenInputOldValue + "," + currentTag;
+      }else{
+        hiddenInput.value = currentTag;       
+      }
+     let case_id = document.getElementById("case_details").getAttribute("data-case_id");
+     let case_module_id_val = document.getElementById("case_details").getAttribute("data-case_module_id");
+      var tag_data = {
+          "name": currentTag,
+          "case_module_id": case_module_id_val,
+          "case_id": case_id
+      }
+      $.ajax({
+        url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+case_module_id_val,
+        type: 'POST',
+        data: JSON.stringify(tag_data),
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        success:function(response){
+          $(".showmore").text("More >>");
+          $(".showmore").attr("style", "left:none;");
+          const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes2" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
+          e.parentElement.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.parentElement.parentElement.children[0].children[0].value = "";
+        }
+      });
+    }
+}
 document.addEventListener("click", function(e){
     if (e.target.classList.contains("tag__removes2")) {
     const currentTag = e.target.dataset.tag;

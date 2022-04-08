@@ -5,7 +5,9 @@
         <div class="row">
           <div class="col-md-12 p-3 mtag tag_cont_box">
             <div class="tag__container">
-              <input type="text" class="tag__inputs tag_inputs_case" placeholder="+ Add Tag">
+              <div style="width: auto;float: left;"><input type="text" class="tag__inputs tag_inputs_case" placeholder="+ Add Tag"></div>
+              <span class="orange-btn nbtn" style="margin-left: 15px;"><button onclick="addTagBtn(this)"><i class="fas fa-plus"></i>Add</button>
+              </span>
               <ul class="tag__List content hideContent" id="tag__List_append">
               </ul>
               <div class="show-more showmore">More >></div>
@@ -75,7 +77,7 @@ $(".show-more").on("click", function() {
 /*******************multiple tag list************************/
 document.addEventListener("keyup", function(e){
     if (e.keyCode === 13 && e.target.classList.contains("tag_inputs_case")) {
-      var errorMsg = "";
+    var errorMsg = "";
     const currentTag = e.target.value;
     if(currentTag.length > 256 || currentTag.length < 3){
       
@@ -91,7 +93,75 @@ document.addEventListener("keyup", function(e){
       $(".tag_inputs_case").next("span.field-error").remove();
     }
     if(currentTag){
-      const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInput = e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInputOldValue = hiddenInput.value;
+      const existingTags = getExistingTagAsArray(hiddenInputOldValue);
+      const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
+      
+      if(isTagExistAlready){ 
+        errorMsg = "Tag Name already Exist";
+        $(".tag_inputs_case").after(`<span class='field-error'>${errorMsg}</span>`);
+        return; 
+      }else{
+        $(".tag_inputs_case").next("span.field-error").remove();
+      }
+      if(hiddenInputOldValue.length > 0){
+        var tag_array_name = hiddenInputOldValue.split(',');
+        console.log(tag_array_name);
+        if(tag_array_name.length > 63){ 
+          errorMsg = "Only 64 tags allowed";
+          $(".tag_inputs_case").after(`<span class='field-error'>${errorMsg}</span>`);
+          return; 
+        }else{
+          $(".tag_inputs_case").next("span.field-error").remove();
+        }
+      }
+      if(hiddenInputOldValue){
+        hiddenInput.value = hiddenInputOldValue + "," + currentTag;
+      }else{
+        hiddenInput.value = currentTag;       
+      }
+     let case_id = document.getElementById("case_param").getAttribute("data-case_id");
+     let case_module_id_val = document.getElementById("case_param").getAttribute("data-case_module_id");
+      var tag_data = {
+          "name": currentTag,
+          "case_module_id": case_module_id_val,
+          "case_id": case_id
+      }
+      $.ajax({
+        url: API_CONTENT_URL + '/case_tags/?case_id='+case_id+'&case_module_id='+case_module_id_val,
+        type: 'POST',
+        data: JSON.stringify(tag_data),
+        headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+        success:function(response){
+          $(".showmore").text("More >>");
+          $(".showmore").attr("style", "left:none;");
+          const newTag = ` <li>${currentTag}<span class="tag__removes_case_mod" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
+          e.target.parentElement.nextElementSibling.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.target.value = "";
+        }
+      });
+    }
+    }
+});
+function addTagBtn(e){
+  var errorMsg = "";
+    const currentTag = e.parentElement.parentElement.children[0].children[0].value;
+    if(currentTag.length > 256 || currentTag.length < 3){
+      
+      $(".tag_inputs_case").next("span").remove();
+      if(currentTag.length > 256){console.log(256);
+          errorMsg = "Maximum 256 characters allowed";
+      }else{console.log(3);
+          errorMsg = "Minimum 3 characters allowed";
+      }
+      $(".tag_inputs_case").after(`<span class='field-error'>${errorMsg}</span>`);
+      return;
+    }else{
+      $(".tag_inputs_case").next("span.field-error").remove();
+    }
+    if(currentTag){
+      const hiddenInput = e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling;
       const hiddenInputOldValue = hiddenInput.value;
       
       const existingTags = getExistingTagAsArray(hiddenInputOldValue);
@@ -136,14 +206,12 @@ document.addEventListener("keyup", function(e){
           $(".showmore").text("More >>");
           $(".showmore").attr("style", "left:none;");
           const newTag = ` <li>${currentTag}<span class="tag__removes_case_mod" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
-          e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
-          e.target.value = "";
+          e.parentElement.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.parentElement.parentElement.children[0].children[0].value = "";
         }
       });
     }
-    }
-});
-
+}
 document.addEventListener("click", function(e){
     if (e.target.classList.contains("tag__removes_case_mod")) {
     const currentTag = e.target.dataset.tag;

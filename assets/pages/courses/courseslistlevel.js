@@ -41,6 +41,9 @@ $(document).ready(function(){
     }
     acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
     get_module_details();
+    setTimeout(function() {
+      get_breadcrumbs();
+    }, 1000);
     var dropzone = new Dropzone('#demo-upload', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
@@ -64,7 +67,6 @@ $(document).ready(function(){
         }
 
     });
-    get_breadcrumbs();
     //setTimeout(, 1000);
     var minSteps = 6,
         maxSteps = 60,
@@ -194,8 +196,14 @@ function get_search_details(){
     let can_edit = document.getElementById("course_module_id").getAttribute("data-can_edit");
     var tagName = $("#global_search_module").val();
     var active_tab_type = $("#active_li li.active").attr('id');
+    var category_id_gs = $("#category_id_gs").val();
+    console.log(category_id_gs);
+    var cat_param = "";
+    if(category_id_gs){
+      cat_param = "&category_id="+category_id_gs;
+    }
     $.ajax({
-      url: API_CONTENT_URL + '/global_search/?tag_name='+tagName,
+      url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+cat_param,
       type: 'GET',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -520,6 +528,9 @@ function get_module_details(){
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(response){console.log(response);
+        if(response.category_id){
+          $("#category_id_gs").val(response.category_id);
+        }
         var module_content = response.module_content;
         var module_attachments = response.module_attachments;
         var module_tags = response.module_tags;
@@ -675,7 +686,7 @@ document.addEventListener("keyup", function(e){
       $(".tag__inputs_course_module").next("span.field-error").remove();
     }
     if(currentTag){
-      const hiddenInput = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInput = e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling;
       const hiddenInputOldValue = hiddenInput.value;
       
       const existingTags = getExistingTagAsArray(hiddenInputOldValue);
@@ -719,7 +730,7 @@ document.addEventListener("keyup", function(e){
         headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
         success:function(response){
           const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes_course_mod" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
-          e.target.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.target.parentElement.nextElementSibling.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
           var sum = 0;
           $('#tag__List_append li').each(function() {
@@ -735,7 +746,83 @@ document.addEventListener("keyup", function(e){
     }
     }
 });
+function addTagBtncourseModule(e){
 
+      var errorMsg = "";
+    const currentTag = e.parentElement.parentElement.children[0].children[0].value;
+    if(currentTag.length > 256 || currentTag.length < 3){
+      
+      $(".tag__inputs_course_module").next("span").remove();
+      if(currentTag.length > 256){
+          errorMsg = "Maximum 256 characters allowed";
+      }else{console.log(3);
+          errorMsg = "Minimum 3 characters allowed";
+      }
+      $(".tag__inputs_course_module").after(`<span class='field-error'>${errorMsg}</span>`);
+      return;
+    }else{
+      $(".tag__inputs_course_module").next("span.field-error").remove();
+    }
+    if(currentTag){
+      const hiddenInput = e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling;
+      const hiddenInputOldValue = hiddenInput.value;
+      
+      const existingTags = getExistingTagAsArray(hiddenInputOldValue);
+      const isTagExistAlready = checkIfTagExistAlready(existingTags, currentTag);
+      
+      if(isTagExistAlready){ 
+        errorMsg = "Tag Name already Exist";
+        $(".tag__inputs_course_module").after(`<span class='field-error'>${errorMsg}</span>`);
+        return; 
+      }else{
+        $(".tag__inputs_course_module").next("span.field-error").remove();
+      }
+      if(hiddenInputOldValue.length > 0){
+        var tag_array_name = hiddenInputOldValue.split(',');
+        console.log(tag_array_name);
+        if(tag_array_name.length > 63){ 
+          errorMsg = "Only 64 tags allowed";
+          $(".tag__inputs_course_module").after(`<span class='field-error'>${errorMsg}</span>`);
+          return; 
+        }else{
+          $(".tag__inputs_course_module").next("span.field-error").remove();
+        }
+      }
+      if(hiddenInputOldValue){
+        hiddenInput.value = hiddenInputOldValue + "," + currentTag;
+      }else{
+        hiddenInput.value = currentTag;       
+      }
+      
+     let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+     let module_id_val = document.getElementById("course_module_id").getAttribute("data-module_id");
+      var tag_data = {
+          "tag_name": currentTag,
+          "module_id": module_id_val,
+          "course_id": cid
+      }
+      $.ajax({
+        url: API_CONTENT_URL + '/course_tags/?course_id='+cid+'&module_id='+module_id_val,
+        type: 'POST',
+        data: JSON.stringify(tag_data),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+        success:function(response){
+          const newTag = ` <li>${currentTag}<span class="tag__removes tag__removes_course_mod" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
+          e.parentElement.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
+          e.parentElement.parentElement.children[0].children[0].value = "";
+          var sum = 0;
+          $('#tag__List_append li').each(function() {
+             sum += $(this).height();
+          });
+          if(sum > 80){
+            $(".show-more").css('display','block');
+          }else{
+            $(".show-more").css('display','none');
+          }
+        }
+      });
+    }
+}
 document.addEventListener("click", function(e){
     if (e.target.classList.contains("tag__removes_course_mod")) {
     const currentTag = e.target.dataset.tag;

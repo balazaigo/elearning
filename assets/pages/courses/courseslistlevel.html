@@ -23,6 +23,7 @@
             </div>
             <input type="hidden" value="6d164cf4-b76d-48a7-8094-2b8ac4482805" name="course_id" id="course_id"></div>
             <input type="hidden" data-flinkto="course" id="course_module_id" />
+            <input type="hidden"  id="category_id_gs" value="" />
         </div>
 
       </div>
@@ -101,7 +102,11 @@
                                       </div>
                                       <div class="col-md-12 p-3 mtag tag_cont_box">
                                         <div class="tag__container">
-                                          <input type="text" class="tag__inputs tag__inputs_course_module" placeholder="+ Add Tag">
+                                          <div style="width: auto;float: left;">
+                                            <input type="text" class="tag__inputs tag__inputs_course_module" placeholder="+ Add Tag">
+                                          </div>
+                                          <span class="orange-btn nbtn" style="margin-left: 15px;"><button onclick="addTagBtncourseModule(this)"><i class="fas fa-plus"></i>Add</button>
+                                          </span>
                                           <ul class="tag__List content hideContent" id="tag__List_append">
                                           </ul>
                                           <div class="show-more showmore">More >></div>
