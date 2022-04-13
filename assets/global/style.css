@@ -250,7 +250,7 @@ input[type="checkbox"]:checked + label::before {
 	margin-left: -300px;
 	background-color: #20204F;
 	transition: 0.5s;
-	z-index: 1;
+	z-index: 99;
 }
 .nav-link:active, .nav-link:focus, .nav-link:hover {
 	background-color: #ffffff26;
@@ -4287,4 +4287,25 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 #chapter_list_ul{
     height: 400px !important;
     overflow: scroll;
+}
+
+footer.fixed-bottom {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 9;
+}
+.active-cont .footer-section {
+	padding-left: 250px;
+	background: #f9f9fb;
+	box-shadow: 3px 6px 25px rgba(154, 105, 69, 0.1);
+}
+.footer-section {
+	padding-left: 0px;
+	background: #f9f9fb;
+	box-shadow: 3px 6px 25px rgba(154, 105, 69, 0.1);
+}
+.footer-section p {
+	margin: 0; padding: 10px 0;
 }
