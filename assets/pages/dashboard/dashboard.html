@@ -40,6 +40,11 @@
       </div>
     </div>
   </div>
+  <!--<div class="row">
+    <div style="height: 300px;" class="col-md-8">
+      <canvas id="myBarChart" width="400" height="400"></canvas>
+    </div>
+  </div>-->
   <div class="white-bg col-md-12">
     <div class="container-fluid p-0">
       <div class="col-12 p-3 pb-0">
@@ -85,7 +90,7 @@
       </div>
       <div class="tabs white-bg p-3 mt-3 task_table">
         <input type="radio" class="btnRadio" name="tabs" id="tabone" checked="checked">
-        <label for="tabone">My Tasks Me</label>
+        <label for="tabone">My Tasks</label>
         <div class="tab p-0">
           <div class="table-section">
             <table class="table table-bordered responsive" style="table-layout:fixed;">
@@ -117,7 +122,7 @@
           </div>
         </div>
         <input type="radio" class="btnRadio" name="tabs" id="tabtwo">
-        <label for="tabtwo">Assigned By</label>
+        <label for="tabtwo">Assigned By Me</label>
         <div class="tab p-0">
           <div class="table-section">
             <table class="table table-bordered responsive">
@@ -169,7 +174,77 @@ function doSearch(){
 }
   
 $( document ).ready(function() {
-
+/*var task_created = {
+  label: 'Task Created',
+  data: [65, 59, 80, 81, 56, 55, 40, 67, 78, 66, 73, 96],
+  backgroundColor: '#F36A10',
+};
+ 
+var task_completed = {
+  label: 'Task Completed',
+  data: [28, 48, 40, 19, 21, 7, 15, 33, 29, 32, 34, 74],
+  backgroundColor: "#787895",
+};
+ 
+var taskData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: [task_created, task_completed]
+};
+var chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  borderRadius: 5,
+  barPercentage: 0.9,
+  categoryPercentage: 0.3,
+  borderSkipped:false,
+  scales: {
+        x: {
+            grid: {
+              display: false,
+              drawBorder: false
+            }
+        },
+        y: {
+            grid: {
+              color: "#F5F5F8",
+              tickWidth: 10,
+              drawBorder: false
+            }
+        }
+    },
+    plugins: {
+      legend: {
+       labels: {
+        pointStyle: 'circle'
+       }
+      }
+    }
+};
+var myBarChart = document.getElementById("myBarChart");
+var barChart = new Chart(myBarChart, {
+  type: 'bar',
+  data: taskData,
+  options: chartOptions
+});*/
+    /*var ctx = $("#myBarChart").get(0).getContext("2d");
+    var myBarChart = new Chart(ctx,{
+      type: 'bar', 
+      data: data,
+      options: {
+          
+          
+          responsive: true,
+          maintainAspectRatio: false,
+          barThickness: 8,
+          borderRadius: 5,
+          scales: {
+            xAxes: [{
+              barPercentage: 0.5,
+              categoryPercentage: 0.6
+            }]
+          }
+      }
+    });*/
   $(".btnReset").on("click", function(){
     $("#status, #courses_list, #searchText").val(null);
     doSearch();
