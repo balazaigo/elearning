@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-6 p-0 side-btn">
           <ul>
-            <li> <span class="border-btn or-btn" data-flinkto="task"> <a  data-flinkto="task"><i class="fa fa-table"  data-flinkto="task"></i></a> </span> <span class="border-btn or-btn" data-flinkto="taskcalendar"> <a data-flinkto="taskcalendar"><i class="far fa-calendar" data-flinkto="taskcalendar"></i></a> </span> </li>
+            <li> <span class="border-btn or-btn" data-flinkto="task"> <a  data-flinkto="task"><i class="fa fa-table"  data-flinkto="task"></i></a> </span> <span class="border-btn or-btn" data-flinkto="taskcalendar"> <a data-flinkto="taskcalendar" style="background: #d8d4d4;"><i class="far fa-calendar" data-flinkto="taskcalendar"></i></a> </span> </li>
           </ul>
         </div>
       </div>
@@ -63,7 +63,7 @@
       header: {
         left: 'prev,today,next',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'month,basicWeek'
       },
       defaultView: 'month',
       height: 800,
@@ -128,7 +128,7 @@
       header: {
         left: 'prev,today,next',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'month,basicWeek'
       },
       defaultView: 'month',
       height: 800,
@@ -191,8 +191,9 @@
     header: {
       left: 'prev,today,next',
       center: 'title',
-      right: 'month,agendaWeek,agendaDay'
+      right: 'month,basicWeek'
     },
+    columnFormat: 'ddd - D',
     defaultView: 'month',
     height: 800,
     contentHeight: 650,
