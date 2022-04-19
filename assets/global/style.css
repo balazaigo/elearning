@@ -4309,3 +4309,52 @@ footer.fixed-bottom {
 .footer-section p {
 	margin: 0; padding: 10px 0;
 }
+
+/******* Calendar style starts*********/
+#calendarTask{
+	background: white;
+	padding: 30px;
+}
+.fc .fc-button-group > * {
+    margin: 0px 0px 0px 30px !important;
+    border: 2px solid #F36A10;
+    background: white;
+    border-radius: 4px;
+    color: #F36A10;
+    font-weight: 600;
+}
+.fc-toolbar {
+	border-bottom: 1px solid #c1b6b659;
+}
+.fc-center h2{
+	font-weight: 600;
+    color: #20204F;
+    font-size: 18px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+.fc th{
+
+    padding: 10px !important;
+    background: #f3f5f7;
+}
+.fc-event-time, .fc-event-title {
+    padding: 0 1px;
+    white-space: nowrap;
+}
+
+.fc-title {
+    white-space: normal;
+}
+.fc-state-active {
+    box-shadow: inset 0 35px 4px rgb(227 84 24 / 15%), 0 1px 2px rgb(0 0 0 / 5%);
+}
+/******* Calendar style ends*********/
+/****** Dashboard Bar chart Starts *******/
+#myBarChart{
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+/****** Dashboard Bar chart Ends *******/
+
