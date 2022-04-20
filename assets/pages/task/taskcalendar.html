@@ -17,24 +17,24 @@
     <div class="col-md-4">
       <div class="task-tbox"> <img src="../assets/images/tbox1.jpg" alt="" >
         <div>
-          <h4>247</h4>
-          <p>Finished Task Count</p>
+          <h4 id="finished_task_count2">0</h4>
+          <p>Finished Task</p>
         </div>
       </div>
     </div>
     <div class="col-md-4">
       <div class="task-tbox"> <img src="../assets/images/tbox2.jpg" alt="" >
         <div>
-          <h4>247</h4>
-          <p>Onhold Task Count</p>
+          <h4 id="onhold_task_count2">0</h4>
+          <p>Onhold Task</p>
         </div>
       </div>
     </div>
     <div class="col-md-4">
       <div class="task-tbox"> <img src="../assets/images/tbox3.jpg" alt="" >
         <div>
-          <h4>247</h4>
-          <p>Active Task Count</p>
+          <h4 id="active_task_count2">0</h4>
+          <p>Active Task</p>
         </div>
       </div>
     </div>
@@ -55,9 +55,15 @@
 <div id='calendarTask'></div>
 <script type="text/javascript">
   $(document).ready(function(){
+
+  var param_task = "?self=0";
+  getTask_counts2(param_task);
   // page is now ready, initialize the calendar...
   var $calendar = $('#calendarTask');
   $("#tabone").click(function(){
+
+    var param_task = "?self=0";
+    getTask_counts2(param_task);
     $calendar.fullCalendar('destroy');
     $calendar.fullCalendar({
       header: {
@@ -74,10 +80,16 @@
       buttonText : {
           prev : 'PREVIOUS',
           next : 'NEXT',
-          today : 'TODAY'
-      },
+          today : 'TODAY',
+          month:  'Month',
+          week:  'Week',
+      }, 
+    views: {
+        month: {
+            columnFormat: 'ddd'
+        }
+    },
       eventClick: function(calEvent, jsEvent, view) {
-        console.log(calEvent.id);
         getTaskDetails(calEvent.id);
       }, 
       eventRender: function(event, element) {
@@ -123,6 +135,8 @@
     });
   });
   $("#tabtwo").click(function(){
+    var param_task = "?self=1";
+    getTask_counts2(param_task);
     $calendar.fullCalendar('destroy');
     $calendar.fullCalendar({
       header: {
@@ -139,10 +153,16 @@
       buttonText : {
           prev : 'PREVIOUS',
           next : 'NEXT',
-          today : 'TODAY'
-      },
+          today : 'TODAY',
+          month:  'Month',
+          week:  'Week',
+      }, 
+    views: {
+        month: {
+            columnFormat: 'ddd'
+        }
+    },
       eventClick: function(calEvent, jsEvent, view) {
-        console.log(calEvent.id);
         getTaskDetails(calEvent.id);
       },
       eventRender: function(event, element) {
@@ -187,6 +207,7 @@
       }
     });
   });
+
   $calendar.fullCalendar({
     header: {
       left: 'prev,today,next',
@@ -203,10 +224,16 @@
     buttonText : {
         prev : 'PREVIOUS',
         next : 'NEXT',
-        today : 'TODAY'
+        today : 'TODAY',
+        month:  'Month',
+        week:  'Week',
+    }, 
+    views: {
+        month: {
+            columnFormat: 'ddd'
+        }
     },
     eventClick: function(calEvent, jsEvent, view) {
-      console.log(calEvent.id);
       getTaskDetails(calEvent.id);
     },
     eventRender: function(event, element) {
@@ -233,8 +260,6 @@
     events: function( start, end, timezone, callback ) {
         var startdate = start.format("YYYY-MM-DD");
         var enddate = end.format("YYYY-MM-DD");
-        console.log(startdate);
-        console.log(enddate);
        $.ajax({
           url: API_CONTENT_URL+'/tasks/calendar?start='+startdate+'&end='+enddate+'&self=true',
           type: 'get',
@@ -254,6 +279,20 @@
   })
 
 });
+
+function getTask_counts2(param_task){
+  $.ajax({
+    url: API_CONTENT_URL + '/task_count'+param_task,
+    type: 'get',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    success:function(response){
+      $("#active_task_count2").html(response.active_task_count);
+      $("#onhold_task_count2").html(response.onhold_task_count);
+      $("#finished_task_count2").html(response.finished_task_count);
+    }
+  });
+}
 function change_status(e){
   var task_status = getStatusTask(parseInt(e.dataset.status));
   $("#det_task_status").empty();
