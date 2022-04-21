@@ -155,9 +155,9 @@
   </div>
 </div>
 <script type="text/javascript">
-  function getTask_counts(){
+  function getTask_counts(param_task){
     $.ajax({
-      url: API_CONTENT_URL + '/task_count',
+      url: API_CONTENT_URL + '/task_count'+param_task,
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
@@ -172,11 +172,11 @@
     $('.btnRadio').each(function(index, element) {
       if($(element).prop("checked")) {
         if($(element).prop("id") == "tabone") {
-          var param_task = "?self=1";
+          var param_task = "?self=1&is_calendar=false";
           getTask_counts(param_task);
           gridAssigned("pagination-container-to", "data-assignedTo", "assigned_to", "true");
         } else {
-          var param_task = "?self=0";
+          var param_task = "?self=0&is_calendar=false";
           getTask_counts(param_task);
           gridAssigned("pagination-container-by", "data-assignedBy", "assigned_by", "false");        
         }
@@ -185,8 +185,8 @@
   }
   
   $( document ).ready(function() {
-    var param_task = "?self=1";
-    getTask_counts(param_task);
+   // var param_task = "?self=1&is_calendar=false";
+   // getTask_counts(param_task);
     $(".btnReset").on("click", function(){
       $("#status, #courses_list, #searchText").val(null);
       doSearch();
@@ -237,7 +237,7 @@
       gridAssigned("pagination-container-to", "data-assignedTo", "assigned_to", "true");
     }
   
-    var param_task = "?self=1";
+    var param_task = "?self=1&is_calendar=false";
     getTask_counts(param_task);
   });
   

@@ -56,13 +56,13 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-  var param_task = "?self=0";
+  var param_task = "?self=0&is_calendar=true";
   getTask_counts2(param_task);
   // page is now ready, initialize the calendar...
   var $calendar = $('#calendarTask');
   $("#tabone").click(function(){
 
-    var param_task = "?self=0";
+    var param_task = "?self=0&is_calendar=true";
     getTask_counts2(param_task);
     $calendar.fullCalendar('destroy');
     $calendar.fullCalendar({
@@ -135,7 +135,7 @@
     });
   });
   $("#tabtwo").click(function(){
-    var param_task = "?self=1";
+    var param_task = "?self=1&is_calendar=true";
     getTask_counts2(param_task);
     $calendar.fullCalendar('destroy');
     $calendar.fullCalendar({
