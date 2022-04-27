@@ -220,6 +220,7 @@ function get_assignee_details(cid, module_id){
 			$("#assigned_table").show();
 			$("#assignto_all_sub_row").show();
 	}
+	//console.log(module_id);
 	window.sharedAssignCourseId = "";
 	$.ajax({
 		url: url,
@@ -227,7 +228,7 @@ function get_assignee_details(cid, module_id){
 		dataType: 'json',
 		headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
 		success:function(response){
-			console.log('getresponse', response);
+			//console.log('getresponse', response);
 
 			if(response.start_date){
 				$(".course_module_content #start_date").attr("min", response.start_date);
@@ -261,8 +262,7 @@ function get_assignee_details(cid, module_id){
 		        $("#member").append("<option value='"+val.id+"'>"+val.first_name+" " + val.last_name+"</option>");
 		      });
 			}
-
-			if(module_id !== null){
+			//if(module_id !== null){
 				if(response.module_assignees.length > 0){
 			      $("#assignedMember").empty();
 			      var assignee_html = '';
@@ -285,7 +285,7 @@ function get_assignee_details(cid, module_id){
 			              </td>
 			            </tr>`);
 				}
-			}
+			//}
 		}
 	});
 }
