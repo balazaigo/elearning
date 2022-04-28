@@ -101,3 +101,95 @@
 </div>
 <!-- Role Create Form End -->
 
+<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title"><span id="mAlertName"></span></h6>
+        <a class="close" data-bs-dismiss="modal">×</a>
+      </div>
+      <div class="modal-body text-center">
+        <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" alt="Delete"> </div>
+        <input type="hidden" id="mAlertURL" value="" />
+        <p>Are you sure you want to delete it?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <span class="dborder-btn nbtn">
+          <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        </span>
+        <span class="danger-btn nbtn">
+          <button type="button" id="mAlertDelete_mem" class="btn btn-danger">Yes Delete</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  
+// document.addEventListener('click', delete_role);
+
+$("#mAlertDelete_mem").click(function(){
+    var url = $("#mAlertURL").val();
+    axios
+      .delete(`${API_BASE_URL}/roles/`+url+`/`,{
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+      })
+      .then((response) => {
+        toastr.success("Role deleted successfully.");
+        $("#mAlertCancel").click();
+        getRoles();
+      })
+      .catch((error) => {
+        var res = error.response;
+        if(res.status == 403) {
+          toastr.error(res.data.detail);
+        } else {
+          console.error("There was an error!", error.response);
+        }
+        // console.error("There was an error!", error.response);
+        const fieldValidationErrors = error?.response?.data;
+        if (fieldValidationErrors?.name?.[0]) {
+          const nameError = fieldValidationErrors.name[0];
+          $("#role-name").after(`<span class='field-error'>${nameError}</span>`);
+        }
+      });
+  });
+var delete_role_btn = document.getElementById("mAlertDelete_mem"); 
+delete_role_btn.addEventListener('click', delete_role);
+
+function delete_role(e){  
+
+  let role_id = e.target.dataset.deleterole;
+
+  console.log("testdelete", role_id);
+
+  if(role_id){
+    axios
+      .delete(`${API_BASE_URL}/roles/`+role_id+`/`,{
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+      })
+      .then((response) => {
+        toastr.success("Role deleted successfully.");
+        getRoles();
+      })
+      .catch((error) => {
+        var res = error.response;
+        if(res.status == 403) {
+          toastr.error(res.data.detail);
+        } else {
+          console.error("There was an error!", error.response);
+        }
+        // console.error("There was an error!", error.response);
+        const fieldValidationErrors = error?.response?.data;
+        if (fieldValidationErrors?.name?.[0]) {
+          const nameError = fieldValidationErrors.name[0];
+          $("#role-name").after(`<span class='field-error'>${nameError}</span>`);
+        }
+      });
+  }
+  
+  }
+</script>
+

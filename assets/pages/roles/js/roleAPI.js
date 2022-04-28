@@ -8,6 +8,7 @@ function getRoles() {
     })
     .then((res) => {
       renderRoleList(res.data);
+      loadAlertModal();
     })
     .catch((error) => {
       var res = error.response;
@@ -40,11 +41,21 @@ function renderRoleList(roles) {
     }else{
       html_member = `<span><a id="role_member_count"><span>Members :</span> ${role.member_count}</a></span>`;
     }
+    
+    let delete_button = "";
+    if(role.member_count <= 0 && processRights("Delete Role") === true){
+      // delete_button = `<i data-bs-toggle="modal" data-bs-target="#roleAlert" data-deleterole="${role.id}" class="fas fa-trash-alt"></i>`;
+         delete_button = `<i data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${role.name}" data-url="${role.id}" class="fas fa-trash-alt"></i>`;
+    }else{
+      delete_button = "";
+    }
+
     html += `<div class="row">
                 <div class="col-8 cleft tbtn" > <h4 data-role_id="${role.id}" id="trigger-role-edit-form" class="clr-orng">${role.name}</h4></div>
                 <div class="col-4 cright">
                   <div class="dropdown ahide">
                     ${html_member}
+                    ${delete_button}
                   </div>
                 </div>
               </div>`;
@@ -91,6 +102,37 @@ function renderRoleList(roles) {
 
   $("#rolebox").html(html);
 }
+
+function loadAlertModal(){
+  $('#mAlert').on('shown.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipientID = button.data('url');
+    var name = button.data('name');
+    var modal = $(this);
+    modal.find('.modal-content input').val(recipientID);
+    modal.find('.modal-content #mAlertName').html(name);
+    $("#mAlertCancel").focus();
+    //mAlertDelete
+
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+    });
+    
+  });
+  //hidden.bs.modal 
+  $('#mAlert').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
+}
+
+
+
 
 //  Get Role Rights - For Role Create
 function getRoleRights() {
