@@ -59,7 +59,13 @@
     </div>
   </div>
 
-  <div id="pagination-container-to"></div>
+<div class="container-fluid pagination-cont">
+  <div id="pagination-container-to" class="certificate_pagination"></div>
+  <div id="pagination-container-goto" class="goto_page"><span class="goto_page_text">Go to page</span>
+  <input type="number" value="" id="go_to_page" maxlength="3" min="1">
+  <a class="goto_go" onclick="goto_pageCall('pagination-container-to', 'go_to_page');"><span>Go<i class="fa fa-angle-right" aria-hidden="true"></i>
+  </span></a></div>
+</div>
 <div class="container-fluid">
     <div class="row">
       <div class="col-12 title-head mb-3">

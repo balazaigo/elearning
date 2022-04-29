@@ -229,7 +229,14 @@
 </div>
 </div>
 <div class="modal-footer" style="justify-content:none;display: block;">
-  <div id="pagination-container-to" style="float: left;"></div>
+  
+<div class="container-fluid pagination-cont">
+  <div id="pagination-container-by" class="certificate_pagination"></div>
+  <div id="pagination-container-goto" class="goto_page"><span class="goto_page_text">Go to page</span>
+  <input type="number" value="" id="go_to_page2" maxlength="3" min="1">
+  <a class="goto_go" onclick="goto_pageCall('pagination-container-by', 'go_to_page2');"><span>Go<i class="fa fa-angle-right" aria-hidden="true"></i>
+  </span></a></div>
+</div>
   <span class="orange-btn nbtn" style="float: right;">
     <button type="button" class="btn btn-success" id="selectCase">Select Case</button>
   </span>
@@ -375,18 +382,26 @@ if(processRights("Add Course") === false || processRights("Define Course") === f
 function get_pagination(parameter){
   document.getElementById("selectCase").setAttribute("data-selected_case_id", "");
   $(".cases-card").attr("style", "");
-  if($( "#pagination-container-to" ).length > 0) {
-    $('#pagination-container-to').pagination({
+  if($( "#pagination-container-by" ).length > 0) {
+    $('#pagination-container-by').pagination({
       dataSource: API_CONTENT_URL + '/cases'+parameter,
       locator: 'data',
       totalNumberLocator: function(response) {
+        console.log(response);
+        console.log(response.total_pages);
+        setTimeout(function() {
+          $(".paginationjs-prev").attr("data-num", "1");
+          $(".paginationjs-next").attr("data-num", response.total_pages);
+          $("#go_to_page2").attr("min", 1);
+          $("#go_to_page2").attr("max", response.total_pages);
+        }, 500);
         return response.total;
       },
       alias: {
         pageNumber: 'page',
         pageSize: 'per_page',
       },  
-      pageSize: 10,
+      pageSize: 6,
       ajax: {
         beforeSend: function(request) {
           document.getElementById("selectCase").setAttribute("data-selected_case_id", "");
@@ -404,9 +419,9 @@ function get_pagination(parameter){
       },
       callback: function(data, pagination) {
         if(pagination.totalNumber < 7){
-          $("#pagination-container-to").hide();
+          $("#pagination-container-by").hide();
         }else{
-          $("#pagination-container-to").show();
+          $("#pagination-container-by").show();
         }
 
         $("#role-loader").removeClass("disp_block");

@@ -116,7 +116,15 @@
                   </tr>
                 </tbody>
               </table>
-              <div id="pagination-container-to"></div>
+              <!--<div id="pagination-container-to"></div>-->
+
+              <div class="container-fluid pagination-cont">
+                <div id="pagination-container-to" class="certificate_pagination"></div>
+                <div id="pagination-container-goto" class="goto_page"><span class="goto_page_text">Go to page</span>
+                <input type="number" value="" id="go_to_page" maxlength="3" min="1">
+                <a class="goto_go" onclick="goto_pageCall('pagination-container-to', 'go_to_page');"><span>Go<i class="fa fa-angle-right" aria-hidden="true"></i>
+                </span></a></div>
+              </div>
             </div>
           </div>
           <input type="radio" class="btnRadio" name="tabs" id="tabtwo">
@@ -146,7 +154,15 @@
                   </tr>
                 </tbody>
               </table>
-              <div id="pagination-container-by"></div>
+              <!--<div id="pagination-container-by"></div>-->
+
+              <div class="container-fluid pagination-cont">
+                <div id="pagination-container-by" class="certificate_pagination"></div>
+                <div id="pagination-container-goto" class="goto_page"><span class="goto_page_text">Go to page</span>
+                <input type="number" value="" id="go_to_page2" maxlength="3" min="1">
+                <a class="goto_go" onclick="goto_pageCall('pagination-container-by', 'go_to_page2');"><span>Go<i class="fa fa-angle-right" aria-hidden="true"></i>
+                </span></a></div>
+              </div>
             </div>
           </div>
         </div>
@@ -260,6 +276,17 @@
       dataSource: API_CONTENT_URL + '/task/' + queryPara,
       locator: 'data',
       totalNumberLocator: function(response) {
+      setTimeout(function() {
+        $(".paginationjs-prev").attr("data-num", "1");
+        $(".paginationjs-next").attr("data-num", response.total_pages);
+        if(tagID == "pagination-container-to"){
+          $("#go_to_page").attr("min", 1);
+          $("#go_to_page").attr("max", response.total_pages);
+        }else{
+          $("#go_to_page2").attr("min", 1);
+          $("#go_to_page2").attr("max", response.total_pages);
+        }
+      }, 500);
         return response.total;
       },
       alias: {

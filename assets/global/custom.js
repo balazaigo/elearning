@@ -295,3 +295,29 @@ $( document ).ready(function() {
         //return "Dude, are you sure you want to leave? Think of the kittens!";
         //window.location = SITE_URL_PROTOCOL+'/admin';
     //}
+
+/* Go to Page pagination Starts*/
+function goto_pageCall(page_name, inp_id){
+  var goto_page = $("#"+inp_id).val();
+  if(goto_page){
+    const last = Array.from(
+      document.querySelectorAll('.J-paginationjs-page')
+    ).pop();
+    if(Number(goto_page) <= Number(last.getAttribute("data-num"))){
+    var container = document.querySelector("#"+page_name);
+      var elem = container.querySelectorAll('[data-num="'+goto_page+'"]');
+      if(elem.length > 0){
+        elem[0].click();
+      }else{
+        var myDIV = $('<li class="paginationjs-page J-paginationjs-page disp_none" data-num="'+goto_page+'"><a href="">'+goto_page+'</a></li>');
+        $(".paginationjs-pages ul").append(myDIV);
+        myDIV.trigger('click');
+        myDIV.remove();
+      }
+    }else{
+      toastr.error("Plese enter valid page number.");
+    }
+  }
+}
+
+/* Go to Page pagination Ends */    

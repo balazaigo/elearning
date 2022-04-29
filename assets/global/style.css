@@ -3739,8 +3739,7 @@ option:not(:first-of-type) {
 	width: 30px;
 }
 .certificate_pagination{
-    float: right;
-    margin-right: 29px;
+    float: left;
 }
 #role-description{
 	min-height: 125px;
@@ -4358,4 +4357,95 @@ footer.fixed-bottom {
     border-radius: 8px;
 }
 /****** Dashboard Bar chart Ends *******/
+/***** Pagination design starts *******/
+#pagination-container-goto{
+	float: right;
+    margin-right: 10px;
+}
+.goto_page_text{
+	color: #b2b5c2;
+    margin-right: 5px;
+    font-size: 14px;
+}
+#go_to_page, #go_to_page2{
+    width: 45px;
+    text-align: center;
+    margin-right: 5px;
+    background: #e9e8ed;
+    border: none;
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.goto_go{
+    color: #b2b5c2;
+    font-size: 14px;  
+    padding: 8px;
+    border-radius: 5px
+}
+.goto_go i{
 
+    position: relative;
+    top: 2px;
+    font-size: 20px;
+    left: 4px;
+}
+.goto_go:hover{
+    background: #20204F;
+    color: #fff !important;
+}
+.paginationjs .paginationjs-pages li:first-child, .paginationjs .paginationjs-pages li:first-child>a {
+  border-radius: 6px;
+  border: 0;
+  background-color: #E9E8ED;
+}
+.paginationjs .paginationjs-pages li:first-child, .paginationjs .paginationjs-pages li:first-child>a {
+  border-radius: 6px;
+  border: 0;
+  background-color: #E9E8ED;
+}
+
+.paginationjs .paginationjs-pages li>a {
+  min-width: 40px;
+  height: 40px !important;
+  line-height: 40px !important;
+  display: block;
+  background: #fff;
+  font-size: 16px;
+  color: #223354;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.paginationjs .paginationjs-pages li {
+  float: left;
+  border: none;
+  border-right: none;
+  list-style: none;
+  margin-right: 8px;
+}
+.paginationjs .paginationjs-pages li:last-child>a {
+  border-radius: 6px !important;
+}
+.paginationjs .paginationjs-pages li.paginationjs-next {
+  border-right: none !important;
+}
+.paginationjs .paginationjs-pages li:last-child > a {
+  background: #D3D2DC;
+  border: none;
+  border-radius: 6px;
+}
+.paginationjs .paginationjs-pages li:last-child {
+  border-right: none !important;
+  border-radius: 6px !important;
+}
+.pagination-cont{
+	background: white;
+    width: 100%;
+    height: 60px;
+    padding-top: 15px;
+    border-radius: 6px;
+}
+/***** Pagination design Ends *******/

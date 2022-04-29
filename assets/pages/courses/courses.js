@@ -58,6 +58,12 @@ function get_pagination(parameter){
       dataSource: API_CONTENT_URL + '/course/'+parameter,
       locator: 'data',
       totalNumberLocator: function(response) {
+        setTimeout(function() {
+          $(".paginationjs-prev").attr("data-num", "1");
+          $(".paginationjs-next").attr("data-num", response.total_pages);
+          $("#go_to_page").attr("min", 1);
+          $("#go_to_page").attr("max", response.total_pages);
+        }, 500);
         return response.total;
       },
       alias: {
