@@ -750,6 +750,25 @@ function getTaskDetails(id){
         $("#created_dateTime").text(created_dateTime);
         var start_date = task_det.start_date;
         var end_date = task_det.end_date;
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+          dd='0'+dd
+        } 
+        if(mm<10){
+          mm='0'+mm
+        } 
+        today = yyyy+'-'+mm+'-'+dd;
+        $("#start_date_task").attr("min", today);
+        if(start_date){
+          $("#end_date_task").attr("min", start_date);
+        }else{
+          $("#end_date_task").attr("min", today);
+        }
+
         $("#start_date_task").val(start_date);
         $("#end_date_task").val(end_date);
         $("#task_id").val(task_det.id);
