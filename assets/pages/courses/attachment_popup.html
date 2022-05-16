@@ -215,7 +215,7 @@ function get_module_details(cid, module_id){
           }
           if(module_attachments.length > 0){
               module_attachments.forEach(function (element, index) {
-                if(element.attachment.substring(0, 7) != "/media/"){
+                if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                   base_img_url = '';
                 }
                   var file_type = element.attachment_type.split('/')[0];

@@ -227,7 +227,7 @@ function get_search_details(){
             data.all_attachments.forEach(function (element, index) {
               if(element.attachment_type){
                 if(element.attachment_type.split('/')[0] === 'video'){
-                    if(element.attachment.substring(0, 7) != "/media/"){
+                    if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                       base_img_url = '';
                     }
                     if(video_attachemnt_count  % 2 !== 0){
@@ -250,7 +250,7 @@ function get_search_details(){
                     }
                     video_attachemnt_count++;
                 }else if(element.attachment_type.split('/')[0] === 'image'){
-                    if(element.attachment.substring(0, 7) != "/media/"){
+                    if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                       base_img_url = '';
                     }
                     if(image_attachemnt_count  % 3 == 0){
@@ -273,7 +273,7 @@ function get_search_details(){
                     }
                     image_attachemnt_count++;
                 }else if(element.attachment_type.split('/')[0] === 'audio'){
-                      if(element.attachment.substring(0, 7) != "/media/"){
+                      if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                         base_img_url = '';
                       }
                       attachment_audio += `<div class="col-12 mb-3 audio_content">
@@ -573,7 +573,7 @@ function get_module_details(){
                                           <div class="accordionlist">
                                             <div class="row">
                                               <div class="col-md-12 acc-text">`;
-                    if(element.attachment.substring(0, 7) != "/media/"){
+                    ifelement.attachment != null && (element.attachment.substring(0, 7) != "/media/"){
                       base_img_url = '';
                     }
                     if(element.attachment_type.split('/')[0] === 'image'){

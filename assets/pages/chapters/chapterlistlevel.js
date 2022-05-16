@@ -209,7 +209,7 @@ function get_chapter_search_details(){
             data.all_attachments.forEach(function (element, index) {
               if(element.attachment_type){
 
-                if(element.attachment.substring(0, 7) != "/media/"){
+                if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                   base_img_url = '';
                 }
                 if(element.attachment_type.split('/')[0] === 'video'){
@@ -506,7 +506,7 @@ function get_module_details_chapter_module(){
             module_attachments.forEach(function (element, index) {
                 var file_type = element.attachment_type.split('/')[0];
                 
-                if(element.attachment.substring(0, 7) != "/media/"){
+                if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                   base_img_url = '';
                 }
                 if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){

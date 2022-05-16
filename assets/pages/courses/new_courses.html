@@ -289,7 +289,7 @@
                     var file_type = element.attachment_type.split('/')[0];
                     if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
                       
-                        if(element.attachment.substring(0, 7) != "/media/"){
+                        if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                           base_img_url = '';
                         }
                         course_attachments_html += `<li class="has-children is-open" style="list-style:none;">
