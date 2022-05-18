@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
   document.getElementById("tabtwo").checked = true;
   $("#tabone").hide();
   $('label[for="tabone"]').hide();
@@ -573,7 +572,7 @@ function get_module_details(){
                                           <div class="accordionlist">
                                             <div class="row">
                                               <div class="col-md-12 acc-text">`;
-                    ifelement.attachment != null && (element.attachment.substring(0, 7) != "/media/"){
+                    if(element.attachment != null && (element.attachment.substring(0, 7) != "/media/")){
                       base_img_url = '';
                     }
                     if(element.attachment_type.split('/')[0] === 'image'){

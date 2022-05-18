@@ -167,7 +167,7 @@ async function getCoursesListLevelPage(e) {
           el.setAttribute("data-chapter_id", e.target.dataset.chapter_id);
           el.setAttribute("data-chapter_topic_id", e.target.dataset.chapter_topic_id);
         });
-        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.js`, function() {}); 
+        $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.js`, function() {});
       } else {
         console.log("Something error happend");
       }
