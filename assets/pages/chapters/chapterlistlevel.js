@@ -56,7 +56,7 @@
 
     get_chapter_breadcrumbs();
     //setTimeout(, 1000);
-    get_chapter_search_details();
+    //get_chapter_search_details();
     var minSteps = 6,
         maxSteps = 60,
         timeBetweenSteps = 100,

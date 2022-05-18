@@ -56,7 +56,7 @@
 
     get_breadcrumbs();
     //setTimeout(, 1000);
-    get_search_details();
+    //get_search_details();
     var minSteps = 6,
         maxSteps = 60,
         timeBetweenSteps = 100,
