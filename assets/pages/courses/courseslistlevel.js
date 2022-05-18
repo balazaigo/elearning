@@ -496,7 +496,7 @@ function get_breadcrumbs(){
               }
             });
             if(breadcrumbs_data[breadcrumbs_data.length-1].is_case_preview == false && breadcrumbs_data[breadcrumbs_data.length-1].is_chapter_preview == false){
-              get_search_details();
+              //get_search_details();
             }
             //if(breadcrumbs_data.breadcrumbs_data.length-1 )
         }
