@@ -88,6 +88,7 @@ $(document).ready(function(){
 		      	"Authorization" : "Bearer " + getUserInfo().access_token
 		    },
 		    success: function(response){
+		    	updateCountsSelectedModule("");
 	     		toastr.success("Comment saved Successfully.");
 				get_message_details(cid, module_id);
 		    },

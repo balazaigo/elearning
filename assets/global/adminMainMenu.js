@@ -587,21 +587,21 @@ function get_list( a, $parent , level_count_inc) {
                 //preven_click_attachment = "pointer-events:none;";
               }
               if(a[i].attachment_count > 0){
-                newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].attachment_count+"</span></span>");
+                newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-uni_id='module_"+a[i].level+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].attachment_count+"</span></span>");
               }else{
-                newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
+                newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-uni_id='module_"+a[i].level+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
               }
               if(a[i].comment_count > 0){
-                newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].comment_count+"</span></span>");
+                newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-uni_id='module_"+a[i].level+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].comment_count+"</span></span>");
               }else{
-                newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
+                newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-uni_id='module_"+a[i].level+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
               }
               if(a[i].assign_count > 0){
-                newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].assign_count+"</span></span>");
+                newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-uni_id='module_"+a[i].level+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].assign_count+"</span></span>");
               }else{
-                newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
+                newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-uni_id='module_"+a[i].level+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
               }
-              newUlDIV.append("<span class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
+              newUlDIV.append("<span class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-uni_id='module_"+a[i].level+a[i].module_id+"' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
               if(a[i].chapter_id && a[i].can_access == true){
                 prevent_click = "pointer-events:unset;";
               }
@@ -725,21 +725,21 @@ function get_list( a, $parent , level_count_inc) {
                   //preven_click_attachment = "pointer-events:none;";
                 }
                 if(a[i].attachment_count > 0){
-                  newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].attachment_count+"</span></span>");
+                  newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-uni_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].attachment_count+"</span></span>");
                 }else{
-                  newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
+                  newUlDIV.append("<span class='attach_img_icon disp_in_block flt_right' style='"+preven_click_attachment+style_block+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-uni_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
                 }
                 if(a[i].comment_count > 0){
-                  newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].comment_count+"</span></span>");
+                  newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-uni_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].comment_count+"</span></span>");
                 }else{
-                  newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></span>");
+                  newUlDIV.append("<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-uni_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'></span>");
                 }
                 if(a[i].assign_count > 0){
-                  newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].assign_count+"</span></span>");
+                  newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-uni_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><span class='icon_counts'>"+a[i].assign_count+"</span></span>");
                 }else{
-                  newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
+                  newUlDIV.append("<span class='user_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-uni_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
                 }
-                newUlDIV.append("<span class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
+                newUlDIV.append("<span class='frame_img_icon disp_in_block flt_right' style='"+prevent_click+style_block+"'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-uni_id='sub_module_"+levels+a[i].module_id+"' data-getresult='tag' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/></span>");
               
                 if(a[i].case_id && a[i].can_access == true){
                   prevent_click = "pointer-events:unset;";

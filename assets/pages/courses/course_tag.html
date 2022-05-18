@@ -30,17 +30,21 @@
    let chapter_id = document.getElementById("course_param").getAttribute("data-chapter_id");
    let chapter_topic_id = document.getElementById("course_param").getAttribute("data-chapter_topic_id");
     var show_input = document.getElementById("course_param").getAttribute("data-show_input");
+    console.log(show_input);
     if(show_input == "true"){
        $(".tag__inputs").attr("style", "display:block");
        $(".showmore").attr("style", "display:block");
+       $(".orange-btn").attr("style", "display:block");
        get_module_details(cid, module_id);
     }else if(show_input == "false-chapter"){
        $(".tag__inputs").attr("style", "display:none");
        $(".showmore").attr("style", "display:none");
+       $(".orange-btn").attr("style", "display:none");
        get_module_details(chapter_id, chapter_topic_id);
-    }else{
+    }else{console.log('else',show_input);
        $(".tag__inputs").attr("style", "display:none");
-       $(".showmore").attr("style", "display:none");
+       $("..showmore").attr("style", "display:none");
+       $(".orange-btn").attr("style", "display:none");
        get_module_details(case_id, module_id);
     }
   }, 0);

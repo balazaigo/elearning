@@ -430,6 +430,8 @@
     });
 
     $("#saveCoursesClose, #saveCoursesNew").on("click", function () {
+      $("#saveCoursesClose").prop('disabled', true);
+      $("#saveCoursesNew").prop('disabled', true);
       var isValidForm = frmvalidatorfrm.form();
       if (isValidForm) {
         if ($("#tags").val().length === 0) {
@@ -541,6 +543,9 @@
         "Authorization": "Bearer " + getUserInfo().access_token
       },
       success: function (response) {
+
+        $("#saveCoursesClose").removeAttr("disabled");
+        $("#saveCoursesNew").removeAttr("disabled");
         toastr.success("New course information was successfully saved.");
         $('#addCourses').modal('hide');
         if (openNew) {
@@ -558,6 +563,8 @@
 
       },
       error: function (error) {
+        $("#saveCoursesClose").removeAttr("disabled");
+        $("#saveCoursesNew").removeAttr("disabled");
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -577,6 +584,8 @@
         "Authorization": "Bearer " + getUserInfo().access_token
       },
       success: function (response) {
+        $("#saveCoursesClose").removeAttr("disabled");
+        $("#saveCoursesNew").removeAttr("disabled");
         toastr.success("Course information was successfully updated.");
         $('#addCourses').modal('hide');
         $('#courses_page').trigger('click');
@@ -584,6 +593,8 @@
         get_pagination(parameter);
       },
       error: function (error) {
+        $("#saveCoursesClose").removeAttr("disabled");
+        $("#saveCoursesNew").removeAttr("disabled");
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }

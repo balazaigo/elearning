@@ -155,6 +155,7 @@
                 "Authorization" : "Bearer " + getUserInfo().access_token
               },
               success: function(response){
+                updateCountsSelectedModule("");
                 get_module_details(cid, module_id);
                 toastr.success("File uploaded successfully.");
                 console.log(response);

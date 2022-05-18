@@ -679,6 +679,7 @@ function show_tag_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_tag.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
     if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
@@ -701,7 +702,9 @@ function show_attachment_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    document.getElementById("course_param").setAttribute("data-action_made", "false");
     if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
       document.getElementById("course_param").setAttribute("data-case_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id"));
@@ -722,7 +725,9 @@ function show_message_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/message_popup.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    document.getElementById("course_param").setAttribute("data-action_made", "false");
     if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
       document.getElementById("course_param").setAttribute("data-case_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id"));
@@ -743,7 +748,9 @@ function show_assignee_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
+    document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
+    document.getElementById("course_param").setAttribute("data-action_made", "false");
     if(e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "null" && e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id") !== "undefined" && e.parentElement.parentElement.parentElement.getAttribute("data-is_case_delete") === "false"){
       document.getElementById("course_param").setAttribute("data-show_input", "false");
       document.getElementById("course_param").setAttribute("data-case_id", e.parentElement.parentElement.parentElement.getAttribute("data-unique_case_id"));
@@ -757,12 +764,61 @@ function show_assignee_popup(e){
     modal.toggle();
   });
 }
+
+   function updateCountsSelectedModule(bulkAssign){
+    console.log('action made');
+    var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+    var course_id = document.getElementById("course_param").getAttribute("data-c_id");
+    var uni_id = document.getElementById("course_param").getAttribute("data-uni_id");
+    var module_idArray = [];
+    module_idArray.push({module_id: module_id, uniq_id: uni_id});
+    if(bulkAssign == true){
+      var module_element = document.querySelector('[data-unique_id="'+uni_id+'"]');
+      var sub_module_elements = module_element.querySelectorAll('li');
+      sub_module_elements.forEach(function (item){
+        if((item.getAttribute("data-unique_chapter_id") == "undefined" || item.getAttribute("data-unique_chapter_id") == "null" || item.getAttribute("data-unique_chapter_id") == "")
+          && ((item.getAttribute("data-unique_case_id") == "undefined" || item.getAttribute("data-unique_case_id") == "null" || item.getAttribute("data-unique_case_id") == "") || (
+            (item.getAttribute("data-unique_case_id") != "undefined" && item.getAttribute("data-unique_case_id") != "null" && item.getAttribute("data-unique_case_id") != "" && item.getAttribute("data-is_case_delete") == "true")))) {
+          module_idArray.push({module_id: item.getAttribute('data-module_id'), uniq_id: item.getAttribute('data-unique_id')});
+        }
+      });
+    }
+      $.each(module_idArray,function(index,value){
+        $.ajax({
+          url: API_CONTENT_URL + '/course/module/count/'+value.module_id,
+          type: 'get',
+          dataType: 'json',
+          headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+          success: function (response) {
+            var module_element = document.querySelector('[data-unique_id="'+value.uniq_id+'"]');
+            if(module_element.firstElementChild.querySelector(".user_img_icon").querySelector(".icon_counts")){
+              module_element.firstElementChild.querySelector(".user_img_icon").querySelector(".icon_counts").remove();
+            }
+            if(module_element.firstElementChild.querySelector(".attach_img_icon").querySelector(".icon_counts")){
+              module_element.firstElementChild.querySelector(".attach_img_icon").querySelector(".icon_counts").remove();
+            }
+            if(module_element.firstElementChild.querySelector(".message_img_icon").querySelector(".icon_counts")){
+              module_element.firstElementChild.querySelector(".message_img_icon").querySelector(".icon_counts").remove();
+            }
+
+            if(response.assign_count > 0){
+              $(module_element.firstElementChild.querySelector(".user_img_icon")).append("<span class='icon_counts'>"+response.assign_count+"</span>");
+            }
+            if(response.attachment_count > 0){
+              $(module_element.firstElementChild.querySelector(".attach_img_icon")).append("<span class='icon_counts'>"+response.attachment_count+"</span>");
+            }
+            if(response.comment_count > 0){
+              $(module_element.firstElementChild.querySelector(".message_img_icon")).append("<span class='icon_counts'>"+response.comment_count+"</span>");
+            }
+
+          },
+          error: function (error) {
+            console.log(error);
+          }
+        });
+      });
+  }
 $(document).ready(function(){
-  $('#popup_course_icon').on('hidden.bs.modal', function () {
-    setTimeout(function(){
-      $('#course_id').trigger('click');
-    }, 0);
-  });
   var course_len = $("#course_box > li").length;
   //console.log(course_len);
   if(course_len == 0){
@@ -968,7 +1024,12 @@ function get_module_details_preview(module_data){
                               </li></ul>`;
         }
         if(module_attachments.length > 0){
+          var base_img_url = `${API_CONTENT_URL}`;
             module_attachments.forEach(function (element, index) {
+                if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+                  base_img_url = '';
+                  console.log(element.attachment);
+                }
                 var file_type = element.attachment_type.split('/')[0];
                 if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
                     module_attachments_html += `<li class="has-children is-open" style="margin-top: 10px;">
@@ -979,14 +1040,14 @@ function get_module_details_preview(module_data){
                                             <div class="row">
                                               <div class="col-md-12 acc-text">`;
                     if(element.attachment_type.split('/')[0] === 'image'){
-                          module_attachments_html +=`<img class="w-100"src="${API_CONTENT_URL}${element.attachment}" alt="${element.attachment_name}">`;
+                          module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${API_CONTENT_URL}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
-                        module_attachments_html +=`<audio controls><source src="${API_CONTENT_URL}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=${API_CONTENT_URL}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="${API_CONTENT_URL}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
                     }
                     module_attachments_html +=`</div>
                                             </div>
@@ -1296,10 +1357,10 @@ $( ".main_mod_empty" ).droppable({
               template += `<li class='elipsis_img_icon disp_in_block flt_right' style=''><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'></li>`;
               template += `<li class='dots_img_icon disp_in_block flt_right' style='${style_none}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='courseslistlevel' data-module_id='${json.module_id}' data-cid='${json.course_id}''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='Introduction' data-cid='${json.course_id}''  data-module_id='${json.module_id}' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></li></ul></li>`;
               //template += `<li class='progress_btn disp_in_block flt_right' style=''><p class='"+status_class+"'>"+status_text+"</p></li>`;
-              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
-              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
-              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='attach_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/attach-icon.png' class='attach_icon' onclick='show_attachment_popup(this)' data-uni_id='module_${numItems}${json.module_id}' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='message_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/message-icon.png' class='message_icon' onclick='show_message_popup(this)' data-uni_id='module_${numItems}${json.module_id}' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
+              template += `<li class='user_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/user-icon.png' class='user_icon' onclick='show_assignee_popup(this)' data-uni_id='module_${numItems}${json.module_id}' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li></li>`;
+              template += `<li class='frame_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/frame-icon.png' class='frame_icon' onclick='show_tag_popup(this)' data-uni_id='module_${numItems}${json.module_id}' data-getresult='tag' data-module_id='${json.module_id}' data-cid='${json.course_id}''></li>`;
               template += `<li class='plus_img_icon disp_in_block flt_right' style='${style_none}'><img src='../assets/images/plus-icon.png' class='plus_icon' onClick="add_module(this, 'module_${numItems}${json.module_id}', 'sub');"></li></ul></div>`;
            $(this).before(template);
           hide_show_container();
@@ -1441,7 +1502,6 @@ $(".module-sec").click(function(e){
     }
   }
 });
-
 $(document).ready(function() {
   /*$('#course_box').sortable({
     helper: 'clone',
