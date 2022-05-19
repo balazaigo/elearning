@@ -4449,3 +4449,16 @@ footer.fixed-bottom {
     border-radius: 6px;
 }
 /***** Pagination design Ends *******/
+.previewView{
+	background: #101028;
+    color: white;
+    padding: 6px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+.disable-click{
+	pointer-events: none;
+}
+#course_module_content p img, #course_module_content_preview p img{
+	width: 100%;
+}

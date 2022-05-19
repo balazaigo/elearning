@@ -477,7 +477,7 @@ function get_breadcrumbs(){
                 $(".search_mt").hide();
                 $("#add_comment_section").hide();
               }else{
-                document.getElementById("tabone").checked = true;
+                document.getElementById("tabtwo").checked = true;
                 $("#tabone").show();
                 $('label[for="tabone"]').show();
                 $(".search_mt").show();

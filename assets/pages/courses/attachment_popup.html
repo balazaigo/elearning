@@ -51,6 +51,7 @@
 </div>
 <input type="hidden" id="course_param">
 <script type="text/javascript">
+  var xhrPool = [];
   $(document).ready(function(){
 
   if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
@@ -154,14 +155,15 @@
               headers: {
                 "Authorization" : "Bearer " + getUserInfo().access_token
               },
-              success: function(response){
+              beforeSend: function(jqXHR) { xhrPool.push(jqXHR); },
+              success: function(response, textStatus, jqXHR){
                 updateCountsSelectedModule("");
                 get_module_details(cid, module_id);
                 toastr.success("File uploaded successfully.");
                 console.log(response);
               },
               error: function(error) {
-                toastr.error("Response Error: " + error.message);
+                //toastr.error("Response Error: " + error.message);
                 console.log(error);
               }
             });
@@ -205,6 +207,7 @@ function get_module_details(cid, module_id){
       type: 'get',
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      beforeSend: function(jqXHR) { xhrPool.push(jqXHR); },
       success:function(response){
           var module_attachments_html = "";
           if(response.module_attachments){
@@ -257,9 +260,18 @@ function get_module_details(cid, module_id){
 
       },
       error: function(error) {
-        toastr.error("Response Error: " + error.message);
+       // toastr.error("Response Error: " + error.message);
         console.log(error);
       }
     });
 }
+
+$('#popup_course_icon').on('hidden.bs.modal', function (event) {
+  console.log(xhrPool);
+  $.each(xhrPool, function(i, jqXHR){
+    jqXHR.abort();
+    console.log("aborted");
+  });
+  
+});
 </script>

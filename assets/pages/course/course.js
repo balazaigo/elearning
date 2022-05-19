@@ -842,6 +842,7 @@ function moduleMobilePreview(cid){
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/course/course_preview_desktop.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
+          window.sharedPreviewName = "mobile";
           document.getElementById("course_param").setAttribute("data-cid", cid);
           $(".modal-lg").attr("style","max-width: 25%;");
           $(".dpc-closeh").attr("style","width: 94.2%;border-radius: 15px !important;background-color: unset;");
@@ -887,6 +888,7 @@ function moduleDesktopPreview(cid){
           $(".modal-lg").attr("style","max-width: 88%;");
           //$(".dpc-closeh").attr("style","width: 94.2%;border-radius: 15px !important;background-color: unset;");
           $("#popup_course_icon").attr("style","top: 20px;");
+          window.sharedPreviewName = "desktop";
           $("#content-courseModule").attr("style","height: 650px;overflow: hidden;");
           modal.toggle();
         });
@@ -1028,10 +1030,9 @@ function get_module_details_preview(module_data){
             module_attachments.forEach(function (element, index) {
                 if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                   base_img_url = '';
-                  console.log(element.attachment);
                 }
                 var file_type = element.attachment_type.split('/')[0];
-                if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
+                if(file_type === 'image'|| file_type === 'application'){
                     module_attachments_html += `<li class="has-children is-open" style="margin-top: 10px;">
                                     <ul class="acnav__list acnav__list--level2 wbg br-10" style="border-left: none;">
                                       <li class="has-children">
@@ -1042,12 +1043,36 @@ function get_module_details_preview(module_data){
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+
+                        //module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
-                        module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        //module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
                        module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                    }
+                    module_attachments_html +=`</div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </li>`;
+                }
+                if(file_type === 'video'|| file_type === 'audio'){
+                    module_attachments_html += `<li class="has-children is-open" style="margin-top: 10px;">
+                                    <ul class="acnav__list acnav__list--level2 wbg br-10" style="border-left: none;">
+                                      <li class="has-children">
+                                        <div class="acnav__label acnav__label--level2" style="border:none;">
+                                          <div class="accordionlist">
+                                            <div class="row">
+                                              <div class="col-md-12 acc-text">`;
+                    if(element.attachment_type.split('/')[0] === 'video'){
+                      module_attachments_html += `<p style="float:left;">${decodeURI(element.attachment_name)}</p><a class="previewView" onclick="showVideo(this, '${base_img_url}${element.attachment}');">View</a>`;
+                      //module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                    }else if(element.attachment_type.split('/')[0] === 'audio'){
+                      module_attachments_html += `<p style="float:left;">${decodeURI(element.attachment_name)}</p><a class="previewView" onclick="showAudio(this, '${base_img_url}${element.attachment}');">View</a>`;
+                      //module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }
                     module_attachments_html +=`</div>
                                             </div>
@@ -1070,7 +1095,33 @@ $(document).ready(function(){
     $("#mobile_preview").removeClass("overlay_target");
   });
 });
-
+function showVideo(e, fileUrl){
+  if(e.parentElement.querySelector(".player")){
+    e.parentElement.querySelector(".player").remove();
+  }
+  //$(e.parentElement).append(`<div style="position:relative;"><video class="mt-3" id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${fileUrl}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video><button type="button" class="btn-close" onclick="close_previewView(this)" style="position:absolute;margin-left: -50px;margin-top: 20px;"></button></div>`);
+  $(e.parentElement).append(`<video class="player mt-3" id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${fileUrl}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`);
+}
+function close_previewView(e){
+  e.parentElement.parentElement.parentElement.querySelector(".previewView").classList.remove("disable-click");
+  e.parentElement.remove();
+}
+function showAudio(e, fileUrl){
+  if(e.parentElement.querySelector(".player")){
+    e.parentElement.querySelector(".player").remove();
+  }
+  if(sharedPreviewName == "mobile"){
+    $(e.parentElement).append(`<span class="player" style="width:100%; float:left;"><audio style="margin-top:10px;width:100%;" controls><source src="${fileUrl}" type="audio/mpeg">Your browser does not support the audio element.</audio></span>`);
+  }else{
+    $(e.parentElement).append(`<span class="player" style="width:100%; float:left;"><audio controls><source src="${fileUrl}" type="audio/mpeg">Your browser does not support the audio element.</audio></span>`);
+  }
+  //$(e.parentElement).append(`<div style="position:relative;"><audio controls><source src="${fileUrl}" type="audio/mpeg">Your browser does not support the audio element.</audio><button type="button" class="btn-close" onclick="close_previewView(this)" style="position:absolute;margin-left: -50px;margin-top: 20px;"></button></div>`);
+  
+}
+function close_previewView(e){
+  e.parentElement.parentElement.parentElement.querySelector(".previewView").classList.remove("disable-click");
+  e.parentElement.remove();
+}
 function delete_module_confirm(e){
   var element = e;
   $("#mAlertName").text(e.dataset.name);
