@@ -882,7 +882,7 @@ function moduleDesktopPreview(cid){
 
         const container = document.getElementById("popup_course_icon");
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
-        var url = `${SITE_URL_PROTOCOL}/assets/pages/course/course_preview_desktop.html?t=` + Math.floor(Date.now() / 1000);
+        var url = `${SITE_URL_PROTOCOL}/assets/pages/course/course_preview_desktop_new.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
           document.getElementById("course_param").setAttribute("data-cid", cid);
           $(".modal-lg").attr("style","max-width: 88%;");
