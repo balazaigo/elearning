@@ -195,6 +195,7 @@ function toggle_collapse_expand_details_new(e){
     var unique_id = e.parentElement.parentElement.parentElement.getAttribute("data-unique_id");
     console.log(unique_id);
     var uni_mod_id_str = unique_id.replace(/\./g, '_');
+    console.log(uni_mod_id_str);
     if(document.getElementsByClassName('ul_details_'+uni_mod_id_str).length > 0){
       var children = document.getElementsByClassName('ul_details_'+uni_mod_id_str)[0].children;
       for(var i = 0; i < children.length; i++){
@@ -275,7 +276,7 @@ function get_module_details_new(module_id, unique_id, elem){
                                     </ul>
                                   </li>`;
                 }
-                if(file_type === 'image' || file_type === 'application'){
+                if(file_type === 'audio' || file_type === 'video'){
                     module_details += `<li class=" module has-child disp_block">
                                     <ul class="acnav__list  wbg br-10">
                                       <li class="has-children">
