@@ -93,9 +93,9 @@ function get_list_preview_course_modules( a, $parent , level_count_inc) {
             newUlDIV = $("<div id='"+uni_mod_id_str+"'></div>");
 
             if(a[i].is_qa == true){
-              newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='module_module_"+a[i].level+"'>"+input_value_substr+"</p></span>");
+              newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='module_module_"+a[i].level+"' onclick='toggle_collapse_expand_details_new(this);'>"+input_value_substr+"</p></span>");
             }else{
-              newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='module_module_"+a[i].level+"'>"+input_value_substr+"</p></span>");
+              newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='module_module_"+a[i].level+"' onclick='toggle_collapse_expand_details_new(this);'>"+input_value_substr+"</p></span>");
             }
             if (a[i].children.length > 0){
               newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right title-tip'><img src='../assets/images/arrow_up_icon.png' title='Expand/Collapse Children' class='expand_icon' onclick='toggle_collapse_expand_new(this);'/></span>");
@@ -132,9 +132,9 @@ function get_list_preview_course_modules( a, $parent , level_count_inc) {
               newUlDIV = $("<div id='"+uni_mod_id_str+"'></div>");
 
               if(a[i].is_qa == true){
-                newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='module_module_"+lev_mod+"'>"+input_value_substr+"</p></span>");
+                newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='module_module_"+lev_mod+"' onclick='toggle_collapse_expand_details_new(this);'>"+input_value_substr+"</p></span>");
               }else{
-              newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='sub_"+levels+"_module_"+lev_mod+"'>"+input_value_substr+"</p></span>");
+              newUlDIV.append("<span class='module_inputs disp_in_block flt_left'><p data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' id='sub_"+levels+"_module_"+lev_mod+"' onclick='toggle_collapse_expand_details_new(this);'>"+input_value_substr+"</p></span>");
               }
               if (a[i].children.length > 0){
                 newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' title='Expand/Collapse Children' onclick='toggle_collapse_expand_new(this);'/></span>");

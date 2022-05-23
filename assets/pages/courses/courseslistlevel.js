@@ -505,6 +505,7 @@ function get_breadcrumbs(){
         document.getElementById("module_breadcrumbs").innerHTML = brd_crumbs;
       }
     });
+    window.scrollTo(0, 0);
 }
 function get_content_details(){
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");

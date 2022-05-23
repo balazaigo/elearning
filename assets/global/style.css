@@ -3758,6 +3758,17 @@ option:not(:first-of-type) {
 	top: 50%;
 	transform: translate(-50%, -50%);
 	overflow: auto;
+	height: 600px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#createcases .popup::-webkit-scrollbar {
+  display: none;
+}
+#createcases .popup{
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
 }
 .cases-card {
 	border: 1px solid #ccc !important;
@@ -4461,4 +4472,16 @@ footer.fixed-bottom {
 }
 #course_module_content p img, #course_module_content_preview p img{
 	width: 100%;
+}
+#content-courseModule::-webkit-scrollbar {
+  display: none;
+}
+#content-courseModule {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+}
+#content-courseModule {
+	height: 550px;
+    overflow: hidden;
+    overflow-y: scroll;
 }
