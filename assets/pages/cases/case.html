@@ -59,6 +59,14 @@
             </div>
           </div>
           <div class="col-md-12 mb-3">
+            <div class="form-floating">
+              <select class="sort-select form-control" id="category" name="category">
+                <option value="">Category</option>
+              </select>
+              <label for="category" data-title="Select category" data-caption="Select">Select</label>
+            </div>
+          </div>
+          <div class="col-md-12 mb-3">
             <label for="tags2" class="tags2-label d-none">Add a tag</label>
             <select class="form-control tags2" id="tags2" name="tags[]" multiple="multiple" style="width:100%" min-length="3" max-length="256"></select>
           </div>
@@ -227,6 +235,7 @@
         //case_short_code: { maxlength: 256 },
         case_type: { required: true },
         assign_to: { required: true },
+        category: { required: true },
       },
       messages: {
         case_name: {
@@ -247,6 +256,7 @@
         },
         case_type: { required: "Please select the Case type" },
         assign_to: { required: "Please select Assign To" },
+        category: { required: "Please select Category" },
       },
       errorElement: "em",
       errorPlacement: function (error, element) {
@@ -523,6 +533,9 @@ function editCase(e){
           var cuChar = Number(256) - $("#case_description").val().length;
           $("#case_description").next("span.charcounter").html(cuChar + " Char(s)");
         }
+        if(data.category_id){
+          getCategoryCase(data.category_id);
+        }
         //$("#case_short_code").val(data.short_code);
         getAssignMember(data.member_id);
         $("#case_type option[value='"+data.type+"']").prop('selected', true);
@@ -643,7 +656,7 @@ function onchange_caseName(e) {
     });
   });
   $(document).ready(function(){
-
+getCategoryCase();
     $(".btnReset").on("click", function(){
       $("#search_data, #case_list, #sort_recent").val(null);
       searchParam();
@@ -815,6 +828,7 @@ function onchange_caseName(e) {
                       //formData.append("short_code", $("#case_short_code").val());
                       formData.append("type", $("#case_type").find("option:selected").val());
                       formData.append("member_id", $("#case_assign_to").find("option:selected").val());
+                      formData.append("category_id", $("#category").find("option:selected").val());
                       formData.append("description", $("#case_description").val());
                       formData.append("tags", tags);
 
@@ -886,6 +900,26 @@ function onchange_caseName(e) {
             $("#tags2").append("<option value='" + val + "'>" + val + "</option>");
           });
           $("#tags2").val(tags).change();
+        }
+      }
+    });
+  }
+
+  function getCategoryCase(SelectedCategoryId){
+
+    $.ajax({
+      url: API_BASE_URL + '/category/',
+      type: 'get',
+      dataType: 'json',
+      headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
+      success: function (response) {
+        $("#category").empty();
+        $("#category").append("<option value=''>Select Category</option>");
+        $.each(response, function (i, val) {
+            $("#category").append("<option value='" + val.id + "'>" + val.name + "</option>");
+        });
+        if(SelectedCategoryId){
+          $("#category option[value='"+SelectedCategoryId+"']").prop('selected', true);
         }
       }
     });

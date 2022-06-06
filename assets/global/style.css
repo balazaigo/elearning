@@ -4485,3 +4485,6 @@ footer.fixed-bottom {
     overflow: hidden;
     overflow-y: scroll;
 }
+#course_module_content .accordionlist object{
+	width: 100%;
+}
