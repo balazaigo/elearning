@@ -4004,7 +4004,7 @@ li.dashed {
 	align-items: center;
 }
 .ques-box li .form-check {
-	width: 95%;
+	width: 90%;
 }
 #caselists .main_module, #caselists .sub_module{
 	border-style: none !important;
@@ -4096,7 +4096,7 @@ li.dashed {
 .input_absol_ques{
     position: absolute;
     top: 0px;
-    width: 89%;
+    width: 80%;
     margin: 0px 0px 0px 28px;
     height: 35px;
 }
@@ -4487,4 +4487,19 @@ footer.fixed-bottom {
 }
 #course_module_content .accordionlist object{
 	width: 100%;
+}
+.bulbicon{
+	width: 4%;
+    padding-bottom: 6px;
+    padding-left: 8px;
+}
+.opt_close_button{
+	float: right;
+}
+.create_comments_text{
+	float: left;
+	width: 90%;
+}
+.bulbicon i{
+	color: #b5b4b4;
 }

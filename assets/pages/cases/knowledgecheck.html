@@ -332,6 +332,10 @@ $(document).ready(function(){
         $("#case_module_breadcrumbs").html(case_module_breadcrumbs);*/
         get_json_quest_and_answer(case_id, case_module_id);
       }, 0);
+
+    CKEDITOR.config.extraPlugins = 'base64image,backgrounds,hcard,justify,hcard,wordcount';
+    CKEDITOR.config.allowedContent = true;
+    CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Source,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Format,Font,FontSize,Undo,Redo';
   });
 
 function get_breadcrumbs(){
@@ -410,7 +414,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
       .then((data) => {
           var template_question = "";
           
-        template_question +=`
+        /*template_question +=`
                 <ul class="level-top drag_drop_show_hide">    
                     <li class="dashed qa_dashed qa_droppable">
                         <div class="ac drag_drop_qa">
@@ -422,7 +426,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         </span>                        
                         </div>
                     </li>
-                </ul>`;
+                </ul>`;*/
           if(data.module_questions.length > 0){
 
         $(".caselist").empty();
@@ -451,9 +455,12 @@ function get_json_quest_and_answer(case_id, case_module_id){
 
                 <div class="row mt-2">
                   <div class="col-md-12">
-                      <div class="form-floating">
-                        <input type="text" name="question_${ques_val.level}" class="question_input_${ques_val.level}" id="question_input" placeholder="Complete question will be shown" value="${ques_val.question}" onblur="saveQuestion(this, false)" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}"/>
-                      </div>
+                      <div class="form-floating">`;
+                        //template_question += `<input type="text" name="question_${ques_val.level}" class="question_input_${ques_val.level}" id="question_input" placeholder="Complete question will be shown" value="${ques_val.question}" onblur="saveQuestion(this, false)" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}"/>`;
+                        //template_question += `<label for="opt_${ques_i}_${ques_val.level}" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}">Question ${ques_val.level}</label>`;
+                        var mathcounts = Math.floor(Math.random() * 10000000);
+                        template_question += `<textarea class="ckeditorInitiateQuestion" data-ques_type="${ques_val.type}" data-quest_id="${ques_val.id}" id="textEditor${mathcounts}" name="question_${ques_val.level}" ></textarea>`;
+                      template_question += `</div>
                   </div>
                 </div>
                 <div class="accordion mt-2 accordion_${ques_val.level}" id="accordionExample">
@@ -463,6 +470,7 @@ function get_json_quest_and_answer(case_id, case_module_id){
                           <ul>`;
                 if(ques_val.answers.length > 0){
                   $.each(ques_val.answers, function (ans_i, ans_val) {
+                    var numOptItem = ans_i+1
                       var checked = "";
                       if(ques_val.valid_answers.length > 0){
                         if (Object.values(ques_val.valid_answers).indexOf(ans_val.id) > -1) {
@@ -473,10 +481,24 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         //To Append True or false answers
                         template_question += `<li class="mt-2">`;
                         template_question += `<div class="form-check p-0">`;
-                        template_question += `<input id="opt_${ans_i}_${ques_val.level}" type="radio" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}">`;
-                        template_question += `<label for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
-                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
+                        //template_question += `<input id="opt_${ans_i}_${ques_val.level}" type="radio" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}">`;
+                        //template_question += `<label for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
+                        template_question += `<label for="opt_${ans_i}_${ques_val.level}" data-answer_id="${ans_val.id}">Option ${numOptItem}</label>`;
+                        var mathcounts = Math.floor(Math.random() * 10000000);
+                        template_question += `<textarea class="ckeditorInitiateOption" name="ques_trf_opt_${ans_i}_${ques_val.level}" id="textEditor${mathcounts}" data-answer_id="${ans_val.id}"></textarea>`;
+                        //template_question += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
                         template_question += `</div>`;
+                        var mathcount = Math.floor(Math.random() * 10000000);
+                      template_question += `<span class="cicons bulbicon">`;
+                            template_question += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                            <div class="overlay" style="display:none;" id="popText${mathcount}">
+                              <div class="popup pt-3">
+                                <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option ${numOptItem}</span></h4>
+                                <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                                <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                              </div>
+                            </div>
+                          </span>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
                         template_question += `<input type="checkbox" name="opt_ckb_${ques_val.level}" id="opt_${ans_i}_ckb_${ques_val.level}" onclick="insert_answer(this)" ${checked}>`;
@@ -488,10 +510,24 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         //To Append multiple choice answers
                         template_question += `<li class="mt-2">`;
                         template_question += `<div class="form-check p-0">`;
-                        template_question += `<input class="form-check-input" id="opt_${ans_i}_${ques_val.level}" type="checkbox" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}" >`;
-                        template_question += `<label class="form-check-label" for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
-                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
+                        //template_question += `<input class="form-check-input" id="opt_${ans_i}_${ques_val.level}" type="checkbox" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}" >`;
+                        //template_question += `<label class="form-check-label" for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
+                        template_question += `<label for="opt_${ans_i}_${ques_val.level}" data-answer_id="${ans_val.id}">Option ${numOptItem}</label>`;
+                        var mathcounts = Math.floor(Math.random() * 10000000);
+                        template_question += `<textarea class="ckeditorInitiateOption" name="ques_multiple_opt_${ans_i}_${ques_val.level}" data-answer_id="${ans_val.id}" id="textEditor${mathcounts}"></textarea>`;
+                        //template_question += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
                         template_question += `</div>`;
+                        var mathcount = Math.floor(Math.random() * 10000000);
+                      template_question += `<span class="cicons bulbicon">`;
+                            template_question += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                            <div class="overlay" style="display:none;" id="popText${mathcount}">
+                              <div class="popup pt-3">
+                                <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option ${numOptItem}</span></h4>
+                                <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                                <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                              </div>
+                            </div>
+                          </span>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
                         template_question += `<input type="checkbox" name="opt_multiple_${ques_val.level}" id="opt_${ans_i}_multiple_${ques_val.level}" onclick="insert_answer(this)"  ${checked}><div class="switch--toggle"></div>`;
@@ -502,10 +538,24 @@ function get_json_quest_and_answer(case_id, case_module_id){
                         //To Append mcq answers
                         template_question += `<li class="mt-2">`;
                         template_question += `<div class="form-check p-0">`;
-                        template_question += `<input id="opt_${ans_i}_${ques_val.level}" type="radio" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}">`;
-                        template_question += `<label for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
-                        template_question += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
+                        //template_question += `<input id="opt_${ans_i}_${ques_val.level}" type="radio" name="opt_${ques_val.level}" value="opt_${ans_i}_${ques_val.level}">`;
+                        //template_question += `<label for="opt_${ans_i}_${ques_val.level}" onclick="toInput(this)" data-answer_id="${ans_val.id}">${ans_val.answer}</label>`;
+                        template_question += `<label for="opt_${ans_i}_${ques_val.level}" data-answer_id="${ans_val.id}">Option ${numOptItem}</label>`;
+                        var mathcounts = Math.floor(Math.random() * 10000000);
+                        template_question += `<textarea class="ckeditorInitiateOption" name="ques_mucq_opt_${ans_i}_${ques_val.level}" data-answer_id="${ans_val.id}" id="textEditor${mathcounts}"></textarea>`;
+                        //template_question += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_${ans_i}_${ques_val.level}" onblur="toText(this)" data-answer_id="${ans_val.id}" style="display:none">`;
                         template_question += `</div>`;
+                        var mathcount = Math.floor(Math.random() * 10000000);
+                      template_question += `<span class="cicons bulbicon">`;
+                            template_question += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                            <div class="overlay" style="display:none;" id="popText${mathcount}">
+                              <div class="popup pt-3">
+                                <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option ${numOptItem}</span></h4>
+                                <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                                <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                              </div>
+                            </div>
+                          </span>`;
                         template_question += `<span class="ques-switch">`;
                         template_question += `<label class="switch">`;
                         template_question += `<input type="checkbox" name="opt_ckb_${ques_val.level}" id="opt_${ans_i}_ckb_${ques_val.level}" onclick="insert_answer(this)" ${checked}>`;
@@ -525,6 +575,166 @@ function get_json_quest_and_answer(case_id, case_module_id){
             });
           }
         $(".caselist").append(template_question);
+
+         var editorsques = document.querySelectorAll(".ckeditorInitiateQuestion");
+         $.each(editorsques, function(a,b){
+            var editor_id = $(b).attr("id");
+            var editorOptions  = CKEDITOR.replace(editor_id,{
+              height: 150,
+               on: {
+                  blur: function( evt ){
+                    var myContent = evt.editor.getData();
+                    if(myContent !== ""){  
+                      $("#"+editor_id).next().removeClass("is-invalid");
+                      $("#"+editor_id).next().next().remove();
+                      const quest_id = $("#"+editor_id).attr("data-quest_id");
+                      var quest_type = $("#"+editor_id).attr("data-ques_type");
+                      var quest_level = $("#"+editor_id).attr("name").replace("question_", "");
+                      console.log(quest_level);
+                      var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+                      var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+                      var URL = API_CONTENT_URL + "/questions/";
+                      var method = "POST";
+                      var type = "POST";
+                      if(quest_id){
+                        var URL = API_CONTENT_URL + "/questions/"+quest_id+"/";
+                        var method = "PUT";
+                        var type = "PUT";
+                      }else{
+                          toastr.error("Please Enter Question");
+                          $("#"+editor_id).closest(".ques-box").removeClass("unsortable");
+                      }
+                      var formData = new FormData();
+                      formData.append("question", myContent);
+                      formData.append("type", quest_type);
+                      formData.append("case_id", case_id);
+                      formData.append("case_module_id", case_module_id);
+                      formData.append("level", quest_level);
+                      $.ajax({
+                        url: URL,
+                        method: method,
+                        type: type, // For jQuery < 1.9
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        headers: {
+                          "Authorization": "Bearer " + getUserInfo().access_token
+                        },
+                        success: function (response) {
+                          toastr.success("Question was successfully saved.");
+                          if(response.id){
+                            $("#"+editor_id).attr("data-quest_id", response.id);
+                          }
+                        },
+                        error: function (error) {
+                          toastr.error("Response Error: " + error.message);
+                          console.log(error);
+                        }
+                      });
+                    }else{  
+                      $("#"+editor_id).next().removeClass("is-invalid");
+                      $("#"+editor_id).next().next().remove(); 
+                      $("#"+editor_id).next().addClass("is-invalid");
+                      $("#"+editor_id).next().after(`<em for="${editor_id}" class="error help-block" style="position: relative;margin-top: 0px;">Please Enter Question</em>`);
+                    }
+                  },
+                }
+            });
+         });
+         var editors = document.querySelectorAll(".ckeditorInitiate");
+         $.each(editors, function(a,b){
+            var editor_id = $(b).attr("id");
+            var editorOptions  = CKEDITOR.replace(editor_id,{
+              height: 300,
+            });
+         });
+
+         var editors2 = document.querySelectorAll(".ckeditorInitiateOption");
+         $.each(editors2, function(a,b){
+            var editor_id = $(b).attr("id");
+            var editorOptions  = CKEDITOR.replace(editor_id,{
+              height: 150,
+              on: {
+                blur: function( evt ){
+                  var myContent = evt.editor.getData();
+                  if(myContent !== ""){ 
+                      $("#"+editor_id).next().removeClass("is-invalid");
+                      $("#"+editor_id).next().next().remove(); 
+                    const quest_id = document.getElementById(editor_id).closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("data-quest_id");
+                    console.log(quest_id);
+                      if(quest_id){
+                        //To Save or Update Answer Options
+                        var formData = new FormData();
+                        formData.append("answer", myContent);
+                        formData.append("type", 1);
+                        formData.append("question_id", quest_id);
+                        var URL = API_CONTENT_URL + "/answers/";
+                        var method = "POST";
+                        var type = "POST";
+
+                        var answer_id = $("#"+editor_id).attr("data-answer_id");
+                        if(answer_id){
+                          var URL = API_CONTENT_URL + "/answers/"+answer_id+"/";
+                          var method = "PUT";
+                          var type = "PUT";
+                        }
+                        $.ajax({
+                          url: URL,
+                          method: method,
+                          type: type, // For jQuery < 1.9
+                          cache: false,
+                          contentType: false,
+                          processData: false,
+                          data: formData,
+                          headers: {
+                            "Authorization": "Bearer " + getUserInfo().access_token
+                          },
+                          success: function (response) {
+                            toastr.success("Answer saved successfully.");
+                            if(response.id){
+                              $("#"+editor_id).attr("data-answer_id", response.id);
+                              //e.previousElementSibling.setAttribute("data-answer_id", response.id);
+                            }
+                          },
+                          error: function (error) {
+                            toastr.error("Response Error: " + error.message);
+                            console.log(error);
+                          }
+                        });
+                      }else{
+                        toastr.error("Please Enter Question");
+                      }
+                  }else{
+
+                      $("#"+editor_id).next().removeClass("is-invalid");
+                      $("#"+editor_id).next().next().remove(); 
+                      $("#"+editor_id).next().addClass("is-invalid");
+                      $("#"+editor_id).next().after(`<em for="${editor_id}" class="error help-block" style="position: relative;margin-top: 0px;">Please Enter Answer</em>`);
+                  }
+                }
+              }
+            });
+         });
+          $.each(data.module_questions, function (ques_i, ques_val) {
+            var questionCont = document.querySelector("[data-quest_id='"+ques_val.id+"']");
+            var questId = questionCont.getAttribute("id");
+            CKEDITOR.instances[questId].setData(ques_val.question);
+
+            if(ques_val.answers.length > 0){
+                $.each(ques_val.answers, function (ans_i, ans_val) {
+                var optionCont = document.querySelector("[data-answer_id='"+ans_val.id+"']").parentElement.parentElement;
+
+                var optionEditor = optionCont.querySelector(".ckeditorInitiate");
+                var optId = $(optionEditor).attr("id");
+                CKEDITOR.instances[optId].setData(ans_val.comment);
+
+                var optionEditor2 = optionCont.querySelector(".ckeditorInitiateOption");
+                var optId2 = $(optionEditor2).attr("id");
+                CKEDITOR.instances[optId2].setData(ans_val.answer);
+              });
+            }   
+          });
       })
       .catch(function(error){
         console.log("Requestfailed", error);
@@ -549,8 +759,11 @@ function get_ques_ans_template(draggable_id, numItems){
 
                 <div class="row mt-2">
                   <div class="col-md-12">
-                      <div class="form-floating">
-                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this, false)" data-ques_type="3"/>
+                      <div class="form-floating">`;
+                        //droppable_template += `<input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this, false)" data-ques_type="3"/>`;
+
+                        var mathcounts = Math.floor(Math.random() * 10000000);
+                        droppable_template += `<textarea class="ckeditorInitiateQuestion" data-ques_type="3" data-quest_id="" id="textEditor${mathcounts}" name="question_${numItems}" ></textarea>
                       </div>
                   </div>
                 </div>
@@ -561,10 +774,25 @@ function get_ques_ans_template(draggable_id, numItems){
                           <ul>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input id="opt_1_${numItems}" type="radio" name="opt_${numItems}" value="opt_1_${numItems}">`;
-            droppable_template += `<label for="opt_1_${numItems}" onclick="toInput(this)">Option 1</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_1_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input id="opt_1_${numItems}" type="radio" name="opt_${numItems}" value="opt_1_${numItems}">`;
+            droppable_template += `<label for="opt_1_${numItems}">Option 1</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_1_${numItems}" onblur="toText(this)" style="display:none">`;
+
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_mucq_opt_1_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_1_ckb_${numItems}" onclick="insert_answer(this)">`;
@@ -574,10 +802,24 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input id="opt_2_${numItems}" type="radio" name="opt_${numItems}" value="opt_2_${numItems}">`;
-            droppable_template += `<label for="opt_2_${numItems}" onclick="toInput(this)">Option 2</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_2_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input id="opt_2_${numItems}" type="radio" name="opt_${numItems}" value="opt_2_${numItems}">`;
+            droppable_template += `<label for="opt_2_${numItems}">Option 2</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mucq_opt_2_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_mucq_opt_2_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_2_ckb_${numItems}" onclick="insert_answer(this)">`;
@@ -587,10 +829,24 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input id="opt_3_${numItems}" type="radio" name="opt_${numItems}" value="opt_3_${numItems}">`;
-            droppable_template += `<label for="opt_3_${numItems}" onclick="toInput(this)">Option 3</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mcq_opt_3_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input id="opt_3_${numItems}" type="radio" name="opt_${numItems}" value="opt_3_${numItems}">`;
+            droppable_template += `<label for="opt_3_${numItems}">Option 3</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mcq_opt_3_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_mucq_opt_3_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_3_ckb_${numItems}" onclick="insert_answer(this)">`;
@@ -600,10 +856,24 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input id="opt_4_${numItems}" type="radio" name="opt_${numItems}" value="opt_4_${numItems}">`;
-            droppable_template += `<label for="opt_4_${numItems}" onclick="toInput(this)">Option 4</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mcq_opt_4_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input id="opt_4_${numItems}" type="radio" name="opt_${numItems}" value="opt_4_${numItems}">`;
+            droppable_template += `<label for="opt_4_${numItems}">Option 4</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_mcq_opt_4_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_mucq_opt_3_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_4_ckb_${numItems}" onclick="insert_answer(this)">`;
@@ -633,8 +903,11 @@ function get_ques_ans_template(draggable_id, numItems){
 
                 <div class="row mt-2">
                   <div class="col-md-12">
-                      <div class="form-floating">
-                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown"  onblur="saveQuestion(this, false)" data-ques_type="2"/>
+                      <div class="form-floating">`;
+                        //droppable_template += `<input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown"  onblur="saveQuestion(this, false)" data-ques_type="2"/>`;
+
+                        var mathcounts = Math.floor(Math.random() * 10000000);
+                        droppable_template += `<textarea class="ckeditorInitiateQuestion" data-ques_type="2" data-quest_id="" id="textEditor${mathcounts}" name="question_${numItems}" ></textarea>
                       </div>
                   </div>
                 </div>
@@ -645,10 +918,24 @@ function get_ques_ans_template(draggable_id, numItems){
                           <ul>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input class="form-check-input" id="opt_1_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_1_${numItems}" >`;
-            droppable_template += `<label class="form-check-label" for="opt_1_${numItems}" onclick="toInput(this)">Option 1</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_1_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input class="form-check-input" id="opt_1_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_1_${numItems}" >`;
+            droppable_template += `<label class="form-check-label" for="opt_1_${numItems}">Option 1</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_1_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_multiple_opt_1_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_1_multiple_${numItems}" onclick="insert_answer(this)"><div class="switch--toggle"></div>`;
@@ -657,10 +944,24 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input class="form-check-input" id="opt_2_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_2_${numItems}" >`;
-            droppable_template += `<label class="form-check-label" for="opt_2_${numItems}" onclick="toInput(this)">Option 2</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_2_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input class="form-check-input" id="opt_2_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_2_${numItems}" >`;
+            droppable_template += `<label class="form-check-label" for="opt_2_${numItems}">Option 2</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_2_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_multiple_opt_2_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_2_multiple_${numItems}" onclick="insert_answer(this)">`;
@@ -670,10 +971,24 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input class="form-check-input" id="opt_3_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_3_${numItems}" >`;
-            droppable_template += `<label class="form-check-label" for="opt_3_${numItems}" onclick="toInput(this)">Option 3</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_3_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input class="form-check-input" id="opt_3_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_3_${numItems}" >`;
+            droppable_template += `<label class="form-check-label" for="opt_3_${numItems}">Option 3</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_3_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_multiple_opt_3_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_3_multiple_${numItems}" onclick="insert_answer(this)">`;
@@ -683,10 +998,24 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input class="form-check-input" id="opt_4_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_4_${numItems}" >`;
-            droppable_template += `<label class="form-check-label" for="opt_4_${numItems}" onclick="toInput(this)">Option 4</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_4_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input class="form-check-input" id="opt_4_${numItems}" type="checkbox" name="opt_${numItems}" value="opt_4_${numItems}" >`;
+            droppable_template += `<label class="form-check-label" for="opt_4_${numItems}">Option 4</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_multiple_opt_4_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_multiple_opt_4_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_multiple_${numItems}" id="opt_4_multiple_${numItems}" onclick="insert_answer(this)">`;
@@ -716,8 +1045,11 @@ function get_ques_ans_template(draggable_id, numItems){
 
                 <div class="row mt-2">
                   <div class="col-md-12">
-                      <div class="form-floating">
-                        <input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this, false)" data-ques_type="1"/>
+                      <div class="form-floating">`;
+                        //droppable_template += `<input type="text" name="question_${numItems}" class="question_input_${numItems}" id="question_input" placeholder="Complete question will be shown" onblur="saveQuestion(this, false)" data-ques_type="1"/>`;
+
+                        var mathcounts = Math.floor(Math.random() * 10000000);
+                        droppable_template += `<textarea class="ckeditorInitiateQuestion" data-ques_type="1" data-quest_id="" id="textEditor${mathcounts}" name="question_${numItems}" ></textarea>
                       </div>
                   </div>
                 </div>
@@ -728,10 +1060,24 @@ function get_ques_ans_template(draggable_id, numItems){
                           <ul>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input id="opt_1_${numItems}" type="radio" name="opt_${numItems}" value="opt_1_${numItems}">`;
-            droppable_template += `<label for="opt_1_${numItems}" onclick="toInput(this)">True</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_1_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input id="opt_1_${numItems}" type="radio" name="opt_${numItems}" value="opt_1_${numItems}">`;
+            droppable_template += `<label for="opt_1_${numItems}">True</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_1_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_trf_opt_1_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_1_ckb_${numItems}" onclick="insert_answer(this)">`;
@@ -741,10 +1087,24 @@ function get_ques_ans_template(draggable_id, numItems){
             droppable_template += `</li>`;
             droppable_template += `<li class="mt-2">`;
             droppable_template += `<div class="form-check p-0">`;
-            droppable_template += `<input id="opt_2_${numItems}" type="radio" name="opt_${numItems}" value="opt_2_${numItems}">`;
-            droppable_template += `<label for="opt_2_${numItems}" onclick="toInput(this)">False</label>`;
-            droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_2_${numItems}" onblur="toText(this)" style="display:none">`;
+            //droppable_template += `<input id="opt_2_${numItems}" type="radio" name="opt_${numItems}" value="opt_2_${numItems}">`;
+            droppable_template += `<label for="opt_2_${numItems}">False</label>`;
+            //droppable_template += `<input class="form-control input_absol_ques" type="text" name="ques_trf_opt_2_${numItems}" onblur="toText(this)" style="display:none">`;
+            var mathcounts = Math.floor(Math.random() * 10000000);
+            droppable_template += `<textarea class="ckeditorInitiateOption" name="ques_trf_opt_2_${numItems}" data-answer_id="" id="textEditor${mathcounts}"></textarea>`;
             droppable_template += `</div>`;
+            var mathcount = Math.floor(Math.random() * 10000000);
+            droppable_template += `                                            
+                <span class="cicons bulbicon">`;
+                  droppable_template += `<a class="c-bulb" onclick="addCommentsOption(this, ${mathcount});"><i class="fa fa-lightbulb"></i></a>
+                  <div class="overlay" style="display:none;" id="popText${mathcount}">
+                    <div class="popup pt-3">
+                      <h4 class="mb-3 create_comments_text"><span class="textEditorName">Comment: Option 1</span></h4>
+                      <span class="btn-close opt_close_button" onclick="closePopup(${mathcount}, this);" role="button"></span>
+                      <textarea class="ckeditorInitiate" id="textEditor${mathcount}"></textarea>
+                    </div>
+                  </div>
+                </span>`;
             droppable_template += `<span class="ques-switch">`;
             droppable_template += `<label class="switch">`;
             droppable_template += `<input type="checkbox" name="opt_ckb_${numItems}" id="opt_2_ckb_${numItems}" onclick="insert_answer(this)">`;
@@ -760,16 +1120,261 @@ function get_ques_ans_template(draggable_id, numItems){
             </div>`;
    }
    $(".caselist").append(droppable_template);
+   var editors = document.querySelectorAll(".ckeditorInitiate");
+   $.each(editors, function(a,b){
+      var editor_id = $(b).attr("id");
+      var editorOptions  = CKEDITOR.replace(editor_id,{
+        height: 300,
+      });
+   });
+   var editors2 = document.querySelectorAll(".ckeditorInitiateOption");
+   $.each(editors2, function(a,b){
+      var editor_id = $(b).attr("id");
+      var editorOptions  = CKEDITOR.replace(editor_id,{
+        height: 150,
+              on: {
+                blur: function( evt ){
+                  var myContent = evt.editor.getData();
+                  if(myContent !== ""){ 
+                      $("#"+editor_id).next().removeClass("is-invalid");
+                      $("#"+editor_id).next().next().remove(); 
+                    const quest_id = document.getElementById(editor_id).closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("data-quest_id");
+                      if(quest_id){
+                        //To Save or Update Answer Options
+                        var formData = new FormData();
+                        formData.append("answer", myContent);
+                        formData.append("type", 1);
+                        formData.append("question_id", quest_id);
+                        var URL = API_CONTENT_URL + "/answers/";
+                        var method = "POST";
+                        var type = "POST";
+
+                        var answer_id = $("#"+editor_id).attr("data-answer_id");
+                        if(answer_id){
+                          var URL = API_CONTENT_URL + "/answers/"+answer_id+"/";
+                          var method = "PUT";
+                          var type = "PUT";
+                        }
+                        $.ajax({
+                          url: URL,
+                          method: method,
+                          type: type, // For jQuery < 1.9
+                          cache: false,
+                          contentType: false,
+                          processData: false,
+                          data: formData,
+                          headers: {
+                            "Authorization": "Bearer " + getUserInfo().access_token
+                          },
+                          success: function (response) {
+                            toastr.success("Answer saved successfully.");
+                            if(response.id){
+                              $("#"+editor_id).attr("data-answer_id", response.id);
+                              //e.previousElementSibling.setAttribute("data-answer_id", response.id);
+                            }
+                          },
+                          error: function (error) {
+                            toastr.error("Response Error: " + error.message);
+                            console.log(error);
+                          }
+                        });
+                      }else{
+                        toastr.error("Please Enter Question");
+                      }
+                  }else{
+
+                      $("#"+editor_id).next().removeClass("is-invalid");
+                      $("#"+editor_id).next().next().remove(); 
+                      $("#"+editor_id).next().addClass("is-invalid");
+                      $("#"+editor_id).next().after(`<em for="${editor_id}" class="error help-block" style="position: relative;margin-top: 0px;">Please Enter Answer</em>`);
+                  }
+                }
+              }
+      });
+    });
+
+    var editorsques = document.querySelectorAll(".ckeditorInitiateQuestion");
+    $.each(editorsques, function(a,b){
+      var editor_id = $(b).attr("id");
+      var editorOptions  = CKEDITOR.replace(editor_id,{
+        height: 150,
+         on: {
+            blur: function( evt ){
+              var myContent = evt.editor.getData();
+              if(myContent !== ""){  
+                $("#"+editor_id).next().removeClass("is-invalid");
+                $("#"+editor_id).next().next().remove();
+                const quest_id = $("#"+editor_id).attr("data-quest_id");
+                var quest_type = $("#"+editor_id).attr("data-ques_type");
+                var quest_level = $("#"+editor_id).attr("name").replace("question_", "");
+                console.log(quest_level);
+                var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+                var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+                var URL = API_CONTENT_URL + "/questions/";
+                var method = "POST";
+                var type = "POST";
+                if(quest_id){
+                  var URL = API_CONTENT_URL + "/questions/"+quest_id+"/";
+                  var method = "PUT";
+                  var type = "PUT";
+                }else{
+                    //toastr.error("Please Enter Question");
+                    $("#"+editor_id).closest(".ques-box").removeClass("unsortable");
+                }
+                var formData = new FormData();
+                formData.append("question", myContent);
+                formData.append("type", quest_type);
+                formData.append("case_id", case_id);
+                formData.append("case_module_id", case_module_id);
+                formData.append("level", quest_level);
+                $.ajax({
+                  url: URL,
+                  method: method,
+                  type: type, // For jQuery < 1.9
+                  cache: false,
+                  contentType: false,
+                  processData: false,
+                  data: formData,
+                  headers: {
+                    "Authorization": "Bearer " + getUserInfo().access_token
+                  },
+                  success: function (response) {
+                    toastr.success("Question was successfully saved.");
+                    if(response.id){
+                      $("#"+editor_id).attr("data-quest_id", response.id);
+                    }
+                  },
+                  error: function (error) {
+                    toastr.error("Response Error: " + error.message);
+                    console.log(error);
+                  }
+                });
+              }else{  
+                $("#"+editor_id).next().removeClass("is-invalid");
+                $("#"+editor_id).next().next().remove(); 
+                $("#"+editor_id).next().addClass("is-invalid");
+                $("#"+editor_id).next().after(`<em for="${editor_id}" class="error help-block" style="position: relative;margin-top: 0px;">Please Enter Question</em>`);
+              }
+            },
+          }
+      });
+    });
 }
+
+function addCommentsOption(e, id){
+  //console.log(e);
+  //console.log(id);
+
+    var quest_id = e.closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("data-quest_id");
+    var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
+    if(quest_id && answer_id){
+      $("#popText"+id).addClass("overlay_target");
+      $("#popText"+id).attr("style","display:block");
+      $("#cke_textEditor"+id).attr("style", "float:left;");
+    }else{
+      if(!quest_id && !answer_id){
+        toastr.error("Please Enter Question");
+      }else if(!quest_id){
+        toastr.error("Please Enter Question");
+      }else{
+        toastr.error("Please Enter Answer");
+      }
+    }
+}
+
+function addCommentsQuestion(e, id){
+  //console.log(e);
+  //console.log(id);
+
+    var quest_id = e.closest('.mt-2').querySelector("[data-quest_id]").getAttribute("data-quest_id");
+    if(quest_id){
+      $("#popText"+id).addClass("overlay_target");
+      $("#popText"+id).attr("style","display:block");
+      $("#cke_textEditor"+id).attr("style", "float:left;");
+    }else{
+      toastr.error("Please Enter Question");
+    }
+}
+function closePopup(id, e){
+  var option_data = CKEDITOR.instances["textEditor"+id].getData();
+  var formData = new FormData();
+  formData.append("comment", option_data);
+  var answer_id = e.closest('.mt-2').querySelector('[data-answer_id]').getAttribute("data-answer_id");
+
+
+  var object = {};
+  formData.forEach(function(value, key){
+      object[key] = value;
+  });
+  var json = JSON.stringify(object);
+  $.ajax({
+    url: API_CONTENT_URL + '/answers/' + answer_id+'/',
+    type: 'PATCH',
+    data: json,
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
+    success:function(response){
+      $("#popText"+id).removeClass("overlay_target");
+      $("#popText"+id).attr("style","display:none");
+    },
+    error: function(error) {
+      toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+}
+function closeQuestionPopup(id, e){
+  var question_data = CKEDITOR.instances["textEditor"+id].getData();
+  var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+  var formData = new FormData();
+  formData.append("comment", question_data);
+  formData.append("case_id", case_id);
+  var quest_id = e.closest('.mt-2').querySelector("[data-quest_id]").getAttribute("data-quest_id");
+  var URL = API_CONTENT_URL + "/questions/"+quest_id+"/";
+  $.ajax({
+    url: URL,
+    method: 'PATCH',
+    type: 'PATCH', // For jQuery < 1.9
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: formData,
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token
+    },
+    success:function(response){
+      $("#popText"+id).removeClass("overlay_target");
+      $("#popText"+id).attr("style","display:none");
+    },
+    error: function(error) {
+      toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+}
+/*$(".btn-close").click(function(e){alert(1);
+
+  var id_close = e.getAttribute("data-click_id");
+    $("#popText"+id_close).removeClass("overlay_target");
+    $("#popText"+id_close).attr("style","display:none");
+});*/
 //To remove Answer when Uncheck Option
 function insert_answer(e){
   if(e.checked === true){
     var valid_answer = "1";
-    var quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
+    var quest_id = e.closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("data-quest_id");
     var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
-    var answer_name = e.closest('.mt-2').childNodes[0].childNodes[1].textContent;
-    if(quest_id && answer_id){
-      var quest_type = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-ques_type");
+    var answer_nameId = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("id");
+    var answer_name = CKEDITOR.instances[answer_nameId].getData();
+    var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+    var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+    var question_nameId = e.closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("id");
+    var question = CKEDITOR.instances[question_nameId].getData();
+    console.log(answer_name);
+    if(quest_id && answer_id && question !== "" && answer_name !== ""){
+      var quest_type = e.closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("data-ques_type");
       if(quest_type == "1" || quest_type == "3"){
          var chk_attr_name = $(e).attr('name');
          $("input[name='"+chk_attr_name+"']").each( function() {
@@ -777,28 +1382,50 @@ function insert_answer(e){
          });
         e.checked = true;
       }
-      var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
-      var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
-      var question = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].value;
       insert_answer_for_question(answer_id, answer_name, quest_type, case_id, case_module_id, question, quest_id, valid_answer);
     }else{
-      $(e).prop('checked', false);
+      if(!quest_id && !answer_id){
+        toastr.error("Please Enter Question");
+      }else if(!quest_id){
+        toastr.error("Please Enter Question");
+      }else if(question == ""){
+        toastr.error("Please Enter Question");
+      }else if(answer_name == ""){
+        toastr.error("Please Enter Answer");
+      }
+      setTimeout(function(){
+        $(e).prop('checked', false);
+      }, 500);
       //toastr.error("Please Edit Answer");
     }
   }
   if(e.checked === false){
     var valid_answer = "0";
-    var quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
+    var quest_id = e.closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("data-quest_id");
     var answer_id = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("data-answer_id");
-    var answer_name = e.closest('.mt-2').childNodes[0].childNodes[1].textContent;
+    var answer_nameId = e.closest('.mt-2').childNodes[0].childNodes[1].getAttribute("id");
+    var answer_name = CKEDITOR.instances[answer_nameId].getData();
     var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
     var case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
-    var question = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].value;
-    if(quest_id && answer_id){
-      var quest_type = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-ques_type");
+    var question_nameId = e.closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("id");
+    var question = CKEDITOR.instances[question_nameId].getData();
+    console.log(answer_name);
+    if(quest_id && answer_id && question !== "" && answer_name !== ""){
+      var quest_type = e.closest('#accordionExample').previousElementSibling.querySelector("[data-quest_id]").getAttribute("data-ques_type");
       insert_answer_for_question(answer_id, answer_name, quest_type, case_id, case_module_id, question, quest_id, valid_answer);
     }else{
-      toastr.error("Please Edit Answer");
+      if(!quest_id && !answer_id){
+        toastr.error("Please Enter Question");
+      }else if(!quest_id){
+        toastr.error("Please Enter Question");
+      }else if(question == ""){
+        toastr.error("Please Enter Question");
+      }else if(answer_name == ""){
+        toastr.error("Please Enter Answer");
+      }
+      setTimeout(function(){
+        $(e).prop('checked', true);
+      }, 500);
     }
   }
 }
@@ -848,6 +1475,7 @@ function toText(e){
     e.parentElement.nextElementSibling.childNodes[0].childNodes[0].checked = false;
   }*/
   e.previousElementSibling.textContent = e.value;
+  e.closest('.mt-2').querySelector(".textEditorName").textContent = e.value;
   e.setAttribute("style","display:none");
 
   const quest_id = e.closest('#accordionExample').previousElementSibling.childNodes[1].childNodes[1].childNodes[1].getAttribute("data-quest_id");
