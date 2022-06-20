@@ -356,6 +356,10 @@
           var page = get_url_value('page');
 
           if(page == "dashboard/dashboard" || page == "cases/case" || page == "chapters/chapters" || page == "roles/roles" || page == "courses/courses" || page == "task/task" || page == "members/members"){
+            $('#navRight a.navlink').removeClass("active");
+            var parts = page.split('/');
+            var page_flinkto = parts[parts.length - 1];
+            $("."+page_flinkto).addClass("active");
             var path = page ? page : 'dashboard';
             // Load the page
             load_page_content(path);

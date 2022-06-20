@@ -78,7 +78,7 @@
                       </span> </div>
                   </div>
                   <div class="mb-4 mt-4 relative code">
-                    <p><span data-lang="lbl_dont_code">Don't receive code?</span> <strong><a href="#" data-lang="lbl_resend_otp">Resend OTP</a></strong></p>
+                    <p><span data-lang="lbl_dont_code">Don't receive code?</span> <strong><a onclick="resendOtp()" data-lang="lbl_resend_otp">Resend OTP</a></strong></p>
                   </div>
                   <a class="login-btn" href="#" onClick="submitPhoneNumberAuthCode()" data-lang="lbl_login">Login</a>
                 </div>
@@ -169,34 +169,50 @@
   function submitPhoneNumberAuth() {
     let pattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i;
     var phoneNumber = document.getElementById("phoneNumber").value;
+
     if(phoneNumber && phoneNumber.match(pattern) == null) {
       var _regNumber = /^[0-9-+()]*$/;
       if(_regNumber.test(phoneNumber)) {
-        var appVerifier = window.recaptchaVerifier;
-        firebase
-          .auth()
-          .signInWithPhoneNumber(phoneNumber, appVerifier)
-          .then(function(confirmationResult) {
-            console.log("confirmationResult", confirmationResult);
-            toastr.info(language.lbl_enter_one_time_password);
-            window.confirmationResult = confirmationResult;
-            $("#areaPhone").hide();
-            $("#areaCode").show();
-            $("#back_button_login").show();
-            $("#o1").focus();
-          }).catch(function(error) {
-            console.log(error);
-            if(error.code === "auth/invalid-phone-number") {
-              //toastr.error("Server Response: " + error.message);
-              toastr.error(language.error_invalid_number_mail);
-              return false; 
+        console.log(SITE_URL_PROTOCOL);
+        var domain_namefull = SITE_URL_PROTOCOL.replace(/\/$/, '');
+        $.ajax({
+          url: API_BASE_URL + "/otp/trigger",
+          method: "POST",
+          type: 'POST', // For jQuery < 1.9
+          cache: false,
+          contentType: "application/json",
+          processData: false,
+          data: JSON.stringify({
+            "email_id": phoneNumber,
+            "domain": domain_namefull,
+            "logo_url": SITE_URL_PROTOCOL+"assets/images/experlogo.jpg"
+          }),
+          success: function(response){
+
+            var inputs = document.getElementById("otpCode").querySelectorAll('input');
+            for (const input of inputs){
+              $("#" + input.id).val("");
             }
+            console.log(response);
+            toastr.success("OTP has been sent successfully");
             toastr.info(language.lbl_enter_one_time_password);
+            localStorage.setItem("auth_type", "phone");
+            localStorage.setItem("auth_user", phoneNumber);
             $("#areaPhone").hide();
             $("#areaCode").show();
             $("#back_button_login").show();
             $("#o1").focus();
-          });
+          },
+          error: function(error) {
+            var errorJson = jQuery.parseJSON(error.responseText);
+            if(errorJson.error){
+              console.log(errorJson.error);
+              toastr.error(errorJson.error);
+            }else{
+              console.log(error);
+            }
+          }
+        });
       } else {
         toastr.error(language.error_invalid_number_mail);
         document.getElementById("phoneNumber").focus();
@@ -207,13 +223,41 @@
         toastr.error(language.error_invalid_mail);
         document.getElementById("phoneNumber").focus();
       } else {
-        toastr.info(language.lbl_enter_one_time_password);
-        localStorage.setItem("auth_type", "mail");
-        localStorage.setItem("auth_user", phoneNumber);
-        $("#areaPhone").hide();
-        $("#areaCode").show();
+        console.log(SITE_URL_PROTOCOL);
+        var domain_namefull = SITE_URL_PROTOCOL.replace(/\/$/, '');
+        $.ajax({
+          url: API_BASE_URL + "/otp/trigger",
+          method: "POST",
+          type: 'POST', // For jQuery < 1.9
+          cache: false,
+          contentType: "application/json",
+          processData: false,
+          data: JSON.stringify({
+            "email_id": phoneNumber,
+            "domain": domain_namefull,
+            "logo_url": SITE_URL_PROTOCOL+"assets/images/experlogo.jpg"
+          }),
+          success: function(response){
+            console.log(response);
+            toastr.success("OTP has been sent successfully");
+            toastr.info(language.lbl_enter_one_time_password);
+            localStorage.setItem("auth_type", "mail");
+            localStorage.setItem("auth_user", phoneNumber);
+            $("#areaPhone").hide();
+            $("#areaCode").show();
             $("#back_button_login").show();
-        $("#o1").focus();
+            $("#o1").focus();
+          },
+          error: function(error) {
+            var errorJson = jQuery.parseJSON(error.responseText);
+            if(errorJson.error){
+              console.log(errorJson.error);
+              toastr.error(errorJson.error);
+            }else{
+              console.log(error);
+            }
+          }
+        });
       }
     }
   }
@@ -229,9 +273,10 @@
       return false;
     }
     const auth_type = localStorage.getItem("auth_type");
-    if(auth_type === 'mail') {
+    console.log(auth_type);
+    if(auth_type === 'mail' || auth_type == "phone") {
       const auth_user = localStorage.getItem("auth_user");
-      postEmailLogin(auth_user);
+      postEmailLogin(auth_user, values);
       return;
     }
     confirmationResult
@@ -260,7 +305,10 @@
       document.getElementById(last).focus();
     }
   }
-  
+  function resendOtp(){
+
+    submitPhoneNumberAuth();
+  }
   function postGoogleLogin(googleUser){
       //https://elearningadmin.zaigoinfotech.com/login/
       var access_token = googleUser.getAuthResponse().access_token;
@@ -302,13 +350,14 @@
       });
   }
 
-  function postEmailLogin(mailID){
+  function postEmailLogin(mailID, otp){
       //https://elearningadmin.zaigoinfotech.com/login/
-      var access_token = "";
+      //var access_token = "";
       var email_id = mailID;
+      var login_otp = otp;
       //validated the email from backend
       $.ajax({
-        url: API_BASE_URL + "/login/",
+        url: API_BASE_URL + "/otp/verify",
         method: "POST",
         type: 'POST', // For jQuery < 1.9
         cache: false,
@@ -316,33 +365,34 @@
         processData: false,
         data: JSON.stringify({
           "email_id": email_id,
-          "google_token": access_token
+          "otp": login_otp
         }),
         success: function(response){
-          if(typeof(response['message']) !== 'undefined') {
-            toastr.error(response.message);
-            $("#areaPhone").show();
-            $("#areaCode").hide();
-            var inputs = document.getElementById("otpCode").querySelectorAll('input');
-            for (const input of inputs){
-               $("#" + input.id).val("");
-            }
-          } else {
             localStorage.setItem("auth", 1);
             localStorage.setItem("auth_type", "mail");
             localStorage.setItem("auth_user", email_id);
-            localStorage.setItem("auth_token", access_token);
+            localStorage.setItem("auth_token", response.access_token);
             localStorage.setItem("auth_data", JSON.stringify(response));
             toastr.success("Welcome : " + email_id);
             processRememberMe();
             setTimeout(function() {
               window.location.href = `${SITE_URL_PROTOCOL}home/?page=dashboard/dashboard`;
             }, 1500);
-          }
         },
         error: function(error) {
-          toastr.error("Response Error: " + error.message);
-          console.log(error);
+
+            var errorJson = jQuery.parseJSON(error.responseText);
+            if(errorJson.error){
+              console.log(errorJson.error);
+              toastr.error(errorJson.error);
+              var inputs = document.getElementById("otpCode").querySelectorAll('input');
+              for (const input of inputs){
+                 $("#" + input.id).val("");
+              }
+            }else{
+              toastr.error("Response Error: " + error.message);
+              console.log(error);
+            }
         }
       });
   }

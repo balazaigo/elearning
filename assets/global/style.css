@@ -4503,3 +4503,9 @@ footer.fixed-bottom {
 .bulbicon i{
 	color: #b5b4b4;
 }
+.navbar .dropdown .dropdown-menu li{
+	word-break: break-all;
+}
+.navbar .dropdown .dropdown-menu{
+	min-width: 100%;
+}
