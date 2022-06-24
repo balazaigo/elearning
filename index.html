@@ -45,7 +45,7 @@
                     <input type="checkbox" class="form-check-input" id="remember" tabindex="3">
                     <label for="remember" class="form-label" data-lang="lbl_rememberme">Remember Me</label>
                   </div>-->
-                  <a class="login-btn" onClick="submitPhoneNumberAuth()" href="#" tabindex="2" data-lang="lbl_getotp">Get OTP</a>
+                  <a class="login-btn" onClick="submitPhoneNumberAuth('sent')" href="#" tabindex="2" data-lang="lbl_getotp">Get OTP</a>
                   <div class="mb-4 mt-4 relative or">
                     <p data-lang="lbl_or">OR</p>
                   </div>
@@ -166,7 +166,7 @@
     return str.length === 1 && str.match(/[a-z]/i);
   }
 
-  function submitPhoneNumberAuth() {
+  function submitPhoneNumberAuth(sentval) {
     let pattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i;
     var phoneNumber = document.getElementById("phoneNumber").value;
 
@@ -194,8 +194,8 @@
               $("#" + input.id).val("");
             }
             console.log(response);
-            toastr.success("OTP has been sent successfully");
-            toastr.info(language.lbl_enter_one_time_password);
+            toastr.success("OTP has been "+sentval+" successfully");
+            //toastr.info(language.lbl_enter_one_time_password);
             localStorage.setItem("auth_type", "phone");
             localStorage.setItem("auth_user", phoneNumber);
             $("#areaPhone").hide();
@@ -239,8 +239,8 @@
           }),
           success: function(response){
             console.log(response);
-            toastr.success("OTP has been sent successfully");
-            toastr.info(language.lbl_enter_one_time_password);
+            toastr.success("OTP has been "+sentval+" successfully");
+            //toastr.info(language.lbl_enter_one_time_password);
             localStorage.setItem("auth_type", "mail");
             localStorage.setItem("auth_user", phoneNumber);
             $("#areaPhone").hide();
@@ -307,7 +307,7 @@
   }
   function resendOtp(){
 
-    submitPhoneNumberAuth();
+    submitPhoneNumberAuth('resent');
   }
   function postGoogleLogin(googleUser){
       //https://elearningadmin.zaigoinfotech.com/login/

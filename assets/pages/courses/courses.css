@@ -129,6 +129,13 @@
     text-align: center;
     padding-top: 40px;
 }
+
+#addCourses{
+    position: fixed !important;
+    right: 0px !important;
+    left: unset !important;
+    top: 120px;
+}
 .dz-preview{
     width: 48.5%;
     float: left;
@@ -195,7 +202,7 @@
   float: right;
 }
 .course_module_details{
-      padding-left: 25px;
+      padding-left: 0px;
 }
 .image_content img{
   width: 100%;

@@ -324,7 +324,7 @@
             if(response.tags.length > 0){
               var tag_array_2 = [];
               $.each(response.tags, function (i, val) {
-                tag_array_2.push(val.tag_name);
+                tag_array_2.push(decodeHtml(val.tag_name));
               })
               var tags_empty = [];
               if (tag_array_2) {
@@ -345,6 +345,12 @@
         }
       });
   }
+
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
     /*LATER USE*/
     /* ============================================================ */
     /*

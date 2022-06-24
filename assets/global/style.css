@@ -4481,7 +4481,7 @@ footer.fixed-bottom {
   scrollbar-width: none; 
 }
 #content-courseModule {
-	height: 550px;
+	/*height: 550px;*/
     overflow: hidden;
     overflow-y: scroll;
 }
