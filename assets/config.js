@@ -32,6 +32,11 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
   API_BASE_URL = "https://uatadmin.exper.com";
   API_CONTENT_URL = "https://uatcontent.exper.com";
 
+}else if(SITE_URL_PROTOCOL === "https://precas.exper.com"){
+  SITE_URL_PROTOCOL = "https://precas.exper.com/";
+  API_BASE_URL = "https://preadmin.exper.com";
+  API_CONTENT_URL = "https://precontent.exper.com";
+
 }
 
 console.log(SITE_URL_PROTOCOL);
