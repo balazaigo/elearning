@@ -135,7 +135,7 @@
     position: fixed !important;
     right: 0px !important;
     left: unset !important;
-    top: 120px;
+    top: 0px;
 }
 #content-courseModule .acnav__list{
     border-radius: 10px;
