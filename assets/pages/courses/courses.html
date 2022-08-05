@@ -132,6 +132,7 @@
     } else {
       window.sharedEditCourseId = e.dataset.course_id;
       $('.modal-content').load(url,function(result){
+        $("#addCourses").attr("style", "top: 0px;");
         modal.show();
       });
     }
@@ -146,6 +147,7 @@
     } else {
       window.sharedAssignCourseId = e.dataset.course_id;
       $('.modal-content').load(url,function(result){
+        $("#addCourses").attr("style", "top: 120px;");
       document.getElementById("course_param").setAttribute("data-cid", e.dataset.course_id);
       document.getElementById("course_param").setAttribute("data-show_input", "true");
       document.getElementById("course_param").setAttribute("data-course_assignee", "true");

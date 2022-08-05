@@ -327,3 +327,6 @@
     overflow-wrap: break-word;
     overflow: hidden;
 }
+#mAlert{
+    top:150px;
+}
