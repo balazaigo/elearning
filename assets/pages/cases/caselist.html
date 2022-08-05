@@ -414,6 +414,7 @@ function show_tag_popup_case_mod(e){
       //document.getElementById("content-courseModule").style.transform = "translate(0px, "+top+"px)";
       var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/case_tag.html?t=` + Math.floor(Date.now() / 1000);
       $('.modal-content').load(url,function(result){
+        $("#content-courseModule").attr("style", "height:200px;top:250px;");
         document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
         document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
         modal.toggle();
@@ -428,6 +429,7 @@ function show_attachment_popup_case_mod(e){
       const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
       var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
       $('.modal-content').load(url,function(result){
+        $("#content-courseModule").attr("style", "height:680px;top:25px;");
         document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
         document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
         modal.toggle();
@@ -441,6 +443,7 @@ function show_message_popup_case_mod(e){
       const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
       var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/message_popup.html?t=` + Math.floor(Date.now() / 1000);
       $('.modal-content').load(url,function(result){
+        $("#content-courseModule").attr("style", "height:500px;top:100px;");
         document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
         document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
         modal.toggle();
@@ -454,6 +457,7 @@ function show_assignee_popup_case_mod(e){
       const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
       var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
       $('.modal-content').load(url,function(result){
+        $("#content-courseModule").attr("style", "height:500px;top:100px;");
         document.getElementById("case_param").setAttribute("data-case_module_id", e.dataset.case_module_id);
         document.getElementById("case_param").setAttribute("data-case_id", e.dataset.case_id);
         modal.toggle();

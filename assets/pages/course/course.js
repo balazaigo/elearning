@@ -679,6 +679,7 @@ function show_tag_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/course_tag.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     $("#content-courseModule").attr("style", "height:200px;top:250px;");
+    $(".modal-lg").attr("style","max-width: 50%;");
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
@@ -703,6 +704,7 @@ function show_attachment_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     $("#content-courseModule").attr("style", "height:680px;top:25px;");
+    $(".modal-lg").attr("style","max-width: 50%;");
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
@@ -727,6 +729,7 @@ function show_message_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/message_popup.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     $("#content-courseModule").attr("style", "height:500px;top:100px;");
+    $(".modal-lg").attr("style","max-width: 50%;");
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
@@ -751,6 +754,7 @@ function show_assignee_popup(e){
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     $("#content-courseModule").attr("style", "height:500px;top:100px;");
+    $(".modal-lg").attr("style","max-width: 50%;");
     document.getElementById("course_param").setAttribute("data-module_id", e.dataset.module_id);
     document.getElementById("course_param").setAttribute("data-uni_id", e.dataset.uni_id);
     document.getElementById("course_param").setAttribute("data-cid", e.dataset.cid);
@@ -1132,7 +1136,8 @@ function delete_module_confirm(e){
   const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/delete.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
-    $("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;left: 190px;");
+    $("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
+    $(".modal-lg").attr("style","max-width: 30%;");
     var element = e;
     $("#mAlertName").text(e.dataset.name);
     var module_name = e.dataset.name;

@@ -364,6 +364,7 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/chapters_tag.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
+          $("#content-courseModule").attr("style", "height:200px;top:250px;");
           document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
           document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
@@ -377,6 +378,7 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/attachment_popup.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
+          $("#content-courseModule").attr("style", "height:680px;top:25px;");
           document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
           document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
@@ -390,6 +392,7 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/message_popup.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
+          $("#content-courseModule").attr("style", "height:500px;top:100px;");
           document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
           document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
@@ -403,6 +406,7 @@
         const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
         var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/assignee_popup.html?t=` + Math.floor(Date.now() / 1000);
         $('.modal-content').load(url,function(result){
+          $("#content-courseModule").attr("style", "height:500px;top:100px;");
           document.getElementById("chapter_param").setAttribute("data-chapter_topic_id", e.dataset.chapter_topic_id);
           document.getElementById("chapter_param").setAttribute("data-chapter_id", e.dataset.chapter_id);
           modal.toggle();
