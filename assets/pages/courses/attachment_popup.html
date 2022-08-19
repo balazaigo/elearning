@@ -72,17 +72,19 @@
   }, 0);
   var acceptedFiles = "";
   if(processRights("Add Audio") === true){
-    acceptedFiles += ".mp3, .wav,";
+    acceptedFiles += "audio/mp3,audio/wav,";
   }
   if(processRights("Add Slide") === true){
     acceptedFiles += "image/jpeg,image/png,image/gif,image/jpg,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
   }
   if(processRights("Add Video") === true){
-    acceptedFiles += ".mp4,.mkv,.avi,";
+    acceptedFiles += "video/mp4,video/mkv,video/avi,";
   }
   acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
   
     console.log(acceptedFiles);
+
+    var error_display = 0;
     var dropzone2 = new Dropzone('#demo-upload2', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
@@ -91,7 +93,34 @@
         maxFilesize: 3,
         filesizeBase: 1000,
         acceptedFiles: acceptedFiles,
+        init: function ()  {
+            this.on("error", function (file, message) {
+                var split_str = acceptedFiles.split(",");
+                if (split_str.indexOf(file.type) === -1) {
+                  toastr.error("File type not supported.");
+                  error_display++;
+                  this.removeFile(file);
+                  return true;
+                }
+                if(message.substring(0,16) == "You can't upload" ){
+                  toastr.error("File type not supported.");
+                  error_display++;
+                  this.removeFile(file);
+                  return true;
+                }
+                if (file.size > this.options.maxFilesize * 1000 * 1000) {
+                    toastr.error("File size is too big, Max file size allowed is 3MB");
+                    error_display++;
+                    this.removeFile(file);
+                    return true;
+                }
+            }); 
+        },
         thumbnail: function(file, dataUrl) {
+            if (file.size > this.options.maxFilesize * 1000 * 1000 && error_display == 0) {
+                toastr.error("File size is too big, Max file size allowed is 3MB");
+                return true;
+            }
             if (file.previewElement) {
               file.previewElement.classList.remove("dz-file-preview");
               var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
@@ -110,6 +139,7 @@
         timeBetweenSteps = 100,
         bytesPerStep = 100000;
     dropzone2.uploadFiles = function(files) {
+      console.log(files);
         var self = this;
         var cid = document.getElementById("course_param").getAttribute("data-cid");
         var module_id = document.getElementById("course_param").getAttribute("data-module_id");
@@ -230,7 +260,7 @@ function get_module_details(cid, module_id){
                                           <div class="acnav__label acnav__label--level2">
                                             <div class="accordionlist">
                                               <div class="row">
-                                                <div class="col-md-12 acc-text">`;
+                                                <div class="col-md-12 acc-text" id="element${element.id}">`;
                       if(element.attachment_type.split('/')[0] === 'image'){
                             module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                       }else if(element.attachment_type.split('/')[0] === 'video'){
@@ -241,6 +271,34 @@ function get_module_details(cid, module_id){
                         var mathcount = Math.floor(Math.random() * 1000);
                          module_attachments_html +=`<object data="${base_img_url}${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'><a href="${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}">Download Document</a></iframe></object>
                          <p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                         let embed_pdfs = {};
+                         embed_pdfs['element'+element.id] = 'created';
+
+                        $(document).find('#element'+element.id+' iframe').load(function(){
+                                embed_pdfs[$(this).parents('element'+element.id).attr('id')] = 'loaded';
+                                $(this).siblings('.loader').remove();
+                                console.log($(this).parents('element'+element.id).attr('id') + " loaded");
+                        });
+
+                        let embed_pdf_check = setInterval(function() {
+                              let remaining_embeds = 0;
+                              $.each(embed_pdfs, function(key, value) {
+                                  try {
+                                      if ($($('#' + key)).find('iframe').contents().find("body").contents().length == 0) {
+                                          remaining_embeds++;
+                                          //console.log(key + " resetting");
+                                          $($('#' + key)).find('iframe').attr('src', src='https://docs.google.com/viewer?url=' + base_img_url+element.attachment+ '&embedded=true');
+                                      }
+                                  }
+                                  catch(err) {
+                                      //console.log(key + " reloading");
+                                  }
+                              });
+                          
+                              if (!remaining_embeds) {
+                                  clearInterval(embed_pdf_check);
+                              }
+                          }, 1000);
                       }
                       module_attachments_html +=`</div>
                                               </div>

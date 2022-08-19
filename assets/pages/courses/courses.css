@@ -220,3 +220,7 @@
 .ck-editor__editable {
   min-height: 200px;
 }
+.dz-filename{
+  height: 52px;
+  overflow: hidden;
+}

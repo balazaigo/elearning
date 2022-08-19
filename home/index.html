@@ -355,11 +355,16 @@
         if (History.enabled) {
           var page = get_url_value('page');
 
-          if(page == "dashboard/dashboard" || page == "cases/case" || page == "chapters/chapters" || page == "roles/roles" || page == "courses/courses" || page == "task/task" || page == "members/members"){
+          if(page == "dashboard/dashboard" || page == "cases/case" || page == "cases/caselist" || page == "cases/caselistlevel" || page == "cases/knowledgecheck" || page == "chapters/chapters" || page == "chapters/chapterslist" || page == "chapters/chapterlistlevel" || page == "roles/roles" || page == "courses/courses" || page == "courses/courseslistlevel" || page == "courses/course_knowledge_check" || page == "course/course" || page == "task/task" || page == "members/members"){
             $('#navRight a.navlink').removeClass("active");
             var parts = page.split('/');
             var page_flinkto = parts[parts.length - 1];
-            $("."+page_flinkto).addClass("active");
+            var page_from = get_url_value('page_from');
+            if(page_from && page_from != ""){
+              $("."+page_from).addClass("active");
+            }else{
+              $("."+page_flinkto).addClass("active");
+            }
             var path = page ? page : 'dashboard';
             // Load the page
             load_page_content(path);
@@ -379,6 +384,18 @@
         // Content update and back/forward button handler
         History.Adapter.bind(window, 'statechange', function() {
           var State = History.getState(); 
+          var page = get_url_value('page');
+          if(page == "dashboard/dashboard" || page == "cases/case" || page == "cases/caselist" || page == "cases/caselistlevel" || page == "cases/knowledgecheck" || page == "chapters/chapters" || page == "chapters/chapterslist" || page == "chapters/chapterlistlevel" || page == "roles/roles" || page == "courses/courses" || page == "courses/courseslistlevel" || page == "courses/course_knowledge_check" || page == "course/course" || page == "task/task" || page == "members/members"){
+            $('#navRight a.navlink').removeClass("active");
+            var parts = page.split('/');
+            var page_flinkto = parts[parts.length - 1];
+            var page_from = get_url_value('page_from');
+            if(page_from && page_from != ""){
+              $("."+page_from).addClass("active");
+            }else{
+              $("."+page_flinkto).addClass("active");
+            }
+          }
           // Do ajax
           console.log(State.data.path);
           if(State.data.path){
@@ -397,11 +414,47 @@
         // Navigation link handler
         $('body').on('click', 'li a', function(e) {
           e.preventDefault();
-          
+
+          var attrtitle = $(this).attr("data-title");
           var urlPath = $(this).attr('href');
-          var title = $(this).text(); 
-          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "chapters/chapters" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "task/task" || urlPath == "members/members"){
-              History.pushState({path: urlPath}, title, './?page=' + urlPath); // When we do this, History.Adapter will also execute its contents.    
+          if(attrtitle && attrtitle != ''){
+            var title = attrtitle;
+          }else{
+            var title = $(this).text();
+          }
+          var data_attr = getDataAttributes($(this).get(0));
+          var url_param = '';
+          if(data_attr && data_attr != ''){
+            $.each(data_attr, function (i, val) {
+                url_param += "&"+i+"="+val;
+            });
+          }
+          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members"){
+              History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param); // When we do this, History.Adapter will also execute its contents.    
+            }
+        });
+
+        $(document).on('click', '.navigate_refresh', function (e) {
+          e.preventDefault();
+          if(e.target.tagName == "IMG"){
+            return true;
+          }
+          var attrtitle = $(this).attr("data-title");
+          var urlPath = $(this).attr('href');
+          if(attrtitle && attrtitle != ''){
+            var title = attrtitle;
+          }else{
+            var title = $(this).text();
+          }
+          var data_attr = getDataAttributes($(this).get(0));
+          var url_param = '';
+          if(data_attr && data_attr != ''){
+            $.each(data_attr, function (i, val) {
+                url_param += "&"+i+"="+val;
+            });
+          }
+          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members"){
+              History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param); // When we do this, History.Adapter will also execute its contents.    
             }
         });
         
@@ -415,6 +468,12 @@
             }
           });
         }
+        function getDataAttributes(el) {
+            if(el && el.dataset) {
+                return Object.assign({}, el.dataset);
+            }
+            return {};
+        }
         
         function get_url_value(variable) {
            var query = window.location.search.substring(1);
@@ -425,6 +484,13 @@
            }
            return(false);
           }        
+      });
+
+      $(document).ready(function(){
+        $('a.navlink').on('click', function(){ 
+          $('a.navlink').removeClass("active");
+          $(this).addClass("active");
+        });
       });
       </script>
   </body>

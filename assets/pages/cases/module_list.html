@@ -196,8 +196,16 @@
             $('#course_id').trigger('click');
           },
           error: function(error) {
-            toastr.error("Response Error: " + error.message);
-            console.log(error);
+            var errorJson = jQuery.parseJSON(error.responseText);
+            console.log(errorJson.error);
+            if(errorJson.error.length > 0){
+              errorJson.error.forEach(function (element, index) {
+                toastr.error(element);
+              });
+            }else{
+              toastr.error("Response Error: " + error.message);
+              console.log(error);
+            }
           }
         });
     });

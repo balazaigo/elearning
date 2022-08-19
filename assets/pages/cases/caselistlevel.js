@@ -21,15 +21,17 @@
       $("#demo-upload_case_module").hide();
     }
     if(processRights("Add Audio") === true){
-      acceptedFiles += ".mp3, .wav,";
+      acceptedFiles += "audio/mp3,audio/wav,";
     }
     if(processRights("Add Slide") === true){
       acceptedFiles += "image/jpeg,image/png,image/gif,image/jpg,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
     }
     if(processRights("Add Video") === true){
-      acceptedFiles += ".mp4,.mkv,.avi,";
+      acceptedFiles += "video/mp4,video/mkv,video/avi,";
     }
     acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
+    
+    var error_display = 0;
     var dropzone = new Dropzone('#demo-upload_case_module', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
@@ -38,7 +40,39 @@
         maxFilesize: 3,
         filesizeBase: 1000,
         acceptedFiles: acceptedFiles,
+         init: function ()  {
+            this.on("error", function (file, message) {
+                if (file.size > this.options.maxFilesize * 1000 * 1000) {
+                  //toastr.error("File size is too big, Max file size allowed is 3MB");
+                  this.removeFile(file);
+                }
+                var split_str = acceptedFiles.split(",");
+                if (split_str.indexOf(file.type) === -1) {
+                  toastr.error("File type not supported.");
+                  error_display++;
+                  this.removeFile(file);
+                  return true;
+                }
+                if(message.substring(0,16) == "You can't upload" ){
+                  toastr.error("File type not supported.");
+                  error_display++;
+                  this.removeFile(file);
+                  return true;
+                }
+                if (file.size > this.options.maxFilesize * 1000 * 1000) {
+                    toastr.error("File size is too big, Max file size allowed is 3MB");
+                    error_display++;
+                    return true;
+                }
+            }); 
+        },
         thumbnail: function(file, dataUrl) {
+            if (file.size > this.options.maxFilesize * 1000 * 1000) {
+              if(error_display == 0){
+                toastr.error("File size is too big, Max file size allowed is 3MB");
+                return true;
+              }
+            }
             if (file.previewElement) {
               file.previewElement.classList.remove("dz-file-preview");
               var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
@@ -440,13 +474,13 @@ function get_breadcrumbs(){
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
         
-        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="caseslist" data-case_id="${data.case_id}" ><a href="#" data-flinkto="caseslist" data-case_id="${data.case_id}">${data.course_name}</a></li>`;
+        var brd_crumbs = `<li class="breadcrumb-item"><a href="cases/caselist" data-flinkto="caselist" data-case_id="${data.case_id}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
               if(!elements.case_id){
                 elements.case_id = elements.course_id;
               }
-              brd_crumbs += `<li class="breadcrumb-item" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}"><a href="#" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;
+              brd_crumbs += `<li class="breadcrumb-item" ><a href="cases/caselistlevel" data-flinkto="caselistlevel" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
                   //document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
                   document.getElementById("course_header_module").innerHTML = elements.module_name;
@@ -522,7 +556,7 @@ function get_module_details_case_module(){
                                         <div class="acnav__label acnav__label--level2">
                                           <div class="accordionlist">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text">`;
+                                              <div class="col-md-12 acc-text" id="element${element.id}">`;
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
@@ -531,7 +565,35 @@ function get_module_details_case_module(){
                         module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<object data="${base_img_url}${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe></object><p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       let embed_pdfs = {};
+                       embed_pdfs['element'+element.id] = 'created';
+
+                      $(document).find('#element'+element.id+' iframe').load(function(){
+                              embed_pdfs[$(this).parents('element'+element.id).attr('id')] = 'loaded';
+                              $(this).siblings('.loader').remove();
+                              console.log($(this).parents('element'+element.id).attr('id') + " loaded");
+                      });
+
+                      let embed_pdf_check = setInterval(function() {
+                            let remaining_embeds = 0;
+                            $.each(embed_pdfs, function(key, value) {
+                                try {
+                                    if ($($('#' + key)).find('iframe').contents().find("body").contents().length == 0) {
+                                        remaining_embeds++;
+                                        //console.log(key + " resetting");
+                                        $($('#' + key)).find('iframe').attr('src', src='https://docs.google.com/viewer?url=' + base_img_url+element.attachment+ '&embedded=true');
+                                    }
+                                }
+                                catch(err) {
+                                    //console.log(key + " reloading");
+                                }
+                            });
+                        
+                            if (!remaining_embeds) {
+                                clearInterval(embed_pdf_check);
+                            }
+                        }, 1000);
                     }
                     module_attachments_html +=`</div>
                                             </div>
@@ -818,207 +880,73 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
     return false;
   }
 }
-
-  /*$("#saveCases").on("click", function() {
-       let cid = document.getElementById("course_module_id").getAttribute("data-cid");
-       let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
-      var formData = new FormData();
-      var todayDate = new Date().toISOString().slice(0, 10);
-      $.each($('input[name^="courseFile_module"]')[0].files, function(i, file) {
-        formData.append("attachment", file);
-        formData.append("attachment_type", file.type);
-        formData.append("attachment_name", file.name);
-        formData.append("created_date", todayDate);
-        formData.append("status", 0);
-        formData.append("module_id", module_id);
-        formData.append("course_id", cid);
-        $.ajax({
-          url: API_CONTENT_URL + "/case_module_attachments/",
-          method: "POST",
-          type: 'POST', // For jQuery < 1.9
-          cache: false,
-          contentType: false,
-          processData: false,
-          data: formData,
-          headers: {
-            "Authorization" : "Bearer " + getUserInfo().access_token
-          },
-          success: function(response){
-            $('#addCourses').modal('hide');
-            toastr.success("New course information was successfully saved.");
-            console.log(response);
-          },
-          error: function(error) {
+$( document ).ready(function() {
+  $("#saveCases").on("click", function() {
+    var case_id = document.getElementById("case_details").getAttribute("data-case_id");
+    var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+    //var newData = tinymce.activeEditor.getContent();
+    var newData = CKEDITOR.instances["editor1"].getData();
+    var module_content_id = document.getElementById("saveCases").getAttribute("data-module_content_id");
+    var method_type = "POST";
+    var URL  = API_CONTENT_URL + '/case_module_contents/';
+    if(newData !== ''){
+      var content_data = {
+        "case_id": case_id,
+        "case_module_id": case_module_id,
+        "content": newData,
+        "revision_label":""
+      }
+      $.ajax({
+        url: URL,
+        type: method_type,
+        data: JSON.stringify(content_data),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+        success:function(response){
+          toastr.success("Content has been saved.");
+        },
+          error: function(error){
             toastr.error("Response Error: " + error.message);
             console.log(error);
           }
-        });
       });
-      //for (var pair of formData.entries()) {
-       //   console.log(pair[0]+ ', ' + pair[1]); 
-     // }
-    });*/
-/*
-    var trackPath = false;
-      var tinyContentData;
-      tinymce.remove("#tiny");
-      tinyMCE.init({
-        selector: "#tiny",
-        height: 600,
-        width: "100%",
-        menubar: false,
-        branding: false,
-        deprecation_warnings: false,
-        image_advtab: true,
-        plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table paste code help wordcount imagetools'
-        ],
-        toolbar: 'undo redo | link image media | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent charmap | removeformat | code | trackpath',
-        imagetools_cors_hosts: ['localhost', 'eicit.sa'],
-        imagetools_proxy: 'proxy.php',
-        extended_valid_elements : "video[controls|preload|width|height|data-setup],source[src|type]",
-        image_list: [
-          {title: 'Zaigo', value: 'https://www.zaigoinfotech.com/wp-content/uploads/2020/11/logo.png'},
-          {title: 'Exper', value: 'https://elearning.zaigoinfotech.com/assets/images/logo.png'}
-        ],
-        audio_template_callback: function(data) {
-          return '<audio controls>' + '\n<source src="' + data.source + '"' + (data.sourcemime ? ' type="' + data.sourcemime + '"' : '') + 
-            ' />\n' + (data.altsource ? '<source src="' + data.altsource + '"' + (data.altsourcemime ? ' type="' + data.altsourcemime + '"' : '') + ' />\n' : '') + '</audio>';
-        },        
-        setup:function(ed) {
-          ed.on('init', function (e) {
-            //loadextData(ed);
-            get_content_details_case_module();
-          });
-          ed.ui.registry.addButton('trackpath', {
-            icon: 'insert-time',
-            tooltip: 'Toggle Track',
-            onAction: function (_) {
-              // ed.insertContent(toTimeHtml(new Date()));
-              console.log("Before Button : " + window.trackPath);
-              if(window.trackPath) {
-                window.trackPath = false;
-                $(".trackBGColor").hide().prev("div").removeClass("col-8").addClass("col-12");
-              } else{
-                window.trackPath = true;
-                $(".trackBGColor").show().prev("div").removeClass("col-12").addClass("col-8");
-              }
-              console.log("After Button : " + window.trackPath);
-            },
-            onSetup: function (buttonApi) {
-              var editorEventCallback = function (eventApi) {
-                // buttonApi.setDisabled(window.trackPath === false);
-              };
-              ed.on('NodeChange', editorEventCallback);
-              // onSetup should always return the unbind handlers 
-              return function (buttonApi) {
-                ed.off('NodeChange', editorEventCallback);
-              };
-            },
-          });
+    }else{
+      toastr.error("Please Write a Content.");
+    }
+    //loadextData(tinymce.activeEditor);
+  });
+
+  $("#convertToAudio").on("click", function() {
+    var case_id = document.getElementById("case_details").getAttribute("data-case_id");
+    var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+    //var newData = tinymce.activeEditor.getContent();
+    var newData = CKEDITOR.instances["editor1"].getData();
+    var newTextData = newData.replace(/<[^>]+>/g, '');
+    var module_content_id = document.getElementById("saveCases").getAttribute("data-module_content_id");
+    var method_type = "POST";
+    var URL  = API_CONTENT_URL + '/text/audio/';
+    if(newData !== ''){
+      var content_data = {
+        "case_id": case_id,
+        "case_module_id": case_module_id,
+        "text": newTextData,
+        "speaker_id":"3"
+      }
+      $.ajax({
+        url: URL,
+        type: method_type,
+        data: JSON.stringify(content_data),
+        headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+        success:function(response){
+          toastr.success("Convertion process is initiated.");
+        },
+        error: function(error){
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
         }
-      });*/
-
-      /*function loadextData(ed){
-        $(".trackSidebar").html("");
-        var content = '';
-        $.getJSON("../assets/pages/courses/data.js?t=" + Math.floor(Date.now() / 1000), function(result){
-          tinyContentData = result;
-          $.each(result, function(i, field){
-            $(".trackSidebar").append(field.nav);
-            content = field.content;
-          });
-          //load saved content 
-          ed.setContent(content);
-          //trackItems
-          var selContent;
-          $(".trackItems").on("click", function() {
-            $(".trackItems").find("div").removeClass("active");
-            var id = $(this).data("id");
-            let obj = tinyContentData.find((o, i) => {
-              if(o.id == id) {
-                selContent = o.content;
-                return true;
-              }
-            });
-            if(selContent) {
-              ed.setContent(selContent);
-              $(this).find("div").addClass("active");
-            }
-          });
-        });
-      }*/
-      
-      $( document ).ready(function() {
-        $("#saveCases").on("click", function() {
-          var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-          var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
-          //var newData = tinymce.activeEditor.getContent();
-          var newData = CKEDITOR.instances["editor1"].getData();
-          var module_content_id = document.getElementById("saveCases").getAttribute("data-module_content_id");
-          var method_type = "POST";
-          var URL  = API_CONTENT_URL + '/case_module_contents/';
-          if(newData !== ''){
-            var content_data = {
-              "case_id": case_id,
-              "case_module_id": case_module_id,
-              "content": newData,
-              "revision_label":""
-            }
-            $.ajax({
-              url: URL,
-              type: method_type,
-              data: JSON.stringify(content_data),
-              headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-              success:function(response){
-                toastr.success("Content has been saved.");
-              },
-                error: function(error){
-                  toastr.error("Response Error: " + error.message);
-                  console.log(error);
-                }
-            });
-          }else{
-            toastr.error("Please Write a Content.");
-          }
-          //loadextData(tinymce.activeEditor);
-        });
-
-        $("#convertToAudio").on("click", function() {
-          var case_id = document.getElementById("case_details").getAttribute("data-case_id");
-          var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
-          //var newData = tinymce.activeEditor.getContent();
-          var newData = CKEDITOR.instances["editor1"].getData();
-          var newTextData = newData.replace(/<[^>]+>/g, '');
-          var module_content_id = document.getElementById("saveCases").getAttribute("data-module_content_id");
-          var method_type = "POST";
-          var URL  = API_CONTENT_URL + '/text/audio/';
-          if(newData !== ''){
-            var content_data = {
-              "case_id": case_id,
-              "case_module_id": case_module_id,
-              "text": newTextData,
-              "speaker_id":"3"
-            }
-            $.ajax({
-              url: URL,
-              type: method_type,
-              data: JSON.stringify(content_data),
-              headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
-              success:function(response){
-                toastr.success("Convertion process is initiated.");
-              },
-              error: function(error){
-                toastr.error("Response Error: " + error.message);
-                console.log(error);
-              }
-            });
-          }else{
-            toastr.error("Please Write a Content.");
-          }
-          //loadextData(tinymce.activeEditor);
-        });
       });
-      
+    }else{
+      toastr.error("Please Write a Content.");
+    }
+    //loadextData(tinymce.activeEditor);
+  });
+});

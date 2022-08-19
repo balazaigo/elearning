@@ -4,17 +4,21 @@
         <div class="row w-100">
 
           <div class="wrapper">
-            <input type="hidden" data-flinkto="cases" id="case_id_name"/>
+            <input type="hidden" class="cases_flinkto" id="case_id_name"/>
             <input type="hidden" id="member_id" val=""/>
-            <input type="hidden" id="case_id_mod" data-flinkto="caseslist">
-            <div class="left_icon" data-flinkto="cases">
-              <img src="../assets/images/left_arrow.png" class="arrow_icon" data-flinkto="cases">
+            <input type="hidden" id="case_id_mod" href="cases/caselist" data-flinkto="caselist" class="navigate_refresh cases_flinkto">
+            <div class="left_icon">
+              <li style="list-style: none;">
+                <a href="cases/case" data-flinkto="cases">
+                  <img src="../assets/images/left_arrow.png" class="arrow_icon">
+                </a>
+              </li>
             </div>
             <div class="course_head">
               <h4 class="header_content" id="case_ind_name_text"></h4>
 
               <input type="text" id="case_ind_name_input" onblur="toTextHeader();" value="" style="display: none;">
-               <a id="text_edit_img_header" onclick="toInputHeader();"><img src="../assets/images/pen-edit.jpg"></a>
+               <a id="text_edit_img_header" style="display: inline-flex;" onclick="toInputHeader();"><img src="../assets/images/pen-edit.jpg"></a>
               <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
               <h4 id="case_ind_desc_text" class="case_ind_desc_text"></h4>
             </div>
@@ -62,7 +66,7 @@
   </div>
 </div>
 
-<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+<!--<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
       <div class="modal-header">
@@ -84,9 +88,14 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 <script type="text/javascript">
-
+    let queries_param = getUrlParamquery();
+    var case_flinkto_elem = document.querySelectorAll(".cases_flinkto");
+    case_flinkto_elem.forEach(el=>{
+      el.setAttribute("data-case_id", queries_param.case_id);
+      el.setAttribute("data-case_name", decodeURI(queries_param.case_name));
+    });
     $(document).ready(function(){
         setTimeout(function(){
             let case_id = document.getElementById("case_id_name").getAttribute("data-case_id");
@@ -126,7 +135,7 @@
                         newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
                         newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
                         //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-                        newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+                        newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                         //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                         newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
                         newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
@@ -186,7 +195,8 @@
                               headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
                               success:function(response){
                                 console.log(response);
-                                $("#case_id_mod").trigger("click");
+                                //$("#case_id_mod").trigger("click");
+                                location.reload();
                               },
                               error: function(error) {
                                 tags_response = "1";
@@ -244,15 +254,15 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
             newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></span>");
 
             if(a[i].is_qa == true){
-              newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></span>");
+              newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon navigate_refresh' href='cases/knowledgecheck' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></span>");
 
-              newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>");
+              newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title navigate_refresh' href='cases/knowledgecheck' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>");
             }else{
-              newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>");
+              newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'  data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='module_module_"+level_count_inc+"' data-prev_val='"+input_value+"' class='main_mod_title navigate_refresh' href='cases/caselistlevel' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>");
             }
             newUlDIV.append("<span class='expand_img_icon  disp_in_block flt_right'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>");
               //newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
-              newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
+              newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
               //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
               var preven_click_attachment = prevent_click;
               if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
@@ -323,16 +333,16 @@ function get_list_mod( a, $parent , level_count_inc, case_name) {
               newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/course-icon.png' class='course_icon'></span>");
 
                 if(a[i].is_qa == true){
-                  newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></span>");
-                  newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </span>");
+                  newUlDIV.append("<span class='course_img_icon disp_in_block flt_left' style='"+prevent_click+"'><img src='../assets/images/pad.jpg' class='expand_icon navigate_refresh' href='cases/knowledgecheck'  data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'></span>");
+                  newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+" navigate_refresh' href='cases/knowledgecheck'  data-flinkto='knowledgecheck' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' data-case_name='"+case_name+"' data-case_module_name='"+input_value+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </span>");
                 }else{
-                  newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+"' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </span>");
+                  newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='"+input_value+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'><p id='sub_"+levels+"_module_"+(level_count_inc - 1)+"' data-prev_val='"+input_value+"' class='"+title_font+" navigate_refresh' href='cases/caselistlevel' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p> </span>");
                 }
               if(a[i].is_qa == false){
                   newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>");
 
                   //newUl.append("<li class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-flinkto='caselistlevel' data-case_module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>");
-                  newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
+                  newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-module_name='"+input_value+"' data-case_id='"+a[i].case_id+"'  data-case_module_id='"+a[i].module_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
                   //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                   var preven_click_attachment = prevent_click;
                   if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
@@ -465,13 +475,15 @@ function show_assignee_popup_case_mod(e){
   }
 }
 
-$(document).ready(function(){
+//$(document).ready(function(){
   $('#popup_course_icon').on('hidden.bs.modal', function () {
-      $('#case_id_mod').trigger('click');
+    //setTimeout(function(){
+      //$('#case_id_mod').trigger('click');
+      location.reload();
+  //  }, 0);
   });
-});
+  //});
 function toinput_case_mod(e){
-    console.log(e.tagName);
     if(e.tagName == "P"){
         e.setAttribute("style","display:none");
         e.previousSibling.setAttribute("style","display:block");
@@ -538,6 +550,8 @@ function totext_case_mod(e){
         e.nextSibling.innerHTML = input_value_substr +`<img src="../assets/images/pen-edit.jpg" onclick="toinput_case_mod(this);">`;
         e.setAttribute("style","display:none");
         e.nextSibling.setAttribute("style","display:block");
+        e.nextElementSibling.classList.remove("navigate_refresh");
+        e.nextElementSibling.classList.add("navigate_refresh");
         e.nextSibling.focus();
     }else{
         var dots = "";
@@ -548,6 +562,8 @@ function totext_case_mod(e){
         e.nextSibling.innerHTML = input_value_substr;
         e.setAttribute("style","display:none");
         e.nextSibling.setAttribute("style","display:block");
+        e.nextElementSibling.classList.remove("navigate_refresh");
+        e.nextElementSibling.classList.add("navigate_refresh");
         e.nextSibling.focus();
     }
 
@@ -650,6 +666,7 @@ function post_json_dat_case_mod(url, data, call_method, e, message){
     }
     //el_li_9 = e.parentElement.parentElement.childNodes[9];
     el_1.setAttribute("data-flinkto", "caselistlevel");
+    el_1.setAttribute("href", "cases/caselistlevel");
     if(json.module_id != undefined || json.module_id != null){
       e.setAttribute("data-case_module_id", json.module_id);
       el_1.setAttribute("data-case_module_id", json.module_id);
@@ -802,7 +819,7 @@ function add_sub_case_mod(e){
                 newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"' data-case_id=''  data-case_module_id=''>Level "+result+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
                 newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
                 //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item red' data-module_name='' data-case_id='' data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                 //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
                 newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
@@ -837,7 +854,7 @@ function add_sub_case_mod(e){
                 newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
                 newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
                 //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                 //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
                 newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
@@ -858,7 +875,7 @@ function add_sub_case_mod(e){
                 newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value=''onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name' data-case_id='' data-case_module_id=''>Add Module Name <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
                 newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
                 //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green' data-case_id=''  data-case_module_id=''>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+                newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-module_name='' data-case_id=''  data-case_module_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                 //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                 newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
                 newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_case_mod(this);' data-case_id='' data-case_module_id=''></span>";
@@ -918,7 +935,7 @@ function add_sub_sub_case_mod(e){
     newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_case_mod(this);' value='Level "+result+"'onblur='totext_case_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+" <img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
     newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
     //newHTML += "<li class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><li><a class='dropdown-item green'>Edit</a></li><li><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></li></ul></li>";
-    newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+    newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item red' data-module_name='' data-case_id=''  data-case_module_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
     //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
     newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon'></span>";
     newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon'></span>";
@@ -944,36 +961,46 @@ function add_sub_sub_case_mod(e){
 }
 
 function delete_case_module_confirm(e){
-  var element = e;
-  $("#mAlertName").text(e.dataset.module_name);
-  var case_module_name = e.dataset.module_name;
-  var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
-  var num = "";
-  if(classList[2] == 'main_mod'){
-    num = 0;
-  }else{
-    var index = classList[1].lastIndexOf("_");
-    var res_1 = Number(classList[1].substr(index+1));
-    var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length - 8);
-    num = String(result).match(/\./g).length;
-  }
-  if(num === 0){
-    var result_textMsg = "Module:";
-  }else if(num === 1){
-    var result_textMsg = "Chapter:";
-  }else if(num === 2){
-    var result_textMsg = "Lesson:";
-  }else if(num === 3){
-    var result_textMsg = "Topic:";
-  }else if (num === 4){
-    var result_textMsg = "Sub Topic:";
-  }else if (num > 4){
-    var result_textMsg = "Level:";
-  }
-  var toastr_message = case_module_name+" Deleted successfully.";
-  var case_module_id = e.dataset.case_module_id;
-  var case_module_name = e.dataset.module_name;
-  loadAlertModalCaseMod(toastr_message, case_module_id, case_module_name);
+  const container = document.getElementById("popup_course_icon");
+  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+  var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/delete.html?t=` + Math.floor(Date.now() / 1000);
+  $('.modal-content').load(url,function(result){
+    $("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
+    $(".modal-lg").attr("style","max-width: 30%;");
+    var element = e;
+    console.log(e);
+    console.log(e.dataset.module_name);
+    $("#mAlertName").text(e.dataset.module_name);
+    var case_module_name = e.dataset.module_name;
+    var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
+    var num = "";
+    if(classList[2] == 'main_mod'){
+      num = 0;
+    }else{
+      var index = classList[1].lastIndexOf("_");
+      var res_1 = Number(classList[1].substr(index+1));
+      var result = classList[1].substr(index+1)+"."+ Number(e.parentElement.parentElement.parentElement.parentElement.childNodes.length - 8);
+      num = String(result).match(/\./g).length;
+    }
+    if(num === 0){
+      var result_textMsg = "Module:";
+    }else if(num === 1){
+      var result_textMsg = "Chapter:";
+    }else if(num === 2){
+      var result_textMsg = "Lesson:";
+    }else if(num === 3){
+      var result_textMsg = "Topic:";
+    }else if (num === 4){
+      var result_textMsg = "Sub Topic:";
+    }else if (num > 4){
+      var result_textMsg = "Level:";
+    }
+    var toastr_message = case_module_name+" Deleted successfully.";
+    var case_module_id = e.dataset.case_module_id;
+    var case_module_name = e.dataset.module_name;
+    $("#mAlertDeleteCM").attr("data-module_id", case_module_id);
+    modal.toggle();
+  });
 }
   function loadAlertModalCaseMod(toastr_message, module_id, module_name){
     $('#mAlert').on('shown.bs.modal', function (event) {
@@ -992,7 +1019,8 @@ function delete_case_module_confirm(e){
           },
           success:function(response){
             $("#mAlertCancelCaseMod").click();
-            $("#case_id_mod").trigger("click");
+            //$("#case_id_mod").trigger("click");
+            location.reload();
             toastr.success("Deleted Successfully.");
           },
           error: function(error){
@@ -1033,7 +1061,7 @@ function toTextHeader(){
         toastr.error("Case Name should consist of maximum 256 character.");
       $("#case_ind_name_input").attr("style", "display:none");
       $("#case_ind_name_text").attr("style", "display:inline-block");
-      $("#text_edit_img_header").attr("style", "display:inline-block");
+      $("#text_edit_img_header").attr("style", "display:inline-flex");
       return false;
     }
     var dots = "";
@@ -1044,7 +1072,7 @@ function toTextHeader(){
     $("#case_ind_name_text").text(case_header_inp_val.substring(0, 75)+dots);
     $("#case_ind_name_input").attr("style", "display:none");
     $("#case_ind_name_text").attr("style", "display:inline-block");
-    $("#text_edit_img_header").attr("style", "display:inline-block");
+    $("#text_edit_img_header").attr("style", "display:inline-flex");
     var case_name = $("#case_ind_name_input").val();
     var member_id = $("#member_id").val();
     var case_data = {

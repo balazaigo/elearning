@@ -265,10 +265,10 @@ var frmvalidatorfrm;
         if(item.groups.length > 30){
           dotsgroups = "...";
         }
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.name.substring(0, 75)+dots +'</td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.cases.substring(0, 30)+dotscases +'</td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.courses.substring(0, 30)+dotscourses +'</td>';
-        html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.groups.substring(0, 30)+dotsgroups +'</td>';
+        html += '<td class="navigate_refresh" href="chapters/chapterslist" data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.name.substring(0, 75)+dots +'</td>';
+        html += '<td class="navigate_refresh" href="chapters/chapterslist" data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.cases.substring(0, 30)+dotscases +'</td>';
+        html += '<td class="navigate_refresh" href="chapters/chapterslist" data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.courses.substring(0, 30)+dotscourses +'</td>';
+        html += '<td class="navigate_refresh" href="chapters/chapterslist" data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.groups.substring(0, 30)+dotsgroups +'</td>';
         //html += '<td data-flinkto="chapterslist" data-chapter_id="'+ item.id +'" data-chapter_name="'+ item.name +'">'+ item.description +'</td>';
         html += `
           <td class="text-right">

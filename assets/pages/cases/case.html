@@ -476,21 +476,21 @@ function template(data){
           var td = `<div class="col-md-4">
             <div class="role-content cases-card mb-4">
               <div class="row">
-                <div class="col-6 cleft new-btn" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">  <a href="#" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}" class="${status_class}">${status_text}</a>  </div>
-                <div class="col-6 cright">
+                <div class="col-10 cleft new-btn navigate_refresh" href="cases/caselist" data-flinkto="caselist" data-case_id="${element.id}" data-case_name="${element.name}"><a class="${status_class}">${status_text}</a></div>
+                <div class="col-2 cright">
                   <div class="dropdown ahide" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">
                     <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                      <li><a class="dropdown-item green" href="#" data-case_id='${element.id}' data-case_name='${element.name}' onClick='editCase(this);'>Edit</a></li>
+                      <li><a class="dropdown-item green" data-case_id='${element.id}' data-case_name='${element.name}' onClick='editCase(this);'>Edit</a></li>
                       <li><a class="dropdown-item red ${disabled}" href="#mAlert" id="delete_${element.id}"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${element.name}" data-url="${element.id}">Delete</a></li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="row" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">
-                <div class="col-12" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">
-                    <h4 data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">${element.name}</h4>
-                    <p data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}">${element.description.substring(0, 75)+dots}</p>
+              <div class="row navigate_refresh" href="cases/caselist" data-flinkto="caselist" data-case_id="${element.id}" data-case_name="${element.name}">
+                <div class="col-12">
+                    <h4>${element.name}</h4>
+                    <p>${element.description.substring(0, 75)+dots}</p>
                 </div>
               </div> 
             </div>

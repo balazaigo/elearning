@@ -30,19 +30,20 @@ $(document).ready(function(){
     }
     var acceptedFiles = "";
     if(processRights("Add Audio") === true){
-      acceptedFiles += ".mp3, .wav,";
+      acceptedFiles += "audio/mp3,audio/wav,";
     }
     if(processRights("Add Slide") === true){
       acceptedFiles += "image/jpeg,image/png,image/gif,image/jpg,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.ods,.odp,.odt,.rtf,";
     }
     if(processRights("Add Video") === true){
-      acceptedFiles += ".mp4,.mkv,.avi,";
+      acceptedFiles += "video/mp4,video/mkv,video/avi,";
     }
     acceptedFiles = acceptedFiles.replace(/,\s*$/, "");
     get_module_details();
     setTimeout(function() {
       get_breadcrumbs();
     }, 1000);
+    var error_display = 0;
     var dropzone = new Dropzone('#demo-upload', {
         previewTemplate: document.querySelector('#preview-template').innerHTML,
         parallelUploads: 2,
@@ -51,7 +52,39 @@ $(document).ready(function(){
         maxFilesize: 3,
         filesizeBase: 1000,
         acceptedFiles: acceptedFiles,
+         init: function ()  {
+            this.on("error", function (file, message) {
+                if (file.size > this.options.maxFilesize * 1000 * 1000) {
+                  //toastr.error("File size is too big, Max file size allowed is 3MB");
+                  this.removeFile(file);
+                }
+                var split_str = acceptedFiles.split(",");
+                if (split_str.indexOf(file.type) === -1) {
+                  toastr.error("File type not supported.");
+                  error_display++;
+                  this.removeFile(file);
+                  return true;
+                }
+                if(message.substring(0,16) == "You can't upload" ){
+                  toastr.error("File type not supported.");
+                  error_display++;
+                  this.removeFile(file);
+                  return true;
+                }
+                if (file.size > this.options.maxFilesize * 1000 * 1000) {
+                    toastr.error("File size is too big, Max file size allowed is 3MB");
+                    error_display++;
+                    return true;
+                }
+            }); 
+        },
         thumbnail: function(file, dataUrl) {
+            if (file.size > this.options.maxFilesize * 1000 * 1000) {
+              if(error_display == 0){
+                toastr.error("File size is too big, Max file size allowed is 3MB");
+                return true;
+              }
+            }
             if (file.previewElement) {
               file.previewElement.classList.remove("dz-file-preview");
               var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
@@ -165,16 +198,17 @@ $(document).ready(function(){
           tag_list += '<li>'+course_tags[i].tag_name+'<span class="tag__removes tag__removes_course_mod" data-tag="'+course_tags[i].tag_name+'" data-tagid="'+course_tags[i].id+'">×</span></li>';
           tag_list_str += course_tags[i].tag_name+",";
         }
-        document.getElementById("tag__List_append").innerHTML = tag_list;
+        document.getElementById("tag__List_append_course_mod").innerHTML = tag_list;
         document.getElementById("tag__values").value = tag_list_str;
-
         var sum = 0;
-        $('#tag__List_append li').each(function() {
+        $('#tag__List_append_course_mod li').each(function() {
            sum += $(this).height();
         });
-        if(sum > 80){
+        if(sum < -80){
+          $("#tag__List_append_course_mod").addClass("hideContent");
           $(".show-more").css('display','block');
         }else{
+          $("#tag__List_append_course_mod").attr("style", "overflow:none;");
           $(".show-more").css('display','none');
         }
       }
@@ -461,7 +495,7 @@ function get_breadcrumbs(){
       success:function(data){
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
-        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}"><a data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}">${data.course_name}</a></li>`;
+        var brd_crumbs = `<li class="breadcrumb-item"><a href="course/course" data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
               if(elements.case_id && elements.is_case_preview  == true){
@@ -490,7 +524,7 @@ function get_breadcrumbs(){
               }
 
   
-              brd_crumbs += `<li class="breadcrumb-item" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}"><a href="#" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
+              brd_crumbs += `<li class="breadcrumb-item" ><a href="courses/courseslistlevel" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               if(index == breadcrumbs_data.length - 1){
                   document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;
               }
@@ -572,7 +606,7 @@ function get_module_details(){
                                         <div class="acnav__label acnav__label--level2">
                                           <div class="accordionlist">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text">`;
+                                              <div class="col-md-12 acc-text" id="element${element.id}">`;
                     if(element.attachment != null && (element.attachment.substring(0, 7) != "/media/")){
                       base_img_url = '';
                     }
@@ -584,7 +618,36 @@ function get_module_details(){
                         module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe><p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<object data="${base_img_url}${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe></object><p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
+
+                         let embed_pdfs = {};
+                         embed_pdfs['element'+element.id] = 'created';
+
+                        $(document).find('#element'+element.id+' iframe').load(function(){
+                                embed_pdfs[$(this).parents('element'+element.id).attr('id')] = 'loaded';
+                                $(this).siblings('.loader').remove();
+                                console.log($(this).parents('element'+element.id).attr('id') + " loaded");
+                        });
+
+                        let embed_pdf_check = setInterval(function() {
+                              let remaining_embeds = 0;
+                              $.each(embed_pdfs, function(key, value) {
+                                  try {
+                                      if ($($('#' + key)).find('iframe').contents().find("body").contents().length == 0) {
+                                          remaining_embeds++;
+                                          //console.log(key + " resetting");
+                                          $($('#' + key)).find('iframe').attr('src', src='https://docs.google.com/viewer?url=' + base_img_url+element.attachment+ '&embedded=true');
+                                      }
+                                  }
+                                  catch(err) {
+                                      //console.log(key + " reloading");
+                                  }
+                              });
+                          
+                              if (!remaining_embeds) {
+                                  clearInterval(embed_pdf_check);
+                              }
+                          }, 1000);
                     }
                     module_attachments_html +=`</div>
                                             </div>
@@ -747,7 +810,7 @@ document.addEventListener("keyup", function(e){
           e.target.parentElement.nextElementSibling.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
           var sum = 0;
-          $('#tag__List_append li').each(function() {
+          $('#tag__List_append_course_mod li').each(function() {
              sum += $(this).height();
           });
           if(sum > 80){
@@ -825,7 +888,7 @@ function addTagBtncourseModule(e){
           e.parentElement.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.parentElement.parentElement.children[0].children[0].value = "";
           var sum = 0;
-          $('#tag__List_append li').each(function() {
+          $('#tag__List_append_course_mod li').each(function() {
              sum += $(this).height();
           });
           if(sum > 80){
@@ -862,7 +925,7 @@ document.addEventListener("click", function(e){
           success:function(response){
             e.target.parentElement.remove();
             var sum = 0;
-            $('#tag__List_append li').each(function() {
+            $('#tag__List_append_course_mod li').each(function() {
                sum += $(this).height();
             });
             if(sum > 80){

@@ -178,7 +178,6 @@ function get_module_details(chapter_id, chapter_topic_id){
       dataType: 'json',
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
       success:function(response){
-        console.log(response);
         var module_attachments = response;
         var module_attachments_html = "";
         if(module_attachments && module_attachments.length > 0){
@@ -192,7 +191,7 @@ function get_module_details(chapter_id, chapter_topic_id){
                                         <div class="acnav__label acnav__label--level2">
                                           <div class="accordionlist">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text">`;
+                                              <div class="col-md-12 acc-text" id="element${element.id}">`;
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
@@ -203,6 +202,34 @@ function get_module_details(chapter_id, chapter_topic_id){
                       var mathcount = Math.floor(Math.random() * 1000);
                        module_attachments_html +=`<object data="${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'><a href="${element.attachment}&embedded=true&ignore=${mathcount}">Download Document</a></iframe></object>
                        <p>If this browser does not support file. Please download the File to view it: <a href="${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       let embed_pdfs = {};
+                         embed_pdfs['element'+element.id] = 'created';
+
+                        $(document).find('#element'+element.id+' iframe').load(function(){
+                                embed_pdfs[$(this).parents('element'+element.id).attr('id')] = 'loaded';
+                                $(this).siblings('.loader').remove();
+                                console.log($(this).parents('element'+element.id).attr('id') + " loaded");
+                        });
+
+                        let embed_pdf_check = setInterval(function() {
+                              let remaining_embeds = 0;
+                              $.each(embed_pdfs, function(key, value) {
+                                  try {
+                                      if ($($('#' + key)).find('iframe').contents().find("body").contents().length == 0) {
+                                          remaining_embeds++;
+                                          console.log(key + " resetting");
+                                          $($('#' + key)).find('iframe').attr('src', src='https://docs.google.com/viewer?url=' +element.attachment+ '&embedded=true');
+                                      }
+                                  }
+                                  catch(err) {
+                                      console.log(key + " reloading");
+                                  }
+                              });
+                          
+                              if (!remaining_embeds) {
+                                  clearInterval(embed_pdf_check);
+                              }
+                          }, 1000);
                     }
                     module_attachments_html +=`</div>
                                             </div>

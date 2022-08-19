@@ -4,6 +4,15 @@
       <div class="container-fluid p-0">
         <div class="row">
           <div class="col-md-6">
+            <div id="backbutton_to_role" class="wrapper" style="display: none;float: left;margin-right: 17px;">
+              <div class="left_icon">
+                <li style="list-style: none;">
+                  <a href="roles/roles" data-flinkto="roles">
+                    <img src="../assets/images/left_arrow.png" class="arrow_icon">
+                  </a>
+                </li>
+              </div>
+            </div>
             <h2> Members <dfn
                 data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."
                 ><i class="fas fa-info-circle"></i
@@ -287,6 +296,13 @@
 </div>
 
 <script>
+
+let queries_param = getUrlParamquery();
+if(queries_param.target && queries_param.target != "" && queries_param.target != null){
+    $("#backbutton_to_role").attr("style", "display:block;float: left;margin-right: 17px;");
+}else{
+  $("#backbutton_to_role").attr("style", "display:none;");
+}
 $(function () {
     var dropZoneId = "drop-zone";
     var buttonId = "clickHere";
@@ -396,6 +412,17 @@ $( document ).ready(function() {
       $.each( response, function( i, val ) {
         $("#role_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
       });
+      let queries_param = getUrlParamquery();
+      if(queries_param.target && queries_param.target != "" && queries_param.target != null){
+          console.log(queries_param.target);
+          $("#role_list").val(queries_param.target).change();
+          window.selectedRoleID = null;
+      } else if(window.selectedRoleID) {
+          $("#role_list").val(window.selectedRoleID).change();
+          window.selectedRoleID = null;
+      }else {
+        doSearch();
+      }
     }
   });
   
@@ -414,14 +441,6 @@ $( document ).ready(function() {
   $("#status, #role_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
   $('.btnRadio').click(function(){ doSearch(); });
   
-  if(window.selectedRoleID) {
-    setTimeout(function(){
-      $("#role_list").val(window.selectedRoleID).change();
-      window.selectedRoleID = null;
-    }, 1500);
-  } else {
-    doSearch();
-  }
   
   $(".cancel-member-create-form").on("click", function() {
     $("#member-create-form-container").removeClass("overlay_target");

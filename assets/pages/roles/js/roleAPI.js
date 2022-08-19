@@ -37,7 +37,7 @@ function renderRoleList(roles) {
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
     if(role.member_count > 0){
-      html_member = `<span><a id="role_member_count" data-flinkto="userroles" data-target="${role.id}"><span data-flinkto="userroles" data-target="${role.id}">Members :</span>${role.member_count}</a></span>`;
+      html_member = `<span class="navigate_refresh" href="members/members" data-page_from="roles" data-flinkto="members" data-target="${role.id}"><a id="role_member_count"><span >Members :</span>${role.member_count}</a></span>`;
     }else{
       html_member = `<span><a id="role_member_count"><span>Members :</span> ${role.member_count}</a></span>`;
     }

@@ -1,11 +1,15 @@
 <div class="row loader" id="role-loader"><span>Loading Content</span></div>
-<div class="row" id="rolebox">
+<div class="row" id="rolebox" style="padding-left: 20px;">
 <div class="container-fluid course_details course_module_details">
       <div class="row">
         <div class="col-12 title-head mb-3">
           <div class="wrapper">
-            <div class="left_icon" data-flinkto="courses">
-              <img src="../assets/images/left_arrow.png" class="arrow_icon" data-flinkto="course">
+            <div class="left_icon">
+              <li style="list-style: none;">
+                <a href="course/course" data-flinkto="course">
+                  <img src="../assets/images/left_arrow.png" class="arrow_icon">
+                </a>
+              </li>
             </div>
             <div class="course_head">
               <h4 class="header_content" id="course_header_module"><dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
@@ -22,7 +26,7 @@
               </ul>
             </div>
             <input type="hidden" value="6d164cf4-b76d-48a7-8094-2b8ac4482805" name="course_id" id="course_id"></div>
-            <input type="hidden" data-flinkto="course" id="course_module_id" />
+            <input type="hidden" class="course" id="course_module_id" />
             <input type="hidden"  id="category_id_gs" value="" />
         </div>
 
@@ -101,13 +105,13 @@
                                         </div>
                                       </div>
                                       <div class="col-md-12 p-3 mtag tag_cont_box">
-                                        <div class="tag__container">
+                                        <div class="tag__container tab_container_course_mod">
                                           <div style="width: auto;float: left;">
                                             <input type="text" class="tag__inputs tag__inputs_course_module" placeholder="+ Add Tag">
                                           </div>
-                                          <span class="orange-btn nbtn" style="margin-left: 15px;"><button onclick="addTagBtncourseModule(this)"><i class="fas fa-plus"></i>Add</button>
+                                          <span class="orange-btn nbtn"><button onclick="addTagBtncourseModule(this)" style="margin-left: 20px;"><i class="fas fa-plus"></i>Add</button>
                                           </span>
-                                          <ul class="tag__List content hideContent" id="tag__List_append">
+                                          <ul class="tag__List content" id="tag__List_append_course_mod">
                                           </ul>
                                           <div class="show-more showmore">More >></div>
                                           <input type="hidden" class="tag__values" id="tag__values" value=""/>
@@ -258,4 +262,23 @@
     </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>-->
+<script type="text/javascript">
+  let queries_param = getUrlParamquery();
+  var course_flinkto_elem = document.querySelectorAll(".course");
+  course_flinkto_elem.forEach(el=>{
+    el.setAttribute("data-cid", queries_param.cid);
+    el.setAttribute("data-module_id", queries_param.module_id);
+    el.setAttribute("data-mod_type", queries_param.mod_type);
+    el.setAttribute("data-can_edit", queries_param.can_edit);
+    el.setAttribute("data-case_id", queries_param.case_id);
+    el.setAttribute("data-case_module_id", queries_param.case_module_id);
+    el.setAttribute("data-chapter_id", queries_param.chapter_id);
+    el.setAttribute("data-chapter_topic_id", queries_param.chapter_topic_id);
+  });
+  var course_flinkto_elem2 = document.querySelectorAll("[data-flinkto='course']");
+  course_flinkto_elem2.forEach(el=>{
+    el.setAttribute("data-cid", queries_param.cid);
+  });
+  $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/courses/courseslistlevel.js`, function() {});
+</script>

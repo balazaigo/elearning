@@ -1,11 +1,15 @@
 <div class="row loader" id="role-loader"><span>Loading Content</span></div>
-<div class="row" id="rolebox">
+<div class="row" id="rolebox" style="padding-left: 20px;">
 <div class="container-fluid course_details course_module_details">
       <div class="row">
         <div class="col-12 title-head mb-3">
           <div class="wrapper">
-            <div class="left_icon" data-flinkto="chapterslist">
-              <img src="../assets/images/left_arrow.png" class="arrow_icon" data-flinkto="chapterslist">
+            <div class="left_icon">
+              <li style="list-style: none;">
+                <a href="chapters/chapterslist" data-flinkto="chapterslist">
+                  <img src="../assets/images/left_arrow.png" class="arrow_icon">
+                </a>
+              </li>
             </div>
             <div class="course_head">
               <h4 class="header_content" id="course_header_module"><dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
@@ -21,7 +25,7 @@
                 </li>-->
               </ul>
             </div>
-            <input type="hidden" data-flinkto="chapterslist" id="chapter_details" onload="get_chapter_module(this);" />
+            <input type="hidden" class="chapterslist" id="chapter_details" onload="get_chapter_module(this);" />
         </div>
 
       </div>
@@ -217,4 +221,13 @@
     </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>-->
+<script type="text/javascript">
+  let queries_param = getUrlParamquery();
+  var case_flinkto_elem = document.querySelectorAll(".chapterslist, [data-flinkto='chapterslist']");
+  case_flinkto_elem.forEach(el=>{
+    el.setAttribute("data-chapter_id", queries_param.chapter_id);
+    el.setAttribute("data-chapter_topic_id", queries_param.chapter_topic_id);
+  });
+  $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/chapters/chapterlistlevel.js`, function() {}); 
+</script>

@@ -4,9 +4,13 @@
           <div class="row w-100">
 
           <div class="wrapper">
-              <input type="hidden" id="case_id_mod" data-flinkto="courseslistlevel">
-            <div class="left_icon" data-flinkto="course">
-              <img src="../assets/images/left_arrow.png" class="arrow_icon" data-flinkto="course">
+              <input type="hidden" id="case_id_mod" class="courseslistlevel">
+            <div class="left_icon">
+              <li style="list-style: none;">
+                <a href="course/course" data-flinkto="course">
+                  <img src="../assets/images/left_arrow.png" class="arrow_icon">
+                </a>
+              </li>
             </div>
             <div class="course_head">
               <h4 class="header_content" id="course_header_module"><dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn>
@@ -22,7 +26,7 @@
                 </li>-->
               </ul>
             </div>
-            <input type="hidden" data-flinkto="courseslistlevel" id="case_details" onload="get_case_module(this);" />
+            <input type="hidden" class="courseslistlevel" id="case_details" onload="get_case_module(this);" />
         </div>
             <!--<div class="col-md-12">
               <h2><span class="back"><a  data-flinkto="caseslist"><i class="fas fa-arrow-left"  data-flinkto="caseslist"></i></a></span><small id="case_module_name">11 Simulation Training On basics of Percutaneous... </small><dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn> <span id="case_module_breadcrumbs"><a href="#">Breadcumbs1</a> <a href="#">Breadcumbs2</a></span> </h2>
@@ -314,25 +318,23 @@
 
 
 <script type="text/javascript">
-$(document).ready(function(){
-    setTimeout(function(){
-        let case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
-        //let case_name = document.getElementById("case_id_mod").getAttribute("data-case_name");
-        let case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
-        let case_module_name = document.getElementById("case_id_mod").getAttribute("data-case_module_name");
-        get_breadcrumbs();
-        /*var case_module_breadcrumbs = "";
-        if(case_name){
-            case_module_breadcrumbs += "<a data-flinkto='cases'>"+case_name+"</a>";
-        }
-        if(case_module_name){
-            $("#case_module_name").text(case_module_name);
-            case_module_breadcrumbs += "<a data-flinkto='caseslist' data-case_id='"+case_id+"' data-case_name='"+case_name+"'>"+case_module_name+"</a>";
-        }
-        $("#case_module_breadcrumbs").html(case_module_breadcrumbs);*/
-        get_json_quest_and_answer(case_id, case_module_id);
-      }, 0);
-  });
+let queries_param = getUrlParamquery();
+var case_flinkto_elem = document.querySelectorAll(".courseslistlevel, [data-flinkto='course']");
+case_flinkto_elem.forEach(el=>{
+  el.setAttribute("data-case_id", queries_param.case_id);
+  el.setAttribute("data-cid", queries_param.cid);
+  el.setAttribute("data-case_module_id", queries_param.case_module_id);
+  el.setAttribute("data-case_module_name", decodeURI(queries_param.case_module_name));
+});
+var case_flinkto_elem2 = document.querySelectorAll("[data-flinkto='course']");
+case_flinkto_elem2.forEach(el=>{
+  el.setAttribute("data-cid", queries_param.cid);
+});
+let case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
+let case_module_id = document.getElementById("case_id_mod").getAttribute("data-case_module_id");
+let case_module_name = document.getElementById("case_id_mod").getAttribute("data-case_module_name");
+get_breadcrumbs();
+get_json_quest_and_answer(case_id, case_module_id);
 
 function get_breadcrumbs(){
     var case_id = document.getElementById("case_id_mod").getAttribute("data-case_id");
@@ -348,16 +350,16 @@ function get_breadcrumbs(){
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
         
-        var brd_crumbs = `<li class="breadcrumb-item" data-flinkto="course" data-cid="${data.course_id}" ><a href="#" data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}">${data.course_name}</a></li>`;
+        var brd_crumbs = `<li class="breadcrumb-item" ><a href="course/course" data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
               if(!elements.case_id){
                 elements.case_id = elements.course_id;
               }
               if(elements.is_qa == true){
-                brd_crumbs += `<li class="breadcrumb-item" data-flinkto="course_knowledgecheck" data-data-cid="${elements.course_id}" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}"><a href="#" data-flinkto="course_knowledgecheck" data-cid="${elements.course_id}" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;
+                brd_crumbs += `<li class="breadcrumb-item"><a href="courses/course_knowledge_check" data-flinkto="course_knowledge_check" data-cid="${elements.course_id}" data-case_id="${elements.case_id}" data-case_module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               }else{
-                brd_crumbs += `<li class="breadcrumb-item" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}"><a href="#" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
+                brd_crumbs += `<li class="breadcrumb-item"><a href="courses/courseslistlevel" data-flinkto="courseslistlevel" data-cid="${elements.course_id}" data-module_id="${elements.module_id}">${elements.module_name}</a></li>`;
               }
               if(index == breadcrumbs_data.length - 1){
                   //document.getElementById("course_header_module").innerHTML = elements.module_name+`<span class="header_cid">&nbsp;&nbsp;<small>(${data.course_id_prefix})</small></span>`;

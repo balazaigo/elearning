@@ -127,13 +127,13 @@ function template(data){
               status_text = "Completed";
             }
             var course_id_prefix = element.course_id_prefix !== undefined ? element.course_id_prefix : "No-ID";
-            var td = "<div class='col-md-4'><div class='role-content mb-4' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'><div class='row'>";
-                td +="<div class='col-6 cleft tbtn' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'> <a href='#' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>"+course_id_prefix+"</a> </div>";
-                td +="<div class='col-6 cright'>";
+            var td = "<div class='col-md-4'><div class='role-content mb-4'><div class='row'>";
+                td +="<div class='col-10 cleft tbtn navigate_refresh' href='course/course' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'> <a href='#' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>"+course_id_prefix+"</a> </div>";
+                td +="<div class='col-2 cright'>";
                 td +="<div class='dropdown ahide'>";
                 td +="<button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button>";
                 td +="<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'>";
-                td +="<li><a class='dropdown-item green' href='#' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='editCourse(this);'>Edit</a></li><li><a class='dropdown-item green' href='#' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='assignCourse(this);'>Assign</a></li>";
+                td +="<li><a class='dropdown-item green' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='editCourse(this);'>Edit</a></li><li><a class='dropdown-item green' href='#' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='assignCourse(this);'>Assign</a></li>";
                 /*
                   EXCEL: 8. Course Card - Edit, Disable, Delete menu should be hidden as for now. 
                 */
@@ -143,13 +143,13 @@ function template(data){
                 td +="</div>";
                 td +="</div>";
                 td +="</div>";
-                td +="<div class='row' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
+                td +="<div class='row navigate_refresh' href='course/course' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
                 td +="<div class='col-12'>";
-                td +="<h6 data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>"+course_name+"</h6>";
-                td +="<p data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'> <span class='c-comment'><i class='far fa-comment'></i> "+element.comments_count+"</span> <span class='c-comment'><i class='fas fa-paperclip'></i> "+element.attachments_count+"</span> </p>";
+                td +="<h6>"+course_name+"</h6>";
+                td +="<p> <span class='c-comment'><i class='far fa-comment'></i> "+element.comments_count+"</span> <span class='c-comment'><i class='fas fa-paperclip'></i> "+element.attachments_count+"</span> </p>";
                 td +="</div>";
                 td +="</div>";
-                td +="<div class='row' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
+                td +="<div class='row navigate_refresh' href='course/course' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
                 td +="<div class='col-6 cleft cc'>";
                 td +="<div>";
                 td +="<div class='progress'>";
@@ -165,7 +165,7 @@ function template(data){
                 td +="<span class='percent-label'>Progress "+progress+"%</span> </div>";
                 td +="</div>";
                 td +="</div>";
-                td +="<div class='row mt-2'>";
+                td +="<div class='row mt-2 navigate_refresh' href='course/course' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
                 td +="<div class='col-6 cleft'>";
                 //td +="<div class='members'> <span><img src='../assets/images/member1.png' ></span> <span><img src='../assets/images/member2.png' ></span> <span><img src='../assets/images/member3.png' ></span> <span><img src='../assets/images/member4.png' ></span> <span><img src='../assets/images/member5.png' ></span> <span class='mlast'>+6</span> </div>";
 
@@ -185,7 +185,7 @@ function template(data){
                 }
                 td +="</div>";*/
                 td +="</div>";
-                td +="<div class='col-6 cright' data-flinkto='course' data-cid='"+id+"' data-cname='"+course_name+"'>";
+                td +="<div class='col-6 cright'>";
                 td +="<div class='new-btn'><p class='"+status_class+"'>"+status_text+"</p></div>";
                 td +="</div>";
                 td +="</div>";

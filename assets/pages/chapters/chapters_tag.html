@@ -8,9 +8,9 @@
               <div style="width: auto;float: left;">
                 <input type="text" class="tag__inputs tag__inputs_chap_mod" placeholder="+ Add Tag">
               </div>
-              <span class="orange-btn nbtn" style="margin-left: 15px;"><button onclick="addTagBtnChapter(this)"><i class="fas fa-plus"></i>Add</button>
+              <span class="orange-btn nbtn"><button onclick="addTagBtnChapter(this)" style="margin-left:20px;"><i class="fas fa-plus"></i>Add</button>
               </span>
-              <ul class="tag__List content hideContent" id="tag__List_append">
+              <ul class="tag__List content hideContent" id="tag__List_append_chapter">
               </ul>
               <div class="show-more showmore">More >></div>
               <input type="hidden" class="tag__values" id="tag__values" value=""/>
@@ -43,7 +43,7 @@
               tag_list += '<li>'+chapter_topic_tags[i].name+'<span class="tag__removes_chapter" data-tag="'+chapter_topic_tags[i].name+'" data-tagid="'+chapter_topic_tags[i].id+'">×</span></li>';
               tag_list_str += chapter_topic_tags[i].name+",";
             }
-            if(chapter_topic_tags.length > 2){
+            /*if(chapter_topic_tags.length > 2){
               $(".showmore").attr("style", "display:block");
             }else{
               if(chapter_topic_tags.length === 0){
@@ -52,9 +52,23 @@
               }else{
                 $(".showmore").attr("style", "display:none");
               } 
-            }
-            document.getElementById("tag__List_append").innerHTML = tag_list;
+            }*/
+            document.getElementById("tag__List_append_chapter").innerHTML = tag_list;
             document.getElementById("tag__values").value = tag_list_str;
+            var sum = 0;
+            $('#tag__List_append_chapter li').each(function() {
+               sum += $(this).height();
+            });
+            console.log(sum);
+            if(sum > 95){
+              $("#tag__List_append_chapter").addClass("hideContent");
+              $("#tag__List_append_chapter").attr("style", "overflow:hidden;");
+              $(".show-more").css('display','block');
+            }else{
+              $("#tag__List_append_chapter").removeClass("hideContent");
+              $("#tag__List_append_chapter").attr("style", "overflow:none;");
+              $(".show-more").css('display','none');
+            }
       }
     });
 }
@@ -76,7 +90,8 @@ $(".show-more").on("click", function() {
 });
 
 /*******************multiple tag list************************/
-document.addEventListener("keyup", function(e){
+$(".tag__inputs_chap_mod").keyup(function(e){
+    event.stopPropagation();
     if (e.keyCode === 13 && e.target.classList.contains("tag__inputs_chap_mod")) {
       var errorMsg = "";
     const currentTag = e.target.value;
@@ -91,7 +106,9 @@ document.addEventListener("keyup", function(e){
       $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
       return;
     }else{
-      $(".tag__inputs_chap_mod").next("span.field-error").remove();
+        if($(".tag__inputs_chap_mod").next().hasClass("field-error")){
+          $(".tag__inputs_chap_mod").next().remove();
+        }
     }
     if(currentTag){
       const hiddenInput = e.target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -105,7 +122,9 @@ document.addEventListener("keyup", function(e){
         $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
         return; 
       }else{
-        $(".tag__inputs_chap_mod").next("span.field-error").remove();
+        if($(".tag__inputs_chap_mod").next().hasClass("field-error")){
+          $(".tag__inputs_chap_mod").next().remove();
+        }
       }
       if(hiddenInputOldValue.length > 0){
         var tag_array_name = hiddenInputOldValue.split(',');
@@ -115,7 +134,9 @@ document.addEventListener("keyup", function(e){
           $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
           return; 
         }else{
-          $(".tag__inputs_chap_mod").next("span.field-error").remove();
+          if($(".tag__inputs_chap_mod").next().hasClass("field-error")){
+            $(".tag__inputs_chap_mod").next().remove();
+          }
         }
       }
       
@@ -142,6 +163,21 @@ document.addEventListener("keyup", function(e){
           const newTag = ` <li>${currentTag}<span class="tag__removes_chapter" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.target.parentElement.nextElementSibling.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.target.value = "";
+
+          var sum = 0;
+          $('#tag__List_append_chapter li').each(function() {
+             sum += $(this).height();
+          });
+          console.log(sum);
+          if(sum > 95){
+            $("#tag__List_append_chapter").addClass("hideContent");
+            $("#tag__List_append_chapter").attr("style", "overflow:hidden;");
+            $(".show-more").css('display','block');
+          }else{
+            $("#tag__List_append_chapter").removeClass("hideContent");
+            $("#tag__List_append_chapter").attr("style", "overflow:none;");
+            $(".show-more").css('display','none');
+          }
         }
       });
     }
@@ -162,7 +198,9 @@ function addTagBtnChapter(e){
       $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
       return;
     }else{
-      $(".tag__inputs_chap_mod").next("span.field-error").remove();
+        if($(".tag__inputs_chap_mod").next().hasClass("field-error")){
+          $(".tag__inputs_chap_mod").next().remove();
+        }
     }
     if(currentTag){
       const hiddenInput =  e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -176,7 +214,9 @@ function addTagBtnChapter(e){
         $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
         return; 
       }else{
-        $(".tag__inputs_chap_mod").next("span.field-error").remove();
+        if($(".tag__inputs_chap_mod").next().hasClass("field-error")){
+          $(".tag__inputs_chap_mod").next().remove();
+        }
       }
       if(hiddenInputOldValue.length > 0){
         var tag_array_name = hiddenInputOldValue.split(',');
@@ -186,7 +226,9 @@ function addTagBtnChapter(e){
           $(".tag__inputs_chap_mod").after(`<span class='field-error'>${errorMsg}</span>`);
           return; 
         }else{
-          $(".tag__inputs_chap_mod").next("span.field-error").remove();
+          if($(".tag__inputs_chap_mod").next().hasClass("field-error")){
+            $(".tag__inputs_chap_mod").next().remove();
+          }
         }
       }
       
@@ -213,6 +255,20 @@ function addTagBtnChapter(e){
           const newTag = ` <li>${currentTag}<span class="tag__removes_chapter" data-tag="${currentTag}" data-tagid="${response.id}">×</span></li>`;
           e.parentElement.nextElementSibling.insertAdjacentHTML("beforeend", newTag);
           e.parentElement.parentElement.children[0].children[0].value = "";
+          var sum = 0;
+          $('#tag__List_append_chapter li').each(function() {
+             sum += $(this).height();
+          });
+          console.log(sum);
+          if(sum > 95){
+            $("#tag__List_append_chapter").addClass("hideContent");
+            $("#tag__List_append_chapter").attr("style", "overflow:hidden;");
+            $(".show-more").css('display','block');
+          }else{
+            $("#tag__List_append_chapter").removeClass("hideContent");
+            $("#tag__List_append_chapter").attr("style", "overflow:none;");
+            $(".show-more").css('display','none');
+          }
         }
       });
     }
@@ -241,7 +297,21 @@ document.addEventListener("click", function(e){
           type: 'DELETE',
           contentType: "application/json; charset=utf-8",
           success:function(response){
-            e.target.parentElement.remove();
+            e.target.parentElement.remove();  
+            var sum = 0;
+            $('#tag__List_append_chapter li').each(function() {
+               sum += $(this).height();
+            });
+            console.log(sum);
+            if(sum > 95){
+              $("#tag__List_append_chapter").addClass("hideContent");
+              $("#tag__List_append_chapter").attr("style", "overflow:hidden;");
+              $(".show-more").css('display','block');
+            }else{
+              $("#tag__List_append_chapter").removeClass("hideContent");
+              $("#tag__List_append_chapter").attr("style", "overflow:none;");
+              $(".show-more").css('display','none');
+            }
           }
         });
       }
