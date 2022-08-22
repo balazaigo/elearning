@@ -5,7 +5,7 @@
       <p>Manage your day to day tasks with style! Enjoy a well built UI system</p>
     </div>
   </div>  
-  <div class="row">
+  <!--<div class="row">
     <div class="col-12 title-head mb-3">
       <div class="row w-100">
         <div class="col-md-6">
@@ -13,9 +13,10 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
+  </div>-->
+
+  <div class="row" id="user_task_card">
+    <!--<div class="col-md-4">
       <div class="task-tbox"> <img src="../assets/images/tbox1.jpg" alt="" >
         <div>
           <h4 id="finished_task_count">0</h4>
@@ -38,14 +39,14 @@
           <p>Active Task</p>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
   <!--<div class="row">
     <div style="height: 300px;" class="col-md-8">
       <canvas id="myBarChart" width="400" height="400"></canvas>
     </div>
   </div>-->
-  <div class="white-bg col-md-12">
+  <!--<div class="white-bg col-md-12">
     <div class="container-fluid p-0">
       <div class="col-12 p-3 pb-0">
       <div class="row">
@@ -76,7 +77,6 @@
               <div class="dropdown-select">
                 <select class="form-control sort-select" id="status">
                   <option value="">Status</option>
-                  <!--<option value="0">New</option>-->
                   <option value="1">Active</option>
                   <option value="2">InActive</option>
                   <option value="3">Delete</option>
@@ -96,12 +96,12 @@
             <table class="table table-bordered responsive" style="table-layout:fixed;">
               <thead>
                 <tr>
-                  <!--<th>
+                <th>
                     <div class="form-check">
                       <input class="form-check-input parentcheck" name="chk" type="checkbox" value="flexCheckDefault1" id="myCheck" onClick="selects()">
                       <label class="form-check-label" for="myCheck"> </label>
                     </div>
-                  </th>-->
+                  </th>
                   <th>TASK ID</th>
                   <th>NAME OF THE TASK</th>
                   <th>ASSIGNED TO</th>
@@ -134,10 +134,10 @@
             <table class="table table-bordered responsive">
               <thead>
                 <tr>
-                  <!--<th><div class="form-check">
+                  <th><div class="form-check">
                       <input class="form-check-input parentcheck" name="chk" type="checkbox" value="" id="myCheckBy" onClick="selects()" >
                       <label class="form-check-label" for="myCheck"> </label>
-                    </div></th>-->
+                    </div></th>
                   <th>TASK ID</th>
                   <th>NAME OF THE TASK</th>
                   <th>ASSIGNED BY</th>
@@ -165,11 +165,236 @@
         </div>
       </div>
     </div>
+  </div>-->
+
+  <div class="row">
+    <div class="col-lg-8 col-md-8">
+      <div class="white-bg col-md-12 p-3 br-5">
+        <div class="title-head">
+          <div class="container-fluid p-0">
+          <div class="row">
+          <div class="col-lg-3 col-md-3">
+          <div class="searchbar">
+          <h4> Task Updates </h4>
+          </div>
+          </div>
+          <div class="col-lg-9 col-md-9 top-btn">
+            <div class="row d-flex justify-content-end">
+              <div class="col-lg-3 col-md-3">
+              <div class="dropdown-select">
+              <select class="sort-select" id="getChartByYear">
+              <option value="">Select Year</option>
+              <option value="2022" selected >2022</option>
+              <!--<option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>-->
+              </select>
+              </div>
+              </div>
+              </div>
+          </div>
+          </div>
+          </div>
+          </div>
+
+          <div class="row">
+            <div style="height: 273px;padding-left:0px;" class="col-md-12">
+              <canvas id="myBarChart" width="100%" height="350"></canvas>
+            </div>
+            <!--<p style="margin-top: 20px;"><smal style="font-size: 12px;color: #f36a10;"><i>Count Includes Both Live & Draft Courses</i></smal></p>-->
+          </div>
+
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4">
+      <div class="searchbar white-bg br-5 p-3 h-425">
+        <h4 class="mb-4">Task Updates </h4>
+        <div class="task-pbox"> 
+          <div class="row">
+            <div class="col-12 mb-4">
+              <img src="../assets/images/g-right.png" alt="">
+              <h3 id="created_task_count" class="mb-0">0</h3>
+              <p>Tasks created</p>
+            </div>
+
+            <div class="col-12 mb-4">
+              <img src="../assets/images/r-close.png" alt="">
+              <h3 id="completed_task_count" class="mb-0">0</h3>
+              <p>Tasks Closed</p>
+            </div>
+
+            <div class="col-12 cleft2 cc mt-3" id="task_created_closed_progress">
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="recent-info mb-3">
+          <p><strong>Raj Kumar</strong> completed a task of uploading documents</p>
+          <p><small>24 minutes ago</small></p>
+        </div>
+        <div class="recent-info mb-3">
+          <p><strong>Raj Kumar</strong> completed a task of uploading documents</p>
+          <p><small>24 minutes ago</small></p>
+        </div>
+        <div class="recent-info mb-3">
+          <p><strong>Raj Kumar</strong> completed a task of uploading documents</p>
+          <p><small>24 minutes ago</small></p>
+        </div>-->
+      </div>
+    </div>
   </div>
 </div>
 <script type="text/javascript">
 
-function doSearch(){
+  $( document ).ready(function() {
+  $(".fullname").html(getUserInfo().name);
+
+  $.ajax({
+    url: API_CONTENT_URL + '/trending/user/',
+    type: 'get',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    success:function(response){
+      console.log(response);
+      var user_task_card_html = '';
+      if(response.length > 0){
+        $.each( response, function( i, val ) {
+          user_task_card_html += `<div class="col-md-4">
+                                    <div class="task-tbox"> 
+                                    <div class="row">
+                                      <div class="col-12">`;
+                                      if(val.image && val.image != "" && val.image != null){
+                                        user_task_card_html += `<img src="${val.image}" alt="">`;
+                                      }else{
+                                        user_task_card_html += `<img src="assets/images/member_default.png" alt="">`;
+                                      }
+                                        user_task_card_html += `<h4>${val.first_name} ${val.last_name}</h4>
+                                        <p>${val.role}</p>
+                                      </div>
+                                      <div class="col-12 cleft cc mt-3">
+                                        <div>
+                                          <span class="percent-label">${val.completed_task} out of  ${val.total_task == 0 ? val.total_task+' task': val.total_task+' tasks' } are done</span>
+                                          <div class="progress">
+                                            <div class="bar" style="width:${((val.completed_task / val.total_task) * 100).toFixed(0)}%">
+                                              <p class="percent"></p>
+                                            </div>
+                                          </div> 
+                                        </div>
+                                      </div>
+                                      </div>
+                                    </div>
+                                  </div>`;
+        });
+        $("#user_task_card").html(user_task_card_html);
+      }
+      
+    },
+    error: function (error) {
+      toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+  getDashboardChart("2022");
+  $("#getChartByYear").on("change", function(){
+    if($(this).val() != ""){
+      getDashboardChart($(this).val());
+    }
+  });
+
+});
+
+function getDashboardChart(year){
+  $.ajax({
+    url: API_CONTENT_URL + '/dashboard/'+year,
+    type: 'get',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    success:function(response){
+      console.log(response);
+      if(response){
+        $("#created_task_count").text((response[1].overall_created_task.toString().length < 2 && response[1].overall_created_task.toString() != 0) ? "0"+response[1].overall_created_task : response[1].overall_created_task);
+        $("#completed_task_count").text((response[1].overall_completed_task.toString().length < 2 && response[1].overall_completed_task.toString() != 0) ? "0"+response[1].overall_completed_task : response[1].overall_completed_task);
+        var task_progress = ((response[1].overall_completed_task / response[1].overall_created_task) * 100).toFixed(0);
+        $("#task_created_closed_progress").html(`<div><div class="progress"><div class="bar" style="width:${task_progress}%"><p class="percent"></p></div></div></div>`);
+        response[0].created_task.backgroundColor = "#F36A10";
+        response[0].completed_task.backgroundColor = "##737374";
+        response[0].created_task.label = "Task Created";
+        response[0].completed_task.label = "Task Completed";
+          const taskData = {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [response[0].created_task, response[0].completed_task]
+          };
+          const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            borderRadius: 50,
+            barPercentage: 0.9,
+            categoryPercentage: 0.3,
+            borderSkipped:false,
+            scales: {
+                  x: {
+                      grid: {
+                        display: false,
+                        drawBorder: false
+                      }
+                  },
+                  y: {
+                      //grace: '50',
+                      grid: {
+                        color: "#F5F5F8",
+                        //tickWidth: 10,
+                        drawBorder: false
+                      },
+                      ticks: {
+                          precision: 0
+                      }
+                  }
+              },
+              plugins: 
+                {
+                legend: {
+                 labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  boxWidth: 8
+                  //padding: 20
+                 },
+                position: "top",
+                align: "start",
+                }
+              },
+              
+          };  
+          const legendMargin = {
+            id: 'legendMargin',
+            beforeInit(chart, legend, options){
+              const fitValue = chart.legend.fit;
+              chart.legend.fit = function fit(){
+                fitValue.bind(chart.legend)();
+                return this.height += 50;
+              }
+            }
+          } 
+            const chartStatus = Chart.getChart("myBarChart"); // <canvas> id
+            if (chartStatus != undefined) {
+              chartStatus.destroy();
+            }
+          const myBarChart = document.getElementById("myBarChart");
+          const barChart = new Chart(myBarChart, {
+            type: 'bar',
+            data: taskData,
+            options: chartOptions,
+            plugins: [legendMargin]
+          });
+      }
+    },
+    error: function (error) {
+      toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+}
+/*function doSearch(){
   $('.btnRadio').each(function(index, element) {
     if($(element).prop("checked")) {
       if($(element).prop("id") == "tabone") {
@@ -183,7 +408,7 @@ function doSearch(){
       }
     }
   });
-}
+}*/
   
 $( document ).ready(function() {
 /*var task_created = {
