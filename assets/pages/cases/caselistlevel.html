@@ -168,24 +168,56 @@
                         <li class="active" id="tab-1">Global Resources </li>
                         <li id="tab-2">Feedback (20)</li>
                       </ul>-->
-                      <div class="tsearch mt-3 mb-3"><i class="fas fa-search"></i>
+                      <div class="tsearch mt-3"><i class="fas fa-search"></i>
                         <input type="search" placeholder="Search here" id="global_search_module">
                       </div>
+                        <em style="font-size: 12px;" class="mb-3">Minimum 3 characters required to search</em>
                       <div class="tabs_container">
                         <div class="tab_content active" data-tab="tab-1">
                           <div class="tabs_wrapper" style="margin-top:50px;">
                             <ul class="tab-s" id="active_li">
                               <li class="active" id="tab4">All </li>
-                              <li id="tab5"><i class="fas fa-video"></i></li>
-                              <li id="tab6"><i class="fas fa-chart-pie"></i></li>
-                              <li id="tab7"><i class="fas fa-music"></i></li>
-                              <li id="tab8"><i class="fas fa-file-alt"></i></li>
+                              <li id="tab9"><i class="fas fa-video"></i></li>
+                              <li id="tab10"><i class="fas fa-chart-pie"></i></li>
+                              <li id="tab11"><i class="fas fa-music"></i></li>
+                              <li id="tab12"><i class="fas fa-file-alt"></i></li>
                             </ul>
+                            <div class="row loader disp_none" id="allattach-loader"><span>Loading..</span></div>
                             <div class="tabs_container global_search_module_content" id="global_search_module_content">
                             </div>
                           </div>
                         </div>
-                        <div class="tab_content" data-tab="tab-2">
+                        <div class="tab_content" data-tab="tab-4">
+                          <!--------------loader start--------------->           
+                          <!--<div class="row loader disp_block" id="allattach-loader"><span>Loading All..</span></div> -->
+                          <!--------------loader end---------------> 
+                          <!--<div class="forumlist pt-4 pb-4 list_allattach_container disp_none">
+                            <div class="row" id="allattach_box">
+                              
+                            </div>
+                          </div>-->
+
+                          <!--------------pagination start--------------->         
+                          <!--<div class="container-fluid pagination-cont cs-number p-0 allattachPagination" style="display: none;">
+                            <div id="pagination-container-all" class="allattach_pagination"></div>
+                            <div id="pagination-container-goto" class="goto_page"><span class="goto_page_text">Go to page</span>
+                            <input type="number" value="" id="go_to_pageall" maxlength="3" min="1">
+                            <a class="goto_go" id="gotoallattach" onclick="goto_pageCall('pagination-container-all', 'go_to_pageall');"><span>Go<i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </span></a></div>
+                          </div>-->
+                          <!--------------pagination end---------------> 
+
+                          <!--------------No records found start---------------> 
+                          <!--<div  id="nodataFound_allattach" style="display: none;">
+                            <div class="row">
+                              <div class="col-12 title-head no-record mb-3 text-center">
+                                <p><span class="text-danger">No Records Found!</span></p>
+                              </div>
+                            </div>
+                          </div>-->
+                          <!--------------No records found end--------------->  
+                        </div>
+                        <!--<div class="tab_content" data-tab="tab-2">
                           <h5>Text (20)</h5>
                           <div class="tab-text relative mb-3"> <a href="#" class="copy" onclick="withJquery();"><i class="fas fa-copy"></i></a>
                             <h6>Nutrition</h6>
@@ -211,7 +243,7 @@
                             </p>
                             <p class="vmore"><a href="#">viewmore ></a></p>
                           </div>
-                        </div>
+                        </div>-->
                       </div>
                     </div>
                   </div>
@@ -221,8 +253,10 @@
     </div>
     </div>
 </div>
+
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>-->
 <script type="text/javascript">
+
   let queries_param = getUrlParamquery();
   var case_flinkto_elem = document.querySelectorAll("[data-flinkto='caselist']");
         case_flinkto_elem.forEach(el=>{
@@ -232,3 +266,4 @@
   //$.getScript(`https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js`, function() {}); 
     $.getScript(`${SITE_URL_PROTOCOL}/assets/pages/cases/caselistlevel.js`, function() {}); 
 </script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>-->

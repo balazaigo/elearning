@@ -170,16 +170,637 @@
       }
     });
 
-$("#global_search_module").keyup(function() { 
-    get_chapter_search_details();
+var  lastVal ="";
+$("#global_search_module_chap").focus(function () {
+  lastVal = $(this).val();
+});
+$("#global_search_module_chap").on('keyup', function (e){
+  if(e.keyCode === 13)  {
+    $(this).blur();
+  }
+});
+$("#global_search_module_chap").on('blur', function (e) {
+  if (e.type === 'blur')  {
+    if (lastVal != $(this).val()){
+      let searchvallength = $("#global_search_module_chap").val().length;
+      if(searchvallength > 2){
+        $('.global_search_module_chap_content').empty();
+        $("#allattach-loader").removeClass("disp_none");
+        $("#allattach-loader").addClass("disp_block");
+        var tagName = $("#global_search_module_chap").val();
+        $('.global_search_module_chap_content').empty();
+        var active_tab_type = $("#active_li_chap li.active").attr('id');
+        var tab4_active = (active_tab_type == "tab4") ? "active" : "";
+        var attachment_all = $('<div class="tab_content '+tab4_active+'" data-tab="tab4"><div id="slide_pos"><div class="row loader"><span>Loading Slide..</span></div></div><div id="video_pos"><div class="row loader"><span>Loading Video..</span></div></div><div id="audio_pos"><div class="row loader"><span>Loading Audio..</span></div></div><div id="text_pos"><div class="row loader"><span>Loading Text..</span></div></div></div>');
+        console.log('execute start');
+        get_search_details_bytype_all('slide', 'Slide', tagName, attachment_all);
+        get_search_details_bytype_all('video', 'Video', tagName, attachment_all);
+        get_search_details_bytype_all('audio', 'Audio', tagName, attachment_all);
+        get_search_details_bytype_all('content', 'Text', tagName, attachment_all);
+        console.log('execute end');
+      }else{
+        $('.global_search_module_chap_content').empty();
+        $("#allattach-loader").addClass("disp_none");
+        $("#allattach-loader").removeClass("disp_block");
+      }
+    }
+  }
  });
+  $("#role-loader").css("display", "none");
+  $("#rolebox").css("display", "flex");
+});
 
- $("#global_search_module").on("search", function() { 
-    get_chapter_search_details();
+function get_search_details_bytype_all(attachment_type, type_title, tagName, attachment_all){
+  var active_tab_type = $("#active_li_chap li.active").attr('id');
+  const currentRequest = $.ajax({
+    type: 'GET',
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type='+attachment_type+'&per_page=6',
+  });
+  $.ajax({
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type='+attachment_type+'&per_page=6',
+    type: 'GET',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    beforeSend: () => {
+      currentRequest.abort();
+    },
+    success:function(response){
+      console.log(response);
+      var tab4_active = (active_tab_type == "tab4") ? "active" : "";
+      //var attachment_all = $('<div class="tab_content '+tab4_active+'" data-tab="tab4"><div id="text_pos"><div id="slide_pos"></div><div id="video_pos"></div><div id="audio_pos"></div></div></div>');
+      var attachment_text  = "";
+      var attachment_text_all  = "";
+      var attachment_video = "";
+      var attachment_video_all = "";
+      var attachment_audio = "";
+      var attachment_audio_all = "";
+      var attachment_slide = "";
+      var attachment_slide_all = "";
+      var video_attachment_count = 1;
+      var audio_attachment_count = 0;
+      var image_attachment_count = 0;
+      var base_img_url = `${API_CONTENT_URL}`;
+      if(attachment_type == "content"){
+        tab12_active = (active_tab_type == "tab12") ? "active" : "";
+        attachment_text += `<div class="tab_content ${tab12_active}" data-tab="tab12"><h5>Text (${response.total})</h5><div class="text_container">`;
+        attachment_text_all += `<h5>Text (${response.total})</h5><div class="text_container_all">`;
+        if(response.data.length > 0){
+          response.data.forEach(function (element, index) {
+            attachment_text +=`<div class="col-12 mb-3 text_content comment-wrapper">
+                                <div class="tab-text relative mb-3 image_content content_show_hide"> 
+                                  ${element.content}
+                                </div>
+                                <div class="read-more">Read more >></div>
+                                <div class="read-less"><< Read less</div>
+                               </div>`;
+            attachment_text_all +=`<div class="col-12 mb-3 text_content comment-wrapper">
+                                <div class="tab-text_all relative mb-3 image_content content_show_hide"> 
+                                  ${element.content}
+                                </div>
+                                <div class="read-more">Read more >></div>
+                                <div class="read-less"><< Read less</div>
+                               </div>`;                               
+          });
+          var text_length = parseInt($(".tab-text").length)+parseInt(response.data.length);
+          console.log(text_length, response.total);
+          if(text_length < response.total){
+            attachment_text += `<div class="load-more_audio_content mb-3" id="load_more_text" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+            attachment_text_all += `<div class="load-more_audio_content mb-3" id="load_more_text_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+          }
+          attachment_text += `</div>`;
+          attachment_text_all += `</div>`;
+          attachment_all.find("#text_pos").empty();
+          attachment_all.find("#text_pos").append(attachment_text_all);
+          $(".global_search_module_chap_content").append(attachment_text);
+        }else{
+          attachment_text += `<p><span class="text-danger">No Content Found!</span></p></div></div>`;
+          attachment_text_all += `<p><span class="text-danger">No Content Found!</span></p></div></div>`;
+          attachment_all.find("#text_pos").empty();
+          attachment_all.find("#text_pos").append(attachment_text_all);
+          $(".global_search_module_chap_content").append(attachment_text);
+        }
+      }
+      if(attachment_type == "slide"){
+        tab10_active = (active_tab_type == "tab10") ? "active" : "";
+        attachment_slide += `<div class="tab_content ${tab10_active}" data-tab="tab10"><h5>Slide (${response.total})</h5><div class="slide_container">`;
+        attachment_slide_all += `<h5>Slide (${response.total})</h5><div class="slide_container_all">`;
+        if(response.data.length > 0){
+          response.data.forEach(function (element, index) {
+            if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+              base_img_url = '';
+            }
+            if(image_attachment_count  % 3 == 0){
+              attachment_slide += `<div class="row slide_content">`;
+              attachment_slide_all += `<div class="row slide_content">`;
+            }
+            attachment_slide += `<div class="col-4 mb-3">
+                                  <div class="tab-slide relative">
+                                    <p title="${element.attachment_name}">${element.attachment_name.length > 10 ? element.attachment_name.substring(0, 10).trim()+"..." : element.attachment_name}</p>
+                                    <a href="${base_img_url}${element.attachment}" target="_blank" title="${element.attachment_name}">
+                                      <img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">
+                                    </a>
+                                  </div>
+                                </div>`;
+            
+            attachment_slide_all += `<div class="col-4 mb-3">
+                                  <div class="tab-slide_all relative">
+                                    <p title="${element.attachment_name}">${element.attachment_name.length > 10 ? element.attachment_name.substring(0, 10).trim()+"..." : element.attachment_name}</p>
+                                    <a href="${base_img_url}${element.attachment}" target="_blank" title="${element.attachment_name}">
+                                      <img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">
+                                    </a>
+                                  </div>
+                                </div>`;                                
+            if(image_attachment_count  % 3 == 2){
+              attachment_slide += `</div>`;
+              attachment_slide_all += `</div>`;
+            }
+            image_attachment_count++;
+          });
+          var slide_length = parseInt($(".tab-slide").length)+parseInt(response.data.length);
+          console.log(slide_length, response.total);
+          if(slide_length < response.total){
+            attachment_slide += `<div class="load-more_slide_content mb-3" id="load_more_slide" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+            attachment_slide_all += `<div class="load-more_slide_content mb-3" id="load_more_slide_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+          }
+          attachment_slide += `</div>`;
+          attachment_slide_all += `</div>`;
+          attachment_all.find("#slide_pos").empty();
+          attachment_all.find("#slide_pos").append(attachment_slide_all);
+          $(".global_search_module_chap_content").append(attachment_slide);
+        }else{
+          attachment_slide += `<p><span class="text-danger">No Image Found!</span></p></div></div>`;
+          attachment_slide_all += `<p><span class="text-danger">No Image Found!</span></p></div></div>`;
+          attachment_all.find("#slide_pos").empty();
+          attachment_all.find("#slide_pos").append(attachment_slide_all);
+          $(".global_search_module_chap_content").append(attachment_slide);
+        }
+      }
+      if(attachment_type == "video"){
+        tab9_active = (active_tab_type == "tab9") ? "active" : "";
+        attachment_video = `<div class="tab_content ${tab9_active}" data-tab="tab9"><h5>Video (${response.total})</h5><div class="video_container">`;
+        attachment_video_all = `<h5>Video (${response.total})</h5><div class="video_container_all">`;
+        if(response.data.length > 0){
+          response.data.forEach(function (element, index) {
+            if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+              base_img_url = '';
+            }
+            if(video_attachment_count  % 2 !== 0){
+              attachment_video += `<div class="row video_content">`;
+              attachment_video_all += `<div class="row video_content">`;
+            }
+              attachment_video += `<div class="col-6 mb-3">
+                                    <div class="tab-video relative">
+                                      <p title="${element.attachment_name}">${element.attachment_name.length > 15 ? element.attachment_name.substring(0, 15).trim()+"..." : element.attachment_name}</p>
+                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${element.attachment_name}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                    </div>
+                                  </div>`;
+
+              attachment_video_all += `<div class="col-6 mb-3">
+                                    <div class="tab-video_all relative">
+                                      <p title="${element.attachment_name}">${element.attachment_name.length > 15 ? element.attachment_name.substring(0, 15).trim()+"..." : element.attachment_name}</p>
+                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${element.attachment_name}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                    </div>
+                                  </div>`;
+            if(video_attachment_count  % 2 === 0){
+              attachment_video += `</div>`;
+              attachment_video_all += `</div>`;
+            }
+            video_attachment_count++;
+          });
+          var video_length = parseInt($(".tab-video").length)+parseInt(response.data.length);
+          console.log(video_length, response.total);
+          if(video_length < response.total){
+            attachment_video += `<div class="load-more_video_content mb-3" id="load_more_video" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+            attachment_video_all += `<div class="load-more_video_content mb-3" id="load_more_video_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+          }
+          attachment_video += `</div>`;
+          attachment_video_all += `</div>`;
+          attachment_all.find("#video_pos").empty();
+          attachment_all.find("#video_pos").append(attachment_video_all);
+          $(".global_search_module_chap_content").append(attachment_video);
+        }else{
+          attachment_video += `<p><span class="text-danger">No Video Found!</span></p></div></div>`;
+          attachment_video_all += `<p><span class="text-danger">No Video Found!</span></p></div></div>`;
+          attachment_all.find("#video_pos").empty();
+          attachment_all.find("#video_pos").append(attachment_video_all);
+          $(".global_search_module_chap_content").append(attachment_video);
+        }
+      }
+      if(attachment_type == "audio"){
+        tab11_active = (active_tab_type == "tab11") ? "active" : "";
+        attachment_audio = `<div class="tab_content ${tab11_active}" data-tab="tab11"><h5>Audio (${response.total})</h5><div class="audio_container">`;
+        attachment_audio_all = `<h5>Audio (${response.total})</h5><div class="audio_container_all">`;
+        if(response.data.length > 0){
+          response.data.forEach(function (element, index) {
+            if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+              base_img_url = '';
+            }
+            attachment_audio += `<div class="col-12 mb-3 audio_content">
+                                    <div class="tab-audio relative">
+                                      <p title="${element.attachment_name}">${element.attachment_name.length > 30 ? element.attachment_name.substring(0, 30).trim()+"..." : element.attachment_name}</p>
+                                      <audio title="${element.attachment_name}" controls>
+                                        <source src="${base_img_url}${element.attachment}" type="audio/mpeg">
+                                          Your browser does not support the audio element. 
+                                      </audio>
+                                    </div>
+                                  </div>`;
+            attachment_audio_all += `<div class="col-12 mb-3 audio_content">
+                                    <div class="tab-audio_all relative">
+                                      <p title="${element.attachment_name}">${element.attachment_name.length > 30 ? element.attachment_name.substring(0, 30).trim()+"..." : element.attachment_name}</p>
+                                      <audio title="${element.attachment_name}" controls>
+                                        <source src="${base_img_url}${element.attachment}" type="audio/mpeg">
+                                          Your browser does not support the audio element. 
+                                      </audio>
+                                    </div>
+                                  </div>`;
+          });
+          var audio_length = parseInt($(".tab-audio").length)+parseInt(response.data.length);
+          console.log(audio_length, response.total);
+          if(audio_length < response.total){
+            attachment_audio += `<div class="load-more_audio_content mb-3" id="load_more_audio" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+            attachment_audio_all += `<div class="load-more_audio_content mb-3" id="load_more_audio_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:none"/ ></div>`;
+          }
+          attachment_audio += `</div>`;
+          attachment_audio_all += `</div>`;
+          attachment_all.find("#audio_pos").empty();
+          attachment_all.find("#audio_pos").append(attachment_audio_all);
+          $(".global_search_module_chap_content").append(attachment_audio);
+        }else{
+          attachment_audio += `<p><span class="text-danger">No Audio Found!</span></p></div></div>`;
+          attachment_audio_all += `<p><span class="text-danger">No Audio Found!</span></p></div></div>`;
+          attachment_all.find("#audio_pos").empty();
+          attachment_all.find("#audio_pos").append(attachment_audio_all);
+          $(".global_search_module_chap_content").append(attachment_audio);
+        }
+      }
+
+      $(".global_search_module_chap_content").append(attachment_all);
+      $("#allattach-loader").removeClass("disp_block");
+      $("#allattach-loader").addClass("disp_none");
+    }
+  });
+ }
+ $(document).ready(function(){
+  $(document.body).on('click', '#load_more_video' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_video(tagName, next_page, 'video');
+   });
+  $(document.body).on('click', '#load_more_video_all' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_video(tagName, next_page, 'all');
+   });
+  $(document.body).on('click', '#load_more_slide' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_slide(tagName, next_page, 'slide');
+   });
+  $(document.body).on('click', '#load_more_slide_all' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_slide(tagName, next_page, 'all');
+   });
+  $(document.body).on('click', '#load_more_audio' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_audio(tagName, next_page, 'slide');
+   });
+  $(document.body).on('click', '#load_more_audio_all' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_audio(tagName, next_page, 'all');
+   });
+  $(document.body).on('click', '#load_more_text' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_text(tagName, next_page, 'content');
+   });
+  $(document.body).on('click', '#load_more_text_all' ,function(){
+    var page_no = parseInt($(this).attr("data-page_no"));
+    var next_page = page_no+1;
+    var tagName = $("#global_search_module_chap").val();
+    load_more_text(tagName, next_page, 'all');
+   });
  });
+ function load_more_video(tagName, next_page_no, search_type){
 
-$("#role-loader").css("display", "none");
-$("#rolebox").css("display", "flex");
+  if(search_type == 'all'){
+    $("#load_more_video_all .video_spinner").attr("style", "display:inline-block");
+  }else{
+    $("#load_more_video .video_spinner").attr("style", "display:inline-block");
+  }
+  const currentRequestvideo = $.ajax({
+    type: 'GET',
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=video&per_page=6&page='+next_page_no,
+  });
+  $.ajax({
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=video&per_page=6&page='+next_page_no,
+    type: 'GET',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    beforeSend: () => {
+      currentRequestvideo.abort();
+    },
+    success:function(response){
+      var attachment_video = "";
+      var video_attachment_count = 1;
+
+      response.data.forEach(function (element, index) {
+        var base_img_url = `${API_CONTENT_URL}`;
+        if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+          base_img_url = '';
+        }
+        if(video_attachment_count  % 2 !== 0){
+          attachment_video += `<div class="row video_content">`;
+        }
+        var tab_videoclass = "tab-video";
+        if(search_type == 'all'){
+          tab_videoclass = "tab-video_all";
+        }
+          attachment_video += `<div class="col-6 mb-3">
+                                <div class="${tab_videoclass} relative">
+                                  <p title="${element.attachment_name}">${element.attachment_name.length > 15 ? element.attachment_name.substring(0, 15).trim()+"..." : element.attachment_name}</p>
+                                  <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${element.attachment_name}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                </div>
+                              </div>`;
+        if(video_attachment_count  % 2 === 0){
+          attachment_video += `</div>`;
+        }
+        video_attachment_count++;
+      });
+
+        if(search_type == 'all'){
+          var video_length = parseInt($(".tab-video_all").length)+parseInt(response.data.length);
+        }else{
+          var video_length = parseInt($(".tab-video").length)+parseInt(response.data.length);
+        }
+      if(search_type == 'all'){
+        $("#load_more_video_all").remove();
+      }else{
+        $("#load_more_video").remove();
+      }
+      if(video_length < response.total){
+        if(search_type == 'all'){
+          attachment_video += `<div class="load-more_video_content mb-3" id="load_more_video_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }else{
+          attachment_video += `<div class="load-more_video_content mb-3" id="load_more_video" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }
+      }
+      if(search_type == 'all'){
+        $(".video_container_all").append(attachment_video);
+        $("#load_more_video_all .video_spinner").attr("style", "display:none");
+      }else{
+        $(".video_container").append(attachment_video);
+        $("#load_more_video .video_spinner").attr("style", "display:none");
+      }
+    }
+  });
+ }
+ function load_more_slide(tagName, next_page_no, search_type){
+
+  if(search_type == 'all'){
+    $("#load_more_slide_all .video_spinner").attr("style", "display:inline-block");
+  }else{
+    $("#load_more_slide .video_spinner").attr("style", "display:inline-block");
+  }
+  const currentRequestslide = $.ajax({
+    type: 'GET',
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=slide&per_page=6&page='+next_page_no,
+  });
+  $.ajax({
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=slide&per_page=6&page='+next_page_no,
+    type: 'GET',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    beforeSend: () => {
+      currentRequestslide.abort();
+    },
+    success:function(response){
+      console.log(response);
+      var attachment_slide = "";
+      var image_attachment_count = 0;
+
+      response.data.forEach(function (element, index) {
+        var base_img_url = `${API_CONTENT_URL}`;
+        if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+          base_img_url = '';
+        }
+        if(image_attachment_count  % 3 == 0){
+          attachment_slide += `<div class="row slide_content">`;
+        }
+        var tab_slideclass = "tab-slide";
+        if(search_type == 'all'){
+          tab_slideclass = "tab-slide_all";
+        }
+        attachment_slide += `<div class="col-4 mb-3">
+                              <div class="${tab_slideclass} relative">
+                                <p title="${element.attachment_name}">${element.attachment_name.length > 10 ? element.attachment_name.substring(0, 10).trim()+"..." : element.attachment_name}</p>
+                                <a href="${base_img_url}${element.attachment}" target="_blank" title="${element.attachment_name}">
+                                  <img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">
+                                  </a>
+                              </div>
+                            </div>`;                                
+        if(image_attachment_count  % 3 == 2){
+          attachment_slide += `</div>`;
+        }
+        image_attachment_count++;
+      });
+
+      if(search_type == 'all'){
+        var slide_length = parseInt($(".tab-slide_all").length)+parseInt(response.data.length);
+      }else{
+        var slide_length = parseInt($(".tab-slide").length)+parseInt(response.data.length);
+      }
+      if(search_type == 'all'){
+        $("#load_more_slide_all").remove();
+      }else{
+        $("#load_more_slide").remove();
+      }
+      if(slide_length < response.total){
+        if(search_type == 'all'){
+          attachment_slide += `<div class="load-more_video_content mb-3" id="load_more_slide_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }else{
+          attachment_slide += `<div class="load-more_video_content mb-3" id="load_more_slide" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }
+      }
+      if(search_type == 'all'){
+        $(".slide_container_all").append(attachment_slide);
+        $("#load_more_slide_all .video_spinner").attr("style", "display:none");
+      }else{
+        $(".slide_container").append(attachment_slide);
+        $("#load_more_slide .video_spinner").attr("style", "display:none");
+      }
+    }
+  });
+ }
+
+ function load_more_audio(tagName, next_page_no, search_type){
+
+  if(search_type == 'all'){
+    $("#load_more_audio_all .video_spinner").attr("style", "display:inline-block");
+  }else{
+    $("#load_more_audio .video_spinner").attr("style", "display:inline-block");
+  }
+  const currentRequestaudio = $.ajax({
+    type: 'GET',
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=audio&per_page=6&page='+next_page_no,
+  });
+  $.ajax({
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=audio&per_page=6&page='+next_page_no,
+    type: 'GET',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    beforeSend: () => {
+      currentRequestaudio.abort();
+    },
+    success:function(response){
+      console.log(response);
+      var attachment_audio = "";
+
+      response.data.forEach(function (element, index) {
+        var base_img_url = `${API_CONTENT_URL}`;
+        if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+          base_img_url = '';
+        }
+        var tab_audioclass = "tab-audio";
+        if(search_type == 'all'){
+          tab_audioclass = "tab-audio_all";
+        }
+        attachment_audio += `<div class="col-12 mb-3 audio_content">
+                                <div class="${tab_audioclass} relative">
+                                <p title="${element.attachment_name}">${element.attachment_name.length > 30 ? element.attachment_name.substring(0, 30).trim()+"..." : element.attachment_name}</p>
+                                  <audio title="${element.attachment_name}" controls>
+                                    <source src="${base_img_url}${element.attachment}" type="audio/mpeg">
+                                      Your browser does not support the audio element. 
+                                  </audio>
+                                </div>
+                              </div>`;
+      });
+
+
+        if(search_type == 'all'){
+          var audio_length = parseInt($(".tab-audio_all").length)+parseInt(response.data.length);
+        }else{
+          var audio_length = parseInt($(".tab-audio").length)+parseInt(response.data.length);
+        }
+      if(search_type == 'all'){
+        $("#load_more_audio_all").remove();
+      }else{
+        $("#load_more_audio").remove();
+      }
+      if(audio_length < response.total){
+        if(search_type == 'all'){
+          attachment_audio += `<div class="load-more_video_content mb-3" id="load_more_audio_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }else{
+          attachment_audio += `<div class="load-more_video_content mb-3" id="load_more_audio" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }
+      }
+      if(search_type == 'all'){
+        $(".audio_container_all").append(attachment_audio);
+        $("#load_more_audio_all .video_spinner").attr("style", "display:none");
+      }else{
+        $(".audio_container").append(attachment_audio);
+        $("#load_more_audio .video_spinner").attr("style", "display:none");
+      }
+    }
+  });
+ }
+ function load_more_text(tagName, next_page_no, search_type){
+
+  if(search_type == 'all'){
+    $("#load_more_text_all .video_spinner").attr("style", "display:inline-block");
+  }else{
+    $("#load_more_text .video_spinner").attr("style", "display:inline-block");
+  }
+  const currentRequesttext = $.ajax({
+    type: 'GET',
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=text&per_page=6&page='+next_page_no,
+  });
+  $.ajax({
+    url: API_CONTENT_URL + '/global_search/?tag_name='+tagName+'&type=text&per_page=6&page='+next_page_no,
+    type: 'GET',
+    dataType: 'json',
+    headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+    beforeSend: () => {
+      currentRequesttext.abort();
+    },
+    success:function(response){
+      console.log(response);
+      var attachment_text = "";
+
+      response.data.forEach(function (element, index) {
+        var base_img_url = `${API_CONTENT_URL}`;
+        if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+          base_img_url = '';
+        }
+        var tab_textclass = "tab-text";
+        if(search_type == 'all'){
+          tab_textclass = "tab-text_all";
+        }
+        attachment_text += `<div class="col-12 mb-3 text_content comment-wrapper">
+                              <div class="${tab_textclass} relative mb-3 image_content content_show_hide"> 
+                                ${element.content}
+                              </div>
+                              <div class="read-more">Read more >></div>
+                              <div class="read-less"><< Read less</div>
+                             </div>`;
+      });
+
+
+      if(search_type == 'all'){
+        var text_length = parseInt($(".tab-text_all").length)+parseInt(response.data.length);
+      }else{
+        var text_length = parseInt($(".tab-text").length)+parseInt(response.data.length);
+      }
+      if(search_type == 'all'){
+        $("#load_more_text_all").remove();
+      }else{
+        $("#load_more_text").remove();
+      }
+      if(text_length < response.total){
+        if(search_type == 'all'){
+          attachment_text += `<div class="load-more_audio_content mb-3" id="load_more_text_all" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }else{
+          attachment_text += `<div class="load-more_audio_content mb-3" id="load_more_text" data-page_no="${response.page}">Load More<img src="../assets/images/spinner2.gif" class="video_spinner" style="display:inline-block"/ ></div>`;
+        }
+      }
+      if(search_type == 'all'){
+        $(".text_container_all").append(attachment_text);
+        $("#load_more_text_all .video_spinner").attr("style", "display:none");
+      }else{
+        $(".text_container").append(attachment_text);
+        $("#load_more_text .video_spinner").attr("style", "display:none");
+      }
+    }
+  });
+ }
+window.addEventListener('load', function() {
+  $('.comment-wrapper').each(function() {
+      var scrollHeight = this.getElementsByClassName('content_show_hide')[0].scrollHeight;
+      var clientHeight = this.getElementsByClassName('content_show_hide')[0].clientHeight;
+      var thisElem = this;
+      if( scrollHeight > clientHeight ) {
+         $(this).children('.read-more').show();
+      } else {
+         $(thisElem).find('.read-more, .read-less').hide();
+      }
+  });
+});
+$(document.body).on('click', '.read-more', function(){
+  $(this).parent().find('.image_content').removeClass("content_show_hide");
+  $(this).parent().find('.read-more, .read-less').toggle();
+});
+$(document.body).on('click', '.read-less', function(){
+  $(this).parent().find('.image_content').addClass("content_show_hide");
+  $(this).parent().find('.read-more, .read-less').toggle();
 });
 function get_chapter_search_details(){
     var tagName = $("#global_search_module").val();
