@@ -286,14 +286,14 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
                                   ${element.content}
                                 </div>
                                 <div class="read-more">Read more >></div>
-                                <div class="read-less"><< Read less</div>
+                                <div class="read-less"><< View less</div>
                                </div>`;
             attachment_text_all +=`<div class="col-12 mb-3 text_content comment-wrapper">
                                 <div class="tab-text_all relative mb-3 image_content content_show_hide"> 
                                   ${element.content}
                                 </div>
                                 <div class="read-more">Read more >></div>
-                                <div class="read-less"><< Read less</div>
+                                <div class="read-less"><< View less</div>
                                </div>`;                               
           });
           var text_length = parseInt($(".tab-text").length)+parseInt(response.data.length);
@@ -785,7 +785,7 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
                                 ${element.content}
                               </div>
                               <div class="read-more">Read more >></div>
-                              <div class="read-less"><< Read less</div>
+                              <div class="read-less"><< View less</div>
                              </div>`;
       });
 
