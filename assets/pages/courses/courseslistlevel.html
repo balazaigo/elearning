@@ -6,7 +6,7 @@
           <div class="wrapper">
             <div class="left_icon">
               <li style="list-style: none;">
-                <a href="course/course" data-flinkto="course">
+                <a href="course/course" data-flinkto="course" id="back_icon_courselist_level">
                   <img src="../assets/images/left_arrow.png" class="arrow_icon">
                 </a>
               </li>
@@ -253,6 +253,11 @@
     el.setAttribute("data-chapter_id", queries_param.chapter_id);
     el.setAttribute("data-chapter_topic_id", queries_param.chapter_topic_id);
   });
+  
+  if(queries_param.page_from && queries_param.page_from == 'task'){
+    document.getElementById("back_icon_courselist_level").setAttribute("href", "task/task");
+    document.getElementById("back_icon_courselist_level").setAttribute("data-flinkto", "task");
+  }
   var course_flinkto_elem2 = document.querySelectorAll("[data-flinkto='course']");
   course_flinkto_elem2.forEach(el=>{
     el.setAttribute("data-cid", queries_param.cid);

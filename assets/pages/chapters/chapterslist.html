@@ -7,7 +7,7 @@
             <input type="hidden" id="chapter_id_mod" data-flinkto="chapterslist" href="chapters/chapterslist" class="navigate_refresh">
             <div class="left_icon">
               <li style="list-style: none;">
-                <a href="chapters/chapters" data-flinkto="chapters">
+                <a href="chapters/chapters" data-flinkto="chapters" id="back_icon_chapters">
                   <img src="../assets/images/left_arrow.png" class="arrow_icon">
                 </a>
               </li>
@@ -79,6 +79,10 @@
 <script type="text/javascript">
   let queries_param = getUrlParamquery();
 
+  if(queries_param.page_from && queries_param.page_from == 'task'){
+    document.getElementById("back_icon_chapters").setAttribute("href", "task/task");
+    document.getElementById("back_icon_chapters").setAttribute("data-flinkto", "task");
+  }
   var case_flinkto_elem = document.querySelectorAll(".chapters, [data-flinkto='chapterslist']");
   case_flinkto_elem.forEach(el=>{
     el.setAttribute("data-chapter_id", queries_param.chapter_id);

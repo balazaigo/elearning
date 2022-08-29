@@ -325,7 +325,7 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
       }
       if(attachment_type == "slide"){
         tab10_active = (active_tab_type == "tab10") ? "active" : "";
-        attachment_slide += `<div class="tab_content ${tab10_active}" data-tab="tab10"><h5>Image (${response.total})</h5><div class="slide_container">`;
+        attachment_slide += `<div class="tab_content ${tab10_active}" data-tab="tab10"><h5>Images (${response.total})</h5><div class="slide_container">`;
         attachment_slide_all += `<h5>Slide (${response.total})</h5><div class="slide_container_all">`;
         if(response.data.length > 0){
           response.data.forEach(function (element, index) {
@@ -380,7 +380,7 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
       }
       if(attachment_type == "video"){
         tab9_active = (active_tab_type == "tab9") ? "active" : "";
-        attachment_video = `<div class="tab_content ${tab9_active}" data-tab="tab9"><h5>Video (${response.total})</h5><div class="video_container">`;
+        attachment_video = `<div class="tab_content ${tab9_active}" data-tab="tab9"><h5>Videos (${response.total})</h5><div class="video_container">`;
         attachment_video_all = `<h5>Video (${response.total})</h5><div class="video_container_all">`;
         if(response.data.length > 0){
           response.data.forEach(function (element, index) {
@@ -431,7 +431,7 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
       }
       if(attachment_type == "audio"){
         tab11_active = (active_tab_type == "tab11") ? "active" : "";
-        attachment_audio = `<div class="tab_content ${tab11_active}" data-tab="tab11"><h5>Audio (${response.total})</h5><div class="audio_container">`;
+        attachment_audio = `<div class="tab_content ${tab11_active}" data-tab="tab11"><h5>Audios (${response.total})</h5><div class="audio_container">`;
         attachment_audio_all = `<h5>Audio (${response.total})</h5><div class="audio_container_all">`;
         if(response.data.length > 0){
           response.data.forEach(function (element, index) {

@@ -6,7 +6,7 @@
           <div class="wrapper">
             <div class="left_icon">
               <li style="list-style: none;">
-                <a href="chapters/chapterslist" data-flinkto="chapterslist">
+                <a href="chapters/chapterslist" data-flinkto="chapterslist" id="back_icon_chapterslist">
                   <img src="../assets/images/left_arrow.png" class="arrow_icon">
                 </a>
               </li>
@@ -201,6 +201,11 @@
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>-->
 <script type="text/javascript">
   let queries_param = getUrlParamquery();
+
+  if(queries_param.page_from && queries_param.page_from == 'task'){
+    document.getElementById("back_icon_chapterslist").setAttribute("href", "task/task");
+    document.getElementById("back_icon_chapterslist").setAttribute("data-flinkto", "task");
+  }
   var case_flinkto_elem = document.querySelectorAll(".chapterslist, [data-flinkto='chapterslist']");
   case_flinkto_elem.forEach(el=>{
     el.setAttribute("data-chapter_id", queries_param.chapter_id);

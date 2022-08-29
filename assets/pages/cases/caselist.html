@@ -9,7 +9,7 @@
             <input type="hidden" id="case_id_mod" href="cases/caselist" data-flinkto="caselist" class="navigate_refresh cases_flinkto">
             <div class="left_icon">
               <li style="list-style: none;">
-                <a href="cases/case" data-flinkto="cases">
+                <a href="cases/case" data-flinkto="cases" id="back_icon_cases">
                   <img src="../assets/images/left_arrow.png" class="arrow_icon">
                 </a>
               </li>
@@ -91,6 +91,11 @@
 </div>-->
 <script type="text/javascript">
     let queries_param = getUrlParamquery();
+
+    if(queries_param.page_from && queries_param.page_from == 'task'){
+      document.getElementById("back_icon_cases").setAttribute("href", "task/task");
+      document.getElementById("back_icon_cases").setAttribute("data-flinkto", "task");
+    }
     var case_flinkto_elem = document.querySelectorAll(".cases_flinkto");
     case_flinkto_elem.forEach(el=>{
       el.setAttribute("data-case_id", queries_param.case_id);

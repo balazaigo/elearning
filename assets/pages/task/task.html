@@ -103,6 +103,7 @@
                     <th>TASK ID</th>
                     <th>NAME OF THE TASK</th>
                     <th>ASSIGNED TO</th>
+                    <th>ASSIGNED BY</th>
                     <th>END DATE</th>
                     <th>STATUS</th>
                     <th class="text-center">ACTIONS</th>
@@ -140,6 +141,7 @@
                       </div></th>-->
                     <th>TASK ID</th>
                     <th>NAME OF THE TASK</th>
+                    <th>ASSIGNED TO</th>
                     <th>ASSIGNED BY</th>
                     <th>END DATE</th>
                     <th>STATUS</th>
@@ -351,19 +353,20 @@
           }
           html += '<td><span class="badge bg-success gridTaskID">#'+ item.id +'</span></td>';
           if(item.case_id && item.case_module_id){
-            html += '<td class="wrap" data-flinkto="caselistlevel" data-case_id="'+item.case_id+'" data-case_module_id="'+item.case_module_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
+            html += '<td class="wrap navigate_refresh" href="cases/caselistlevel" data-page_from="task" data-flinkto="caselistlevel" data-case_id="'+item.case_id+'" data-case_module_id="'+item.case_module_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
           }else if(item.case_id){
-            html += '<td class="wrap" data-flinkto="caseslist" data-case_id="'+item.case_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
+            html += '<td class="wrap navigate_refresh" href="cases/caselist" data-page_from="task" data-flinkto="caselist" data-case_id="'+item.case_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
           }else if(item.chapter_id && item.chapter_topic_id){
-            html += '<td class="wrap" data-flinkto="chapterlistlevel" data-chapter_id="'+item.chapter_id+'" data-chapter_topic_id="'+item.chapter_topic_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
+            html += '<td class="wrap navigate_refresh" href="chapter/chapterlistlevel" data-page_from="task" data-flinkto="chapterlistlevel" data-chapter_id="'+item.chapter_id+'" data-chapter_topic_id="'+item.chapter_topic_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
           }else if(item.chapter_id){
-            html += '<td class="wrap" data-flinkto="chapterslist" data-chapter_id="'+item.chapter_id+'" role="button">'+ item.name.substring(0, 75)+dots.substring(0, 75)+dots +'</td>';
+            html += '<td class="wrap navigate_refresh" href="chapters/chapterslist" data-page_from="task" data-flinkto="chapterslist" data-chapter_id="'+item.chapter_id+'" role="button">'+ item.name.substring(0, 75)+dots.substring(0, 75)+dots +'</td>';
           }else if(item.course_id && item.module_id){
-            html += '<td class="wrap" data-flinkto="courseslistlevel" data-cid="'+item.course_id+'" data-module_id="'+item.module_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
+            html += '<td class="wrap navigate_refresh" href="courses/courseslistlevel" data-page_from="task" data-flinkto="courseslistlevel" data-cid="'+item.course_id+'" data-module_id="'+item.module_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
           }else if(item.course_id){
-            html += '<td class="wrap" data-flinkto="course" data-cid="'+item.course_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
+            html += '<td class="wrap navigate_refresh" href="course/course" data-page_from="task" data-flinkto="course" data-cid="'+item.course_id+'" role="button">'+ item.name.substring(0, 75)+dots +'</td>';
           }
         html += '<td>'+ item['assigned_to'] +'</td>';
+        html += '<td>'+ item['assigned_by'] +'</td>';
         html += '<td>'+ item.end_date +'</td>';
         html += '<td>'+ getStatus(item.status) +'</td>';
         html += `

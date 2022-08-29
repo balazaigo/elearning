@@ -1,6 +1,7 @@
 <div class="row loader" id="role-loader"><span>Loading Course Modules..</span></div>
 <script type="text/javascript">
 	let queries_param = getUrlParamquery();
+  console.log(queries_param.page_from);
 document.getElementById("app-admin").innerHTML = '<div class="row loader" id="role-loader"><span>Loading Course Module</span></div>';
   //var cname = e.target.dataset.cname.length > 30 ? e.target.dataset.cname.substring(0,30)+"..." : e.target.dataset.cname;
   var course_popup = '<div class="modal fade" id="popup_course_icon" data-bs-backdrop="static">';
@@ -76,7 +77,12 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
     if(outerHtml !== ''){
       var course_head = "<div class='container-fluid course_details'>";
       course_head += "<div class='wrapper'>";
+
+    if(queries_param.page_from && queries_param.page_from == 'task'){
+      course_head += "<div class='left_icon'><li style='list-style:none;'><a class='navigate_refresh' data-flinkto='task' href='task/task'><img src='../assets/images/left_arrow.png' class='arrow_icon'></a></li></div>";
+    }else{
       course_head += "<div class='left_icon'><li style='list-style:none;'><a class='navigate_refresh' data-flinkto='courses' href='courses/courses'><img src='../assets/images/left_arrow.png' class='arrow_icon'></a></li></div>";
+    }
       course_head += "<div class='course_head'>";
       course_head += "<h4 class='header_content' id='course_header'>"+data.course_name+"<span class='header_cid'>&nbsp;&nbsp;<small>("+data.course_id_prefix+")</small></span><dfn data-info='Lorem ipsum dolor sit amet, perspiciatis consectetur dolor.'><i class='fas fa-info-circle'></i></dfn></h4>";
       course_head += "<h4 class='header_breadcrumbs'>"+data.description+"</h4>";
