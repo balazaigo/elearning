@@ -226,7 +226,7 @@ $("#global_search_module").on('blur', function (e) {
         $('.global_search_module_content').empty();
         var active_tab_type = $("#active_li li.active").attr('id');
         var tab4_active = (active_tab_type == "tab4") ? "active" : "";
-        var attachment_all = $('<div class="tab_content '+tab4_active+'" data-tab="tab4"><div id="slide_pos"><div class="row loader"><span>Loading Slide..</span></div></div><div id="video_pos"><div class="row loader"><span>Loading Video..</span></div></div><div id="audio_pos"><div class="row loader"><span>Loading Audio..</span></div></div><div id="text_pos"><div class="row loader"><span>Loading Text..</span></div></div></div>');
+        var attachment_all = $('<div class="tab_content '+tab4_active+'" data-tab="tab4"><div id="slide_pos"><div class="row loader"><span>Loading Image..</span></div></div><div id="video_pos"><div class="row loader"><span>Loading Video..</span></div></div><div id="audio_pos"><div class="row loader"><span>Loading Audio..</span></div></div><div id="text_pos"><div class="row loader"><span>Loading Text..</span></div></div></div>');
         console.log('execute start');
         get_search_details_bytype_all('slide', 'Slide', tagName, attachment_all);
         get_search_details_bytype_all('video', 'Video', tagName, attachment_all);
@@ -317,7 +317,7 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
       }
       if(attachment_type == "slide"){
         tab10_active = (active_tab_type == "tab10") ? "active" : "";
-        attachment_slide += `<div class="tab_content ${tab10_active}" data-tab="tab10"><h5>Slide (${response.total})</h5><div class="slide_container">`;
+        attachment_slide += `<div class="tab_content ${tab10_active}" data-tab="tab10"><h5>Image (${response.total})</h5><div class="slide_container">`;
         attachment_slide_all += `<h5>Slide (${response.total})</h5><div class="slide_container_all">`;
         if(response.data.length > 0){
           response.data.forEach(function (element, index) {
@@ -330,18 +330,18 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
             }
             attachment_slide += `<div class="col-4 mb-3">
                                   <div class="tab-slide relative">
-                                    <p title="${element.attachment_name}">${element.attachment_name.length > 10 ? element.attachment_name.substring(0, 10).trim()+"..." : element.attachment_name}</p>
-                                    <a href="${base_img_url}${element.attachment}" target="_blank" title="${element.attachment_name}">
-                                      <img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">
+                                    <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 10 ? decodeURI(element.attachment_name).substring(0, 10).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                    <a href="${base_img_url}${element.attachment}" target="_blank" title="${decodeURI(element.attachment_name)}">
+                                      <img class="w-100"src="${base_img_url}${element.attachment}" alt="${decodeURI(element.attachment_name)}">
                                     </a>
                                   </div>
                                 </div>`;
             
             attachment_slide_all += `<div class="col-4 mb-3">
                                   <div class="tab-slide_all relative">
-                                    <p title="${element.attachment_name}">${element.attachment_name.length > 10 ? element.attachment_name.substring(0, 10).trim()+"..." : element.attachment_name}</p>
-                                    <a href="${base_img_url}${element.attachment}" target="_blank" title="${element.attachment_name}">
-                                      <img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">
+                                    <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 10 ? decodeURI(element.attachment_name).substring(0, 10).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                    <a href="${base_img_url}${element.attachment}" target="_blank" title="${decodeURI(element.attachment_name)}">
+                                      <img class="w-100"src="${base_img_url}${element.attachment}" alt="${decodeURI(element.attachment_name)}">
                                     </a>
                                   </div>
                                 </div>`;                                
@@ -385,15 +385,15 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
             }
               attachment_video += `<div class="col-6 mb-3">
                                     <div class="tab-video relative">
-                                      <p title="${element.attachment_name}">${element.attachment_name.length > 15 ? element.attachment_name.substring(0, 15).trim()+"..." : element.attachment_name}</p>
-                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${element.attachment_name}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                      <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 15 ? decodeURI(element.attachment_name).substring(0, 15).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                     </div>
                                   </div>`;
 
               attachment_video_all += `<div class="col-6 mb-3">
                                     <div class="tab-video_all relative">
-                                      <p title="${element.attachment_name}">${element.attachment_name.length > 15 ? element.attachment_name.substring(0, 15).trim()+"..." : element.attachment_name}</p>
-                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${element.attachment_name}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                      <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 15 ? decodeURI(element.attachment_name).substring(0, 15).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                     </div>
                                   </div>`;
             if(video_attachment_count  % 2 === 0){
@@ -432,8 +432,8 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
             }
             attachment_audio += `<div class="col-12 mb-3 audio_content">
                                     <div class="tab-audio relative">
-                                      <p title="${element.attachment_name}">${element.attachment_name.length > 30 ? element.attachment_name.substring(0, 30).trim()+"..." : element.attachment_name}</p>
-                                      <audio title="${element.attachment_name}" controls>
+                                      <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 30 ? decodeURI(element.attachment_name).substring(0, 30).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                      <audio title="${decodeURI(element.attachment_name)}" controls>
                                         <source src="${base_img_url}${element.attachment}" type="audio/mpeg">
                                           Your browser does not support the audio element. 
                                       </audio>
@@ -441,8 +441,8 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
                                   </div>`;
             attachment_audio_all += `<div class="col-12 mb-3 audio_content">
                                     <div class="tab-audio_all relative">
-                                      <p title="${element.attachment_name}">${element.attachment_name.length > 30 ? element.attachment_name.substring(0, 30).trim()+"..." : element.attachment_name}</p>
-                                      <audio title="${element.attachment_name}" controls>
+                                      <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 30 ? decodeURI(element.attachment_name).substring(0, 30).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                      <audio title="${decodeURI(element.attachment_name)}" controls>
                                         <source src="${base_img_url}${element.attachment}" type="audio/mpeg">
                                           Your browser does not support the audio element. 
                                       </audio>
@@ -562,8 +562,8 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
         }
           attachment_video += `<div class="col-6 mb-3">
                                 <div class="${tab_videoclass} relative">
-                                  <p title="${element.attachment_name}">${element.attachment_name.length > 15 ? element.attachment_name.substring(0, 15).trim()+"..." : element.attachment_name}</p>
-                                  <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${element.attachment_name}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                  <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 15 ? decodeURI(element.attachment_name).substring(0, 15).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                  <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                 </div>
                               </div>`;
         if(video_attachment_count  % 2 === 0){
@@ -637,9 +637,9 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
         }
         attachment_slide += `<div class="col-4 mb-3">
                               <div class="${tab_slideclass} relative">
-                                <p title="${element.attachment_name}">${element.attachment_name.length > 10 ? element.attachment_name.substring(0, 10).trim()+"..." : element.attachment_name}</p>
-                                <a href="${base_img_url}${element.attachment}" target="_blank" title="${element.attachment_name}">
-                                  <img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">
+                                <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 10 ? decodeURI(element.attachment_name).substring(0, 10).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                <a href="${base_img_url}${element.attachment}" target="_blank" title="${decodeURI(element.attachment_name)}">
+                                  <img class="w-100"src="${base_img_url}${element.attachment}" alt="${decodeURI(element.attachment_name)}">
                                   </a>
                               </div>
                             </div>`;                                
@@ -711,8 +711,8 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
         }
         attachment_audio += `<div class="col-12 mb-3 audio_content">
                                 <div class="${tab_audioclass} relative">
-                                <p title="${element.attachment_name}">${element.attachment_name.length > 30 ? element.attachment_name.substring(0, 30).trim()+"..." : element.attachment_name}</p>
-                                  <audio title="${element.attachment_name}" controls>
+                                <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 30 ? decodeURI(element.attachment_name).substring(0, 30).trim()+"..." : decodeURI(element.attachment_name)}</p>
+                                  <audio title="${decodeURI(element.attachment_name)}" controls>
                                     <source src="${base_img_url}${element.attachment}" type="audio/mpeg">
                                       Your browser does not support the audio element. 
                                   </audio>

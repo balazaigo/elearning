@@ -2135,6 +2135,7 @@ span.obg {
     padding: 0 5px;
     text-align: left;
     font-size: 12px;
+    border: 1.5px solid #52575D;
 }
 .tab tr:hover {
 	background: #EEF6FF;
@@ -4245,6 +4246,17 @@ div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
 }
 .course_module_content h4 {
 	font-size: 18px;
+}
+#course_module_content table, #case_module_content table, #chapter_module_content table{
+	table-layout: fixed;
+    word-break: break-all;
+}
+#course_module_content table img, #case_module_content table img, #chapter_module_content table img {
+	height: 100% !important;
+	box-sizing: border-box;
+	max-width: 100%;
+	max-height: 100%;
+	width: 100%;
 }
 #taskdetails .medium-popup {
 	width: 768px !important;
