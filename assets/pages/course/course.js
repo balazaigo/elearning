@@ -1103,8 +1103,29 @@ $(document).ready(function(){
   $("#mobile-preview-close").on("click", function() {
     $("#mobile_preview").removeClass("overlay_target");
   });
+  $( "#popup_course_icon" ).on('hidden.bs.modal', function(){
+    var medias = Array.prototype.slice.apply(document.querySelectorAll('.player'));
+    console.log(medias);
+    medias.forEach(function(media) {
+      if(event.target != media) media.pause();
+    });
+  });
 });
+
+/*document.addEventListener('play', function (e) {
+    alert(1);
+    var medias = Array.prototype.slice.apply(document.querySelectorAll('.player'));
+    console.log(medias);
+    medias.forEach(function(media) {
+      media.addEventListener('play', function(event) {
+        medias.forEach(function(media) {
+          if(event.target != media) media.pause();
+        });
+      });
+    });
+});*/
 function showVideo(e, fileUrl){
+  console.log('afsf');
   if(e.parentElement.querySelector(".player")){
     e.parentElement.querySelector(".player").remove();
   }
