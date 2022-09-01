@@ -7,9 +7,22 @@
     var editor  = CKEDITOR.replace("editor1",{
       height: 300,
     });
-    CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds,hcard,justify,hcard,wordcount';
+    /*CKEDITOR.config.extraPlugins = 'bgimage,base64image,backgrounds,hcard,justify,hcard,wordcount';
     CKEDITOR.config.allowedContent = true;
-    CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Source,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Format,Font,FontSize,Undo,Redo';
+    CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Source,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Format,Font,FontSize,Undo,Redo';*/
+
+    //CKEDITOR.config.removePlugins = 'blockquote';
+    //CKEDITOR.config.allowedContent = true;
+    //CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Source,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Format,Font,FontSize,Undo,Redo';
+    CKEDITOR.config.removeButtons = 'TextColor,BGColor,Indent,Outdent,JustifyBlock,Unlink,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,Scayt,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Source,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Font,FontSize,Format';
+    CKEDITOR.config.extraPlugins = 'base64image,backgrounds,editorplaceholder,font,format_buttons,justify,selectall,hcard,wordcount';
+    CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+
+    CKEDITOR.config.fillEmptyBlocks = false;
+    CKEDITOR.config.tabSpaces = 0;
+    CKEDITOR.config.basicEntities = false;
+    CKEDITOR.config.allowedContent = true;
+
     get_content_details_case_module();
   }
   $("#role-loader").css("display", "block");
@@ -1114,7 +1127,7 @@ function get_module_details_chapter_module(){
                                 <div class="acnav__label acnav__label--level2">
                                   <div class="accordionlist">
                                     <div class="row">
-                                      <div class="col-md-12 acc-text">
+                                      <div class="col-md-12 acc-text" style="height:100%;">
                                         ${module_content[0].content}
                                       </div>
                                     </div>

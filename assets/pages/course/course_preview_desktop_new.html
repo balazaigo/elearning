@@ -234,11 +234,11 @@ function get_module_details_new(module_id, unique_id, elem){
         if(module_content.length > 0){
             module_details +=`<li class="module has-child disp_block">
                           <ul class="acnav__list  wbg br-10">
-                        <li class="has-children mb-3">
-                                        <div class="acnav__label acnav__label--level2">
-                                          <div class="accordionlist">
+                        <li class="has-children mb-3 tabs">
+                                        <div class="acnav__label acnav__label--level2 tab" style="display:block;">
+                                          <div class="accordionlist table-section">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text">
+                                              <div class="col-md-12 acc-text course-inner" style="height:100%;">
                                                 ${module_content[0].content}
                                               </div>
                                             </div>

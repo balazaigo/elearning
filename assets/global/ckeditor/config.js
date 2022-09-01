@@ -42,15 +42,17 @@ CKEDITOR.editorConfig = function( config ) {
 config.toolbarGroups = [
         { name: 'forms' },
         { name: 'tools' },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+        { name: 'styles' },
         { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
         { name: 'others' },
-        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
         { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-        { name: 'styles' },
         { name: 'links', groups: [ 'Link', 'Unlink', 'Anchor' ] },
+		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
         { name: 'insert' },
         { name: 'colors' },
-        { name: 'about' }
+        { name: 'about' },
+        { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] }
     ];
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	config.wordcount = {
@@ -69,5 +71,5 @@ config.toolbarGroups = [
     //config.allowedContent = true;
 	//config.extraPlugins = '';
 	// Set the most common block elements.
-	config.format_tags = 'p;h1;h2;h3;pre';
+	//config.format_tags = 'h1;h2;h3;h4;h5;h6';
 };
