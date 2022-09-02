@@ -1129,7 +1129,7 @@ function get_breadcrumbs(){
       success:function(data){
         var breadcrumbs_data = data.breadcrumbs_order;
         //document.getElementById("course_id_prefix").innerHTML = data.course_id_prefix;
-        var brd_crumbs = `<li class="breadcrumb-item"><a href="course/course" data-flinkto="course" data-cid="${data.course_id}" data-cname="${data.course_name}">${data.course_name}</a></li>`;
+        var brd_crumbs = `<li class="breadcrumb-item"><a href="course/course" data-flinkto="course" data-cid="${data.course_id}">${data.course_name}</a></li>`;
         if(breadcrumbs_data.length > 0){
             breadcrumbs_data.forEach(function (elements, index) {
               if(elements.case_id && elements.is_case_preview  == true){
