@@ -436,14 +436,14 @@ function decodeHtml(html) {
     });
 
     $("#saveCoursesClose, #saveCoursesNew").on("click", function () {
-      $("#saveCoursesClose").prop('disabled', true);
-      $("#saveCoursesNew").prop('disabled', true);
       var isValidForm = frmvalidatorfrm.form();
       if (isValidForm) {
         if ($("#tags").val().length === 0) {
           alert("Tags field cannot empty please choice atleast one tag!");
           return false;
         }
+        $("#saveCoursesClose").prop('disabled', true);
+        $("#saveCoursesNew").prop('disabled', true);
         var tags = $("#tags").val().join(",");
         var formData = new FormData();
         formData.append("course_id_prefix", $("#coursesID").val());
