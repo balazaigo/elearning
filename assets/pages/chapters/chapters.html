@@ -565,7 +565,7 @@ var frmvalidatorfrm;
         var url = $("#mAlertURL").val();
         if(url) {
           $.ajax({
-            url: API_CONTENT_URL + '/chapters/' + url + '/',
+            url: API_CONTENT_URL + '/chapters/' + url,
             type: 'DELETE',
             headers: {
               "Authorization": "Bearer " + getUserInfo().access_token
