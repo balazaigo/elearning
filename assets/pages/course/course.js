@@ -80,7 +80,7 @@ var ns = $('.coursesortable').nestedSortable({
     var level_number = item.index() + 1;
     var module_name = item.children().eq(0).children().eq(1).children().eq(1).attr("data-prev_val")
     var get_submodule_level_values = {
-      module_name: String(module_name),
+      module_name: String(decodeURIComponent(module_name)),
       level: parseInt(level_number), 
       course_id:String(document.getElementById("course_id").value),
       parent_id:parent_id_val
@@ -173,7 +173,7 @@ function get_module_details(cid, module_id, mytagArray){
 }
 function totext(e){
     if(e.value == ''){
-        e.value = e.nextSibling.dataset.prev_val;
+        e.value = decodeURIComponent(e.nextSibling.dataset.prev_val);
     }
     if(e.value != "" && e.value != "Add Module Name"){
       var class_module_level = e.parentElement.parentElement.parentElement.classList[1];
