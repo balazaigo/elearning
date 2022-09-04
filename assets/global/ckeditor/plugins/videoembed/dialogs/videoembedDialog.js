@@ -121,7 +121,7 @@ CKEDITOR.dialog.add('videoembedDialog', function (editor) {
             if(url_embed.trim().length > 1){
                 var now = new Date();
                 var div = editor.document.createElement('div');
-                div.setHtml(`<center><video class="player mt-3" id='video${now.toString()}' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${url_embed}?q${now.toString()}#t=0.5" type='video/mp4' /></video></center>`);
+                div.setHtml(`<center><video class="player mt-3" id='video${now.getTime()}' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${url_embed}?q${now.getTime()}#t=0.5" type='video/mp4' /></video></center>`);
                 editor.insertElement( div );
             }
 
