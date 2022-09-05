@@ -112,14 +112,18 @@ CKEDITOR.dialog.add('videoembedDialog', function (editor) {
                 return false;
             }
             var sel = editor.getSelection();
+            //console.log(sel);
             var range = sel.getRanges()[0];
-            console.log(range);
+            //console.log(range)
             // no range, means the editor is empty. Select the range.
             if (!range) {
               range = editor.createRange();
               range.selectNodeContents( editor.editable() );
               sel.selectRanges( [ range ] );
+              alert("Place the cursor where to add text in editor");
+              return true;
             }
+            console.log(sel);
             if (url.trim().length > 1) {
                 var now = new Date();
                 var div = editor.document.createElement('div');
