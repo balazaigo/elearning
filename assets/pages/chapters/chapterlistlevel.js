@@ -840,7 +840,7 @@ function get_chapter_search_details(){
         var video_attachemnt_count = 1;
         var audio_attachemnt_count = 1;
         var image_attachemnt_count = 0;
-        var base_img_url = ``;
+        var base_img_url = `${API_CONTENT_URL}`;
         if(data.all_attachments.length > 0){
             data.all_attachments.forEach(function (element, index) {
               if(element.attachment_type){
@@ -1138,7 +1138,7 @@ function get_module_details_chapter_module(){
                               </li></ul>`;
         }
         if(module_attachments.length > 0){
-          var base_img_url = ``;
+          var base_img_url = `${API_CONTENT_URL}`;
             module_attachments.forEach(function (element, index) {
                 var file_type = element.attachment_type.split('/')[0];
                 

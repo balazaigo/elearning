@@ -4545,7 +4545,9 @@ footer.fixed-bottom {
 .disable-click{
 	pointer-events: none;
 }
-#course_module_content p img, #course_module_content_preview p img, #case_module_content p img, #chapter_module_content p img{
+#course_module_content p img, #course_module_content_preview p img, #case_module_content p img, #chapter_module_content p img,
+#course_module_content video, #course_module_content_preview video, #case_module_content  video, #chapter_module_content  video,
+#course_module_content iframe, #course_module_content_preview iframe, #case_module_content  iframe, #chapter_module_content  iframe{
 	width: 100%;
 }
 #content-courseModule::-webkit-scrollbar {

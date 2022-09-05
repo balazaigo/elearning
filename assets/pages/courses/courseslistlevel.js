@@ -1245,9 +1245,11 @@ function get_module_details(){
                                           <div class="accordionlist">
                                             <div class="row">
                                               <div class="col-md-12 acc-text" id="element${element.id}">`;
+                                              console.log(base_img_url)
                     if(element.attachment != null && (element.attachment.substring(0, 7) != "/media/")){
                       base_img_url = '';
                     }
+                    console.log(base_img_url);
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
