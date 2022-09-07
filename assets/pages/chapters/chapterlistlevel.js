@@ -1690,3 +1690,49 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         });
       });
       
+function save_attachment_url_chap_mod(){
+  let chapter_id = document.getElementById("chapter_details").getAttribute("data-chapter_id");
+  let chapter_topic_id = document.getElementById("chapter_details").getAttribute("data-chapter_topic_id");
+  var attachment_url = $("#attachment_url_chap_mod").val();
+  $("#attachment_url_chap_mod").removeClass("is-invalid");
+  $("#attachment_url_chap_mod").next().remove();
+  attachment_url_valid = 0;
+  if(attachment_url == ""){
+    attachment_url_valid++;
+    $("#attachment_url_chap_mod").addClass("is-invalid");
+    $("#attachment_url_chap_mod").after(`<em for="attachment_url_chap_mod" class="error help-block">Please Enter Media Url.</em>`);
+  }else if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attachment_url) == false){
+    attachment_url_valid++;
+    $("#attachment_url_chap_mod").addClass("is-invalid");
+    $("#attachment_url_chap_mod").after(`<em for="attachment_url_chap_mod" class="error help-block">Please Enter Valid Media Url.</em>`);
+  }else {
+    var formData = new FormData();
+    var todayDate = new Date().toISOString().slice(0, 10);
+    formData.append("url_attachment", attachment_url);
+    formData.append("attachment_type", "url");
+    formData.append("created_date", todayDate);
+    formData.append("status", 1);
+    formData.append("chapter_topic_id", chapter_topic_id);
+    formData.append("chapter_id", chapter_id);
+    $.ajax({
+
+      url: API_CONTENT_URL + "/chapter_topic_attachments/",
+      method: "POST",
+      type: 'POST', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: { "Authorization": "Bearer " + getUserInfo().access_token },
+      success:function(response){
+        $("#attachment_url_chap_mod").val("");
+        //$('#addCourses').modal('hide');
+        toastr.success("Media URL saved successfully.");
+        console.log(response);
+      },
+      error:function(error){
+        console.log(error);
+      }
+    });
+  }
+}

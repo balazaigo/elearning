@@ -5,7 +5,27 @@
   </div>
   <div class="col-md-12 p-3" style="padding-top: 0rem !important;">
     <div class="course_module_content" id="course_module_attachment" style="overflow-y: scroll;height: 400px;overflow-x: hidden;display: none;">
-      <div id="dropzone">
+
+      <div class="col-md-12">  
+        <div class="row">      
+          <div class="col-md-2"> 
+            <label for="attachment_url" style="padding: 10px 0px 0px 19px;">Media URL</label>       
+          </div>
+          <div class="col-md-8"> 
+            <input type="text" class="form-control" id="attachment_url" placeholder="https://">
+          </div>
+          <div class="col-md-2"> 
+            <!--<input type="button" class="form-control" id="save_attachment_url" value="Save" onclick="save_attachment_url();">-->
+            <span class="orange-btn" >
+              <button id="save_attachment_url" class="editor_sub-btn mt-1" onclick="save_attachment_url();">Save</button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <p style="text-align:center;margin-top: 10px;">OR</p>
+      </div>
+      <div id="dropzone" style="margin-top: -67px;">
         <form id="demo-upload2" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
           <div id="upload-2-queue" class="queue pt-3 uploaded_display"></div>
           <div id="upload-2-dropzone"></div>
@@ -242,13 +262,12 @@ function get_module_details(cid, module_id){
           var module_attachments_html = "";
           if(response.module_attachments){
             var module_attachments = response.module_attachments;
-            var base_img_url = `${API_CONTENT_URL}`;
           }else{
             var module_attachments = response;
-            var base_img_url = ``;
           }
           if(module_attachments.length > 0){
               module_attachments.forEach(function (element, index) {
+                var base_img_url = `${API_CONTENT_URL}`;
                 if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
                   base_img_url = '';
                 }
@@ -332,4 +351,52 @@ $('#popup_course_icon').on('hidden.bs.modal', function (event) {
   });
   
 });
+function save_attachment_url(){
+  var cid = document.getElementById("course_param").getAttribute("data-cid");
+  var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+  var attachment_url = $("#attachment_url").val();
+  $("#attachment_url").removeClass("is-invalid");
+  $("#attachment_url").next().remove();
+  attachment_url_valid = 0;
+  if(attachment_url == ""){
+    attachment_url_valid++;
+    $("#attachment_url").addClass("is-invalid");
+    $("#attachment_url").after(`<em for="attachment_url" class="error help-block">Please Enter Media Url.</em>`);
+  }else if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attachment_url) == false){
+    attachment_url_valid++;
+    $("#attachment_url").addClass("is-invalid");
+    $("#attachment_url").after(`<em for="attachment_url" class="error help-block">Please Enter Valid Media Url.</em>`);
+  }else {
+    var formData = new FormData();
+    var todayDate = new Date().toISOString().slice(0, 10);
+    formData.append("url_attachment", attachment_url);
+    formData.append("attachment_type", "url");
+    formData.append("created_date", todayDate);
+    formData.append("status", 1);
+    formData.append("module_id", module_id);
+    formData.append("course_id", cid);
+    $.ajax({
+
+      url: API_CONTENT_URL + "/module_attachment/",
+      method: "POST",
+      type: 'POST', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: { "Authorization": "Bearer " + getUserInfo().access_token },
+      success:function(response){
+        console.log(response);
+        $("#attachment_url").val("");
+          updateCountsSelectedModule("");
+          get_module_details(cid, module_id);
+          toastr.success("Media URL saved successfully.");
+          console.log(response);
+      },
+      error:function(error){
+        console.log(error);
+      }
+    });
+  }
+}
 </script>

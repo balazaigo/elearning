@@ -1972,3 +1972,51 @@ $.validator.addMethod("pattern", function( value, element, param ) {
       }
     });
 }
+
+function save_attachment_url_mod(){
+  let cid = document.getElementById("course_module_id").getAttribute("data-cid");
+  let module_id = document.getElementById("course_module_id").getAttribute("data-module_id");
+  var attachment_url = $("#attachment_url_mod").val();
+  $("#attachment_url_mod").removeClass("is-invalid");
+  $("#attachment_url_mod").next().remove();
+  attachment_url_valid = 0;
+  if(attachment_url == ""){
+    attachment_url_valid++;
+    $("#attachment_url_mod").addClass("is-invalid");
+    $("#attachment_url_mod").after(`<em for="attachment_url" class="error help-block">Please Enter Media Url.</em>`);
+  }else if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attachment_url) == false){
+    attachment_url_valid++;
+    $("#attachment_url_mod").addClass("is-invalid");
+    $("#attachment_url_mod").after(`<em for="attachment_url" class="error help-block">Please Enter Valid Media Url.</em>`);
+  }else {
+    var formData = new FormData();
+    var todayDate = new Date().toISOString().slice(0, 10);
+    formData.append("url_attachment", attachment_url);
+    formData.append("attachment_type", "url");
+    formData.append("created_date", todayDate);
+    formData.append("status", 1);
+    formData.append("module_id", module_id);
+    formData.append("course_id", cid);
+    $.ajax({
+
+      url: API_CONTENT_URL + "/module_attachment/",
+      method: "POST",
+      type: 'POST', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: { "Authorization": "Bearer " + getUserInfo().access_token },
+      success:function(response){
+        console.log(response);
+        $("#attachment_url_mod").val("");
+        $('#addCourses').modal('hide');
+        toastr.success("Media URL saved successfully.");
+        console.log(response);
+      },
+      error:function(error){
+        console.log(error);
+      }
+    });
+  }
+}

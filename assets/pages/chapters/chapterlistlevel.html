@@ -83,6 +83,25 @@
                                               </span>
                                             </div>
                                           </div> 
+                                          <div class="col-md-12 mt-4" style="float: left;">  
+                                            <div class="row">      
+                                              <div class="col-md-2"> 
+                                                <label for="attachment_url_chap_mod" style="padding: 10px 0px 0px 19px;">Media URL</label>       
+                                              </div>
+                                              <div class="col-md-8"> 
+                                                <input type="text" class="form-control" id="attachment_url_chap_mod" placeholder="https://">
+                                              </div>
+                                              <div class="col-md-2"> 
+                                                <!--<input type="button" class="form-control" id="save_attachment_url" value="Save" onclick="save_attachment_url();">-->
+                                                <span class="orange-btn" >
+                                                  <button id="save_attachment_url_chap_mod" class="editor_sub-btn mt-1" onclick="save_attachment_url_chap_mod();">Save</button>
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-12" style="float: left;">
+                                            <p style="text-align:center;margin-top: 10px;">OR</p>
+                                          </div>
                                           <div id="dropzone">
                                             <form id="demo-upload_chapter_module" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
                                               <div id="upload-1-queue" class="queue pt-3 uploaded_display"></div>

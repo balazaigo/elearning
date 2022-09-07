@@ -4,8 +4,28 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
   <div class="col-md-12 p-3" style="padding-top: 0rem !important;">
-    <div class="course_module_content" style="overflow-y: scroll;height: 400px;overflow-x: hidden;">
-    <div id="dropzone">
+    <div class="course_module_content" style="overflow-y: scroll;height: auto;overflow-x: hidden;">
+
+    <div class="col-md-12">  
+      <div class="row">      
+        <div class="col-md-2"> 
+          <label for="attachment_url_chap" style="padding: 10px 0px 0px 19px;">Media URL</label>       
+        </div>
+        <div class="col-md-8"> 
+          <input type="text" class="form-control" id="attachment_url_chap" placeholder="https://">
+        </div>
+        <div class="col-md-2"> 
+          <!--<input type="button" class="form-control" id="save_attachment_url" value="Save" onclick="save_attachment_url();">-->
+          <span class="orange-btn" >
+            <button id="save_attachment_url_chap" class="editor_sub-btn mt-1" onclick="save_attachment_url_chap();">Save</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <p style="text-align:center;margin-top: 10px;">OR</p>
+    </div>
+    <div id="dropzone" style="margin-top: -67px;">
       <form id="demo-upload3" class="dropzone needsclick" enctype="multipart/form-data" action="/ajax_file_upload_handler/">
         <div id="upload-3-queue" class="queue pt-3 uploaded_display"></div>
         <div id="upload-3-dropzone"></div>
@@ -253,5 +273,53 @@ function get_module_details(chapter_id, chapter_topic_id){
         console.log(error);
       }
     });
+}
+
+function save_attachment_url_chap(){
+  var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+  var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
+  var attachment_url = $("#attachment_url_chap").val();
+  $("#attachment_url_chap").removeClass("is-invalid");
+  $("#attachment_url_chap").next().remove();
+  attachment_url_valid = 0;
+  if(attachment_url == ""){
+    attachment_url_valid++;
+    $("#attachment_url_chap").addClass("is-invalid");
+    $("#attachment_url_chap").after(`<em for="attachment_url_chap" class="error help-block">Please Enter Media Url.</em>`);
+  }else if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attachment_url) == false){
+    attachment_url_valid++;
+    $("#attachment_url_chap").addClass("is-invalid");
+    $("#attachment_url_chap").after(`<em for="attachment_url_chap" class="error help-block">Please Enter Valid Media Url.</em>`);
+  }else {
+    var formData = new FormData();
+    var todayDate = new Date().toISOString().slice(0, 10);
+    formData.append("url_attachment", attachment_url);
+    formData.append("attachment_type", "url");
+    formData.append("created_date", todayDate);
+    formData.append("status", 1);
+    formData.append("chapter_topic_id", chapter_topic_id);
+    formData.append("chapter_id", chapter_id);
+    $.ajax({
+
+      url: API_CONTENT_URL + "/chapter_topic_attachments/?chapter_topic_id="+chapter_topic_id,
+      method: "POST",
+      type: 'POST', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: { "Authorization": "Bearer " + getUserInfo().access_token },
+      success:function(response){
+        console.log(response);
+        $("#attachment_url_chap").val("");
+          get_module_details(chapter_id, chapter_topic_id);
+          toastr.success("Media URL saved successfully.");
+          console.log(response);
+      },
+      error:function(error){
+        console.log(error);
+      }
+    });
+  }
 }
 </script>

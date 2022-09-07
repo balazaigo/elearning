@@ -1587,3 +1587,50 @@ $( document ).ready(function() {
     //loadextData(tinymce.activeEditor);
   });
 });
+
+function save_attachment_url_case_mod(){
+  var case_id = document.getElementById("case_details").getAttribute("data-case_id");
+  var case_module_id = document.getElementById("case_details").getAttribute("data-case_module_id");
+  var attachment_url = $("#attachment_url_case_mod").val();
+  $("#attachment_url_case_mod").removeClass("is-invalid");
+  $("#attachment_url_case_mod").next().remove();
+  attachment_url_valid = 0;
+  if(attachment_url == ""){
+    attachment_url_valid++;
+    $("#attachment_url_case_mod").addClass("is-invalid");
+    $("#attachment_url_case_mod").after(`<em for="attachment_url_case_mod" class="error help-block">Please Enter Media Url.</em>`);
+  }else if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attachment_url) == false){
+    attachment_url_valid++;
+    $("#attachment_url_case_mod").addClass("is-invalid");
+    $("#attachment_url_case_mod").after(`<em for="attachment_url_case_mod" class="error help-block">Please Enter Valid Media Url.</em>`);
+  }else {
+    var formData = new FormData();
+    var todayDate = new Date().toISOString().slice(0, 10);
+    formData.append("url_attachment", attachment_url);
+    formData.append("attachment_type", "url");
+    formData.append("created_date", todayDate);
+    formData.append("status", 1);
+    formData.append("case_module_id", case_module_id);
+    formData.append("case_id", case_id);
+    $.ajax({
+
+      url: API_CONTENT_URL + "/case_module_attachments/",
+      method: "POST",
+      type: 'POST', // For jQuery < 1.9
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      headers: { "Authorization": "Bearer " + getUserInfo().access_token },
+      success:function(response){
+        $("#attachment_url_case_mod").val("");
+        //$('#addCourses').modal('hide');
+        toastr.success("Media URL saved successfully.");
+        console.log(response);
+      },
+      error:function(error){
+        console.log(error);
+      }
+    });
+  }
+}
