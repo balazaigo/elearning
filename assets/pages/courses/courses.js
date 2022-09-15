@@ -182,9 +182,13 @@ function template(data){
                 td +="<span class='percent-label'>Due in "+due_date+" days</span> </div>";
                 td +="</div>";
                 td +="<div class='col-6 cright cc'>";
-                td +="<div>";
+                td +="<div style='text-align:center;'>";
                 td +="<div class='half-arc' style='--percentage:"+progress+"%;'> <span class='label'></span> </div>";
-                td +="<span class='percent-label'>Progress "+progress+"%</span> </div>";
+                if(progress == 100){
+                  td +="<span class='percent-label' style='color:green;'>Completed</span> </div>";
+                }else{
+                  td +="<span class='percent-label'>Progress "+progress+"%</span> </div>";
+                }
                 td +="</div>";
                 td +="</div>";
                 td +="<div class='row mt-2 navigate_refresh' href='course/course' data-flinkto='course' data-cid='"+id+"' >";

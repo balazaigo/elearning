@@ -91,6 +91,10 @@ function processRights(action){
   action = action.toLowerCase();
   if(action === "task") { return true; } // return user with true with action was task
   if(action === "course") { return true; } // return user with true with action was task
+  console.log(window.getUserInfo());
+  if(window.getUserInfo() == null ){
+    auth.logOut();
+  }
   var userRights = window.getUserInfo().rights;
   $.each(userRights, function(i, val) {
     val = val.toLowerCase();

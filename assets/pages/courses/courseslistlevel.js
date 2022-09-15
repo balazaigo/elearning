@@ -1296,7 +1296,7 @@ function get_module_details(){
                         module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<object data="${base_img_url}${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe></object><p>If this browser does not support file. Please download the File to view it: <a href="${base_img_url}${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<object data="${base_img_url}${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'></iframe></object><p>If this browser does not support file. Please download the File to view it: <a href="#" onclick='window.open("${base_img_url}${element.attachment}");return false;'>Download File</a>.</p>`;
 
                          let embed_pdfs = {};
                          embed_pdfs['element'+element.id] = 'created';

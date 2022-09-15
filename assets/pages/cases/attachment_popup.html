@@ -236,6 +236,10 @@ function get_module_details(case_id, case_module_id){
             module_attachments.forEach(function (element, index) {
                 var file_type = element.attachment_type.split('/')[0];
                 if(file_type === 'image' || file_type === 'video' || file_type === 'audio' || file_type === 'application'){
+                  
+                    if(element.attachment != null && element.attachment.substring(0, 7) != "/media/"){
+                      base_img_url = '';
+                    }
                     module_attachments_html += `<li class="has-children is-open">
                                     <ul class="acnav__list acnav__list--level2 wbg br-10">
                                       <li class="has-children">
@@ -248,13 +252,13 @@ function get_module_details(case_id, case_module_id){
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
-                        module_attachments_html +=`<audio controls><source src="${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
                       var mathcount = Math.floor(Math.random() * 1000);
-                       module_attachments_html +=`<object data="${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'><a href="${element.attachment}&embedded=true&ignore=${mathcount}">Download Document</a></iframe></object>
-                       <p>If this browser does not support file. Please download the File to view it: <a href="${element.attachment}" target="_blank">Download File</a>.</p>`;
+                       module_attachments_html +=`<object data="${base_img_url}${element.attachment}" type="${element.attachment_type}"><iframe id="${element.id}" src='https://docs.google.com/gview?url=${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}' width='100%' height='500px' frameborder='1'><a href="${base_img_url}${element.attachment}&embedded=true&ignore=${mathcount}">Download Document</a></iframe></object>
+                       <p>If this browser does not support file. Please download the File to view it: <a href="#" onclick='window.open("${base_img_url}${element.attachment}");return false;'>Download File</a>.</p>`;
                        let embed_pdfs = {};
                        embed_pdfs['element'+element.id] = 'created';
 
@@ -311,7 +315,6 @@ function get_module_details(case_id, case_module_id){
       }
     });
 }
-
 function save_attachment_url_case(){
   var case_id = document.getElementById("case_param").getAttribute("data-case_id");
   var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
