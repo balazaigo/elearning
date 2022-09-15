@@ -127,7 +127,11 @@
             }
             document.getElementById("chapter_list_ul").innerHTML = chapters_list_template;
           },
-          error: function(error){
+          error: function(jqXHR, error) {
+            if (jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
+            }
             toastr.error("Response Error: " + error.message);
             console.log(error);
           }
@@ -194,6 +198,7 @@
             toastr.success("Module Chapter Created Successfully.");
             $(".btn-close").trigger("click");
             $('#course_id').trigger('click');
+            location.reload();
           },
           error: function(error) {
             var errorJson = jQuery.parseJSON(error.responseText);

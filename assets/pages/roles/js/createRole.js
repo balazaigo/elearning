@@ -42,7 +42,11 @@ $(document).on("click", "#trigger-role-edit-form", function () {
           }, 1000 );
         }
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }

@@ -203,7 +203,11 @@
                                 //$("#case_id_mod").trigger("click");
                                 location.reload();
                               },
-                              error: function(error) {
+                              error: function(jqXHR, error) {
+                                if (jqXHR.status === 401) {
+                                  alert($.parseJSON(jqXHR.responseText).detail);
+                                  logoutSession();
+                                }
                                 tags_response = "1";
                                 toastr.error("Response Error: " + error.message);
                                 console.log(error);
@@ -213,7 +217,11 @@
                           }
                         });
                     },
-                    error: function(error) {
+                    error: function(jqXHR, error) {
+                        if (jqXHR.status === 401) {
+                          alert($.parseJSON(jqXHR.responseText).detail);
+                          logoutSession();
+                        }
                         toastr.error("Response Error: " + error.message);
                         console.log(error);
                     }

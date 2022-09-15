@@ -487,6 +487,12 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
       $(".global_search_module_content").append(attachment_all);
       $("#allattach-loader").removeClass("disp_block");
       $("#allattach-loader").addClass("disp_none");
+    },
+    error: function(jqXHR, error) {
+      if (jqXHR.status === 401) {
+        alert($.parseJSON(jqXHR.responseText).detail);
+        logoutSession();
+      }
     }
   });
  }
@@ -1125,6 +1131,12 @@ function get_breadcrumbs(){
             });
         }
         document.getElementById("module_breadcrumbs").innerHTML = brd_crumbs;
+      },
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
       }
     });
 }
@@ -1145,6 +1157,12 @@ function get_content_details_case_module(){
         }
         //tinymce.activeEditor.setContent(module_content);
         CKEDITOR.instances["editor1"].setData(module_content);
+      },
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
       }
     });
 }
@@ -1193,7 +1211,8 @@ function get_module_details_case_module(){
                                         <div class="acnav__label acnav__label--level2">
                                           <div class="accordionlist">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text" id="element${element.id}">`;
+                                              <div class="col-md-12 acc-text img-wrap" id="element${element.id}">
+                                                <span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_case_mod('${element.id}')"></span>`;
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
@@ -1277,7 +1296,11 @@ setTimeout(function() {
         //document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
 
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -1633,4 +1656,24 @@ function save_attachment_url_case_mod(){
       }
     });
   }
+}
+function delete_attachment_case_mod(attachment_id){
+  //console.log(attachment_id);
+  $.ajax({
+    url: API_CONTENT_URL + '/case_module_attachments/'+attachment_id+'/',
+    type: "DELETE",
+    dataType: 'json',
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
+    success:function(response){
+      toastr.success("Attachment Deleted Successfully");
+      get_module_details_case_module();
+    },
+    error: function(error){
+      //toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
 }

@@ -48,6 +48,7 @@
     <script defer src="../assets/global/jquery.history.js"></script>
     <script defer src="../assets/global/language.js"></script>
     <script defer src="../assets/global/auth.js"></script>
+    <link rel="stylesheet" href="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/css/intlTelInput.css"/>
   </head>
   <body style="display:none">
     <div
@@ -326,6 +327,7 @@
     <script src="../assets/pages/course/course.js"></script>
     <script src="../assets/global/fileup.js"></script>
     <script src="../assets/pages/courses/fileUpCourse.js"></script>
+    <script src="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script type="text/javascript">
       $( document ).ready(function() {
         //$('a[href="#"]').click( function(e) { e.preventDefault(); });
@@ -355,7 +357,7 @@
         if (History.enabled) {
           var page = get_url_value('page');
 
-          if(page == "dashboard/dashboard" || page == "cases/case" || page == "cases/caselist" || page == "cases/caselistlevel" || page == "cases/knowledgecheck" || page == "chapters/chapters" || page == "chapters/chapterslist" || page == "chapters/chapterlistlevel" || page == "roles/roles" || page == "courses/courses" || page == "courses/courseslistlevel" || page == "courses/course_knowledge_check" || page == "course/course" || page == "task/task" || page == "members/members" || page == "members/userdetails"){
+          if(page == "dashboard/dashboard" || page == "cases/case" || page == "cases/caselist" || page == "cases/caselistlevel" || page == "cases/knowledgecheck" || page == "chapters/chapters" || page == "chapters/chapterslist" || page == "chapters/chapterlistlevel" || page == "roles/roles" || page == "courses/courses" || page == "courses/courseslistlevel" || page == "courses/course_knowledge_check" || page == "course/course" || page == "task/task" || page == "members/members" || page == "members/userdetails" || page == "members/createmember"){
             $('#navRight a.navlink').removeClass("active");
             var parts = page.split('/');
             var page_flinkto = parts[parts.length - 1];
@@ -385,7 +387,7 @@
         History.Adapter.bind(window, 'statechange', function() {
           var State = History.getState(); 
           var page = get_url_value('page');
-          if(page == "dashboard/dashboard" || page == "cases/case" || page == "cases/caselist" || page == "cases/caselistlevel" || page == "cases/knowledgecheck" || page == "chapters/chapters" || page == "chapters/chapterslist" || page == "chapters/chapterlistlevel" || page == "roles/roles" || page == "courses/courses" || page == "courses/courseslistlevel" || page == "courses/course_knowledge_check" || page == "course/course" || page == "task/task" || page == "members/members" || page == "members/userdetails"){
+          if(page == "dashboard/dashboard" || page == "cases/case" || page == "cases/caselist" || page == "cases/caselistlevel" || page == "cases/knowledgecheck" || page == "chapters/chapters" || page == "chapters/chapterslist" || page == "chapters/chapterlistlevel" || page == "roles/roles" || page == "courses/courses" || page == "courses/courseslistlevel" || page == "courses/course_knowledge_check" || page == "course/course" || page == "task/task" || page == "members/members" || page == "members/userdetails" || page == "members/createmember"){
             $('#navRight a.navlink').removeClass("active");
             var parts = page.split('/');
             var page_flinkto = parts[parts.length - 1];
@@ -429,7 +431,7 @@
                 url_param += "&"+i+"="+val;
             });
           }
-          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members" || urlPath == "members/userdetails"){
+          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members" || urlPath == "members/userdetails" || urlPath == "members/createmember"){
               History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param); // When we do this, History.Adapter will also execute its contents.    
             }
         });
@@ -453,7 +455,7 @@
                 url_param += "&"+i+"="+val;
             });
           }
-          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members" || urlPath == "members/userdetails"){
+          if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members" || urlPath == "members/userdetails" || urlPath == "members/createmember"){
               History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param); // When we do this, History.Adapter will also execute its contents.    
             }
         });

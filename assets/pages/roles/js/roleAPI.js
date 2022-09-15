@@ -10,7 +10,11 @@ function getRoles() {
       renderRoleList(res.data);
       loadAlertModal();
     })
-    .catch((error) => {
+    .catch((jqXHR, error) => {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
       var res = error.response;
       if(res.status == 403) {
         toastr.error(res.data.detail);

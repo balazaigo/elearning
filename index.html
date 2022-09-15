@@ -41,10 +41,10 @@
                     <input type="text" class="form-control user" id="phoneNumber"  data-placeholder="placeholder_emailmobile" 
                     placeholder="Enter Your EMail Id / Mobile Number Here" title="+919908XXXXXX" tabindex="1">
                   </div>
-                  <!--<div class="mb-3 relative">
+                  <div class="mb-3 relative">
                     <input type="checkbox" class="form-check-input" id="remember" tabindex="3">
                     <label for="remember" class="form-label" data-lang="lbl_rememberme">Remember Me</label>
-                  </div>-->
+                  </div>
                   <a class="login-btn" onClick="submitPhoneNumberAuth('sent')" href="#" tabindex="2" data-lang="lbl_getotp">Get OTP</a>
                   <div class="mb-4 mt-4 relative or">
                     <p data-lang="lbl_or">OR</p>
@@ -115,14 +115,16 @@
 <script src="./assets/global/custom.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
+    console.log(localStorage.getItem("auth_data"));
     if(localStorage.getItem("auth_data") !== null){
-      window.location = SITE_URL_PROTOCOL+'/home?page=dashboard/dashboard';
-      localStorage.removeItem("auth");
+      //window.location = SITE_URL_PROTOCOL+'/home?page=dashboard/dashboard';
+      window.location.href = `${SITE_URL_PROTOCOL}home/?page=dashboard/dashboard`;
+      /*localStorage.removeItem("auth");
       localStorage.removeItem("auth_type");
       localStorage.removeItem("auth_user");
       localStorage.removeItem("auth_data");
       localStorage.removeItem("system_rights");
-      window.location.replace(SITE_URL_PROTOCOL);
+      window.location.replace(SITE_URL_PROTOCOL);*/
     }
     console.log(localStorage.getItem("auth_data"));
   });
@@ -400,14 +402,14 @@
   function processRememberMe(){
     if($("#remember").is(':checked')) {
       //store to cookies
-      localStorage.setItem("rememberMailPhone", $("#phoneNumber").val());
+      localStorage.setItem("elrememberMailPhone", $("#phoneNumber").val());
     } else {
-      localStorage.removeItem("rememberMailPhone");
+      localStorage.removeItem("elrememberMailPhone");
     }
   }
   
   $( document ).ready(function() {
-    const rememberMailPhone = localStorage.getItem("rememberMailPhone");
+    const rememberMailPhone = localStorage.getItem("elrememberMailPhone");
     if(rememberMailPhone) {
       $("#phoneNumber").val(rememberMailPhone);
       $("#remember").attr("checked", true);

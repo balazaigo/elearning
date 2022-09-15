@@ -279,7 +279,14 @@ function get_module_details(cid, module_id){
                                           <div class="acnav__label acnav__label--level2">
                                             <div class="accordionlist">
                                               <div class="row">
-                                                <div class="col-md-12 acc-text" id="element${element.id}">`;
+                                                <div class="col-md-12 acc-text img-wrap" id="element${element.id}">`;
+                                                if(show_input == "true"){
+                                                  module_attachments_html += `<span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_course_pop('${element.id}', 'module_attachment')"></span>`;
+                                                }else if(show_input == "false-chapter"){
+                                                  //module_attachments_html += `<span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_course_pop('${element.id}', 'chapter_topic_attachments')"></span>`;
+                                                }else{
+                                                  //module_attachments_html += `<span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_course_pop('${element.id}', 'case_module_attachments')"></span>`;
+                                                }
                       if(element.attachment_type.split('/')[0] === 'image'){
                             module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                       }else if(element.attachment_type.split('/')[0] === 'video'){
@@ -398,5 +405,29 @@ function save_attachment_url(){
       }
     });
   }
+}
+function delete_attachment_course_pop(attachment_id, api_name){
+
+  $.ajax({
+    url: API_CONTENT_URL + '/'+api_name+'/'+attachment_id+'/',
+    type: "DELETE",
+    dataType: 'json',
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
+    success:function(response){
+      toastr.success("Attachment Deleted Successfully");
+      updateCountsSelectedModule("");
+      var cid = document.getElementById("course_param").getAttribute("data-cid");
+      var module_id = document.getElementById("course_param").getAttribute("data-module_id");
+      get_module_details(cid, module_id);
+    },
+    error: function(error){
+      //toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+
 }
 </script>

@@ -377,6 +377,12 @@ function get_breadcrumbs(){
             });
         }
         document.getElementById("module_breadcrumbs").innerHTML = brd_crumbs;
+      },
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
       }
     });
 }

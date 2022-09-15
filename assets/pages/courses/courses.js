@@ -1,3 +1,11 @@
+var search_data_inp = document.getElementById("search_data");
+search_data_inp.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    $("#go_to_page").val("");
+    searchParam();
+  }
+});
 function searchParam(){
     var search_param = "";
     var search_inp_val = document.getElementById("search_data").value;
@@ -47,6 +55,12 @@ $( document ).ready(function() {
       $.each( response, function( i, val ) {
         $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
       });
+    }, 
+    error: function(jqXHR, error) {
+      if (jqXHR.status === 401) {
+        alert($.parseJSON(jqXHR.responseText).detail);
+        logoutSession();
+      }
     }
   });
   var parameter = "";
@@ -79,19 +93,27 @@ function get_pagination(parameter){
           if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
             return false; // do nothing
           } else if (jqXHR && jqXHR.status === 403) {
-            window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+            //window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+            logoutSession();
+          } else if(jqXHR && jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
           } else {
             alert('error');
           }
         },    
       },
       callback: function(data, pagination) {
+        if(pagination.totalNumber){
+          $("#courseTitle").text("All Courses ("+pagination.totalNumber+")");
+        }
         if(pagination.totalNumber < 7){
           $("#pagination-container-to").hide();
         }else{
           $("#pagination-container-to").show();
         }
         if(data.length === 0){
+          $("#courseTitle").text("All Courses (0)");
           $("#nodataFound_course").attr("style", "display:block");
         }else{
           $("#nodataFound_course").attr("style", "display:none");

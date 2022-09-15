@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="tab p-0">
-      <div class="table-section">
+      <div class="table-section" style="width:100%;">
         <div class="row">
           <div class="">
             <div class="white-bg col-md-12 p-3 br-5">
@@ -188,7 +188,11 @@
                 toastr.success("File uploaded successfully.");
                 console.log(response);
               },
-              error: function(error) {
+              error: function(jqXHR, error) {
+                if (jqXHR.status === 401) {
+                  alert($.parseJSON(jqXHR.responseText).detail);
+                  logoutSession();
+                }
                 toastr.error("Response Error: " + error.message);
                 console.log(error);
               }
@@ -227,6 +231,7 @@ function get_module_details(case_id, case_module_id){
       success:function(response){
         var module_attachments = response;
         var module_attachments_html = "";
+        //console.log(module_attachments);
         if(module_attachments && module_attachments.length > 0){
             module_attachments.forEach(function (element, index) {
                 var file_type = element.attachment_type.split('/')[0];
@@ -237,7 +242,9 @@ function get_module_details(case_id, case_module_id){
                                         <div class="acnav__label acnav__label--level2">
                                           <div class="accordionlist">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text" id="element${element.id}">`;
+                                              <div class="col-md-12 acc-text img-wrap" id="element${element.id}">
+                                              <span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_case_pop('${element.id}')"></span>`;
+
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
@@ -294,7 +301,11 @@ function get_module_details(case_id, case_module_id){
         $("#course_module_content").append(module_attachments_html);
 
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -343,10 +354,40 @@ function save_attachment_url_case(){
           toastr.success("Media URL saved successfully.");
           console.log(response);
       },
-      error:function(error){
+      error:function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         console.log(error);
       }
     });
   }
+}
+function delete_attachment_case_pop(attachment_id){
+  //console.log(attachment_id);
+  $.ajax({
+    url: API_CONTENT_URL + '/case_module_attachments/'+attachment_id+'/',
+    type: "DELETE",
+    dataType: 'json',
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
+    success:function(response){
+      toastr.success("Attachment Deleted Successfully");
+      var case_id = document.getElementById("case_param").getAttribute("data-case_id");
+      var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
+      get_module_details(case_id, case_module_id);
+    },
+    error: function(jqXHR, error) {
+      if (jqXHR.status === 401) {
+        alert($.parseJSON(jqXHR.responseText).detail);
+        logoutSession();
+      }
+      //toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
 }
 </script>

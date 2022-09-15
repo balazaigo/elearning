@@ -95,7 +95,7 @@ var ns = $('.coursesortable').nestedSortable({
       headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
       success:function(response){
         console.log(response);
-        $("#course_id").trigger("click");
+        location.reload();
       },
       error: function(error) {
         tags_response = "1";
@@ -160,7 +160,11 @@ function get_module_details(cid, module_id, mytagArray){
             headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
             success:function(response){
             },
-            error: function(error) {
+            error: function(jqXHR, error) {
+              if (jqXHR.status === 401) {
+                alert($.parseJSON(jqXHR.responseText).detail);
+                logoutSession();
+              }
               tags_response = "1";
               toastr.error("Response Error: " + error.message);
               console.log(error);
@@ -434,6 +438,7 @@ function add_sub(e, section){
       .then((response) => response.json())
       .then((json) => {
         $('#course_id').trigger('click');
+        location.reload();
            /*var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
               template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
               template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
@@ -574,6 +579,7 @@ function add_sub_sub(e, section){
       .then((response) => response.json())
       .then((json) => {
         $('#course_id').trigger('click');
+        location.reload();
       })
       .catch(function (error) {
         console.log("Requestfailed", error);
@@ -821,7 +827,11 @@ function show_assignee_popup(e){
             }
 
           },
-          error: function (error) {
+          error: function (jqXHR, error) {
+            if (jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
+            }
             console.log(error);
           }
         });
@@ -1244,8 +1254,9 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
           },
           success:function(response){
             $("#mAlertCancelCM").click();
-            $("#course_id").trigger("click");
             toastr.success("Deleted Successfully");
+            $("#course_id").trigger("click");
+            location.reload();
           },
           error: function(error){
             toastr.error("Response Error: " + error.message);
@@ -1328,6 +1339,7 @@ function loadAlertModal_delete_case(toastr_message, module_id, module_name, case
           toastr.success("Case Deleted successfully");
           $("#mAlertCancelCM").click();
             $("#course_id").trigger("click");
+            location.reload();
           //getCoursePage(e);
         })
         .catch(function (error) {
@@ -1410,6 +1422,7 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
             toastr.success("Deleted Successfully.");
             $("#mAlertCancelCM").click();
             $("#course_id").trigger("click");
+            location.reload();
           },
           error: function(error) {
             toastr.error("Response Error: " + error.message);
@@ -1517,6 +1530,7 @@ $(".module-section").click(function(){
       .then((response) => response.json())
       .then((json) => {
         $("#course_id").trigger("click");
+            location.reload();
       })
       .catch(function (error) {
         console.log("Requestfailed", error);

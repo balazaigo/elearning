@@ -339,7 +339,11 @@
 
           }
         },
-        error: function (error) {
+        error: function (jqXHR, error) {
+          if (jqXHR.status === 401) {
+            alert($.parseJSON(jqXHR.responseText).detail);
+            logoutSession();
+          }
           toastr.error("Response Error: " + error.message);
           console.log(error);
         }
@@ -568,7 +572,11 @@ function decodeHtml(html) {
         }
 
       },
-      error: function (error) {
+      error: function (jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         $("#saveCoursesClose").removeAttr("disabled");
         $("#saveCoursesNew").removeAttr("disabled");
         toastr.error("Response Error: " + error.message);
@@ -598,7 +606,11 @@ function decodeHtml(html) {
         var parameter = "";
         get_pagination(parameter);
       },
-      error: function (error) {
+      error: function (jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         $("#saveCoursesClose").removeAttr("disabled");
         $("#saveCoursesNew").removeAttr("disabled");
         toastr.error("Response Error: " + error.message);

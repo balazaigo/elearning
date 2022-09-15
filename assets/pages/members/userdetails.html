@@ -24,7 +24,9 @@
         <div class="usertext">
           <h6 id="user_profile_name_header">
             <small id="user_profile_username"></small>&nbsp;&nbsp;
-            <!--<img class="navigate_refresh" href="members/createmember" src="../assets/images/edit.png" alt="" style="width: 15px;" id="edit_member_page" data-flinkto="createmember" data-editmember_id="" data-page_from="membermanagement"/>-->
+            <span href="members/createmember"  class="navigate_refresh"data-flinkto="createmember" data-editmember_id="" id="edit_member_page"> 
+              <!--<img src="../assets/images/edit.png" alt="" style="width: 15px;" id="edit_member_page"/>-->
+            </span>
           </h6>
           <p>
             <span>
@@ -253,7 +255,11 @@
             $("#other_user_details").empty();
           }
         }, 
-        error: function (error){
+        error: function (jqXHR, error) {
+          if (jqXHR.status === 401) {
+            alert($.parseJSON(jqXHR.responseText).detail);
+            logoutSession();
+          }
           console.log('error', error);
         }
       });

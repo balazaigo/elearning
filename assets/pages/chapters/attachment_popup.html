@@ -211,7 +211,8 @@ function get_module_details(chapter_id, chapter_topic_id){
                                         <div class="acnav__label acnav__label--level2">
                                           <div class="accordionlist">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text" id="element${element.id}">`;
+                                              <div class="col-md-12 acc-text img-wrap" id="element${element.id}">
+                                              <span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_chap_pop('${element.id}')"></span>`;
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
@@ -321,5 +322,26 @@ function save_attachment_url_chap(){
       }
     });
   }
+}
+function delete_attachment_chap_pop(attachment_id){
+  $.ajax({
+    url: API_CONTENT_URL + '/chapter_topic_attachments/'+attachment_id+'/',
+    type: "DELETE",
+    dataType: 'json',
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
+    success:function(response){
+      toastr.success("Attachment Deleted Successfully");
+      var chapter_id = document.getElementById("chapter_param").getAttribute("data-chapter_id");
+      var chapter_topic_id = document.getElementById("chapter_param").getAttribute("data-chapter_topic_id");
+      get_module_details(chapter_id, chapter_topic_id);
+    },
+    error: function(error){
+      //toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
 }
 </script>

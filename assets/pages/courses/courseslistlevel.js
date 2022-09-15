@@ -173,7 +173,11 @@ $(document).ready(function(){
                 toastr.success("File uploaded successfully.");
                 console.log(response);
               },
-              error: function(error) {
+              error: function(jqXHR, error) {
+                if (jqXHR.status === 401) {
+                  alert($.parseJSON(jqXHR.responseText).detail);
+                  logoutSession();
+                }
                 toastr.error("Response Error: " + error.message);
                 console.log(error);
               }
@@ -227,6 +231,12 @@ $(document).ready(function(){
         }else{
           $("#tag__List_append_course_mod").attr("style", "overflow:none;");
           $(".show-more").css('display','none');
+        }
+      },
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
         }
       }
     });
@@ -497,6 +507,12 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
       $(".global_search_module_course_content").append(attachment_all);
       $("#allattach-loader").removeClass("disp_block");
       $("#allattach-loader").addClass("disp_none");
+    },
+    error: function(jqXHR, error) {
+      if (jqXHR.status === 401) {
+        alert($.parseJSON(jqXHR.responseText).detail);
+        logoutSession();
+      }
     }
   });
  }
@@ -1174,6 +1190,12 @@ function get_breadcrumbs(){
         if(can_edit){
         }
         document.getElementById("module_breadcrumbs").innerHTML = brd_crumbs;
+      },
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
       }
     });
     window.scrollTo(0, 0);
@@ -1196,10 +1218,17 @@ function get_content_details(){
         //tinymce.activeEditor.setContent(module_content);
         //console.log('module_content', module_content);
         CKEDITOR.instances["editor1"].setData(module_content);
+      }, error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
       }
     });
 }
 function get_module_details(){
+  let queries_param = getUrlParamquery();
+  //var show_input = document.getElementById("course_param").getAttribute("data-show_input");
   $("#role-loader").css("display", "block");
   $("#rolebox").css("display", "none");
     var cid = document.getElementById("course_module_id").getAttribute("data-cid");
@@ -1244,8 +1273,17 @@ function get_module_details(){
                                         <div class="acnav__label acnav__label--level2">
                                           <div class="accordionlist">
                                             <div class="row">
-                                              <div class="col-md-12 acc-text" id="element${element.id}">`;
-                                              console.log(base_img_url)
+                                              <div class="col-md-12 acc-text img-wrap" id="element${element.id}">`;
+                                              if(queries_param.mod_type &&  queries_param.mod_type == "course" ){
+                                                module_attachments_html += `<span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_course_mod('${element.id}', 'module_attachment')"></span>`;
+                                              }
+                                                //if(show_input == "true"){
+                                                 // module_attachments_html += `<span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_course_mod('${element.id}', 'module_attachment')"></span>`;
+                                                //}else if(show_input == "false-chapter"){
+                                                  //module_attachments_html += `<span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_course_mod('${element.id}', 'chapter_topic_attachments')"></span>`;
+                                                //}else{
+                                                  //module_attachments_html += `<span class="attachment_delete" data-attachment_id="${element.id}" onclick="delete_attachment_course_mod('${element.id}', 'case_module_attachments')"></span>`;
+                                                //}
                     if(element.attachment != null && (element.attachment.substring(0, 7) != "/media/")){
                       base_img_url = '';
                     }
@@ -1349,7 +1387,11 @@ setTimeout(function() {
         //document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
 
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -2019,4 +2061,26 @@ function save_attachment_url_mod(){
       }
     });
   }
+}
+
+function delete_attachment_course_mod(attachment_id, api_name){
+
+  $.ajax({
+    url: API_CONTENT_URL + '/'+api_name+'/'+attachment_id+'/',
+    type: "DELETE",
+    dataType: 'json',
+    headers: {
+      "Authorization": "Bearer " + getUserInfo().access_token,
+      "Content-Type": "application/json"
+    },
+    success:function(response){
+      toastr.success("Attachment Deleted Successfully");
+      get_module_details();
+    },
+    error: function(error){
+      //toastr.error("Response Error: " + error.message);
+      console.log(error);
+    }
+  });
+
 }

@@ -321,3 +321,11 @@ function goto_pageCall(page_name, inp_id){
 }
 
 /* Go to Page pagination Ends */    
+function logoutSession(){
+    localStorage.removeItem("auth");
+    localStorage.removeItem("auth_type");
+    localStorage.removeItem("auth_user");
+    localStorage.removeItem("auth_data");
+    localStorage.removeItem("system_rights");
+    window.location.replace(SITE_URL_PROTOCOL);
+}

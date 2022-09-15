@@ -423,6 +423,12 @@ $( document ).ready(function() {
       }else {
         doSearch();
       }
+    },
+    error: function(jqXHR, error) {
+      if (jqXHR.status === 401) {
+        alert($.parseJSON(jqXHR.responseText).detail);
+        logoutSession();
+      }
     }
   });
   
@@ -487,18 +493,12 @@ function gridMembers(tagID, htmlID, assignTOBY){
       complete: function(jqXHR, textStatus) {
         if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
           return false; // do nothing
-        } else if (jqXHR) {
-          var res = jqXHR.response;
-          if(jqXHR.status == 403) {
-            if($.parseJSON(jqXHR.responseText).detail) {
-              toastr.error($.parseJSON(jqXHR.responseText).detail);
-              get403Page();
-            } else {
-              console.log(jqXHR.responseText);
-            }
-          } else {
-            console.error("There was an error!", error.response);
-          }
+        } else if (jqXHR && jqXHR.status === 403) {
+          //window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+          logoutSession();
+        } else if(jqXHR && jqXHR.status === 401) {
+            alert($.parseJSON(jqXHR.responseText).detail);
+            logoutSession();
         } else {
           alert('error');
         }

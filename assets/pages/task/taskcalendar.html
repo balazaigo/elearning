@@ -127,7 +127,11 @@
             success:function(response){
               callback(response);
             },
-            error: function(error){
+            error: function(jqXHR, error) {
+              if (jqXHR.status === 401) {
+                alert($.parseJSON(jqXHR.responseText).detail);
+                logoutSession();
+              }
               console.log(error);
             }
           });
@@ -200,7 +204,11 @@
             success:function(response){
               callback(response);
             },
-            error: function(error){
+            error: function(jqXHR, error) {
+              if (jqXHR.status === 401) {
+                alert($.parseJSON(jqXHR.responseText).detail);
+                logoutSession();
+              }
               console.log(error);
             }
           });
@@ -271,7 +279,11 @@
           success:function(response){
             callback(response);
           },
-          error: function(error){
+          error: function(jqXHR, error) {
+            if (jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
+            }
             console.log(error);
           }
         });
@@ -416,7 +428,11 @@ function getTaskDetails(id){
           $("#task_breadcrumb").html(breadcrumb_html);
         }
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -565,7 +581,11 @@ $(document).ready(function(){
           doSearch();
           $("#taskdetails").removeClass("overlay_target");
         },
-        error: function(error) {
+        error: function(jqXHR, error) {
+            if (jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
+            }
             toastr.error("Response Error: " + error.message);
             console.log(error);
         }
@@ -587,7 +607,11 @@ function update_attachment(formData, URL){
     success: function(response){
       //toastr.success("File uploaded successfully.");
     },
-    error: function(error) {
+    error: function(jqXHR, error) {
+      if (jqXHR.status === 401) {
+        alert($.parseJSON(jqXHR.responseText).detail);
+        logoutSession();
+      }
       toastr.error("Response Error: " + error.message);
       console.log(error);
     }
@@ -659,7 +683,11 @@ function update_comments(user_message, task_id, course_id, module_id, case_id, c
         success: function(response){
           //toastr.success("Comment saved Successfully.");
         },
-        error: function(error) {
+        error: function(jqXHR, error) {
+            if (jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
+            }
             toastr.error("Response Error: " + error.message);
             console.log(error);
         }

@@ -355,6 +355,9 @@ function get_pagination(parameter){
             return false; // do nothing
           } else if (jqXHR && jqXHR.status === 403) {
             window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
+          }else if(jqXHR && jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
           } else {
             alert('error');
           }
@@ -441,7 +444,11 @@ function loadAlertModal(){
       success:function(response){
         doSearch();
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -590,7 +597,11 @@ function onchange_caseName(e) {
             toastr.error("Case Name already Exists!");
           }
       },
-      error: function(error){
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         //toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -621,6 +632,12 @@ function onchange_caseName(e) {
           if(member_id){
               $("#case_assign_to option[value='"+member_id+"']").prop('selected', true);
           }
+        },
+        error: function(jqXHR, error) {
+          if (jqXHR.status === 401) {
+            alert($.parseJSON(jqXHR.responseText).detail);
+            logoutSession();
+          }
         }
       });
   }
@@ -649,7 +666,11 @@ function onchange_caseName(e) {
         var search_param = "";
         get_pagination(search_param);
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         toastr.error("Response Error: " + error.message);
         console.log(error);
       }
@@ -685,7 +706,11 @@ getCategoryCase();
           });
         }
       },
-      error: function(error){
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         //toastr.error("Response Error: " + error.message);
         console.log(error);
       }

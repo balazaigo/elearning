@@ -183,6 +183,12 @@
         $("#active_task_count").html(response.active_task_count);
         $("#onhold_task_count").html(response.onhold_task_count);
         $("#finished_task_count").html(response.finished_task_count);
+      },
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
       }
     });
   }
@@ -246,7 +252,11 @@
           $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
         });
       },
-      error: function(error){
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         console.log(error);
       }
     });
@@ -304,10 +314,12 @@
           if (jqXHR.status === 200 || jqXHR.readyState === 0 || jqXHR.status === 0) {
             return false; // do nothing
           } else if (jqXHR && (jqXHR.status === 403)) {
-            window.location.href = SITE_URL_PROTOCOL;
+            //window.location.href = SITE_URL_PROTOCOL;
+            logoutSession();
           } else if (jqXHR.status === 401) {
             alert($.parseJSON(jqXHR.responseText).detail);
-            window.location.href = SITE_URL_PROTOCOL;
+            //window.location.href = SITE_URL_PROTOCOL;
+            logoutSession();
           } else {
             alert($.parseJSON(jqXHR.responseText).detail);
           }
