@@ -32,8 +32,9 @@
           },
           success:function(response){
             $("#mAlertCancelCM").click();
-            $("#course_id").trigger("click");
             toastr.success("Deleted Successfully");
+            $("#course_id").trigger("click");
+            location.reload();
           },
           error: function(error){
             toastr.error("Response Error: " + error.message);

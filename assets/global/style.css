@@ -2128,6 +2128,7 @@ span.obg {
 	color: #000;
 	padding: 0 5px;
 	text-align: left;
+	border: 1.5px solid #52575d;
 }
 .tab td {
     color: #52575D;

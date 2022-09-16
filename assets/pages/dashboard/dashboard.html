@@ -306,7 +306,11 @@
   });
 
 });
-
+diffPercent = function(a, b) {
+ //return  ( a<b ? "-" + ((b - a) * 100) / a : ((a - b) * 100) / b ) + "%";
+ //return 100 * Math.abs( ( a - b ) / ( (a+b)/2 ) );
+ return 100 * Math.abs( ( a - b ) / ( a)) ;
+}
 function getDashboardChart(year){
   $.ajax({
     url: API_CONTENT_URL + '/dashboard/'+year,
@@ -318,10 +322,10 @@ function getDashboardChart(year){
       if(response){
         $("#created_task_count").text((response[1].overall_created_task.toString().length < 2 && response[1].overall_created_task.toString() != 0) ? "0"+response[1].overall_created_task : response[1].overall_created_task);
         $("#completed_task_count").text((response[1].overall_completed_task.toString().length < 2 && response[1].overall_completed_task.toString() != 0) ? "0"+response[1].overall_completed_task : response[1].overall_completed_task);
-        var task_progress = ((response[1].overall_completed_task / response[1].overall_created_task) * 100).toFixed(0);
+        var task_progress = diffPercent(response[1].overall_created_task, response[1].overall_completed_task);
         $("#task_created_closed_progress").html(`<div><div class="progress"><div class="bar" style="width:${task_progress}%"><p class="percent"></p></div></div></div>`);
         response[0].created_task.backgroundColor = "#F36A10";
-        response[0].completed_task.backgroundColor = "##737374";
+        response[0].completed_task.backgroundColor = "#737374";
         response[0].created_task.label = "Task Created";
         response[0].completed_task.label = "Task Completed";
           const taskData = {
