@@ -15,34 +15,40 @@
         <div class="white-bg title-head br-5 p-3">
           <div class="container-fluid p-0">
           <div class="row">
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-3 col-md-3">
               <div class="searchbar">
                 <h4><span id="courseTitle">All Courses</span> <a class="btn btn-sm btn-danger btnReset d-none" style="position:relative;top:2px;float:right">Reset</a><dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
               </div>
             </div>
-            <div class="col-lg-8 col-md-8 top-btn">
+            <div class="col-lg-9 col-md-9 top-btn">
               <div class="row">
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-5 col-md-5">
                   <div class="topsearch relative">
-                    <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search"id="search_data" onblur="searchParam()">
+                    <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search"id="search_data" onblur="searchCourseBlur()">
                     <i class="fas fa-search"></i> </div>
                 </div>
                 <div class="col-lg-3 col-md-3">
                   <div class="dropdown-select">
-                    <select class="sort-select" id="courses_list" name="courses_list" onchange="searchParam()">
+                    <select class="sort-select" id="courses_list" name="courses_list" onchange="searchCourseBlur()">
                       <option value="">Select Course</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-lg-3 col-md-3">
+                <div class="col-lg-2 col-md-2">
                   <div class="dropdown-select">
-                    <select class="sort-select" id="sort_recent" onchange="searchParam()">
+                    <select class="sort-select" id="sort_recent" onchange="searchCourseBlur()">
                       <option value="">Sort By</option>
                       <option value="0">Recent</option>
                       <option value="4">Completed</option>
                       <option value="2">Onhold</option>
                       <option value="1">To do</option>
                     </select>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 cc-right pl-0">
+                  <div class="grid-list-view">
+                    <span><a id="grid" class="active"><i class="fas fa-th-large"></i></a></span>
+                    <span><a id="list"><i class="fas fa-th-list"></i></a></span>
                   </div>
                 </div>
               </div>

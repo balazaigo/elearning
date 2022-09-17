@@ -320,6 +320,13 @@ function goto_pageCall(page_name, inp_id){
   }
 }
 
+$(document).ready(function(){
+  $('a.navlink').on('click', function(){ 
+    console.log("test");
+    $('a.navlink').removeClass("active");
+    $(this).addClass("active");
+  });
+});
 /* Go to Page pagination Ends */    
 function logoutSession(){
     localStorage.removeItem("auth");

@@ -3769,7 +3769,7 @@ option:not(:first-of-type) {
     display: block;
 }
 #rolebox .role-content, #course-box .role-content{
-	border-top: 5px solid #20204f;
+	/*border-top: 5px solid #20204f;*/
 }
 
 #role_member_count {
@@ -4721,4 +4721,42 @@ footer.fixed-bottom {
 }
 #create_member .iti--allow-dropdown{
 	width: 100%;
+}
+.cc-right {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.grid-list-view a.active {
+    color: #F36A10;
+    border: 1px solid #F36A10;
+}
+
+.grid-list-view a {
+    color: #20204F;
+    border: 1px solid #20204F;
+    padding: 5px 8px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+#course-box .role-content:hover {
+    box-shadow: 2px 2px 10px #888888;
+    border: 1px solid #a4a3a3;
+    transition: box-shadow 1s;
+}
+#course-box .role-content{
+    border: 1px solid #ccc;
+}
+#course-box table th {
+    background: #F9F9FB;
+    color: #20204F;
+    padding: 10px 8px;
+    text-align: left;
+    font-size: 14px;
+}
+#course-box table td {
+    color: #52575D;
+    font-weight: normal;
+    padding: 8px;
+    text-align: left;
 }

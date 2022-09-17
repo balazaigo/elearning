@@ -125,6 +125,14 @@
       localStorage.removeItem("auth_data");
       localStorage.removeItem("system_rights");
       window.location.replace(SITE_URL_PROTOCOL);*/
+    }else{
+      localStorage.removeItem("auth");
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("auth_type");
+      localStorage.removeItem("auth_user");
+      localStorage.removeItem("auth_data");
+      localStorage.removeItem("system_rights");
+      //window.location.replace(SITE_URL_PROTOCOL);
     }
     console.log(localStorage.getItem("auth_data"));
   });
