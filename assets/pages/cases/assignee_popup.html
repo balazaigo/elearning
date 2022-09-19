@@ -134,9 +134,9 @@ $(document).ready(function(){
 					get_assignee_details(case_id, case_module_id);
 				}
 		    },
-		    error: function(jqXHR, error) {
-	            if (jqXHR.status === 401) {
-	              alert($.parseJSON(jqXHR.responseText).detail);
+		    error: function(error) {
+	            if (error.status === 401) {
+	              alert($.parseJSON(error.responseText).detail);
 	              logoutSession();
 	            }
 		      	toastr.error("Response Error: " + error.message);
@@ -250,9 +250,9 @@ function get_assignee_details(case_id, case_module_id){
 				}
 			}
 		},
-		error: function(jqXHR, error) {
-            if (jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+		error: function(error) {
+            if (error.status === 401) {
+              alert($.parseJSON(error.responseText).detail);
               logoutSession();
             }
 		}
@@ -273,9 +273,9 @@ function deleteAssigneeMember(e){
 	            e.parentElement.parentElement.parentElement.remove();
 	            get_assignee_details(case_id, case_module_id);
 		    },
-		    error: function(jqXHR, error) {
-	            if (jqXHR.status === 401) {
-	              alert($.parseJSON(jqXHR.responseText).detail);
+		    error: function(error) {
+	            if (error.status === 401) {
+	              alert($.parseJSON(error.responseText).detail);
 	              logoutSession();
 	            }
 		      	toastr.error("Response Error: " + error.message);

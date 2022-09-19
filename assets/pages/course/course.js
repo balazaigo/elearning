@@ -97,9 +97,9 @@ var ns = $('.coursesortable').nestedSortable({
         console.log(response);
         location.reload();
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         tags_response = "1";
@@ -164,9 +164,9 @@ function get_module_details(cid, module_id, mytagArray){
             headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
             success:function(response){
             },
-            error: function(jqXHR, error) {
-              if (jqXHR.status === 401) {
-                alert($.parseJSON(jqXHR.responseText).detail);
+            error: function(error) {
+              if (error.status === 401) {
+                alert($.parseJSON(error.responseText).detail);
                 logoutSession();
               }
               tags_response = "1";
@@ -177,9 +177,9 @@ function get_module_details(cid, module_id, mytagArray){
         }
       });
     },
-    error: function(jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function(error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
     }
@@ -837,9 +837,9 @@ function show_assignee_popup(e){
             }
 
           },
-          error: function (jqXHR, error) {
-            if (jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+          error: function ( error) {
+            if (error.status === 401) {
+              alert($.parseJSON(error.responseText).detail);
               logoutSession();
             }
             console.log(error);
@@ -1268,9 +1268,9 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
             $("#course_id").trigger("click");
             location.reload();
           },
-          error: function(jqXHR, error) {
-            if (jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+          error: function(error) {
+            if (error.status === 401) {
+              alert($.parseJSON(error.responseText).detail);
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);
@@ -1438,9 +1438,9 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
             $("#course_id").trigger("click");
             location.reload();
           },
-          error: function(jqXHR, error) {
-            if (jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+          error: function(error) {
+            if (error.status === 401) {
+              alert($.parseJSON(error.responseText).detail);
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);

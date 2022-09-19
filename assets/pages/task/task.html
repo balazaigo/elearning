@@ -184,9 +184,9 @@
         $("#onhold_task_count").html(response.onhold_task_count);
         $("#finished_task_count").html(response.finished_task_count);
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
       }
@@ -252,9 +252,9 @@
           $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
         });
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         console.log(error);

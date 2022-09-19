@@ -45,9 +45,9 @@ $(document).ready(function(){
 		      $("#course_preview-loader").attr("style", "display:none;")
 		      document.getElementById("course_module_content_preview").innerHTML = course_data_html+outerHtml;
 		  	}, 
-		  	error: function(jqXHR, error) {
-	            if (jqXHR.status === 401) {
-	              alert($.parseJSON(jqXHR.responseText).detail);
+		  	error: function(error) {
+	            if (error.status === 401) {
+	              alert($.parseJSON(error.responseText).detail);
 	              logoutSession();
 	            }
 		  		console.log(error);

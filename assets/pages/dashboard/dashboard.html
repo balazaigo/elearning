@@ -289,9 +289,9 @@
       }
       
     },
-    error: function (jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function (error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
       toastr.error("Response Error: " + error.message);
@@ -396,9 +396,9 @@ function getDashboardChart(year){
           });
       }
     },
-    error: function (jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function (error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
       toastr.error("Response Error: " + error.message);
@@ -538,9 +538,9 @@ var barChart = new Chart(myBarChart, {
         $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
       });
     },
-    error: function(jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function(error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
       console.log(error);
@@ -565,9 +565,9 @@ function getTask_counts(param_task){
       $("#onhold_task_count").html(response.onhold_task_count);
       $("#finished_task_count").html(response.finished_task_count);
     },
-    error: function(jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function(error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
     }
@@ -807,9 +807,9 @@ function loadAlertModal(){
           toastr.success("Task Deleted successfully");
           doSearch();
         },
-        error: function(jqXHR, error) {
-          if (jqXHR.status === 401) {
-            alert($.parseJSON(jqXHR.responseText).detail);
+        error: function(error) {
+          if (error.status === 401) {
+            alert($.parseJSON(error.responseText).detail);
             logoutSession();
           }
           toastr.error("Response Error: " + error.message);
@@ -842,9 +842,9 @@ function loadAlertModal(){
         toastr.success("Task Disabled successfully");
         doSearch();
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -870,9 +870,9 @@ function loadAlertModal(){
         toastr.success("Task Enabled successfully");
         doSearch();
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -1101,9 +1101,9 @@ function getTaskDetails(id){
           $("#task_breadcrumb").html(breadcrumb_html);
         }
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -1254,9 +1254,9 @@ $(document).ready(function(){
           doSearch();
           $("#taskdetails").removeClass("overlay_target");
         },
-        error: function(jqXHR, error) {
-            if (jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+        error: function(error) {
+            if (error.status === 401) {
+              alert($.parseJSON(error.responseText).detail);
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);
@@ -1280,9 +1280,9 @@ function update_attachment(formData, URL){
     success: function(response){
       //toastr.success("File uploaded successfully.");
     },
-    error: function(jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function(error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
       toastr.error("Response Error: " + error.message);
@@ -1356,9 +1356,9 @@ function update_comments(user_message, task_id, course_id, module_id, case_id, c
         success: function(response){
           //toastr.success("Comment saved Successfully.");
         },
-        error: function(jqXHR, error) {
-            if (jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+        error: function(error) {
+            if (error.status === 401) {
+              alert($.parseJSON(error.responseText).detail);
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);

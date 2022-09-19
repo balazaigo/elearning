@@ -185,9 +185,9 @@ $(document).ready(function(){
                 toastr.success("File uploaded successfully.");
                 console.log(response);
               },
-              error: function(jqXHR, error) {
-                if (jqXHR.status === 401) {
-                  alert($.parseJSON(jqXHR.responseText).detail);
+              error: function(error) {
+                if (error.status === 401) {
+                  alert($.parseJSON(error.responseText).detail);
                   logoutSession();
                 }
                 toastr.error("Response Error: " + error.message);
@@ -245,9 +245,9 @@ $(document).ready(function(){
           $(".show-more").css('display','none');
         }
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
       }
@@ -520,9 +520,9 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
       $("#allattach-loader").removeClass("disp_block");
       $("#allattach-loader").addClass("disp_none");
     },
-    error: function(jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function(error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
     }
@@ -1203,9 +1203,9 @@ function get_breadcrumbs(){
         }
         document.getElementById("module_breadcrumbs").innerHTML = brd_crumbs;
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
       }
@@ -1230,9 +1230,9 @@ function get_content_details(){
         //tinymce.activeEditor.setContent(module_content);
         //console.log('module_content', module_content);
         CKEDITOR.instances["editor1"].setData(module_content);
-      }, error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      }, error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
       }
@@ -1399,9 +1399,9 @@ setTimeout(function() {
         //document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
 
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);

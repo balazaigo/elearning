@@ -168,9 +168,9 @@
 
                             location.reload();
                           },
-                          error: function(jqXHR, error) {
-                            if (jqXHR.status === 401) {
-                              alert($.parseJSON(jqXHR.responseText).detail);
+                          error: function(error) {
+                            if (error.status === 401) {
+                              alert($.parseJSON(error.responseText).detail);
                               logoutSession();
                             }
                             tags_response = "1";
@@ -182,9 +182,9 @@
                       }
                     });
                 },
-                error: function(jqXHR, error) {
-                    if (jqXHR.status === 401) {
-                      alert($.parseJSON(jqXHR.responseText).detail);
+                error: function(error) {
+                    if (error.status === 401) {
+                      alert($.parseJSON(error.responseText).detail);
                       logoutSession();
                     }
                     toastr.error("Response Error: " + error.message);

@@ -59,9 +59,9 @@ $(document).ready(function(){
 			    document.getElementById("course_module_content_preview").innerHTML = course_data_html+outerHtmls;
 				$("#course_preview-loader").attr("style", "display:none;")
 		  	}, 
-		  	error: function(jqXHR, error) {
-          if (jqXHR.status === 401) {
-            alert($.parseJSON(jqXHR.responseText).detail);
+		  	error: function(error) {
+          if (error.status === 401) {
+            alert($.parseJSON(error.responseText).detail);
             logoutSession();
           }
 		  		console.log(error);
@@ -328,9 +328,9 @@ function get_module_details_new(module_id, unique_id, elem){
         //document.getElementById("course_module_content").innerHTML = module_content_html+module_attachments_html;
 
       },
-      error: function(jqXHR, error) {
-            if (jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+            if (error.status === 401) {
+              alert($.parseJSON(error.responseText).detail);
               logoutSession();
             }
         //var errorJson = jQuery.parseJSON(error.responseText);

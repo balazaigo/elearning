@@ -42,9 +42,9 @@ $(document).on("click", "#trigger-role-edit-form", function () {
           }, 1000 );
         }
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);

@@ -89,9 +89,9 @@ $( document ).ready(function() {
         $("#courses_list").append("<option value='"+val.id+"'>"+val.name+"</option>");
       });
     }, 
-    error: function(jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function(error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
     }

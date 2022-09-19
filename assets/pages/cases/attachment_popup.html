@@ -188,9 +188,9 @@
                 toastr.success("File uploaded successfully.");
                 console.log(response);
               },
-              error: function(jqXHR, error) {
-                if (jqXHR.status === 401) {
-                  alert($.parseJSON(jqXHR.responseText).detail);
+              error: function(error) {
+                if (error.status === 401) {
+                  alert($.parseJSON(error.responseText).detail);
                   logoutSession();
                 }
                 toastr.error("Response Error: " + error.message);
@@ -305,9 +305,9 @@ function get_module_details(case_id, case_module_id){
         $("#course_module_content").append(module_attachments_html);
 
       },
-      error: function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error: function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -357,9 +357,9 @@ function save_attachment_url_case(){
           toastr.success("Media URL saved successfully.");
           console.log(response);
       },
-      error:function(jqXHR, error) {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+      error:function(error) {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
         console.log(error);
@@ -383,9 +383,9 @@ function delete_attachment_case_pop(attachment_id){
       var case_module_id = document.getElementById("case_param").getAttribute("data-case_module_id");
       get_module_details(case_id, case_module_id);
     },
-    error: function(jqXHR, error) {
-      if (jqXHR.status === 401) {
-        alert($.parseJSON(jqXHR.responseText).detail);
+    error: function(error) {
+      if (error.status === 401) {
+        alert($.parseJSON(error.responseText).detail);
         logoutSession();
       }
       //toastr.error("Response Error: " + error.message);

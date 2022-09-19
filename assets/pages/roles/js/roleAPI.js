@@ -10,9 +10,9 @@ function getRoles() {
       renderRoleList(res.data);
       loadAlertModal();
     })
-    .catch((jqXHR, error) => {
-        if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+    .catch((error) => {
+        if (error.status === 401) {
+          alert($.parseJSON(error.responseText).detail);
           logoutSession();
         }
       var res = error.response;
@@ -197,6 +197,12 @@ function saveRole(data, role_id) {
       var res = error.response;
       if(res.status == 403) {
         toastr.error(res.data.detail);
+      }if(res.status == 400 && res.data != '') {
+        if(res.data.error){
+          toastr.error(res.data.error[0]);
+        }else {
+          console.error("There was an error!", error.response);
+        }
       } else {
         console.error("There was an error!", error.response);
       }
