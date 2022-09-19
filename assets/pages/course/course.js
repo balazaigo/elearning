@@ -97,7 +97,11 @@ var ns = $('.coursesortable').nestedSortable({
         console.log(response);
         location.reload();
       },
-      error: function(error) {
+      error: function(jqXHR, error) {
+        if (jqXHR.status === 401) {
+          alert($.parseJSON(jqXHR.responseText).detail);
+          logoutSession();
+        }
         tags_response = "1";
         toastr.error("Response Error: " + error.message);
         console.log(error);
@@ -172,6 +176,12 @@ function get_module_details(cid, module_id, mytagArray){
           });
         }
       });
+    },
+    error: function(jqXHR, error) {
+      if (jqXHR.status === 401) {
+        alert($.parseJSON(jqXHR.responseText).detail);
+        logoutSession();
+      }
     }
   });
 }
@@ -1258,7 +1268,11 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
             $("#course_id").trigger("click");
             location.reload();
           },
-          error: function(error){
+          error: function(jqXHR, error) {
+            if (jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
+            }
             toastr.error("Response Error: " + error.message);
             console.log(error);
           }
@@ -1424,7 +1438,11 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
             $("#course_id").trigger("click");
             location.reload();
           },
-          error: function(error) {
+          error: function(jqXHR, error) {
+            if (jqXHR.status === 401) {
+              alert($.parseJSON(jqXHR.responseText).detail);
+              logoutSession();
+            }
             toastr.error("Response Error: " + error.message);
             console.log(error);
           }
