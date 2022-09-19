@@ -1,4 +1,16 @@
  $(document).ready(function(){
+
+  $("#tabone,#tabtwo").click(function(){
+    var medias = Array.prototype.slice.apply($("video"));
+    medias.forEach(function(media) {
+      if(event.target != media) media.pause();
+    });
+    var medias2 = Array.prototype.slice.apply(CKEDITOR.instances["editor1"].document.$.getElementsByTagName("video"));
+    console.log(medias2);
+    medias2.forEach(function(media) {
+      if(event.target != media) media.pause();
+    });
+  });
   if(processRights("Write Content") === false){
     $("#editor1").hide();
     $("#saveTopics").hide();

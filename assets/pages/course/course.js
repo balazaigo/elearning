@@ -1124,7 +1124,7 @@ $(document).ready(function(){
     $("#mobile_preview").removeClass("overlay_target");
   });
   $( "#popup_course_icon" ).on('hidden.bs.modal', function(){
-    var medias = Array.prototype.slice.apply(document.querySelectorAll('.player'));
+    var medias = Array.prototype.slice.apply($("video"));
     console.log(medias);
     medias.forEach(function(media) {
       if(event.target != media) media.pause();

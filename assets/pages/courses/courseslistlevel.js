@@ -3,6 +3,18 @@ $(document).ready(function(){
   $("#tabone").hide();
   $('label[for="tabone"]').hide();
   $(".search_mt").hide();
+  $("#tabone,#tabtwo").click(function(){
+    var medias = Array.prototype.slice.apply($("video"));
+    console.log(medias);
+    medias.forEach(function(media) {
+      if(event.target != media) media.pause();
+    });
+    var medias2 = Array.prototype.slice.apply(CKEDITOR.instances["editor1"].document.$.getElementsByTagName("video"));
+    console.log(medias2);
+    medias2.forEach(function(media) {
+      if(event.target != media) media.pause();
+    });
+  });
   if(processRights("Write Content") === false){
     $("#editor1").hide();
     $("#saveCourses").hide();
@@ -421,14 +433,14 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
               attachment_video += `<div class="col-6 mb-3">
                                     <div class="tab-video relative">
                                       <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 15 ? decodeURI(element.attachment_name).substring(0, 15).trim()+"..." : decodeURI(element.attachment_name)}</p>
-                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                      <video class="player" id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                     </div>
                                   </div>`;
 
               attachment_video_all += `<div class="col-6 mb-3">
                                     <div class="tab-video_all relative">
                                       <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 15 ? decodeURI(element.attachment_name).substring(0, 15).trim()+"..." : decodeURI(element.attachment_name)}</p>
-                                      <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                      <video class="player" id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                     </div>
                                   </div>`;
             if(video_attachment_count  % 2 === 0){
@@ -604,7 +616,7 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
           attachment_video += `<div class="col-6 mb-3">
                                 <div class="${tab_videoclass} relative">
                                   <p title="${decodeURI(element.attachment_name)}">${decodeURI(element.attachment_name).length > 15 ? decodeURI(element.attachment_name).substring(0, 15).trim()+"..." : decodeURI(element.attachment_name)}</p>
-                                  <video id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                  <video class="player" id='${element.id}' controls="controls" preload='metadata' width="600" poster="" title="${decodeURI(element.attachment_name)}"><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                 </div>
                               </div>`;
         if(video_attachment_count  % 2 === 0){
@@ -922,12 +934,12 @@ function get_search_details(){
                     }
                       attachment_video += `<div class="col-6 mb-3">
                                             <div class="tab-video relative">
-                                              <video id='${element.id}' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                              <video class="player" id='${element.id}' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                             </div>
                                           </div>`;
                       attachment_video_ind += `<div class="col-6 mb-3">
                                             <div class="tab-video relative">
-                                              <video id='${element.id}' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
+                                              <video class="player" id='${element.id}' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>
                                             </div>
                                           </div>`;
                     if(video_attachemnt_count  % 2 === 0){
@@ -1291,7 +1303,7 @@ function get_module_details(){
                     if(element.attachment_type.split('/')[0] === 'image'){
                           module_attachments_html +=`<img class="w-100"src="${base_img_url}${element.attachment}" alt="${element.attachment_name}">`;
                     }else if(element.attachment_type.split('/')[0] === 'video'){
-                        module_attachments_html +=`<video id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
+                        module_attachments_html +=`<video class="player" id='video' controls="controls" preload='metadata' width="600" poster=""><source id='mp4' src="${base_img_url}${element.attachment}#t=0.5" type='video/mp4' /><p>Your user agent does not support the HTML5 Video element.</p></video>`;
                     }else if(element.attachment_type.split('/')[0] === 'audio'){
                         module_attachments_html +=`<audio controls><source src="${base_img_url}${element.attachment}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     }else if(element.attachment_type.split('/')[0] === 'application'){
