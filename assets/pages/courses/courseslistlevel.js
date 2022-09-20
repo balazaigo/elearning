@@ -33,7 +33,7 @@ $(document).ready(function(){
     //CKEDITOR.config.removePlugins = 'blockquote';
     //CKEDITOR.config.allowedContent = true;
     //CKEDITOR.config.removeButtons = 'Underline,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Strike,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Source,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Format,Font,FontSize,Undo,Redo';
-    CKEDITOR.config.removeButtons = 'BGColor,Indent,Outdent,JustifyBlock,Unlink,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,Scayt,CopyFormatting,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Source,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Font,FontSize,Format';
+    CKEDITOR.config.removeButtons = 'BGColor,Indent,Outdent,JustifyBlock,Unlink,Subscript,Superscript,Image,Templates,PasteText,PasteFromWord,Find,Replace,Scayt,CopyFormatting,BidiLtr,BidiRtl,Language,Anchor,Smiley,SpecialChar,PageBreak,Iframe,Maximize,ShowBlocks,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,NewPage,Print,CreateDivContainer,Cut,Copy,Paste,CreateDiv,Preview,Save,ExportPdf,HorizontalRule,Styles,Font,FontSize,Format';
     CKEDITOR.config.extraPlugins = 'base64image,backgrounds,editorplaceholder,font,format_buttons,justify,hcard,wordcount,videoembed';
     CKEDITOR.config.removePlugins = 'iframe';
 
