@@ -171,7 +171,7 @@
         </div>
 
 
-<div class="container-fluid pagination-cont">
+<div class="container-fluid pagination-cont" id="pagination-container-cont">
   <div id="pagination-container-to" class="certificate_pagination"></div>
   <div id="pagination-container-goto" class="goto_page"><span class="goto_page_text">Go to page</span>
   <input type="number" value="" id="go_to_page" maxlength="3" min="1">
@@ -274,7 +274,16 @@
         $(element).removeClass("is-invalid");
       }
     });
-
+    $(document).ready(function(){
+      var search_data_inp = document.getElementById("search_data");
+      search_data_inp.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          $("#go_to_page").val("");
+          searchParam();
+        }
+      });
+    });
   $(".add-case").click(function(){
     window.sharedEditCaseId = "";
     $( '#frmNewCase' ).each(function(){
@@ -320,9 +329,11 @@
         }
     }
     get_pagination(search_param);
-    $(".btnReset").removeClass("d-none");
-    if(search_param == ""){
+    console.log(search_param);
+    if(search_param != ""){
       $(".btnReset").removeClass("d-none");
+    }else{
+      $(".btnReset").addClass("d-none");
     }
 }
 //To Paginate case list Data
@@ -365,9 +376,9 @@ function get_pagination(parameter){
       },
       callback: function(data, pagination) {
         if(pagination.totalNumber < 7){
-          $("#pagination-container-to").hide();
+          $("#pagination-container-cont").hide();
         }else{
-          $("#pagination-container-to").show();
+          $("#pagination-container-cont").show();
         }
 
         $("#role-loader").removeClass("disp_block");

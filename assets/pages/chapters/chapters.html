@@ -1,3 +1,4 @@
+<div class="row loader disp_block" id="chapter-loader"><span>Loading Chapter</span></div>
 <div class="container-fluid" style="display:none;">
     <div class="row">
       <div class="col-12">
@@ -58,7 +59,7 @@
   <!--popup end-->
 
   <!--Chapter list start-->
-  <div class="container-fluid" style="display:block">
+  <div class="container-fluid disp_none" id="list_chapter_container">
     <div class="row">
       <div class="col-12 title-head mb-3">
         <h2>Chapters 
@@ -85,7 +86,7 @@
                         <div class="row">
                         <div class="col-lg-8 col-md-8">
                           <div class="topsearch relative">
-                          <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search" id="searchText">
+                          <input class="form-control form-control-dark w-100" type="text" placeholder="Search here" aria-label="Search" id="searchText" onblur="searchTextparam();">
                           <i class="fas fa-search"></i> </div>
                         </div>
 
@@ -136,12 +137,20 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="container-fluid pagination-cont">
+              <div class="container-fluid pagination-cont" id="pagination-container-cont">
                 <div id="pagination-container" class="certificate_pagination"></div>
                 <div id="pagination-container-goto" class="goto_page"><span class="goto_page_text">Go to page</span>
                 <input type="number" value="" id="go_to_page" maxlength="3" min="1">
                 <a class="goto_go" onclick="goto_pageCall('pagination-container', 'go_to_page');"><span>Go<i class="fa fa-angle-right" aria-hidden="true"></i>
                 </span></a></div>
+              </div>
+
+              <div  id="nodataFound_chapter" style="display: none;">
+                  <div class="row">
+                    <div class="col-12 title-head mb-3">
+                      <p><span class="text-danger">No Records Found!</span></p>
+                    </div>
+                  </div>
               </div>
           </div>
         </div>
@@ -180,14 +189,40 @@ var frmvalidatorfrm;
   if(processRights("Add Course") === false || processRights("Define Course") === false) {
     $(".add-case").hide();
   }
+
+  $(document).ready(function(){
+    var search_data_inp = document.getElementById("searchText");
+    search_data_inp.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        $("#go_to_page").val("");
+        //$(".btnReset").removeClass("d-none");
+        doSearch();
+      }
+    });
+  });
+  function searchTextparam(){
+    $("#go_to_page").val("");
+    //$(".btnReset").removeClass("d-none");
+    doSearch();
+  }
   function doSearch(){
-    var queryPara = '?self=';
+    var queryPara = '';
     if($("#searchText").val()) {
-      queryPara += "&search=" + $("#searchText").val();
+      queryPara += "?search=" + $("#searchText").val();
     }
+    console.log('query1',queryPara);
     //status
     if($("#status").val()) {
-      queryPara += "&status=" + $("#status").val();
+      if(queryPara == ""){
+        queryPara += "?status=" + $("#status").val();
+      }else{
+        queryPara += "&status=" + $("#status").val();
+      }
+    }
+    if(queryPara == ""){
+    console.log('query2',queryPara);
+      $(".btnReset").addClass("d-none");
     }
 
     $('#pagination-container').pagination({
@@ -226,6 +261,38 @@ var frmvalidatorfrm;
         },    
       },
       callback: function(data, pagination) {
+        if(pagination.totalNumber < 7){
+          $("#pagination-container-cont").hide();
+        }else{
+          $("#pagination-container-cont").show();
+        }
+        $("#chapter-loader").removeClass("disp_block");
+        $("#chapter-loader").addClass("disp_none");
+        console.log(data.length);
+        console.log(queryPara);
+        if(data.length === 0){
+          if(queryPara != ""){
+            $("#nodataFound_chapter").attr("style", "display:block");
+            $("#list_chapter_container").addClass("disp_block");
+            $("#list_chapter_container").removeClass("disp_none");
+
+            //$("#add_case_container").removeClass("disp_block");
+            //$("#add_case_container").addClass("disp_none");
+          }else{
+            //$("#add_case_container").addClass("disp_block");
+            //$("#add_case_container").removeClass("disp_none");
+
+            $("#list_chapter_container").removeClass("disp_block");
+            $("#list_chapter_container").addClass("disp_none");
+          }
+        }else{
+          $("#nodataFound_chapter").attr("style", "display:none");
+          $("#list_chapter_container").addClass("disp_block");
+          $("#list_chapter_container").removeClass("disp_none");
+
+          //$("#add_case_container").removeClass("disp_block");
+          //$("#add_case_container").addClass("disp_none");
+        }
         var html = template(data);
         $('#listData').html(html);
         loadAlertModal();
@@ -303,19 +370,15 @@ var frmvalidatorfrm;
         html += '</tr>';
       });
     } else {
-      html += '<tr>';
+      /*html += '<tr>';
       html += `
       <td>
-        <div class="form-check">
-          <input class="form-check-input" name="chk" type="checkbox" value="0" id="chk_0" disabled>
-          <label class="form-check-label" for="chk_0"> </label>
-        </div>
       </td>
       `;
       html += '<td colspan="6" class="text-center">';
       html += '<span class="text-danger">'+ window.language.no_record_found +'</span>';
       html += '</td>';
-      html += '</tr>';
+      html += '</tr>';*/
     }
     html += '';
     return html;
@@ -438,10 +501,10 @@ var frmvalidatorfrm;
         $(".btnReset").addClass("d-none");
       }, 500);
     });
-    $(".fa-search").on("click", function(){ 
+    /*$(".fa-search").on("click", function(){ 
       $(".btnReset").removeClass("d-none");
       doSearch(); 
-    });
+    });*/
     $("#status").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
 
     //load the courses list

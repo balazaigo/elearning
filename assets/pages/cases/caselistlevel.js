@@ -1583,7 +1583,20 @@ $( document ).ready(function() {
           }
       });
     }else{
-      toastr.error("Please Write a Content.");
+      //toastr.error("Please Write a Content.");
+
+      $.ajax({
+        url: API_CONTENT_URL+'/case/delete/content/'+case_module_id,
+        type: "DELETE",
+        headers: {"Authorization": "Bearer " + getUserInfo().access_token},
+        success:function(response){
+          toastr.success("Content has been Deleted.");
+        },
+        error: function(error){
+          toastr.error("Response Error: " + error.message);
+          console.log(error);
+        }
+      });
     }
     //loadextData(tinymce.activeEditor);
   });

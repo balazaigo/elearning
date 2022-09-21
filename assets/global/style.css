@@ -3656,7 +3656,7 @@ option:not(:first-of-type) {
 .powered_by p{
     margin-bottom: 0.3rem;
 }
-#nodataFound_course p{
+#nodataFound_course p, #nodataFound_chapter p{
     width: 100%;
     text-align: center;
 }
