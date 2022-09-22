@@ -16,6 +16,10 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
   API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
   USER_ENGINE_API_URL = "https://elearningadmin.zaigoinfotech.com/api/v1/ue/";
 
+  /*API_BASE_URL = "https://uatadmin.exper.com";
+  API_CONTENT_URL = "https://uatcontent.exper.com";
+  USER_ENGINE_API_URL = "https://uatadmin.exper.com/api/v1/ue/";*/
+
 } else if(SITE_URL_PROTOCOL === "https://localhost"){
 	SITE_URL_PROTOCOL = "https://localhost/elearning/";
   API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
@@ -50,7 +54,7 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
 
 console.log(SITE_URL_PROTOCOL);
 /* Firebase */
-var firebaseConfig = {
+/*var firebaseConfig = {
   apiKey: "AIzaSyAdLTHIe9poMMrgL46G-NtUfSGRqkGvYN8",
   authDomain: "feroz-shaik-8613.firebaseapp.com",
   databaseURL: "https://feroz-shaik-8613.firebaseio.com",
@@ -59,6 +63,16 @@ var firebaseConfig = {
   messagingSenderId: "651394549638",
   appId: "1:651394549638:web:b23db54c5290e7b3808e07",
   measurementId: "G-KESL97HP8Q"
+};*/
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDN823YYTyKnOqF_n9nP29wDjCm1QCdxeY",
+  authDomain: "medvarsity-tech.firebaseapp.com",
+  projectId: "medvarsity-tech",
+  storageBucket: "medvarsity-tech.appspot.com",
+  messagingSenderId: "410925001844",
+  appId: "1:410925001844:web:3ffd7ec159e8c2e79ef521",
+  measurementId: "G-MLES59N18V"
 };
 
 if(window.toastr !== undefined) {
