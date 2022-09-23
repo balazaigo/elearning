@@ -7,8 +7,43 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
   var course_popup = '<div class="modal fade" id="popup_course_icon" data-bs-backdrop="static">';
   course_popup += '<div class="modal-dialog modal-lg">';
   course_popup += '<div class="modal-content" id="content-courseModule"></div>';
-  course_popup += '</div>';
+  course_popup += `</div>`;
   course_popup += `</div>
+                    <div class="modal fade" id="mAlertcourseDelete" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;top:0;" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+                        <div class="modal-content delete_courseModule">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal fade" id="mAlertcourseSubDelete" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;top:0;" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+                        <div class="modal-content">
+                          <a class="close" data-bs-dismiss="modal" style="text-align: right;padding-right: 10px;">×</a>
+                          <div class="modal-body">
+                            <form method="get" class="pop-form">
+                              <div class="row">
+                                <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" style="width: 25%;"> </div>
+                                <div class="col-md-12 text-center mb-2" id="">
+                                  <input type="hidden" id="mAlertURL" value="" />
+                                  <p id="mAlertName">Are you sure you want to delete it?</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-12 pt-3 pb-3 wauto text-center"> 
+                                <span class="dborder-btn nbtn">
+                                  <button type="button" id="mAlertCancelCM" class="btn btn-default" data-bs-dismiss="modal">No</button>
+                                </span> 
+                                <span class="danger-btn nbtn">
+                                  <button type="button" id="mAlertDeleteCM" class="btn btn-danger" data-cid="" data-module_id="">Yes, Delete</button>
+                                </span>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   <div id="desktop_preview" class="overlay">
                     <div class="popup extra-popup p-0" style="width:88% !important;"> <a class="close" href="#" id="desktop-preview-close">&times;</a>
                       <input type="hidden" id="dp_course_id" value="${queries_param.cid}">
@@ -190,10 +225,10 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
               delete_prevent_click = "pointer-events:unset;";
             }
             if(a[i].case_id && a[i].is_case_delete == true){
-                var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_cases(this)'>Delete Case Study</a></ul><ul><a data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></ul>";
+                var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlertcourseSubDelete' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_cases(this)'>Delete Case Study</a></ul><ul><a data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></ul>";
             }else{
               if(a[i].is_module_delete == true){
-                var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"' data-case_module_id='"+a[i].case_module_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_chapters(this)'>Delete Chapters</a></ul>";
+                var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlertcourseSubDelete' data-name='"+input_value+"' data-cid='"+a[i].course_id+"' data-case_module_id='"+a[i].case_module_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_chapters(this)'>Delete Chapters</a></ul>";
               }else{
                 var delete_case = "<ul><a data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></ul>";
               }
@@ -325,10 +360,10 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
                 delete_prevent_click = "pointer-events:unset;";
               }
               if(a[i].case_id && a[i].is_case_delete == true){
-                  var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_cases(this)'>Delete Case Study</a></ul><ul><a data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></ul>";
+                  var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlertcourseSubDelete' data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_cases(this)'>Delete Case Study</a></ul><ul><a data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></ul>";
               }else{
                 if(a[i].is_module_delete == true){
-                  var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-cid='"+a[i].course_id+"' data-case_module_id='"+a[i].case_module_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_chapters(this)'>Delete Chapters</a></ul>";
+                  var delete_case = "<ul><a data-bs-toggle='modal' data-bs-target='#mAlertcourseSubDelete' data-name='"+input_value+"' data-cid='"+a[i].course_id+"' data-case_module_id='"+a[i].case_module_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm_chapters(this)'>Delete Chapters</a></ul>";
                 }else{
                   var delete_case = "<ul><a data-name='"+input_value+"' data-cid='"+a[i].course_id+"'  data-module_id='"+a[i].module_id+"' data-case_id='"+a[i].case_id+"' class='dropdown-item red' onClick='delete_module_confirm(this)'>Delete</a></ul>";
                 }

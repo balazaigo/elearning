@@ -327,6 +327,6 @@
     overflow-wrap: break-word;
     overflow: hidden;
 }
-#mAlert{
+#mAlert, #mAlert_role, #mAlertDeleteMember{
     top:150px;
 }

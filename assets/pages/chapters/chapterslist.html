@@ -4,7 +4,7 @@
         <div class="row w-100">
           <div class="wrapper">
             <input type="hidden" id="chapter_id_name" class="chapters" />
-            <input type="hidden" id="chapter_id_mod" data-flinkto="chapterslist" href="chapters/chapterslist" class="navigate_refresh">
+            <input type="hidden" class="navigate_refresh" id="chapter_id_mod" href="chapters/chapterslist" data-flinkto="chapterslist"  >
             <div class="left_icon">
               <li style="list-style: none;">
                 <a href="chapters/chapters" data-flinkto="chapters" id="back_icon_chapters">
@@ -53,6 +53,12 @@
   </div>
 </div>
 
+<div class="modal fade" id="mAlert" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;top:0;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+    <div class="modal-content delete_chapterModule">
+    </div>
+  </div>
+</div>
 <!--<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
@@ -238,7 +244,7 @@
                 }
                   newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='"+input_value+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"'><p href='chapters/chapterlistlevel' id='module_module_"+level_count_inc+"' data-prev_val='"+encodeURIComponent(input_value)+"' data-flinkto='chapterlistlevel' data-chapter_topic_id='"+a[i].chapter_topic_id+"' data-chapter_id='"+a[i].chapter_id+"' class='main_mod_title navigate_refresh'>"+input_value_substr+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>");
                 newUlDIV.append("<span class='expand_img_icon  disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>");
-                  newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
+                  newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
                   //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                   var preven_click_attachment = prevent_click;
                   if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
@@ -314,7 +320,7 @@
                   //if(a[i].is_qa == false){
                       newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>");
     
-                      newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
+                      newUlDIV.append("<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a data-name='"+input_value+"' data-chapter_id='"+a[i].chapter_id+"'  data-chapter_topic_id='"+a[i].chapter_topic_id+"' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>");
                       //newUl.append("<li class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></li>");
                       var preven_click_attachment = prevent_click;
                       if(processRights("Add Audio") === false && processRights("Add Slide") === false && processRights("Add Video") === false){
@@ -761,7 +767,7 @@
                   newHTML += "<span class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
                   newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='Level "+result+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='Level "+result+"'>Level "+result+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
                   newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
-                  newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></span><span><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-name='' data-chapter_id='' data-chapter_topic_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+                  newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></span><span><a class='dropdown-item red' data-name='' data-chapter_id='' data-chapter_topic_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                   //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                   newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></span>";
                   newHTML += "<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></span>";
@@ -794,7 +800,7 @@
                   newHTML += "<span class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
                   newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value=''onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+result+"' data-prev_val='Add Module Name'>Add Module Name<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
                   newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
-                  newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></span><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-chapter_id=''  data-chapter_topic_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+                  newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='"+prevent_click+"'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></span><span><a data-name='' data-chapter_id=''  data-chapter_topic_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
                   //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
                   newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></span>";
                   newHTML += "<span class='message_img_icon disp_in_block flt_right' style='"+prevent_click+"'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></span>";
@@ -851,7 +857,7 @@
       newHTML += "<span class='course_img_icon disp_in_block flt_left'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
       newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value_chapter_mod(this);' value='Level "+result+"'onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'><p id='sub_"+result+"_"+main_mod_level+"' data-prev_val='"+result_text+"'>"+result_text+"<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
       newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
-      newHTML += "<span class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green'>Edit</a></span><span><a data-bs-toggle='modal' data-bs-target='#mAlert' class='dropdown-item red' data-name='' data-chapter_id=''  data-chapter_topic_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+      newHTML += "<span class='dots_img_icon disp_in_block flt_right'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green'>Edit</a></span><span><a class='dropdown-item red' data-name='' data-chapter_id=''  data-chapter_topic_id='' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
       //newHTML += "<li class='progress_btn disp_in_block flt_right'><p class='status_new'>New</p></li>";
       newHTML += "<span class='attach_img_icon disp_in_block flt_right'><img src='../assets/images/attach-icon.png' class='attach_icon'></span>";
       newHTML += "<span class='message_img_icon disp_in_block flt_right'><img src='../assets/images/message-icon.png' class='message_icon'></span>";
@@ -876,14 +882,14 @@
      }
   }
   function delete_case_module_confirm(e){
-    const container = document.getElementById("popup_course_icon");
+    const container = document.getElementById("mAlert");
     const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
     var url = `${SITE_URL_PROTOCOL}/assets/pages/chapters/delete.html?t=` + Math.floor(Date.now() / 1000);
-    $('.modal-content').load(url,function(result){
-      $("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
-      $(".modal-lg").attr("style","max-width: 30%;");
+    $('.delete_chapterModule').load(url,function(result){
+      //$("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
+      //$(".modal-lg").attr("style","max-width: 30%;");
       var element = e;
-      $("#mAlertName").text(e.dataset.name);
+      $("#mAlertName").text("Are you sure you want to delete Module '"+e.dataset.name+"'?");
       var chapter_name = e.dataset.name;
       var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
       var num = "";
@@ -916,7 +922,7 @@
     });
   }
 
-  function loadAlertModalChapter(toastr_message, chapter_topic_id, name){
+  /*function loadAlertModalChapter(toastr_message, chapter_topic_id, name){
     $('#mAlert').on('shown.bs.modal', function (event) {
       $("#mAlertCancelChapter").focus();
       $(document).on('click', '#mAlertDeleteChapter', function(e) {
@@ -958,7 +964,7 @@
       modal.find('.modal-content input').val(null);
       modal.find('.modal-content #mAlertName').html("Loading...");
     });
-  }
+  }*/
   
   function add_empty_topic(r){
     var newHTML = "<li class='module module_"+r+" main_mod_empty no_child' style='opacity:0.5;'>";
@@ -966,7 +972,7 @@
     newHTML += "<span class='course_img_icon disp_in_block flt_left' style='pointer-events:none;'><img src='../assets/images/course-icon.png' class='course_icon'></span>";
     newHTML += "<span class='module_input disp_in_block flt_left'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Topic Name' onChange='check_value_chapter_mod(this);' value=''onblur='totext_chapter_mod(this);' style='display: none;' maxlength='256'><p id='module_module_"+r+"' data-prev_val='Add Topic Name'>Add Topic Name<img src='../assets/images/pen-edit.jpg' onclick='toinput_case_mod(this);'></p></span>";
     newHTML += "<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand_case_mod(this);'></span>";
-    newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></span><span><a data-bs-toggle='modal' data-bs-target='#mAlert' data-name='' data-chapter_id=''  data-chapter_topic_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
+    newHTML += "<span class='dots_img_icon disp_in_block flt_right' style='pointer-events:none;'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'><span><a class='dropdown-item green' data-chapter_id=''  data-chapter_topic_id=''>Edit</a></span><span><a data-name='' data-chapter_id=''  data-chapter_topic_id='' class='dropdown-item red' onClick='delete_case_module_confirm(this)'>Delete</a></span></ul></span>";
     newHTML += "<span class='attach_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/attach-icon.png' class='attach_icon' onClick='show_attachment_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></span>";
     newHTML += "<span class='message_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/message-icon.png' class='message_icon' onClick='show_message_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></span>";
     newHTML += "<span class='user_img_icon disp_in_block flt_right' style='pointer-events:none;'><img src='../assets/images/user-icon.png' class='user_icon' onClick='show_assignee_popup_chapter_mod(this);' data-chapter_id='' data-chapter_topic_id=''></span>";
@@ -981,6 +987,11 @@
         //$('#chapter_id_mod').trigger('click');
 
             location.reload();
+    });
+    $('#mAlert').on('hidden.bs.modal', function () {
+        $('#chapter_id_mod').click();
+
+            //location.reload();
     });
   });
 

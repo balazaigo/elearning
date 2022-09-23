@@ -3390,6 +3390,7 @@ form#multiple {
 	font-weight: 400;
 	margin-top: 13px;
 	display: block;
+	overflow-wrap: break-word;
 	/*margin: 0;*/
 }
 .course{

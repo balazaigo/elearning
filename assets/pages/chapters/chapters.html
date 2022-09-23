@@ -159,7 +159,7 @@
   </div>
   <!--Chapter list end-->
   
-<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+<!--<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
       <div class="modal-header">
@@ -181,8 +181,36 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
+<div class="modal fade" id="mAlert" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;top:0;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+    <div class="modal-content delete_courseMadeFor">
+      <a class="close" data-bs-dismiss="modal" style="text-align: right;padding-right: 10px;">×</a>
+      <div class="modal-body">
+        <form method="get" class="pop-form">
+          <div class="row">
+            <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" style="width: 25%;"> </div>
+            <div class="col-md-12 text-center mb-2" id="">
+              <input type="hidden" id="mAlertURL" value="" />
+              <p id="mAlertName">Are you sure you want to delete it?</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 pt-3 pb-3 wauto text-center"> 
+            <span class="dborder-btn nbtn">
+              <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">No</button>
+            </span> 
+            <span class="danger-btn nbtn">
+              <button type="button" id="mAlertDelete" class="btn btn-danger">Yes, Delete</button>
+            </span>
+            </div>
+          </div>
+        </form>
+      </div>      
+    </div>
+  </div>
+</div>
 <script>
 var frmvalidatorfrm;
 
@@ -211,7 +239,6 @@ var frmvalidatorfrm;
     if($("#searchText").val()) {
       queryPara += "?search=" + $("#searchText").val();
     }
-    console.log('query1',queryPara);
     //status
     if($("#status").val()) {
       if(queryPara == ""){
@@ -221,8 +248,9 @@ var frmvalidatorfrm;
       }
     }
     if(queryPara == ""){
-    console.log('query2',queryPara);
       $(".btnReset").addClass("d-none");
+    }else{
+      $(".btnReset").removeClass("d-none");
     }
 
     $('#pagination-container').pagination({
@@ -614,7 +642,7 @@ var frmvalidatorfrm;
       var name = button.data('name');
       var modal = $(this);
       modal.find('.modal-content input').val(recipientID);
-      modal.find('.modal-content #mAlertName').html(name);
+      modal.find('.modal-content #mAlertName').html("Are you sure you want to delete chapter '"+name+"'?");
       $("#mAlertCancel").focus();
       //mAlertDelete
 

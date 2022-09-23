@@ -64,7 +64,7 @@
         <ul class="text-white w-100 pt-4" id="navRight">
           <li>
             <!--<a href="#" data-flinkto="dashboard">-->
-              <a href="dashboard/dashboard" data-flinkto="dashboard" class="dashboard">
+              <a href="dashboard/dashboard" data-flinkto="dashboard" class="dashboard" id="dashboard_page">
               <img class="menuicon" src="../assets/images/dash.svg" alt="Dashboard" />
               <span class="mx-2" data-flinkto="dashboard">Dashboard</span></a
             >
@@ -432,12 +432,14 @@
             });
           }
           if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members" || urlPath == "members/userdetails" || urlPath == "members/createmember"){
-              History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param); // When we do this, History.Adapter will also execute its contents.    
+              var mathcount = "&ts="+Math.floor(Date.now() / 1000);
+              History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param+mathcount); // When we do this, History.Adapter will also execute its contents.    
             }
         });
 
         $(document).on('click', '.navigate_refresh', function (e) {
           e.preventDefault();
+          console.log(e, 'sfdasfasf');
           if(e.target.tagName == "IMG"){
             return true;
           }
@@ -456,7 +458,8 @@
             });
           }
           if(urlPath == "dashboard/dashboard" || urlPath == "cases/case" || urlPath == "cases/caselist" || urlPath == "cases/caselistlevel" || urlPath == "cases/knowledgecheck" || urlPath == "chapters/chapters" || urlPath == "chapters/chapterslist" || urlPath == "chapters/chapterlistlevel" || urlPath == "roles/roles" || urlPath == "courses/courses" || urlPath == "courses/courseslistlevel" || urlPath == "courses/course_knowledge_check" || urlPath == "course/course" || urlPath == "task/task" || urlPath == "members/members" || urlPath == "members/userdetails" || urlPath == "members/createmember"){
-              History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param); // When we do this, History.Adapter will also execute its contents.    
+              var mathcount = "&ts="+Math.floor(Date.now() / 1000);
+              History.pushState({path: urlPath}, title, './?page=' + urlPath+url_param+mathcount); // When we do this, History.Adapter will also execute its contents.    
             }
         });
         

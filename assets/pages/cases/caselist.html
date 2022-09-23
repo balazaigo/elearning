@@ -66,6 +66,12 @@
   </div>
 </div>
 
+<div class="modal fade" id="mAlert" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;top:0;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+    <div class="modal-content delete_caseModule">
+    </div>
+  </div>
+</div>
 <!--<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
@@ -974,16 +980,14 @@ function add_sub_sub_case_mod(e){
 }
 
 function delete_case_module_confirm(e){
-  const container = document.getElementById("popup_course_icon");
+  const container = document.getElementById("mAlert");
   const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
   var url = `${SITE_URL_PROTOCOL}/assets/pages/cases/delete.html?t=` + Math.floor(Date.now() / 1000);
-  $('.modal-content').load(url,function(result){
-    $("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
-    $(".modal-lg").attr("style","max-width: 30%;");
+  $('.delete_caseModule').load(url,function(result){
+    //$("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
+    //$(".modal-lg").attr("style","max-width: 30%;");
     var element = e;
-    console.log(e);
-    console.log(e.dataset.module_name);
-    $("#mAlertName").text(e.dataset.module_name);
+    $("#mAlertName").text("Are you sure you want to delete Module '"+element.dataset.module_name+"'?");
     var case_module_name = e.dataset.module_name;
     var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
     var num = "";
@@ -1015,7 +1019,7 @@ function delete_case_module_confirm(e){
     modal.toggle();
   });
 }
-  function loadAlertModalCaseMod(toastr_message, module_id, module_name){
+  /*function loadAlertModalCaseMod(toastr_message, module_id, module_name){
     $('#mAlert').on('shown.bs.modal', function (event) {
       $("#mAlertCancelCaseMod").focus();
       $(document).on('click', '#mAlertDeleteCaseMod', function(e) {console.log(e);
@@ -1058,7 +1062,7 @@ function delete_case_module_confirm(e){
       modal.find('.modal-content input').val(null);
       modal.find('.modal-content #mAlertName').html("Loading...");
     });
-}
+}*/
  function toInputHeader(){
   $("#case_ind_name_input").val($("#case_ind_name_text").attr("data-prev_val"));
   $("#case_ind_name_input").attr("style", "display:inline-block");

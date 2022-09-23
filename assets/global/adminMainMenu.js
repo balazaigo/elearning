@@ -201,7 +201,7 @@ async function getTaskPage() {
     toastr.error(window.language.error_no_access);
     return false;
   }
-  $("#app-admin").load(
+  /*$("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/task/task.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
@@ -209,7 +209,7 @@ async function getTaskPage() {
         console.log("Something error happend");
       }
     }
-  );
+  );*/
 }
 
 async function getTaskCalendarPage() {
@@ -417,7 +417,7 @@ async function getChaptersPage(e) {
     toastr.error(window.language.error_no_access);
     return false;
   }*/
-  $("#app-admin").load(
+  /*$("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/chapters/chapters.html?t=` + Math.floor(Date.now() / 1000),
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
@@ -426,7 +426,7 @@ async function getChaptersPage(e) {
         console.log("Something error happend");
       }
     }
-  );
+  );*/
 }
 
 async function getModulePage() {

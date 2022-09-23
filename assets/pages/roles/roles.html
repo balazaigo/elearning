@@ -13,6 +13,7 @@
       </span>
     </div>
   </div>
+  <div class="navigate_refresh" href="roles/roles" data-flinkto="roles" style="display: none;" id="getRoles"></div>
   <div class="row loader" id="role-loader"><span>Loading Roles</span></div>
   <div class="row" id="rolebox">
     <!-- HTML snippet will be dynamically appended-->
@@ -101,10 +102,34 @@
 </div>
 <!-- Role Create Form End -->
 
-<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+<div id="mAlert_role" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
-      <div class="modal-header">
+
+<a class="close" data-bs-dismiss="modal" style="text-align: right;padding-right: 10px;">×</a>
+<div class="modal-body">
+  <form method="get" class="pop-form">
+    <div class="row">
+      <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" style="width: 25%;"> </div>
+      <div class="col-md-12 text-center mb-2" id="">
+        <input type="hidden" id="mAlertURL" value="" />
+        <p id="mAlertName">Are you sure you want to delete it?</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 pt-3 pb-3 wauto text-center"> 
+      <span class="dborder-btn nbtn">
+        <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">No</button>
+      </span> 
+      <span class="danger-btn nbtn">
+        <button type="button" id="mAlertDelete_role" class="btn btn-danger delete_call_fun" data-cid="" data-module_id="">Yes, Delete</button>
+      </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+      <!--<div class="modal-header">
         <h6 class="modal-title"><span id="mAlertName"></span></h6>
         <a class="close" data-bs-dismiss="modal">×</a>
       </div>
@@ -120,7 +145,7 @@
         <span class="danger-btn nbtn">
           <button type="button" id="mAlertDelete_role" class="btn btn-danger">Yes Delete</button>
         </span>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>
@@ -139,7 +164,8 @@ $("#mAlertDelete_role").click(function(){
       .then((response) => {
         toastr.success("Role deleted successfully");
         $("#mAlertCancel").click();
-        getRoles();
+        //getRoles();
+        $("#getRoles").trigger('click');
       })
       .catch((error) => {
         var res = error.response;

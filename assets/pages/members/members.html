@@ -87,7 +87,7 @@
         <div class="container-fluid p-0">
           <div class="white-bg p-3 mt-3">
             <div class="p-0">
-              <div class="table-section">
+              <div class="table-section table_member">
                 <table class="table table-bordered responsive">
                   <thead>
                     <tr>
@@ -395,7 +395,7 @@ $(document).on('click','.fa-lg.closeBtn',function(){
 
 <script type="application/javascript">
 var roleList = '';
-function doSearch(){
+function doSearchMember(){
   gridMembers("pagination-container", "memberListDataContainer");
 }
 $( document ).ready(function() {
@@ -421,7 +421,7 @@ $( document ).ready(function() {
           $("#role_list").val(window.selectedRoleID).change();
           window.selectedRoleID = null;
       }else {
-        doSearch();
+        doSearchMember();
       }
     },
     error: function(error) {
@@ -434,7 +434,7 @@ $( document ).ready(function() {
   
   $(".btnReset").on("click", function(){
     $("#status, #role_list, #searchText").val(null);
-    doSearch();
+    doSearchMember();
     setTimeout(function() {
       $(".btnReset").addClass("d-none");
     }, 500);
@@ -442,15 +442,15 @@ $( document ).ready(function() {
 
   $(".btnSearch").on("click", function(){ 
     $(".btnReset").removeClass("d-none");
-    doSearch(); 
+    doSearchMember(); 
   });
-  $("#status, #role_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
-  $('.btnRadio').click(function(){ doSearch(); });
+  $("#status, #role_list").on("change", function(){ doSearchMember(); $(".btnReset").removeClass("d-none");});
+  $('.btnRadio').click(function(){ doSearchMember(); });
   
   
   $(".cancel-member-create-form").on("click", function() {
     $("#member-create-form-container").removeClass("overlay_target");
-    doSearch();
+    doSearchMember();
   });
 });
 
@@ -512,7 +512,7 @@ function gridMembers(tagID, htmlID, assignTOBY){
         }
       var html = template(data, pagination);
       $('#' + htmlID).html(html);
-      loadAlertModalDeleteMember();
+      //loadAlertModalDeleteMember();
     }
   });
 }
@@ -569,12 +569,12 @@ function template(data, pagination) {
         html += `<li><a class="dropdown-item red disabled">&nbsp;Disable<a></li>`;
       }else {
         if(item.status == '0' || item.status == '1') {
-          html += `<li><a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a></li>`;
+          html += `<li><a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabledMem">&nbsp;Disable</a></li>`;
         } else if(item.status == '2') {
-          html += `<li><a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enable</a></li>`;
+          html += `<li><a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnambledMem">&nbsp;Enable</a></li>`;
         } else {
-          html += `<li><a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enable</a></li>`;
-          html += `<li><a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a></li>`;
+          html += `<li><a id="enabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mEnambledMem">&nbsp;Enable</a></li>`;
+          html += `<li><a id="disabled_` + item.id + `" data-name="`+item.first_name+`" data-url="`+item.id+`" class="dropdown-item red mDisabledMem">&nbsp;Disable</a></li>`;
         }
       }
 
@@ -586,7 +586,7 @@ function template(data, pagination) {
         if(processRights("Delete Member") === false || getUserInfo().id === item.id) {
           html += `<a class="dropdown-item red disabled">&nbsp;Delete<a>`;
         } else {
-          html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.first_name+ ` ` +item.last_name+`" data-url="`+item.id+`/" class="dropdown-item red">&nbsp;Delete</a>`;
+          html += `<a href="#mAlertDeleteMember" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlertDeleteMember" data-name="`+item.first_name+ ` ` +item.last_name+`" data-url="`+item.id+`/" class="dropdown-item red">&nbsp;Delete</a>`;
         }
       }
       html += `</li>
@@ -659,14 +659,15 @@ function editMembers(id){
       }
     });
 }
-function loadAlertModalDeleteMember(){
-  $('#mAlert').on('shown.bs.modal', function (event) {
+//function loadAlertModalDeleteMember(){
+  $(document).ready(function(){
+  $('#mAlertDeleteMember').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var recipientID = button.data('url');
     var name = button.data('name');
     var modal = $(this);
     modal.find('.modal-content input').val(recipientID);
-    modal.find('.modal-content #mAlertName').html(name);
+    modal.find('.modal-content #mAlertName').html("Are you sure you want to delete member '"+name+"'?");
     $("#mAlertCancel").focus();
     //mAlertDelete
     //mAlertCancel
@@ -677,7 +678,7 @@ function loadAlertModalDeleteMember(){
     
   });
   
-    $(document).on('click', '#mAlertDelete_mem', function(e) {
+    $("#mAlertDelete_mem").click(function(e) {
       e.preventDefault();
       var url = $("#mAlertURL").val();
       var me = $(this);
@@ -700,7 +701,7 @@ function loadAlertModalDeleteMember(){
         success:function(response){
           toastr.success("Member Deleted Successfully.");
           $("#mAlertCancel").click();
-          doSearch();
+          doSearchMember();
         },
         complete: function() {
             me.data('requestRunning', false);
@@ -712,7 +713,7 @@ function loadAlertModalDeleteMember(){
       });
     });
   //hidden.bs.modal	
-  $('#mAlert').on('hidden.bs.modal', function (event) {
+  $('#mAlertDeleteMember').on('hidden.bs.modal', function (event) {
     //$(document).off('click', '#mAlertCancel');
     //$(document).off('click', '#mAlertDelete_mem');
     var modal = $(this);
@@ -720,7 +721,7 @@ function loadAlertModalDeleteMember(){
     modal.find('.modal-content #mAlertName').html("Loading...");
   });
   
-  $(".mDisabled").on("click", function(){
+  $(".table_member").on("click", ".mDisabledMem", function(){
     var url = $(this).data("url");
     $.ajax({
       url: API_BASE_URL + '/member/' + url + '/',
@@ -734,7 +735,7 @@ function loadAlertModalDeleteMember(){
       },
       success:function(response){
         toastr.success("Member Disabled Successfully.");
-        doSearch();
+        doSearchMember();
       },
       error: function(error) {
         toastr.error("Response Error: " + error.message);
@@ -743,8 +744,8 @@ function loadAlertModalDeleteMember(){
     });
   });
   
-  //mEnabled
-  $(".mEnabled").on("click", function(){
+  //mEnambledMem
+  $(".table_member").on("click", ".mEnambledMem", function(){
     var url = $(this).data("url");
     $.ajax({
       url: API_BASE_URL + '/member/' + url + '/',
@@ -758,7 +759,7 @@ function loadAlertModalDeleteMember(){
       },
       success:function(response){
         toastr.success("Member Enabled Successfully.");
-        doSearch();
+        doSearchMember();
       },
       error: function(error) {
         toastr.error("Response Error: " + error.message);
@@ -780,8 +781,8 @@ function loadAlertModalDeleteMember(){
     }
   });
 
-}
-
+//}
+});
 function getStatus(sCode){
   /* 0 - New, 1 - Active,  2 - Inactive, 3 - Delete, 4 - completed */
   switch(sCode) {
@@ -804,10 +805,33 @@ function getStatus(sCode){
 }
 </script>
 
-<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+<div id="mAlertDeleteMember" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
-      <div class="modal-header">
+
+      <a class="close" data-bs-dismiss="modal" style="text-align: right;padding-right: 10px;">×</a>
+      <div class="modal-body">
+        <form method="get" class="pop-form">
+          <div class="row">
+            <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" style="width: 25%;"> </div>
+            <div class="col-md-12 text-center mb-2" id="">
+              <input type="hidden" id="mAlertURL" value="" />
+              <p id="mAlertName">Are you sure you want to delete it?</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 pt-3 pb-3 wauto text-center"> 
+            <span class="dborder-btn nbtn">
+              <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">No</button>
+            </span> 
+            <span class="danger-btn nbtn">
+              <button type="button" id="mAlertDelete_mem" class="btn btn-danger">Yes, Delete</button>
+            </span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--<div class="modal-header">
         <h6 class="modal-title"><span id="mAlertName"></span></h6>
         <a class="close" data-bs-dismiss="modal">×</a>
       </div>
@@ -823,7 +847,7 @@ function getStatus(sCode){
         <span class="danger-btn nbtn">
           <button type="button" id="mAlertDelete_mem" class="btn btn-danger">Yes Delete</button>
         </span>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>

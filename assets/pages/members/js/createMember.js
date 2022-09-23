@@ -137,7 +137,7 @@ $("#member-email").prop('disabled', true);
           auth.logOut();
         }
         $(".cancel-member-create-form").click();
-        doSearch();
+        doSearchMember();
       },
       error: function(error) {
         $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);

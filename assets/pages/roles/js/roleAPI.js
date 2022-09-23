@@ -49,7 +49,7 @@ function renderRoleList(roles) {
     let delete_button = "";
     if(role.member_count <= 0 && processRights("Delete Role") === true){
       // delete_button = `<i data-bs-toggle="modal" data-bs-target="#roleAlert" data-deleterole="${role.id}" class="fas fa-trash-alt"></i>`;
-         delete_button = `<i data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${role.name}" data-url="${role.id}" class="fas fa-trash-alt"></i>`;
+         delete_button = `<i data-bs-toggle="modal" data-bs-target="#mAlert_role" data-name="${role.name}" data-url="${role.id}" class="fas fa-trash-alt"></i>`;
     }else{
       delete_button = "";
     }
@@ -108,13 +108,13 @@ function renderRoleList(roles) {
 }
 
 function loadAlertModal(){
-  $('#mAlert').on('shown.bs.modal', function (event) {
+  $('#mAlert_role').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var recipientID = button.data('url');
     var name = button.data('name');
     var modal = $(this);
     modal.find('.modal-content input').val(recipientID);
-    modal.find('.modal-content #mAlertName').html(name);
+    modal.find('.modal-content #mAlertName').html("Are you sure you want to delete role '"+name+"'?");
     $("#mAlertCancel").focus();
     //mAlertDelete
 
@@ -126,7 +126,7 @@ function loadAlertModal(){
     
   });
   //hidden.bs.modal 
-  $('#mAlert').on('hidden.bs.modal', function (event) {
+  $('#mAlert_role').on('hidden.bs.modal', function (event) {
     $(document).off('click', '#mAlertCancel');
     $(document).off('click', '#mAlertDelete');
     var modal = $(this);
@@ -190,7 +190,8 @@ function saveRole(data, role_id) {
       headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
     })
     .then((response) => {
-      getRolesPage();
+      //getRolesPage();
+      $("#getRoles").trigger('click');
       toastr.success("Role updated successfully.")
     })
     .catch((error) => {
@@ -220,7 +221,8 @@ function saveRole(data, role_id) {
     })
     .then((response) => {
       toastr.success("New Role saved successfully.")
-      getRolesPage();
+      //getRolesPage();
+      $("#getRoles").trigger('click');
     })
     .catch((error) => {
       var res = error.response;

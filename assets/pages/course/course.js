@@ -448,7 +448,7 @@ function add_sub(e, section){
       .then((response) => response.json())
       .then((json) => {
         $('#course_id').trigger('click');
-        location.reload();
+        //location.reload();
            /*var template =`<div class='module module_${result} main_mod no_child draggable ui-droppable' id='${result}' draggable='true' style='opacity:1'>`;
               template += `<ul class='main_module module_opacity draggable ui-droppable' style='opacity:1'>`;
               template += `<li class='course_img_icon disp_in_block flt_left' style=''><img src='../assets/images/course-icon.png' class='course_icon'></li>`;
@@ -589,7 +589,7 @@ function add_sub_sub(e, section){
       .then((response) => response.json())
       .then((json) => {
         $('#course_id').trigger('click');
-        location.reload();
+        //location.reload();
       })
       .catch(function (error) {
         console.log("Requestfailed", error);
@@ -1130,6 +1130,9 @@ $(document).ready(function(){
       if(event.target != media) media.pause();
     });
   });
+  $( "#mAlertcourseDelete" ).on('hidden.bs.modal', function(){
+    $("#course_id").click();
+  });
 });
 
 /*document.addEventListener('play', function (e) {
@@ -1174,14 +1177,14 @@ function close_previewView(e){
 }
 function delete_module_confirm(e){
 
-  const container = document.getElementById("popup_course_icon");
+  const container = document.getElementById("mAlertcourseDelete");
   const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
   var url = `${SITE_URL_PROTOCOL}/assets/pages/courses/delete.html?t=` + Math.floor(Date.now() / 1000);
-  $('.modal-content').load(url,function(result){
-    $("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
-    $(".modal-lg").attr("style","max-width: 30%;");
+  $('.delete_courseModule').load(url,function(result){
+    //$("#content-courseModule").attr("style", "height: 380px;top: 135px;width: 500px;border-radius: 8px !important;");
+    //$(".modal-lg").attr("style","max-width: 30%;");
     var element = e;
-    $("#mAlertName").text(e.dataset.name);
+    $("#mAlertName").text("Are you sure you want to delete module '"+e.dataset.name+"'?");
     var module_name = e.dataset.name;
     var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
     var num = "";
@@ -1266,7 +1269,7 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
             $("#mAlertCancelCM").click();
             toastr.success("Deleted Successfully");
             $("#course_id").trigger("click");
-            location.reload();
+            //location.reload();
           },
           error: function(error) {
             if (error.status === 401) {
@@ -1298,7 +1301,7 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
 //To Get all values for Delete Case Study(modules inside cases)
 function delete_module_confirm_cases(e){
   var element = e;
-  $("#mAlertName").text(e.dataset.name);
+  $("#mAlertName").text("Are you sure you want to delete case '"+e.dataset.name+"'?");
   var module_name = e.dataset.name;
   var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
   var num = "";
@@ -1331,7 +1334,7 @@ function delete_module_confirm_cases(e){
 }
 //To Delete Case Study(modules inside cases) removing modules inside case By case_id as null
 function loadAlertModal_delete_case(toastr_message, module_id, module_name, case_id, level_num){
-  $('#mAlert').on('shown.bs.modal', function (event) {
+  $('#mAlertcourseSubDelete').on('shown.bs.modal', function (event) {
     $("#mAlertCancelCM").focus();
     $("#mAlertDeleteCM").click(function(e){
         var url = API_CONTENT_URL + '/course_module/'+module_id+'/';
@@ -1353,7 +1356,7 @@ function loadAlertModal_delete_case(toastr_message, module_id, module_name, case
           toastr.success("Case Deleted successfully");
           $("#mAlertCancelCM").click();
             $("#course_id").trigger("click");
-            location.reload();
+            //location.reload();
           //getCoursePage(e);
         })
         .catch(function (error) {
@@ -1381,7 +1384,7 @@ function loadAlertModal_delete_case(toastr_message, module_id, module_name, case
 //To Get all values for Delete Chapter
 function delete_module_confirm_chapters(e){
   var element = e;
-  $("#mAlertName").text(e.dataset.name);
+  $("#mAlertName").text("Are you sure you want to delete chapter '"+e.dataset.name+"'?");
   var module_name = e.dataset.name;
   var classList = e.parentElement.parentElement.parentElement.parentElement.parentElement.className.split(/\s+/);
   var num = "";
@@ -1414,7 +1417,7 @@ function delete_module_confirm_chapters(e){
 }
 //To Delete Chapter
 function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, case_id, level_num){
-  $('#mAlert').on('shown.bs.modal', function (event) {
+  $('#mAlertcourseSubDelete').on('shown.bs.modal', function (event) {
     $("#mAlertCancelCM").focus();
     $("#mAlertDeleteCM").click(function(e){
           var chapter_data = {
@@ -1433,10 +1436,10 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
           },
           success:function(response){
             //console.log(response);
-            toastr.success("Deleted Successfully.");
+            toastr.success("Chapter Deleted Successfully.");
             $("#mAlertCancelCM").click();
             $("#course_id").trigger("click");
-            location.reload();
+            //location.reload();
           },
           error: function(error) {
             if (error.status === 401) {

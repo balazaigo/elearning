@@ -1,3 +1,9 @@
+<!--<script type="text/javascript">
+  if(processRights("task") === false) {
+    toastr.error(window.language.error_no_access);
+    $("#dashboard_page").click();
+  }
+</script>-->
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 title-head mb-3">
@@ -7,7 +13,7 @@
         </div>
         <div class="col-md-6 p-0 side-btn">
           <ul>
-            <li> <span class="border-btn or-btn" data-flinkto="task"> <a  data-flinkto="task" style="background: #d8d4d4;"><i class="fa fa-table"  data-flinkto="task"></i></a> </span> <span class="border-btn or-btn" data-flinkto="taskcalendar"> <a data-flinkto="taskcalendar"><i class="far fa-calendar" data-flinkto="taskcalendar"></i></a> </span> </li>
+            <li> <span class="border-btn or-btn" data-flinkto="task"> <a data-flinkto="task" style="background: #d8d4d4;"><i class="fa fa-table"  data-flinkto="task"></i></a> </span> <span class="border-btn or-btn" data-flinkto="taskcalendar"> <a data-flinkto="taskcalendar"><i class="far fa-calendar" data-flinkto="taskcalendar"></i></a> </span> </li>
           </ul>
         </div>
       </div>
@@ -192,8 +198,9 @@
       }
     });
   }
-  function doSearch(){
+  function doSearchTask(){
     $('.btnRadio').each(function(index, element) {
+      console.log('afaf');
       if($(element).prop("checked")) {
         if($(element).prop("id") == "tabone") {
           var param_task = "?self=1&is_calendar=false";
@@ -213,17 +220,17 @@
    // getTask_counts(param_task);
     $(".btnReset").on("click", function(){
       $("#status, #courses_list, #searchText").val(null);
-      doSearch();
+      doSearchTask();
       setTimeout(function() {
         $(".btnReset").addClass("d-none");
       }, 500);
     });
     $(".fa-search").on("click", function(){ 
       $(".btnReset").removeClass("d-none");
-      doSearch(); 
+      doSearchTask(); 
     });
-    $("#status, #courses_list").on("change", function(){ doSearch(); $(".btnReset").removeClass("d-none");});
-    $('.btnRadio').click(function(){ doSearch(); });
+    $("#status, #courses_list").on("change", function(){ doSearchTask(); $(".btnReset").removeClass("d-none");});
+    $('.btnRadio').click(function(){ doSearchTask(); });
     /*if(processRights("Add Comments") === false) {
       $('#content_message').css('pointer-events','none');
     } */
@@ -397,9 +404,9 @@
         html += `<li>`;
     
         if(item.status == '0' || item.status == '1') {
-          html += `<a id="disabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mDisabled">&nbsp;Disable</a>`;
+          html += `<a id="disabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mDisabledTask">&nbsp;Disable</a>`;
         } else if(item.status == '2') {
-          html += `<a id="enabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mEnabled">&nbsp;Enable</a>`;
+          html += `<a id="enabled_` + item.id + `" data-name="`+item.name+`" data-url="`+item.id+`" class="dropdown-item red mEnabledTask">&nbsp;Enable</a>`;
         } else {
           html += `<a class="dropdown-item red disabled">&nbsp;Disable<a>`;
         }
@@ -412,7 +419,7 @@
           }
         } else {
           if(getUserInfo().role == "Admin"){
-            html += `<a href="#mAlert" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="`+item.name+`" data-url="`+item.id+`/"
+            html += `<a href="#mAlertTask" id="delete_` + item.id + `"  data-bs-toggle="modal" data-bs-target="#mAlertTask" data-name="`+item.name+`" data-url="`+item.id+`/"
                      class="dropdown-item red">&nbsp;Delete</a>`;
           }
         }
@@ -465,15 +472,15 @@
         break;
     }
   }
-  
-  function loadAlertModal(){
-    $('#mAlert').on('shown.bs.modal', function (event) {
+  $(document).ready(function(){
+  //function loadAlertModal(){
+    $('#mAlertTask').on('shown.bs.modal', function (event) {
       var button = $(event.relatedTarget);
       var recipientID = button.data('url');
       var name = button.data('name');
       var modal = $(this);
       modal.find('.modal-content input').val(recipientID);
-      modal.find('.modal-content #mAlertName').html(name);
+      modal.find('.modal-content #mAlertName').html("Are you sure you want to delete task '"+name+"' ?");
       $("#mAlertCanceltask").focus();
       //mAlertDelete
       //mAlertCancel
@@ -484,7 +491,7 @@
       
     });
     
-      $(document).on('click', '#mAlertDeletetask', function() {
+      $("#mAlertDeletetask").click(function() {
         var url = $("#mAlertURL").val();
         $.ajax({
           url: API_CONTENT_URL + '/task/' + url,
@@ -499,7 +506,7 @@
           success:function(response){
             $("#mAlertCanceltask").click();
             toastr.success("Task Deleted successfully");
-            doSearch();
+            doSearchTask();
           },
           error: function(error) {
             toastr.error("Response Error: " + error.message);
@@ -508,7 +515,7 @@
         });
       });
     //hidden.bs.modal 
-    $('#mAlert').on('hidden.bs.modal', function (event) {
+    $('#mAlertTask').on('hidden.bs.modal', function (event) {
       $(document).off('click', '#mAlertCanceltask');
       $(document).off('click', '#mAlertDeletetask');
       var modal = $(this);
@@ -516,7 +523,7 @@
       modal.find('.modal-content #mAlertName').html("Loading...");
     });
     
-    $(".mDisabled").on("click", function(){
+    $(".task_table").on("click", ".mDisabledTask", function(){
       var url = $(this).data("url");
       $.ajax({
         url: API_CONTENT_URL + '/task/' + url + '/',
@@ -530,7 +537,7 @@
         },
         success:function(response){
           toastr.success("Task Disabled successfully");
-          doSearch();
+          doSearchTask();
         },
         error: function(error) {
           toastr.error("Response Error: " + error.message);
@@ -539,8 +546,8 @@
       });
     });
     
-    //mEnabled
-    $(".mEnabled").on("click", function(){
+    //mEnabledTask
+    $(".task_table").on("click", ".mEnabledTask", function(){
       var url = $(this).data("url");
       $.ajax({
         url: API_CONTENT_URL + '/task/' + url + '/',
@@ -554,7 +561,7 @@
         },
         success:function(response){
           toastr.success("Task Enabled successfully");
-          doSearch();
+          doSearchTask();
         },
         error: function(error) {
           toastr.error("Response Error: " + error.message);
@@ -584,7 +591,8 @@
     }
   });
   
-  }
+  });
+
 
 function checkdate(){
   var start_date = $("#start_date_task").val();
@@ -824,11 +832,11 @@ $(document).ready(function(){
 
   $("#add-role-cancel").on("click", function() {
     $("#taskdetails").removeClass("overlay_target");
-    doSearch();
+    doSearchTask();
   });
   $( "#add-role-close").on("click", function() {
     $("#taskdetails").removeClass("overlay_target");
-    doSearch();
+    doSearchTask();
   });
   $("#UpdateTask").on("click", function() {
     //var content_message = $("#content_message").val();
@@ -933,7 +941,7 @@ $(document).ready(function(){
         },
         success: function(response){
           toastr.success("Task Updated successfully.");
-          doSearch();
+          doSearchTask();
           $("#taskdetails").removeClass("overlay_target");
         },
         error: function(error) {
@@ -1227,10 +1235,32 @@ function update_comments(user_message, task_id, course_id, module_id, case_id, c
  }); 
  </script>
  
-<div id="mAlert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
+<div id="mAlertTask" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mAlertCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-confirm">
     <div class="modal-content">
-      <div class="modal-header">
+      <a class="close" data-bs-dismiss="modal" style="text-align: right;padding-right: 10px;">×</a>
+      <div class="modal-body">
+        <form method="get" class="pop-form">
+          <div class="row">
+            <div class="col-md-12 text-center mb-2"> <img src="../assets/images/delete.png" style="width: 25%;"> </div>
+            <div class="col-md-12 text-center mb-2" id="">
+              <input type="hidden" id="mAlertURL" value="" />
+              <p id="mAlertName">Are you sure you want to delete it?</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 pt-3 pb-3 wauto text-center"> 
+            <span class="dborder-btn nbtn">
+              <button type="button" id="mAlertCanceltask" class="btn btn-default" data-bs-dismiss="modal">No</button>
+            </span> 
+            <span class="danger-btn nbtn">
+              <button type="button" id="mAlertDeletetask" class="btn btn-danger delete_call_fun" data-cid="" data-module_id="">Yes, Delete</button>
+            </span>
+            </div>
+          </div>
+        </form>
+      </div>
+     <!-- <div class="modal-header">
         <h6 class="modal-title"><span id="mAlertName"></span></h6>
         <a class="close" data-bs-dismiss="modal">×</a>
       </div>
@@ -1246,7 +1276,7 @@ function update_comments(user_message, task_id, course_id, module_id, case_id, c
         <span class="danger-btn nbtn">
           <button type="button" id="mAlertDeletetask" class="btn btn-danger">Yes Delete</button>
         </span>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>
