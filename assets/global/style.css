@@ -4760,3 +4760,6 @@ footer.fixed-bottom {
     padding: 8px;
     text-align: left;
 }
+video{
+	max-width: 100%;
+}

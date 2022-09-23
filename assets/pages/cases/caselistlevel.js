@@ -1703,3 +1703,12 @@ function delete_attachment_case_mod(attachment_id){
     }
   });
 }
+ $("#case_module_content").on("click", 'a', function(e) {
+        e.preventDefault();
+        if(e.target.hasAttribute("target") && e.target.getAttribute("target") == "_blank"){
+          window.open(e.target.getAttribute('href'), "_blank"); 
+        }
+        if(e.target.hasAttribute("target") && e.target.getAttribute("target") == "_self"){
+          window.open(e.target.getAttribute('href'), "_self"); 
+        }
+    });

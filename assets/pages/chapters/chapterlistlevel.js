@@ -1797,3 +1797,13 @@ function delete_attachment_chap_mod(attachment_id){
     }
   });
 }
+
+    $("#chapter_module_content").on("click", 'a', function(e) {
+        e.preventDefault();
+        if(e.target.hasAttribute("target") && e.target.getAttribute("target") == "_blank"){
+          window.open(e.target.getAttribute('href'), "_blank"); 
+        }
+        if(e.target.hasAttribute("target") && e.target.getAttribute("target") == "_self"){
+          window.open(e.target.getAttribute('href'), "_self"); 
+        }
+    });

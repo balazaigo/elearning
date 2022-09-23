@@ -141,8 +141,8 @@
   var startApp = function() {
     gapi.load('auth2', function(){
       auth2 = gapi.auth2.init({
-        //client_id: '651394549638-l6b1ucavv9r0agq632upbm4jbhlf85go.apps.googleusercontent.com',
-        client_id: '410925001844-muc17m3pgf3amd3vqv4kggcd2v5o15dk.apps.googleusercontent.com',
+        client_id: '651394549638-l6b1ucavv9r0agq632upbm4jbhlf85go.apps.googleusercontent.com',
+        //client_id: '410925001844-muc17m3pgf3amd3vqv4kggcd2v5o15dk.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin',
         scope: 'profile email'
       });
@@ -160,7 +160,7 @@
   startApp();
   
   /* Process for OTP */
-  /*window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
     "recaptcha-container", {
       size: "invisible",
       callback: function(response) {
@@ -170,7 +170,7 @@
         console.log("revalid");
       }
     }
-  );*/
+  );
   
   function isLetter(str) {
     str = str.toLowerCase();

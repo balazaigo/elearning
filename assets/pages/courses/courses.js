@@ -356,7 +356,7 @@ function template(data){
               td +="<div class='col-6 cright cc'>";
               td +="<div style='text-align:center;'>";
               td +="<div class='half-arc' style='--percentage:"+progress+"%;'> <span class='label'></span> </div>";
-              if(progress == 100){
+              if(progress > 99){
                 td +="<span class='percent-label' style='color:green;'>Completed</span> </div>";
               }else{
                 td +="<span class='percent-label'>Progress "+progress+"%</span> </div>";

@@ -54,7 +54,7 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
 
 console.log(SITE_URL_PROTOCOL);
 /* Firebase */
-/*var firebaseConfig = {
+var firebaseConfig = {
   apiKey: "AIzaSyAdLTHIe9poMMrgL46G-NtUfSGRqkGvYN8",
   authDomain: "feroz-shaik-8613.firebaseapp.com",
   databaseURL: "https://feroz-shaik-8613.firebaseio.com",
@@ -63,9 +63,9 @@ console.log(SITE_URL_PROTOCOL);
   messagingSenderId: "651394549638",
   appId: "1:651394549638:web:b23db54c5290e7b3808e07",
   measurementId: "G-KESL97HP8Q"
-};*/
+};
 
-const firebaseConfig = {
+/*const firebaseConfig = {
   apiKey: "AIzaSyDN823YYTyKnOqF_n9nP29wDjCm1QCdxeY",
   authDomain: "medvarsity-tech.firebaseapp.com",
   projectId: "medvarsity-tech",
@@ -73,7 +73,7 @@ const firebaseConfig = {
   messagingSenderId: "410925001844",
   appId: "1:410925001844:web:3ffd7ec159e8c2e79ef521",
   measurementId: "G-MLES59N18V"
-};
+};*/
 
 if(window.toastr !== undefined) {
   window.toastr.options = {
