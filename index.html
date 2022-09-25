@@ -15,6 +15,7 @@
 <link href="./assets/global/toastr/toastr.min.css" rel="stylesheet" />
 <!-- EOF Toastr -->
 <script src="./assets/global/language.js"></script>
+<script src="./assets/global/jwt-decode.js"></script>
 </head>
 <body>
 <div id="app-login">
@@ -38,7 +39,7 @@
                 <div id="areaPhone">
                   <div class="mb-3 relative">
                     <label for="phoneNumber" class="form-label" data-lang="lbl_emailmobile">EMail Id / Mobile Number</label>
-                    <input type="text" class="form-control user" id="phoneNumber"  data-placeholder="placeholder_emailmobile" 
+                    <input type="text" class="form-control user" id="phoneNumber"  data-placeholder="placeholder_emailmobile"
                     placeholder="Enter Your EMail Id / Mobile Number Here" title="+919908XXXXXX" tabindex="1">
                   </div>
                   <div class="mb-3 relative">
@@ -50,15 +51,15 @@
                     <p data-lang="lbl_or">OR</p>
                   </div>
                   <div class="mb-3 relative">
-                    <div class="google-btn" id="my-signin2">
-                      <div class="google-icon-wrapper">
-                        <img class="google-icon" alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
-                      </div>
-                      <p class="btn-text" data-lang="lbl_sign_google">Sign in with google</p>
-                    </div>                
+                    <div id="g_id_onload"
+                      data-client_id="410925001844-muc17m3pgf3amd3vqv4kggcd2v5o15dk.apps.googleusercontent.com"
+                      data-callback="postGoogleLogin">
+                    </div>
+                    <div class="g_id_signin" data-type="standard"></div>
+
                   </div>
                 </div>
-                
+
                 <div id="areaCode" style="display:none">
                   <h4 class="mt-2 mb-2" data-lang="lbl_enter_one_time_password">Enter One Time Password(OTP)</h4>
                   <div class="mb-3 relative">
@@ -102,16 +103,18 @@
   </div>
 </div>
 <div id="recaptcha-container"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script> 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!-- Google & Toastr -->
-<script src="https://apis.google.com/js/api:client.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<!-- <script src="https://apis.google.com/js/api:client.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script> -->
 <script src="./assets/global/toastr/toastr.min.js"></script>
 <!-- EOF :: Google & Toastr -->
-<script src="./assets/config.js"></script> 
+<script src="./assets/config.js"></script>
 <script src="./assets/global/custom.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
@@ -136,31 +139,10 @@
     }
     console.log(localStorage.getItem("auth_data"));
   });
-  firebase.initializeApp(window.firebaseConfig);
-  var googleUser = {};
-  var startApp = function() {
-    gapi.load('auth2', function(){
-      auth2 = gapi.auth2.init({
-        client_id: '651394549638-l6b1ucavv9r0agq632upbm4jbhlf85go.apps.googleusercontent.com',
-        //client_id: '410925001844-muc17m3pgf3amd3vqv4kggcd2v5o15dk.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile email'
-      });
-      attachSignin(document.getElementById('my-signin2'));
-    });
-  };
-  function attachSignin(element) {
-    auth2.attachClickHandler(element, {}, function(googleUser) {
-      postGoogleLogin(googleUser);
-    }, function(error) {
-      toastr.error(error.error);
-    });
-  }
 
-  startApp();
-  
+
   /* Process for OTP */
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+  /*window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
     "recaptcha-container", {
       size: "invisible",
       callback: function(response) {
@@ -170,8 +152,8 @@
         console.log("revalid");
       }
     }
-  );
-  
+  );*/
+
   function isLetter(str) {
     str = str.toLowerCase();
     return str.length === 1 && str.match(/[a-z]/i);
@@ -272,7 +254,7 @@
       }
     }
   }
-  
+
   function submitPhoneNumberAuthCode() {
     var inputs = document.getElementById("otpCode").querySelectorAll('input');
     var values = "";
@@ -310,20 +292,27 @@
         toastr.error("Error: " + error.message);
       });
   }
-  
+
   function clickEvent(first,last){
     if(first.value.length){
       document.getElementById(last).focus();
     }
   }
   function resendOtp(){
-
     submitPhoneNumberAuth('resent');
   }
+
   function postGoogleLogin(googleUser){
-      //https://elearningadmin.zaigoinfotech.com/login/
-      var access_token = googleUser.getAuthResponse().access_token;
-      var email_id = googleUser.getBasicProfile().getEmail();
+      const decoded = jwt_decode(googleUser.credential);
+      console.log("ID: " + decoded.sub);
+      console.log('Full Name: ' + decoded.name);
+      console.log('Given Name: ' + decoded.given_name);
+      console.log('Family Name: ' + decoded.family_name);
+      console.log("Image URL: " + decoded.picture);
+      console.log("Email: " + decoded.email);
+
+      var access_token = googleUser.credential;
+      var email_id = decoded.email;
       //validated the email from backend
       $.ajax({
         url: API_BASE_URL + "/login/",
@@ -407,7 +396,7 @@
         }
       });
   }
-  
+
   function processRememberMe(){
     if($("#remember").is(':checked')) {
       //store to cookies
@@ -416,7 +405,7 @@
       localStorage.removeItem("elrememberMailPhone");
     }
   }
-  
+
   $( document ).ready(function() {
     const rememberMailPhone = localStorage.getItem("elrememberMailPhone");
     if(rememberMailPhone) {
