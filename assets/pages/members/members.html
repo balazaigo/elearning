@@ -455,18 +455,30 @@ $( document ).ready(function() {
 });
 
 function gridMembers(tagID, htmlID, assignTOBY){
-  var queryPara = '?p=0';
+  var queryPara = '';
   //check for search field
   if($("#searchText").val()) {
-    queryPara += "&search=" + $("#searchText").val();
+    if(queryPara == ""){
+        queryPara += "?search=" + $("#searchText").val();
+      }else{
+        queryPara += "&search=" + $("#searchText").val();
+      }
   }
   //role_list
   if($("#role_list").val()) {
-    queryPara += "&roles_name=" + $("#role_list").val();
+    if(queryPara == ""){
+      queryPara += "?roles_name=" + $("#role_list").val();
+    }else{
+      queryPara += "&roles_name=" + $("#role_list").val();
+    }
   }
   //status
   if($("#status").val()) {
-    queryPara += "&status=" + $("#status").val();
+    if(queryPara == ""){
+      queryPara += "?status=" + $("#status").val();
+    }else{
+      queryPara += "&status=" + $("#status").val();
+    }
   }
 
   $('#' + tagID).pagination({
