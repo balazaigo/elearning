@@ -531,8 +531,10 @@ function template(data, pagination) {
         </div>
       </td>
       `;*/
-      item.m_image = item.m_image.replace("http:", "");
-      item.m_image = item.m_image.replace("https:", "");
+      if(item.m_image != ""){
+        item.m_image = item.m_image.replace("http:", "");
+        item.m_image = item.m_image.replace("https:", "");
+      }
       html += '<td><span class="">'+ (pagination.pageSize * (pagination.pageNumber - 1) + index + 1) +'</span></td>';
       html += '<td class="wrap"><img src="'+item.m_image+'" />&nbsp;&nbsp;'+ item.first_name + ' ' + item.last_name +'</td>';
       html += '<td>'+ item.email_id +'</td>';

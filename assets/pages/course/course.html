@@ -269,7 +269,7 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
               newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256'  data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><p class='navigate_refresh' href='courses/courseslistlevel' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"' data-case_module_id='"+a[i].case_module_id+"' data-case_id='"+a[i].case_id+"' data-chapter_id='"+a[i].chapter_id+"' data-chapter_topic_id='"+a[i].chapter_topic_id+"' id='module_module_"+a[i].level+"' data-prev_val='"+encodeURIComponent(input_value)+"' data-mod_type='"+mod_type+"' data-can_edit='"+can_edit+"'>"+input_value_substr+edit_icon_img+"</p></span>");
             }
             if(!a[i].is_qa){
-              newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'/></span>");
+              newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_down_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'/></span>");
               newUlDIV.append("<span class='elipsis_img_icon disp_in_block flt_right' style='"+prevent_click+style_none+"'><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'/></span>");
               newUlDIV.append(`<span class='dots_img_icon disp_in_block flt_right' style='${prevent_click}${delete_style}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false' style='${delete_prevent_click}'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'>${delete_case}</ul></span>`);
               //newUl.append("<span class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></span>");
@@ -392,9 +392,13 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
                 can_edit = "false"; 
                 drag_drop_prevent_click = "pointer-events:none;";
               }
-
+              var levels_dotlength = levels.toString().indexOf(".");
+              var parent_disp = "disp_none";
+              if(levels_dotlength !== -1){
+                parent_disp = "disp_block";
+              }
               var lev_mod = level_count_inc - 1;
-              newDIV = $("<li class='module sub_module_"+levels+" sub_"+levels+" module_"+lev_mod+" "+has_child+" disp_block sub_mods' id='"+levels+"' data-unique_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' data-is_case_delete='"+a[i].is_case_delete+"' data-is_module_delete='"+a[i].is_module_delete+"' data-unique_chapter_id='"+a[i].chapter_id+"'  data-unique_chapter_topic_id='"+a[i].chapter_topic_id+"'></li>");
+              newDIV = $("<li class='module sub_module_"+levels+" sub_"+levels+" module_"+lev_mod+" "+has_child+" sub_mods "+parent_disp+"' id='"+levels+"' data-unique_id='sub_module_"+levels+a[i].module_id+"' data-module_id='"+a[i].module_id+"' data-unique_case_id='"+a[i].case_id+"' data-is_case_delete='"+a[i].is_case_delete+"' data-is_module_delete='"+a[i].is_module_delete+"' data-unique_chapter_id='"+a[i].chapter_id+"'  data-unique_chapter_topic_id='"+a[i].chapter_topic_id+"'></li>");
               newUl = $("<ul class='sub_module'></ul>");
               newUlDIV = $("<div></div>");
 
@@ -406,7 +410,11 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
               newUlDIV.append("<span class='module_input disp_in_block flt_left' style='"+prevent_click+"'><input type='text' class='input_module_fld' id='module_inp' placeholder='Add Module Name' onChange='check_value(this);' value='"+input_value+"'onblur='totext(this);' style='display: none;' maxlength='256' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'/><p class='navigate_refresh' href='courses/courseslistlevel' data-flinkto='courseslistlevel' data-module_id='"+a[i].module_id+"' data-cid='"+a[i].course_id+"'  data-case_module_id='"+a[i].case_module_id+"' data-case_id='"+a[i].case_id+"' data-chapter_id='"+a[i].chapter_id+"' data-chapter_topic_id='"+a[i].chapter_topic_id+"'id='sub_"+levels+"_module_"+lev_mod+"' data-prev_val='"+encodeURIComponent(input_value)+"' data-mod_type='"+mod_type+"' data-can_edit='"+can_edit+"'>"+input_value_substr+edit_icon_img+"</p></span>");
               }
               if(!a[i].is_qa){
-                newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'/></span>");
+                if(parent_disp == "disp_none"){
+                  newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'/></span>");
+                }else{
+                  newUlDIV.append("<span class='expand_img_icon disp_in_block flt_right'><img src='../assets/images/arrow_up_icon.png' class='expand_icon' onclick='toggle_collapse_expand(this);'/></span>");
+                }
                 newUlDIV.append("<span class='elipsis_img_icon disp_in_block flt_right' style='"+prevent_click+style_none+"'><img src='../assets/images/elipsis.png' class='elipsis_icon' onclick='hide_show_container(this);'/></span>");
                 newUlDIV.append(`<span class='dots_img_icon disp_in_block flt_right' style='${prevent_click}${delete_style}'><button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false' style='${delete_prevent_click}'><i class='fas fa-ellipsis-v'></i></button><ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'>${delete_case}</ul></span>`);
                 //newUl.append("<span class='progress_btn disp_in_block flt_right' style='"+prevent_click+"'><p class='"+status_class+"'>"+status_text+"</p></span>");
