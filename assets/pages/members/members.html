@@ -543,7 +543,7 @@ function template(data, pagination) {
         </div>
       </td>
       `;*/
-      if(item.m_image != ""){
+      if(item.m_image != "" && item.m_image != null){
         item.m_image = item.m_image.replace("http:", "");
         item.m_image = item.m_image.replace("https:", "");
       }
