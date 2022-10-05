@@ -112,8 +112,9 @@ $( document ).ready(function() {
     $(this).addClass('active');
     searchParam();
   });
-  
-  get_pagination(parameter);
+  localStorage.setItem("cas_course_tab_view", "grid"); 
+  //get_pagination(parameter);
+  searchParam();
 });
 
 function activeremover() {
@@ -124,6 +125,7 @@ function activeremover() {
 function get_pagination(parameter){
   let isFirstCourse = true;
   var courselist_search = localStorage.getItem("cas_courselist_search");
+  //console.log('courselist_search',courselist_search);
   if(isFirstCourse == true && courselist_search != ""){
     var url = new URLSearchParams(courselist_search);
     var search_inp = url.get("search");
@@ -146,7 +148,7 @@ function get_pagination(parameter){
       $(".btnReset").removeClass("d-none");
     }
     var viewtab_list = localStorage.getItem("cas_course_tab_view");
-    console.log(viewtab_list);
+    //console.log(viewtab_list);
     if(viewtab_list == "grid" || viewtab_list == ""){
       $('#grid').addClass('active');
       $('#list').removeClass('active');
@@ -156,6 +158,11 @@ function get_pagination(parameter){
     } 
     parameter = courselist_search;
   }
+  //console.log('1st', parameter);
+  if(parameter == null){
+    parameter = "";
+  }
+  //console.log('2nd', parameter);
   if($( "#pagination-container-to" ).length > 0) {
     $('#pagination-container-to').pagination({
       dataSource: API_CONTENT_URL + '/course/'+parameter,
