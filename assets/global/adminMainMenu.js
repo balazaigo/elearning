@@ -217,7 +217,7 @@ async function getTaskCalendarPage() {
     toastr.error(window.language.error_no_access);
     return false;
   }
-  $("#app-admin").load(
+  /*$("#app-admin").load(
     `${SITE_URL_PROTOCOL}/assets/pages/task/taskcalendar.html`,
     function (resp, status, xhr) {
       if (status == "success" && xhr.status == 200) {
@@ -225,7 +225,7 @@ async function getTaskCalendarPage() {
         console.log("Something error happend");
       }
     }
-  );
+  );*/
 }
 
 async function getMembersPage() {

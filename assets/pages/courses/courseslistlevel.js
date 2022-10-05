@@ -4,6 +4,7 @@ $(document).ready(function(){
   $('label[for="tabone"]').hide();
   $(".search_mt").hide();
   $("#tabone,#tabtwo").click(function(){
+    $(".dz-preview").remove();
     var medias = Array.prototype.slice.apply($("video"));
     console.log(medias);
     medias.forEach(function(media) {

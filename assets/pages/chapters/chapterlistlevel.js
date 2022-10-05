@@ -1,6 +1,7 @@
  $(document).ready(function(){
 
   $("#tabone,#tabtwo").click(function(){
+    $(".dz-preview").remove();
     var medias = Array.prototype.slice.apply($("video"));
     medias.forEach(function(media) {
       if(event.target != media) media.pause();
