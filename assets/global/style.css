@@ -4764,3 +4764,6 @@ footer.fixed-bottom {
 video{
 	max-width: 100%;
 }
+.g_id_signin iframe{
+	margin:auto;
+}
