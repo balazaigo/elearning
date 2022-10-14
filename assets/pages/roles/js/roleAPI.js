@@ -11,11 +11,11 @@ function getRoles() {
       loadAlertModal();
     })
     .catch((error) => {
-        if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+      var res = error.response;
+        if (res.status === 401) {
+          alert(res.data.detail);
           logoutSession();
         }
-      var res = error.response;
       if(res.status == 403) {
         toastr.error(res.data.detail);
         get403Page();
@@ -45,13 +45,14 @@ function renderRoleList(roles) {
     }else{
       html_member = `<span><a id="role_member_count"><span>Members :</span> ${role.member_count}</a></span>`;
     }
-    
+    let edit_button = "";
+    if(processRights("Add/Edit Role") === true) {
+      //edit_button += `<i data-role_id="${role.id}" id="trigger-role-edit-form" class="fas fa-pencil-alt" aria-hidden="true"></i>`;
+    }
     let delete_button = "";
     if(role.member_count <= 0 && processRights("Delete Role") === true){
       // delete_button = `<i data-bs-toggle="modal" data-bs-target="#roleAlert" data-deleterole="${role.id}" class="fas fa-trash-alt"></i>`;
-         delete_button = `<i data-bs-toggle="modal" data-bs-target="#mAlert_role" data-name="${role.name}" data-url="${role.id}" class="fas fa-trash-alt"></i>`;
-    }else{
-      delete_button = "";
+         delete_button += `<i data-bs-toggle="modal" data-bs-target="#mAlert_role" data-name="${role.name}" data-url="${role.id}" class="fas fa-trash-alt"></i>`;
     }
 
     html += `<div class="row">
@@ -59,6 +60,7 @@ function renderRoleList(roles) {
                 <div class="col-4 cright">
                   <div class="dropdown ahide">
                     ${html_member}
+                    ${edit_button}
                     ${delete_button}
                   </div>
                 </div>
@@ -187,7 +189,7 @@ function saveRole(data, role_id) {
   if(role_id != ""){
     axios
     .put(`${API_BASE_URL}/roles/`+role_id+`/`, data,{
-      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+      headers: { "Authorization": "Bearer " + getUserInfo().access_token}
     })
     .then((response) => {
       //getRolesPage();
@@ -217,7 +219,7 @@ function saveRole(data, role_id) {
   }else{
   axios
     .post(`${API_BASE_URL}/roles/`, data,{
-      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token}
+      headers: {"Authorization": "Bearer " + getUserInfo().access_token}
     })
     .then((response) => {
       toastr.success("New Role saved successfully.")

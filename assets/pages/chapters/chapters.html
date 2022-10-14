@@ -62,7 +62,7 @@
   <div class="container-fluid disp_none" id="list_chapter_container">
     <div class="row">
       <div class="col-12 title-head mb-3">
-        <h2>Chapters 
+        <h2>Chapters
         <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h2>
         <span class="orange-btn nbtn">
           <button class="add-case"><i class="fas fa-plus"></i> Create Chapter</button>
@@ -76,7 +76,7 @@
                 <div class="row">
                 <div class="col-lg-4 col-md-4">
                   <div class="searchbar">
-                    <h4>List of Chapters 
+                    <h4><span id="chapterTitle">List of Chapters </span>
                     <a class="btn btn-sm btn-danger btnReset d-none" style="position:relative;top:2px;float:right">Reset</a>
                     <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
                   </div>
@@ -289,6 +289,9 @@ var frmvalidatorfrm;
         },    
       },
       callback: function(data, pagination) {
+        if(pagination.totalNumber){
+          $("#chapterTitle").text("List of Chapters ("+pagination.totalNumber+")");
+        }
         if(pagination.totalNumber < 7){
           $("#pagination-container-cont").hide();
         }else{
@@ -299,6 +302,7 @@ var frmvalidatorfrm;
         console.log(data.length);
         console.log(queryPara);
         if(data.length === 0){
+          $("#chapterTitle").text("List of Chapters (0)");
           if(queryPara != ""){
             $("#nodataFound_chapter").attr("style", "display:block");
             $("#list_chapter_container").addClass("disp_block");

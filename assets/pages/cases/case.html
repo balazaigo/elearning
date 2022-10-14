@@ -107,7 +107,7 @@
           <div class="row w-100">
             <div class="col-lg-4 col-md-4">
               <div class="searchbar">
-                <h4>All Case Studies 
+                <h4><span id="caseTitle">All Case Studies </span>
                   <a class="btn btn-sm btn-danger btnReset d-none" style="position:relative;top:2px;float:right">Reset</a>
                   <dfn data-info="Lorem ipsum dolor sit amet, perspiciatis consectetur dolor."><i class="fas fa-info-circle"></i></dfn></h4>
               </div>
@@ -402,6 +402,10 @@ function get_pagination(parameter){
         },    
       },
       callback: function(data, pagination) {
+
+        if(pagination.totalNumber){
+          $("#caseTitle").text("All Case Studies ("+pagination.totalNumber+")");
+        }
         if(pagination.totalNumber < 7){
           $("#pagination-container-cont").hide();
         }else{
@@ -411,6 +415,7 @@ function get_pagination(parameter){
         $("#role-loader").removeClass("disp_block");
         $("#role-loader").addClass("disp_none");
         if(data.length === 0){
+          $("#caseTitle").text("All Case Studies (0)");
           if(parameter != ""){
             $("#nodataFound_course").attr("style", "display:block");
             $("#list_case_container").addClass("disp_block");
