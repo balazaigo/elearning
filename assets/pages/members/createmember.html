@@ -53,7 +53,7 @@
                 <div class="row">
                   <div class="col-md-2">    
                     <div class="userimg">
-                      <!--<img id="CourseSettingsBannerc22" onclick="deleteProfilePopup();" src="../assets/images/delete-round.png">-->
+                      <img id="CourseSettingsBannerc223" onclick="deleteProfilePopup();" src="../assets/images/delete-round.png">
                       <img id="profile_image_img" src="../assets/images/profile.png" alt="">
                     </div>
                   </div>
@@ -111,7 +111,7 @@
 </div>
 </div>
 <!------delete start-------->
-  <!--<div id="delete_popupprofile" class="overlay">
+  <div id="delete_popupprofile" class="overlay">
   <div class="popup"> <a class="close" onclick="close_profile_del_popup();">×</a>
     <form method="get" class="pop-form">
       <div class="row">
@@ -133,7 +133,7 @@
       </div>
     </form>
   </div>
-</div>-->
+</div>
 <!-------delete end-------->
 <script>
   var queries_param = getUrlParamquery();
@@ -990,9 +990,12 @@ $("#create_member_submit").click(function(){
     console.log('image_empty');
     formData.append("m_image", "");
   }else{
-    $.each($('input[name^="profile"]')[0].files, function (i, file) {
-      formData.append("m_image", file, file.name);
-    });
+    var profile_file_length = document.getElementById('profile').files.length
+      if(profile_file_length > 0){
+      $.each($('input[name^="profile"]')[0].files, function (i, file) {
+        formData.append("m_image", file, file.name);
+      });
+    }
   }
 
   formData.append("status", 1);
@@ -1195,11 +1198,19 @@ function close_memberlist_del_popup(){
   $("#delete_popupprofile").removeClass("overlay_target");
 }
 */
+
 function deleteProfilePopup(){
+  $("#delete_popupprofile").addClass("overlay_target");
+}
+function close_profile_del_popup(){
+  $("#delete_popupprofile").removeClass("overlay_target");
+}
+function delete_profileImage(){
   $("#profile_image_img").attr("src", "");
   $("#profile_url").val("");
   $("#profile_image").addClass("hide");
-  $('#profile').val('')
+  $('#profile').val('');
+  $("#delete_popupprofile").removeClass("overlay_target");
 } 
 $("#cancel_create_member").click(function(){
   $("#backtoButton").trigger('click');

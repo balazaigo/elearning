@@ -4767,3 +4767,29 @@ video{
 .g_id_signin iframe{
 	margin:auto;
 }
+
+#profile_image_img{
+	object-fit: cover;
+    height: 170px;
+    width: 170px;
+}
+.userimg{
+	position: relative;
+}
+.userimg:hover #CourseSettingsBannerc223 {
+	opacity: 1 !important;
+}
+
+ #CourseSettingsBannerc223{
+	width: 35px;
+    height: 35px;
+    padding: 0px;
+    float: right;
+    position: absolute;
+    top: 4px;
+    left: 115px;
+    margin: 5px;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 0;
+}
