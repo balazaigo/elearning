@@ -138,7 +138,43 @@
       //window.location.replace(SITE_URL_PROTOCOL);
     }
     console.log(localStorage.getItem("auth_data"));
+    var search_data_memberlist_inp = document.getElementById("phoneNumber");
+    search_data_memberlist_inp.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        submitPhoneNumberAuth('sent');
+      }
+    });
+
+    var search_data_memberlist_inp = document.getElementById("o6");
+    search_data_memberlist_inp.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        submitPhoneNumberAuthCode();
+      }
+    });
+    $('html').keyup(function(e){
+      if(e.keyCode == 8){
+        //backtologin();
+        var focused = document.activeElement;
+        console.log($(focused).attr('id'));
+        if($(focused).attr('id') == "o2"){
+          clickEventBack('o1')
+        }else if($(focused).attr('id') == "o3"){
+          clickEventBack('o2')
+        }else if($(focused).attr('id') == "o4"){
+          clickEventBack('o3')
+        }else if($(focused).attr('id') == "o5"){
+          clickEventBack('o4')
+        }else if($(focused).attr('id') == "o6"){
+          clickEventBack('o5')
+        }
+      }
+    });
   });
+  function clickEventBack(focuselement){
+    document.getElementById(focuselement).focus();
+  }
 
 
   /* Process for OTP */

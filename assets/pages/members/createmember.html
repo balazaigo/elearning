@@ -987,11 +987,9 @@ $("#create_member_submit").click(function(){
   var profileUpdated = $("#profile_url").val();
   console.log('profileUpdated', profileUpdated);
   if(profileUpdated == ""){
-    console.log('image_empty');
-    formData.append("m_image", "");
   }else{
     var profile_file_length = document.getElementById('profile').files.length
-      if(profile_file_length > 0){
+    if(profile_file_length > 0){
       $.each($('input[name^="profile"]')[0].files, function (i, file) {
         formData.append("m_image", file, file.name);
       });
@@ -1127,7 +1125,10 @@ $("#create_member_submit").click(function(){
                   }
                   $(fieldElement).after(`<em for="platform_select" class="error help-block" style="position: relative;">${value}</em>`);
                 }else{
-                  //toastr.error(value);
+                  if(key == "mobile_number" && value == "Already Taken"){
+                    value = "Mobile Number already taken";
+                    toastr.error(value);
+                  }
                 }
               });
           }else{
@@ -1206,13 +1207,49 @@ function close_profile_del_popup(){
   $("#delete_popupprofile").removeClass("overlay_target");
 }
 function delete_profileImage(){
-  $("#profile_image_img").attr("src", "");
-  $("#profile_url").val("");
-  $("#profile_image").addClass("hide");
-  $('#profile').val('');
-  $("#delete_popupprofile").removeClass("overlay_target");
+    var member_id = $("#editMember").attr("data-membereditid");
+    if(member_id !== "" && member_id != undefined && member_id !== "undefined"){
+      var formData = new FormData();
+      formData.append("m_image", "");
+      URL = API_BASE_URL + 'delete_member_image/'+member_id;
+      method = "PATCH";
+      type = "PATCH";
+      $.ajax({
+        url: URL,
+        method: method,
+        type: type, // For jQuery < 1.9
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        headers: {
+          "Authorization": "Bearer " + getUserInfo().access_token
+        },
+        success:function(response){
+            toastr.success("Member Profile Deleted Successfully");
+            $("#profile_image_img").attr("src", "");
+            $("#profile_url").val("");
+            $("#profile_image").addClass("hide");
+            $('#profile').val('');
+            $("#delete_popupprofile").removeClass("overlay_target");
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+    
 } 
 $("#cancel_create_member").click(function(){
   $("#backtoButton").trigger('click');
 });
+function delete_access_popup(access_row_id){
+  //$("#delete_access_msg h6").text("Are you sure you want to delete list '"+name+"'?");
+  $("#delete_id_access").val(access_row_id);
+  $("#delete_popupaccess").addClass("overlay_target");
+}
+function close_access_del_popup(){
+  $("#delete_id_access").val("");
+  $("#delete_popupaccess").removeClass("overlay_target");
+}
 </script>

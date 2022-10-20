@@ -387,6 +387,22 @@ $(function () {
           }
       });
     }
+    //https://uatadmin.exper.com/member/?per_page=6&page=1&_=1666249748229
+    /*$.ajax({
+      url: API_BASE_URL + '/member/',
+      type: 'get',
+      dataType: 'json',
+      headers: {
+        "Authorization": "Bearer " + getUserInfo().access_token,
+        "Content-Type": "application/json"
+      },
+      success:function(response){
+        console.log(response);
+      },
+      error:function(error){
+        console.log(error);
+      }
+    });*/
 })
 $(document).on('click','.fa-lg.closeBtn',function(){
 		$(this).parent('.fileuploads').remove();	
@@ -445,6 +461,17 @@ $( document ).ready(function() {
     doSearchMember(); 
   });
   $("#status, #role_list").on("change", function(){ doSearchMember(); $(".btnReset").removeClass("d-none");});
+    $("#searchText").on("blur", function(){ 
+      if($(this).val().trim() != ""){
+        doSearchMember();
+        $(".btnReset").removeClass("d-none"); 
+      }else{
+        doSearchTask();
+        if($("#status").val() != "" || $("#role_list").val() != ""){
+          $(".btnReset").removeClass("d-none");
+        }
+      }
+    });
   $('.btnRadio').click(function(){ doSearchMember(); });
   
   
@@ -452,6 +479,15 @@ $( document ).ready(function() {
     $("#member-create-form-container").removeClass("overlay_target");
     doSearchMember();
   });
+
+    var search_data_memberlist_inp = document.getElementById("searchText");
+    search_data_memberlist_inp.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        $(".btnReset").removeClass("d-none");
+        doSearchMember();
+      }
+    });
 });
 
 function gridMembers(tagID, htmlID, assignTOBY){
