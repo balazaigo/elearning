@@ -4793,3 +4793,6 @@ video{
     z-index: 999;
     opacity: 0;
 }
+#searchText, #search_data{
+	padding-right: 29px;
+}
