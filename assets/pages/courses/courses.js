@@ -91,7 +91,7 @@ $( document ).ready(function() {
     }, 
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
     }
@@ -203,13 +203,13 @@ function get_pagination(parameter){
             //window.location.href = window.location.href.split('/').slice(0, 3).join('/') + '/login';
             logoutSession();
           } else if(jqXHR && jqXHR.status === 401) {
-              alert($.parseJSON(jqXHR.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
           } else {
             if(isFirstCourse){
               isFirstCourse = false;
             }
-            alert($.parseJSON(jqXHR.responseText).detail);
+            alert("Session Expired, Please login again.");
           }
         },    
       },

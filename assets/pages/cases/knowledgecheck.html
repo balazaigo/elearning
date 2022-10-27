@@ -390,7 +390,7 @@ function get_breadcrumbs(){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
       }

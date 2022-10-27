@@ -61,7 +61,7 @@ $(document).ready(function(){
 		  	}, 
 		  	error: function(error) {
           if (error.status === 401) {
-            alert($.parseJSON(error.responseText).detail);
+            alert("Session Expired, Please login again.");
             logoutSession();
           }
 		  		console.log(error);
@@ -330,7 +330,7 @@ function get_module_details_new(module_id, unique_id, elem){
       },
       error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
         //var errorJson = jQuery.parseJSON(error.responseText);

@@ -99,7 +99,7 @@ var ns = $('.coursesortable').nestedSortable({
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         tags_response = "1";
@@ -166,7 +166,7 @@ function get_module_details(cid, module_id, mytagArray){
             },
             error: function(error) {
               if (error.status === 401) {
-                alert($.parseJSON(error.responseText).detail);
+                alert("Session Expired, Please login again.");
                 logoutSession();
               }
               tags_response = "1";
@@ -179,7 +179,7 @@ function get_module_details(cid, module_id, mytagArray){
     },
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
     }
@@ -839,7 +839,7 @@ function show_assignee_popup(e){
           },
           error: function ( error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             console.log(error);
@@ -1273,7 +1273,7 @@ function loadAlertModal_delete_course(toastr_message, module_id, module_name, ca
           },
           error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);
@@ -1443,7 +1443,7 @@ function loadAlertModal_delete_chapter(toastr_message, module_id, module_name, c
           },
           error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);

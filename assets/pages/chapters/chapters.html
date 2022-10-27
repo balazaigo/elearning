@@ -281,10 +281,10 @@ var frmvalidatorfrm;
             //window.location.href = SITE_URL_PROTOCOL;
             logoutSession
           } else if (jqXHR.status === 401) {
-            alert($.parseJSON(jqXHR.responseText).detail);
+            alert("Session Expired, Please login again.");
             logoutSession();
           } else {
-            alert($.parseJSON(jqXHR.responseText).detail);
+            alert("Session Expired, Please login again.");
           }
         },    
       },

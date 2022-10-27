@@ -190,7 +190,7 @@
               },
               error: function(error) {
                 if (error.status === 401) {
-                  alert($.parseJSON(error.responseText).detail);
+                  alert("Session Expired, Please login again.");
                   logoutSession();
                 }
                 toastr.error("Response Error: " + error.message);
@@ -307,7 +307,7 @@ function get_module_details(case_id, case_module_id){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -359,7 +359,7 @@ function save_attachment_url_case(){
       },
       error:function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         console.log(error);
@@ -385,7 +385,7 @@ function delete_attachment_case_pop(attachment_id){
     },
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
       //toastr.error("Response Error: " + error.message);

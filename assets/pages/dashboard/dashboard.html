@@ -291,7 +291,7 @@
     },
     error: function (error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
       toastr.error("Response Error: " + error.message);
@@ -398,7 +398,7 @@ function getDashboardChart(year){
     },
     error: function (error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
       toastr.error("Response Error: " + error.message);
@@ -540,7 +540,7 @@ var barChart = new Chart(myBarChart, {
     },
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
       console.log(error);
@@ -567,7 +567,7 @@ function getTask_counts(param_task){
     },
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
     }
@@ -621,11 +621,11 @@ function gridAssigned(tagID, htmlID, assignTOBY, selfPart){
           //window.location.href = SITE_URL_PROTOCOL;
           logoutSession();
         } else if (jqXHR.status === 401) {
-          alert($.parseJSON(jqXHR.responseText).detail);
+          alert("Session Expired, Please login again.");
           //window.location.href = SITE_URL_PROTOCOL;
           logoutSession();
         } else {
-          alert($.parseJSON(jqXHR.responseText).detail);
+          alert("Session Expired, Please login again.");
         }
       },    
     },
@@ -809,7 +809,7 @@ function loadAlertModal(){
         },
         error: function(error) {
           if (error.status === 401) {
-            alert($.parseJSON(error.responseText).detail);
+            alert("Session Expired, Please login again.");
             logoutSession();
           }
           toastr.error("Response Error: " + error.message);
@@ -844,7 +844,7 @@ function loadAlertModal(){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -872,7 +872,7 @@ function loadAlertModal(){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -1103,7 +1103,7 @@ function getTaskDetails(id){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -1256,7 +1256,7 @@ $(document).ready(function(){
         },
         error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);
@@ -1282,7 +1282,7 @@ function update_attachment(formData, URL){
     },
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
       toastr.error("Response Error: " + error.message);
@@ -1358,7 +1358,7 @@ function update_comments(user_message, task_id, course_id, module_id, case_id, c
         },
         error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);

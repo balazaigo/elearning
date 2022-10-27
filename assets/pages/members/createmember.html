@@ -281,7 +281,7 @@ var role_list = function () {
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
       }
@@ -1108,7 +1108,7 @@ $("#create_member_submit").click(function(){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         $("#create_member_submit").attr("disabled", false);

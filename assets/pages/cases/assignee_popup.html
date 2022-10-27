@@ -136,7 +136,7 @@ $(document).ready(function(){
 		    },
 		    error: function(error) {
 	            if (error.status === 401) {
-	              alert($.parseJSON(error.responseText).detail);
+	              alert("Session Expired, Please login again.");
 	              logoutSession();
 	            }
 		      	toastr.error("Response Error: " + error.message);
@@ -252,7 +252,7 @@ function get_assignee_details(case_id, case_module_id){
 		},
 		error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
 		}
@@ -275,7 +275,7 @@ function deleteAssigneeMember(e){
 		    },
 		    error: function(error) {
 	            if (error.status === 401) {
-	              alert($.parseJSON(error.responseText).detail);
+	              alert("Session Expired, Please login again.");
 	              logoutSession();
 	            }
 		      	toastr.error("Response Error: " + error.message);

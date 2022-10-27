@@ -192,7 +192,7 @@
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
       }
@@ -272,7 +272,7 @@
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         console.log(error);
@@ -344,11 +344,11 @@
             //window.location.href = SITE_URL_PROTOCOL;
             logoutSession();
           } else if (jqXHR.status === 401) {
-            alert($.parseJSON(jqXHR.responseText).detail);
+            alert("Session Expired, Please login again.");
             //window.location.href = SITE_URL_PROTOCOL;
             logoutSession();
           } else {
-            alert($.parseJSON(jqXHR.responseText).detail);
+            alert("Session Expired, Please login again.");
           }
         },    
       },

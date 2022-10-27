@@ -341,7 +341,7 @@
         },
         error: function (error) {
           if (error.status === 401) {
-            alert($.parseJSON(error.responseText).detail);
+            alert("Session Expired, Please login again.");
             logoutSession();
           }
           toastr.error("Response Error: " + error.message);
@@ -574,7 +574,7 @@ function decodeHtml(html) {
       },
       error: function (error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         $("#saveCoursesClose").removeAttr("disabled");
@@ -608,7 +608,7 @@ function decodeHtml(html) {
       },
       error: function (error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         $("#saveCoursesClose").removeAttr("disabled");

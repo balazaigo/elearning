@@ -188,7 +188,7 @@ $(document).ready(function(){
               },
               error: function(error) {
                 if (error.status === 401) {
-                  alert($.parseJSON(error.responseText).detail);
+                  alert("Session Expired, Please login again.");
                   logoutSession();
                 }
                 toastr.error("Response Error: " + error.message);
@@ -248,7 +248,7 @@ $(document).ready(function(){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
       }
@@ -523,7 +523,7 @@ function get_search_details_bytype_all(attachment_type, type_title, tagName, att
     },
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
     }
@@ -1206,7 +1206,7 @@ function get_breadcrumbs(){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
       }
@@ -1233,7 +1233,7 @@ function get_content_details(){
         CKEDITOR.instances["editor1"].setData(module_content);
       }, error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
       }
@@ -1402,7 +1402,7 @@ setTimeout(function() {
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);

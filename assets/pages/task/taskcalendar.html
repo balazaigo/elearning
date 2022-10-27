@@ -129,7 +129,7 @@
             },
             error: function(error) {
               if (error.status === 401) {
-                alert($.parseJSON(error.responseText).detail);
+                alert("Session Expired, Please login again.");
                 logoutSession();
               }
               console.log(error);
@@ -206,7 +206,7 @@
             },
             error: function(error) {
               if (error.status === 401) {
-                alert($.parseJSON(error.responseText).detail);
+                alert("Session Expired, Please login again.");
                 logoutSession();
               }
               console.log(error);
@@ -281,7 +281,7 @@
           },
           error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             console.log(error);
@@ -430,7 +430,7 @@ function getTaskDetails(id){
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
@@ -583,7 +583,7 @@ $(document).ready(function(){
         },
         error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);
@@ -609,7 +609,7 @@ function update_attachment(formData, URL){
     },
     error: function(error) {
       if (error.status === 401) {
-        alert($.parseJSON(error.responseText).detail);
+        alert("Session Expired, Please login again.");
         logoutSession();
       }
       toastr.error("Response Error: " + error.message);
@@ -685,7 +685,7 @@ function update_comments(user_message, task_id, course_id, module_id, case_id, c
         },
         error: function(error) {
             if (error.status === 401) {
-              alert($.parseJSON(error.responseText).detail);
+              alert("Session Expired, Please login again.");
               logoutSession();
             }
             toastr.error("Response Error: " + error.message);

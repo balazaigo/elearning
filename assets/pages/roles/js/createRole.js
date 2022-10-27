@@ -44,7 +44,7 @@ $(document).on("click", "#trigger-role-edit-form", function () {
       },
       error: function(error) {
         if (error.status === 401) {
-          alert($.parseJSON(error.responseText).detail);
+          alert("Session Expired, Please login again.");
           logoutSession();
         }
         toastr.error("Response Error: " + error.message);
