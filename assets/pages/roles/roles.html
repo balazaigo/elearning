@@ -186,7 +186,7 @@ var delete_role_btn = document.getElementById("mAlertDelete_role");
 delete_role_btn.addEventListener('click', delete_role);
 
 function delete_role(e){  
-
+console.log("delete_role", e);
   let role_id = e.target.dataset.deleterole;
 
   console.log("testdelete", role_id);
@@ -217,5 +217,32 @@ function delete_role(e){
   }
   
   }
+  
+  $('#mAlert_role').on('shown.bs.modal', function (event) {
+    //console.log('load  modal');
+    var button = $(event.relatedTarget);
+    var recipientID = button.data('url');
+    var name = button.data('name');
+    var modal = $(this);
+    modal.find('.modal-content input').val(recipientID);
+    modal.find('.modal-content #mAlertName').html("Are you sure you want to delete role '"+name+"'?");
+    $("#mAlertCancel").focus();
+    //mAlertDelete
+
+    //mAlertCancel
+    $(document).on('click', '#mAlertCancel', function() {
+      $(document).off('click', '#mAlertCancel');
+      $(document).off('click', '#mAlertDelete');
+    });
+    
+  });
+  //hidden.bs.modal 
+  $('#mAlert_role').on('hidden.bs.modal', function (event) {
+    $(document).off('click', '#mAlertCancel');
+    $(document).off('click', '#mAlertDelete');
+    var modal = $(this);
+    modal.find('.modal-content input').val(null);
+    modal.find('.modal-content #mAlertName').html("Loading...");
+  });
 </script>
 

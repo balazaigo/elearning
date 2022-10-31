@@ -1211,7 +1211,7 @@ function delete_profileImage(){
     if(member_id !== "" && member_id != undefined && member_id !== "undefined"){
       var formData = new FormData();
       formData.append("m_image", "");
-      URL = API_BASE_URL + '/delete_member_image/'+member_id;
+      URL = USER_ENGINE_API_URL + 'delete_member_image/'+member_id;
       method = "PATCH";
       type = "PATCH";
       $.ajax({

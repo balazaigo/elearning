@@ -111,6 +111,7 @@ function renderRoleList(roles) {
 
 function loadAlertModal(){
   $('#mAlert_role').on('shown.bs.modal', function (event) {
+    //console.log('load  modal');
     var button = $(event.relatedTarget);
     var recipientID = button.data('url');
     var name = button.data('name');
