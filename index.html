@@ -249,8 +249,13 @@
       }
     } else {
       if(phoneNumber.match(pattern) == null) {
-        console.log(language.error_invalid_number)
-        toastr.error(language.error_invalid_mail);
+        if(phoneNumber.trim() == ""){
+          console.log(language.empty_mobile_or_email)
+          toastr.error(language.empty_mobile_or_email);
+        }else{
+          console.log(language.error_invalid_number)
+          toastr.error(language.error_invalid_number);
+        }
         document.getElementById("phoneNumber").focus();
       } else {
         console.log(SITE_URL_PROTOCOL);

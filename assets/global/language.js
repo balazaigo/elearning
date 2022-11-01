@@ -20,4 +20,5 @@ var language = {
   "error_invalid_otp": "Invalid OTP",
   "error_no_access": "You do not have permission to perform this action.",
   "no_record_found": "No Records Found!",
+  "empty_mobile_or_email": "Email Id / Mobile Number field should not be empty",
 };
