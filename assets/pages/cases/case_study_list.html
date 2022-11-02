@@ -175,9 +175,9 @@
                   <div class="dropdown ahide" data-flinkto="caseslist">
                     <button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                      <li><a class="dropdown-item green" href="#">Edit</a></li>
-                      <li><a class="dropdown-item red" href="#">Disable</a></li>
-                      <li><a class="dropdown-item red" href="#">Delete</a></li>
+                      <li><a class="dropdown-item" href="#">Edit</a></li>
+                      <li><a class="dropdown-item" href="#">Disable</a></li>
+                      <li><a class="dropdown-item" href="#">Delete</a></li>
                     </ul>
                   </div>
                 </div>
@@ -221,7 +221,7 @@
           <button type="button" id="mAlertCancel" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
         </span>
         <span class="danger-btn nbtn">
-          <button type="button" id="mAlertDelete" class="btn btn-danger">Delete</button>
+          <button type="button" id="mAlertDelete" class="btn btn-danger">Yes</button>
         </span>
       </div>
     </div>
@@ -617,7 +617,7 @@ function template(data){
             <div class="role-content cases-card mb-4" onClick="call_card(this);"  data-case_id="${element.id}" data-case_name="${element.name}">
               <div class="row">
                 <div class="col-6 cleft new-btn" data-case_id="${element.id}" data-case_name="${element.name}">  <a href="#"  data-case_id="${element.id}" data-case_name="${element.name}" class="${status_class}">${status_text}</a>  </div>`;
-                //td += `<div class="col-6 cright"><div class="dropdown ahide" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}"><button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item green" href="#" data-case_id='${element.id}' data-case_name='${element.name}' onClick='editCase(this);'>Edit</a></li><li><a class="dropdown-item red" href="#mAlert" id="delete_${element.id}"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${element.name}" data-url="${element.id}">Delete</a></li></ul></div></div>`;
+                //td += `<div class="col-6 cright"><div class="dropdown ahide" data-flinkto="caseslist" data-case_id="${element.id}" data-case_name="${element.name}"><button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item" href="#" data-case_id='${element.id}' data-case_name='${element.name}' onClick='editCase(this);'>Edit</a></li><li><a class="dropdown-item" href="#mAlert" id="delete_${element.id}"  data-bs-toggle="modal" data-bs-target="#mAlert" data-name="${element.name}" data-url="${element.id}">Delete</a></li></ul></div></div>`;
                 td += `</div>
               <div class="row" data-case_id="${element.id}" data-case_name="${element.name}">
                 <div class="col-12"  data-case_id="${element.id}" data-case_name="${element.name}">

@@ -244,9 +244,19 @@
               if(index%2==0){
                 temp_dynamic_fields += '<div class="row">';
               }
-              temp_dynamic_fields +=`<div class="col-md-5 p-3" style="float:left;">
+              var textval = "";
+              if(element.value != "" && element.value != null){
+                var $div=$('<div>').html(element.value);
+                if($div.children().length){
+                  textval_html = $(element.value);
+                  textval = textval_html.text();
+                }else{
+                  textval = element.value;
+                }
+              }
+              temp_dynamic_fields +=`<div class="col-md-5 p-3" style="float:left;" title="${textval}">
                                       <label class="mb-2">${element.field_label}</label>
-                                      <input type="text" class="form-control" id="${element.id}" value="${element.value == null ? "" : element.value}" disabled>
+                                      <input type="text" class="form-control" id="${element.id}" value="${textval}" disabled>
                                   </div>`;
               if(index%2==1 || response.member_type_fields.length-1 == index){
                 temp_dynamic_fields += `</div>`;

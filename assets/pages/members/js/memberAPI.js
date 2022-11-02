@@ -105,9 +105,9 @@ function renderMemberList(members) {
     html += `<div class="dropdown ahide">`;
     html += `<button class="btn dropdown-toggle dbtn" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>`;
     html += `<ul class="dropdown-menu">`;
-    html += `<li><a class="dropdown-item green" href="#">Edit</a></li>`;
-    html += `<li><a class="dropdown-item red" href="#">Disable</a></li>`;
-    html += `<li><a class="dropdown-item red" href="#delete">Delete</a></li>`;
+    html += `<li><a class="dropdown-item" href="#">Edit</a></li>`;
+    html += `<li><a class="dropdown-item" href="#">Disable</a></li>`;
+    html += `<li><a class="dropdown-item" href="#delete">Delete</a></li>`;
     html += `</ul>`;
     html += `</div>`;
     html += `</td>`;

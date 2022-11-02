@@ -37,7 +37,7 @@ function renderRoleList(roles) {
       dots = "...";
     }
     //<span>Member:<span class="icon_counts"> ${role.member_count}</span></span>
-    //<button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item green" href="#" data-role_id="${role.id}" id="trigger-role-edit-form">Edit</a></li></ul>
+    //<button class="btn dropdown-toggle dbtn" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3"><li><a class="dropdown-item" href="#" data-role_id="${role.id}" id="trigger-role-edit-form">Edit</a></li></ul>
     html += `<div class="col-md-4">`;
     html += `<div class="role-content mb-4">`;
     if(role.member_count > 0){

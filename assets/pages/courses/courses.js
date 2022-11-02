@@ -317,7 +317,7 @@ function template(data){
               td +="<div class='dropdown ahide'>";
               td +="<button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button>";
               td +="<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'>";
-              td +="<li><a class='dropdown-item green' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='editCourse(this);'>Edit</a></li><li><a class='dropdown-item green' href='#' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='assignCourse(this);'>Assign</a></li>";
+              td +="<li><a class='dropdown-item' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='editCourse(this);'>Edit</a></li><li><a class='dropdown-item' href='#' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='assignCourse(this);'>Assign</a></li>";
               td +="</ul>";
               td +="</div>";
               td +="</div>";
@@ -334,12 +334,12 @@ function template(data){
               td +="<div class='dropdown ahide'>";
               td +="<button class='btn dropdown-toggle dbtn' type='button' id='dropdownMenuButton3' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-ellipsis-v'></i></button>";
               td +="<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton3'>";
-              td +="<li><a class='dropdown-item green' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='editCourse(this);'>Edit</a></li><li><a class='dropdown-item green' href='#' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='assignCourse(this);'>Assign</a></li>";
+              td +="<li><a class='dropdown-item' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='editCourse(this);'>Edit</a></li><li><a class='dropdown-item' href='#' data-course_id='"+id+"' data-cname='"+course_name+"' onClick='assignCourse(this);'>Assign</a></li>";
               /*
                 EXCEL: 8. Course Card - Edit, Disable, Delete menu should be hidden as for now. 
               */
-              //td +="<li><a class='dropdown-item red' href='#'>Disable</a></li>";
-              //td +="<li><a class='dropdown-item red' href='#'>Delete</a></li>";
+              //td +="<li><a class='dropdown-item' href='#'>Disable</a></li>";
+              //td +="<li><a class='dropdown-item' href='#'>Delete</a></li>";
               td +="</ul>";
               td +="</div>";
               td +="</div>";
