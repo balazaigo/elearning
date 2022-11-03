@@ -55,6 +55,7 @@
             </small>
           </p>
           <div class="user-status"></div>
+          <div class="kyc-status" style="position: absolute;right: 0;top: 25px;font-weight: 600;"></div>
         </div>
       </div>      
     </div>
@@ -154,6 +155,11 @@
           }
           if(response.registration_date && response.registration_date != "" && response.registration_date != null ){
               $("#user_profile_reg_date").text(response.registration_date.substring(0, 10).replace(/-/g, '/'));
+          }
+          if(response.kyc_verified === true){
+               $(".kyc-status").html('KYC : <span class="green">Verified</span>');
+          }else{
+             $(".kyc-status").html('KYC : <span class="red">Not Verified</span>');  
           }
           if(response.status && response.status != "" && response.status != null ){
             if(response.status == 1){
