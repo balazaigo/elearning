@@ -98,8 +98,8 @@
    </div>
 
     <div class="row mb-4">
-      <div class="col-md-12"  id="other_user_details"> 
-      </div>     
+      <!--<div class="col-md-12"  id="other_user_details"> 
+      </div>   -->  
     </div>
 </div>
 <script type="text/javascript">
@@ -241,7 +241,7 @@
                          </div>`;
             $("#user_profile_kyc").append(kyc_li);
           }
-          if(response.member_type_fields && response.member_type_fields != "" && response.member_type_fields.length > 0 && $.isArray(response.member_type_fields)){
+          /*if(response.member_type_fields && response.member_type_fields != "" && response.member_type_fields.length > 0 && $.isArray(response.member_type_fields)){
             $("#other_user_details").empty();
             var temp_dynamic_fields  = `<div class="reg-head">
                                           <h4>Other Details :</h4>
@@ -271,7 +271,7 @@
             $("#other_user_details").append(temp_dynamic_fields);
           }else{
             $("#other_user_details").empty();
-          }
+          }*/
         }, 
         error: function (error) {
           if (error.status === 401) {

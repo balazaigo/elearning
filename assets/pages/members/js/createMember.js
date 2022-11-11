@@ -8,7 +8,8 @@ $(document).on("click", "#trigger-member-create-form", function () {
   $("#member-email").val("");
   $("#member-fName").val("");
   $("#member-lName").val("");
-  $("#member-phoneNo").val("");
+  //$("#member-phoneNo").val("");
+  $("#phone_number").val("");
   $("#member-id_edit").val("");
   $("#member-status").val("");
   $("#member-email").prop('disabled', false);
@@ -35,12 +36,14 @@ $(document).on("input", "#member-email", function () {
 
   $("#member-fName").val("");
   $("#member-lName").val("");
-  $("#member-phoneNo").val("");
+  //$("#member-phoneNo").val("");
+  $("#phone_number").val("");
   $("#member-role").val("");
 
   $("#member-fName").prop("disabled", true);
   $("#member-lName").prop("disabled", true);
-  $("#member-phoneNo").prop("disabled", true);
+  //$("#member-phoneNo").prop("disabled", true);
+  $("#phone_number").prop("disabled", true);
   $("#member-role").prop("disabled", true);
 });
 
@@ -94,6 +97,20 @@ $(document).on("submit", "#member-create-form", function (e) {
       formData[fieldData.name] = fieldData.value;
     }
   });
+  var mobile_number = document.getElementById("phone_number");
+  if(mobile_number.value.trim().substring(0, 1) == "+"){
+    var mobilenumberarr = mobile_number.value.trim().split(/\s(.+)/);
+    formData.append("phone_number", mobilenumberarr[1]);
+    formData.append("region_code", mobilenumberarr[0]);
+    formData.append("mobile_number", mobilenumberarr[1]);
+  }else{
+    var input = document.querySelector('#phone_number');
+    var iti = window.intlTelInputGlobals.getInstance(input);
+    var region_code = iti.getSelectedCountryData();
+    formData.append("phone_number", mobile_number.value);
+    formData.append("region_code", "+"+region_code.dialCode);
+    formData.append("mobile_number", mobile_number.value);
+  }
 $("#member-email").prop('disabled', true);
   //Validate field on submit
   for (const [fieldName, fieldValue] of Object.entries(formData)) {
@@ -126,7 +143,8 @@ $("#member-email").prop('disabled', true);
         "Content-Type": "application/json"
       },
       success: function(response){
-        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+        //$("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+        $("#member-fName, #member-lName, #phone_number, #member-role").prop("disabled", true);
         if(Method == "POST"){
           toastr.success("New member record successfully saved!");
         }else{
@@ -140,7 +158,8 @@ $("#member-email").prop('disabled', true);
         doSearchMember();
       },
       error: function(error) {
-        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
+        //$("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
+        $("#member-fName, #member-lName, #phone_number, #member-role").prop("disabled", false);
         toastr.error("Response Error: " + error.responseText);
       }
     });
@@ -199,7 +218,13 @@ $(document).on("input", "#member-lName", function (e) {
   _validateMemberLName(_this, fieldValue);
 });
 
-$(document).on("input", "#member-phoneNo", function (e) {
+/*$(document).on("input", "#member-phoneNo", function (e) {
+  const _this = $(this);
+  const fieldValue = _this.val();
+
+  _validateMemberPhoneNo(_this, fieldValue);
+});*/
+$(document).on("input", "#phone_number", function (e) {
   const _this = $(this);
   const fieldValue = _this.val();
 
@@ -390,16 +415,20 @@ function ajaxValidationMailID(mailID){
     },
     success: function(response){
       if(response.is_valid) {
-        $("#member-fName, #member-lName, #member-phoneNo, #member-role").val("");
-        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
+        //$("#member-fName, #member-lName, #member-phoneNo, #member-role").val("");
+        $("#member-fName, #member-lName, #phone_number, #member-role").val("");
+        //$("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", false);
+        $("#member-fName, #member-lName, #phone_number, #member-role").prop("disabled", false);
         $("#member-fName").focus();
       } else {
-        $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+        //$("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+        $("#member-fName, #member-lName, #phone_number, #member-role").prop("disabled", true);
         toastr.error("Response: record already exisit!" );
       }
     },
     error: function(error) {
-      $("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+      //$("#member-fName, #member-lName, #member-phoneNo, #member-role").prop("disabled", true);
+      $("#member-fName, #member-lName, #phone_number, #member-role").prop("disabled", true);
       toastr.error("Response: record already exisit!" );
     }
   });

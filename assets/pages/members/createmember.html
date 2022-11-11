@@ -19,11 +19,11 @@
         <form class="manage-form mt-4 col-md-12" id="create_member">
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <label>First Name<span style="color:#ff0000">*</span></label>
+                    <label>First Name</label>
                     <input type="text" class="form-control" name="first_name" id="first_name" data-fieldName="first_name" placeholder="First name" value="">
                 </div>
                 <div class="col-md-6">
-                    <label>Last Name<span style="color:#ff0000">*</span></label>
+                    <label>Last Name</label>
                     <input type="text" class="form-control" name="last_name" id="last_name" data-fieldName="last_name"  placeholder="Last name" value="">
                 </div>
             </div>
@@ -216,9 +216,13 @@ var role_list = function () {
         $("#create_member_submit").text("Update");
         if(response.first_name && response.first_name != "" && response.first_name != null){
           $("#first_name").val(response.first_name);
+        }else{
+          $("#first_name").val("");
         }
         if(response.last_name && response.last_name != "" && response.last_name != null){
           $("#last_name").val(response.last_name);
+        }else{
+          $("#last_name").val("");
         }
         if(response.mobile_number && response.mobile_number != "" && response.mobile_number != null){
           console.log('mobile_number');
@@ -229,6 +233,7 @@ var role_list = function () {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js" // just for formatting/placeholders etc
           });
           $(".iti--allow-dropdown").addClass("iti--separate-dial-code");
+          $("#phone_number").val(response.mobile_number);
         }else if(response.phone_number && response.phone_number != "" && response.phone_number != null){
           console.log('phone_number');
           if(response.phone_number.trim().substring(0, 1) == "+"){
@@ -239,6 +244,7 @@ var role_list = function () {
               utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js" // just for formatting/placeholders etc
             });
             $(".iti--allow-dropdown").addClass("iti--separate-dial-code");
+            $("#phone_number").val(response.mobile_number.split(' ').pop().replace(/\s*/g,''));
           }else{
             console.log('phone_number !+');
             var region_code = response.region_code != "" && response.region_code != null ? response.region_code+" " : '+91 ';
@@ -248,6 +254,7 @@ var role_list = function () {
               utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js" // just for formatting/placeholders etc
             });
             $(".iti--allow-dropdown").addClass("iti--separate-dial-code");
+            $("#phone_number").val(response.phone_number);
           }
         }else{
           var input = document.querySelector("#phone_number");
@@ -315,6 +322,12 @@ function add_access_list(platform_selected, member_type_selected, role_selected)
         headers: { "Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token },
         success: function (response) {
           selectedtmp_platform = response;
+        },
+        error: function(error) {
+          if (error.status === 401) {
+            alert("Session Expired, Please login again.");
+            logoutSession();
+          }
         }
       });
       return selectedtmp_platform;
@@ -341,7 +354,7 @@ function add_access_list(platform_selected, member_type_selected, role_selected)
                       <div class="col-lg-4 col-md-3">
                         <div class="dropdown-select">
                           <select class="sort-select member_type_access" id="member_id" name="member_id" onchange="membertypeChange(this);" data-member_type_row_id="addlist-${mathcount}">
-                            <option value="">Select Member Type</option>`;
+                              <option value="">Select Member Type</option>`;
                               $.each(member_type_list, function (i, val) {
                                 if(member_type_selected != "" && member_type_selected == val.id){
                                   template += `<option value="${val.id}" selected>${val.name}</option>`;
@@ -471,9 +484,9 @@ function checkValueExistAttr(value, arr){
     return status;
 }
 function membertypeChange(el){
-  var selected_member_type = el.value;
+  /*var selected_member_type = el.value;
   var selectedText = $(el).val();
-  var member_type_selected = [];
+  var member_type_selected = [];*/
 
   $(el).removeClass("is-invalid");
   $(el).next().remove();
@@ -482,7 +495,7 @@ function membertypeChange(el){
     $(el).after(`<em for="member_type_access" class="error help-block" style="position: absolute;bottom: -18px;">Please Select Member Type</em>`);
     return;
   }
-  $(".member_type_access").each(function(){
+  /*$(".member_type_access").each(function(){
     if($(this).val() != ""){
       member_type_selected.push($(this).val());
     }
@@ -534,13 +547,31 @@ function membertypeChange(el){
                                         if(val.field_type == "alphabet" || val.field_type == "alpha_numeric" || val.field_type == "alpha_numeric_special"){
                                           minval = val.minimum;
                                           maxval = val.maximum; 
+                                          var textval = "";
+                                          if(val.value != "" && val.value != null){
+                                            if(val.field_name == "description"){
+                                              textval_html = $(val.value);
+                                              textval = textval_html.text();
+                                            }else{
+                                              textval = val.value;
+                                            }
+                                          }
                                               template_field += `
-                                              <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${val.value != null ? val.value : ''}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
+                                              <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${textval}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
                                             }else{
                                           minval = 1;
                                           maxval = 512;
+                                          var textval = "";
+                                          if(val.value != "" && val.value != null){
+                                            if(val.field_name == "description"){
+                                              textval_html = $(val.value);
+                                              textval = textval_html.text();
+                                            }else{
+                                              textval = val.value;
+                                            }
+                                          }
                                               template_field += `
-                                              <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${val.value != null ? val.value : ''}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
+                                              <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${textval}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
                                             }
                                           template_field += `</div>
                                           <div>
@@ -554,9 +585,9 @@ function membertypeChange(el){
         $("#member_field_by_selection").removeClass("hide");
         $("#member_field_by_selection").append(template_field);
     }
-  });
+  });*/
 }
-function editMembertypechange(membertypedata){
+/*function editMembertypechange(membertypedata){
   const groups = membertypedata.reduce((groups, item) => {
     const member_type_name = (groups[item.member_type_name] || []);
     member_type_name.push(item);
@@ -583,13 +614,33 @@ function editMembertypechange(membertypedata){
                                 if(val.field_type == "alphabet" || val.field_type == "alpha_numeric" || val.field_type == "alpha_numeric_special"){
                                   minval = val.minimum;
                                   maxval = val.maximum;
+                                      var textval = "";
+                                      if(val.value != "" && val.value != null){
+                                        var $div=$('<div>').html(val.value);
+                                        if($div.children().length){
+                                          textval_html = $(val.value);
+                                          textval = textval_html.text();
+                                        }else{
+                                          textval = val.value;
+                                        }
+                                      }
                                       template_field += `
-                                      <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${val.value != null ? val.value : ''}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
+                                      <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${textval}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
                                     }else{
                                   minval = 1;
                                   maxval = 512;
+                                      var textval = "";
+                                      if(val.value != "" && val.value != null){
+                                        var $div=$('<div>').html(val.value);
+                                        if($div.children().length){
+                                          textval_html = $(val.value);
+                                          textval = textval_html.text();
+                                        }else{
+                                          textval = val.value;
+                                        }
+                                      }
                                       template_field += `
-                                      <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${val.value != null ? val.value : ''}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
+                                      <label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${textval}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
                                     }
                                   template_field += `</div>
                                   <div>
@@ -612,8 +663,8 @@ function deleteAccessMemberTypeChange(){
       member_type_selected.push($(this).val());
     }
   });
-  console.log('member_type_field', member_type_field);
-  console.log('member_type_selected', member_type_selected);
+  //console.log('member_type_field', member_type_field);
+  //console.log('member_type_selected', member_type_selected);
   if(member_type_field == 0){
     add_access_list('','','');
   }
@@ -666,11 +717,29 @@ function deleteAccessMemberTypeChange(){
                                       if(val.field_type == "alphabet" || val.field_type == "alpha_numeric" || val.field_type == "alpha_numeric_special"){
                                         minval = val.minimum;
                                         maxval = val.maximum;
-                                      template_field += `<label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${val.value != null ? val.value : ''}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
+                                        var textval = "";
+                                        if(val.value != "" && val.value != null){
+                                          if(val.field_name == "description"){
+                                            textval_html = $(val.value);
+                                            textval = textval_html.text();
+                                          }else{
+                                            textval = val.value;
+                                          }
+                                        }
+                                      template_field += `<label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${textval}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
                                           }else{
                                         minval = 1;
                                         maxval = 512;
-                                      template_field += `<label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${val.value != null ? val.value : ''}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
+                                        var textval = "";
+                                        if(val.value != "" && val.value != null){
+                                          if(val.field_name == "description"){
+                                            textval_html = $(val.value);
+                                            textval = textval_html.text();
+                                          }else{
+                                            textval = val.value;
+                                          }
+                                        }
+                                      template_field += `<label>${val.field_label}${req_symbol}</label><input type="text" class="form-control fieldnamec" name="fieldname" id="fieldname" placeholder="Enter ${val.field_label}" data-fieldName="${val.field_name}" data-fieldType="${val.field_type}" data-fieldLabel="${val.field_label}" value="${textval}" onblur="checkfieldName(this);" minlength="${minval}" maxlength="${maxval}" ${required}/>`;
                                           }
                                         template_field += `</div>
                                         <div>
@@ -686,7 +755,7 @@ function deleteAccessMemberTypeChange(){
       }
     });
   }
-}
+}*/
 function roleChange(el){
   var selected_role = el.value;
 
@@ -698,7 +767,7 @@ function roleChange(el){
     return;
   }
 }
-function checkfieldName(e){
+/*function checkfieldName(e){
   $(e).removeClass("is-invalid");
   $(e).next().remove();
   var validName = true;
@@ -730,11 +799,11 @@ function checkfieldName(e){
     }
   }
   return validName;
-}
-function deleteAccess(access_row_id){
-  console.log('access_row_id', access_row_id);
+}*/
+function deleteAccess(){
+  var access_row_id = $("#delete_id_access").val();
   $('#'+access_row_id).remove();
-  deleteAccessMemberTypeChange();
+  //deleteAccessMemberTypeChange();
   //toastr.success("Access deleted Successfully");
 }
 /************* First name validation Starts ******/
@@ -756,10 +825,11 @@ function _validateMemberFName(el, fieldValue, displayMsg) {
   }
 
   const regex = /^\s*$/;
-  if (fieldValue.trim() == "") {
+  /*if (fieldValue.trim() == "") {
     errorMsg = `Please enter First Name`;
     hasError = true;
-  } else if (fieldValue.length > maxLength) {
+  } else */
+  if (fieldValue.length > maxLength) {
     errorMsg = `First Name should not exceed ${maxLength} characters`;
     hasError = true;
   } else {
@@ -793,10 +863,11 @@ function _validateMemberLName(el, fieldValue, displayMsg) {
   }
 
   const regex = /^\s*$/;
-  if (fieldValue.trim() == "") {
+  /*if (fieldValue.trim() == "") {
     errorMsg = `Please enter Last Name`;
     hasError = true;
-  } else if (fieldValue.length > maxLength) {
+  } else */
+  if (fieldValue.length > maxLength) {
     errorMsg = `Last Name should not exceed ${maxLength} characters`;
     hasError = true;
   } else {
@@ -834,8 +905,8 @@ function _validateMemberPhoneNo(el, fieldValue, displayMsg) {
   }
 
   const regex = /^\s*$/;
-  if (fieldValue.trim() == "") {
-    errorMsg = `Please enter Mobile Number`;
+  if (fieldValue.trim() == "" && $("#email_id").val().trim() == "") {
+    errorMsg = `Please enter Mobile Number or Email Id`;
     hasError = true;
   }else if(fieldValue.trim().substring(0, 1) == "+"){
     if (fieldValue && fieldValue.trim().split(/\s(.+)/)[1].length > 10) {
@@ -895,8 +966,8 @@ function _validateMemberEmail(el, fieldValue, displayMsg = true) {
   }
 
   const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  if (fieldValue.trim() == "") {
-    errorMsg = `Please enter Email Id`;
+  if (fieldValue.trim() == "" && $("#phone_number").val().trim() == "") {
+    errorMsg = `Please enter Email Id or Mobile Number`;
     hasError = true;
   } else if (fieldValue && !regex.test(fieldValue)) {
     errorMsg = `Please enter a valid Email Id`;
@@ -1117,13 +1188,15 @@ $("#create_member_submit").click(function(){
               $.each(errorJson, function(key, value){
                 var fieldElement = document.querySelector(`[data-fieldName="${key}"]`);
                 if(fieldElement){
-                  $(fieldElement).removeClass("is-invalid");
-                  $(fieldElement).next().remove();
-                  $(fieldElement).addClass("is-invalid");
-                  if(key == "phone_number" && value == "Already Exists") {
-                    value = "Mobile Number already exists";
+                  if(key == "phone_number" &&( value == "Already Exists"  || value == "Already Taken")) {
+                    value = "Mobile Number already taken";
+                    toastr.error(value);
+                  }else{
+                    $(fieldElement).removeClass("is-invalid");
+                    $(fieldElement).next().remove();
+                    $(fieldElement).addClass("is-invalid");
+                    $(fieldElement).after(`<em for="platform_select" class="error help-block" style="position: relative;">${value}</em>`);
                   }
-                  $(fieldElement).after(`<em for="platform_select" class="error help-block" style="position: relative;">${value}</em>`);
                 }else{
                   if(key == "mobile_number" && value == "Already Taken"){
                     value = "Mobile Number already taken";
@@ -1199,7 +1272,6 @@ function close_memberlist_del_popup(){
   $("#delete_popupprofile").removeClass("overlay_target");
 }
 */
-
 function deleteProfilePopup(){
   $("#delete_popupprofile").addClass("overlay_target");
 }
@@ -1252,4 +1324,15 @@ function close_access_del_popup(){
   $("#delete_id_access").val("");
   $("#delete_popupaccess").removeClass("overlay_target");
 }
+
+//$('.form-control').keypress(function(event){
+$(document).on("keypress", "#create_member .form-control", function (event) {
+    event.stopImmediatePropagation();
+  if (event.key === "Enter") {
+    $(".form-control").blur(); 
+    event.preventDefault();
+    $("#create_member_submit").click();
+    //$("#create_member_submit").attr('disabled', true);
+  }
+});
 </script>
