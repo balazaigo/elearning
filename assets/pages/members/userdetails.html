@@ -54,6 +54,12 @@
             <small id="user_profile_speciality">
             </small>
           </p>
+          <p>
+            <img class="mb-1" src="../assets/images/dob_icon3.png" alt="" style="width:20px;"/> 
+            <strong>DOB</strong> : 
+            <small id="user_profile_dob" style="font-weight: 500;">
+            </small>
+          </p>
           <div class="user-status"></div>
           <div class="kyc-status" style="position: absolute;right: 0;top: 25px;font-weight: 600;"></div>
         </div>
@@ -149,6 +155,9 @@
           }
           if(response.speciality_name && response.speciality_name != "" && response.speciality_name != null ){
               $("#user_profile_specialist").text(response.speciality_name);
+          }
+          if(response.dob && response.dob != "" && response.dob != null ){
+              $("#user_profile_dob").text(response.dob);
           }
           if(response.reg_no && response.reg_no != "" && response.reg_no != null ){
               $("#user_profile_reg_no").text(response.reg_no);
