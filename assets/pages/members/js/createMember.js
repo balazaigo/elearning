@@ -85,8 +85,11 @@ $(document).on("submit", "#member-create-form", function (e) {
     status: status,
     mc_status: 0,
     image: "",
+    region_code: "",
+
   };
   $.each(formInputs, function (index, fieldData) {
+    console.log(fieldData.name);
     if (fieldData.name.endsWith("[]")) {
       let name = fieldData.name.substring(0, fieldData.name.length - 2);
       if (!(name in formData)) {
@@ -98,18 +101,17 @@ $(document).on("submit", "#member-create-form", function (e) {
     }
   });
   var mobile_number = document.getElementById("phone_number");
+  var field_name = mobile_number.getAttribute('name');
   if(mobile_number.value.trim().substring(0, 1) == "+"){
     var mobilenumberarr = mobile_number.value.trim().split(/\s(.+)/);
-    formData.append("phone_number", mobilenumberarr[1]);
-    formData.append("region_code", mobilenumberarr[0]);
-    formData.append("mobile_number", mobilenumberarr[1]);
+    formData["phone_number"] = mobilenumberarr[1];
+    formData["region_code"] = mobilenumberarr[0];
   }else{
     var input = document.querySelector('#phone_number');
     var iti = window.intlTelInputGlobals.getInstance(input);
     var region_code = iti.getSelectedCountryData();
-    formData.append("phone_number", mobile_number.value);
-    formData.append("region_code", "+"+region_code.dialCode);
-    formData.append("mobile_number", mobile_number.value);
+    formData["phone_number"] = mobile_number.value;
+    formData["region_code"] = "+"+region_code.dialCode;
   }
 $("#member-email").prop('disabled', true);
   //Validate field on submit

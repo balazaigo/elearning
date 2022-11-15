@@ -4720,8 +4720,14 @@ footer.fixed-bottom {
     width: 20px;
     cursor: pointer;
 }
-#create_member .iti--allow-dropdown{
+#create_member .iti--allow-dropdown, #member-create-form .iti--allow-dropdown{
 	width: 100%;
+}
+#member-create-form .iti--allow-dropdown .iti__selected-dial-code{
+	display: none;
+}
+#member-create-form #phone_number{
+	    padding-bottom: 17px;
 }
 .cc-right {
     display: flex;

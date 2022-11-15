@@ -706,6 +706,7 @@ function editMembers(id){
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js" // just for formatting/placeholders etc
           });
           $(".iti--allow-dropdown").addClass("iti--separate-dial-code");
+          $("#phone_number").val(response.mobile_number);
         }else if(response.phone_number && response.phone_number != "" && response.phone_number != null){
           console.log('phone_number');
           if(response.phone_number.trim().substring(0, 1) == "+"){
@@ -716,6 +717,7 @@ function editMembers(id){
               utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js" // just for formatting/placeholders etc
             });
             $(".iti--allow-dropdown").addClass("iti--separate-dial-code");
+            $("#phone_number").val(response.phone_number.split(' ').pop().replace(/\s*/g,''));
           }else{
             console.log('phone_number !+');
             var region_code = response.region_code != "" && response.region_code != null ? response.region_code+" " : '+91 ';
@@ -725,6 +727,7 @@ function editMembers(id){
               utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js" // just for formatting/placeholders etc
             });
             $(".iti--allow-dropdown").addClass("iti--separate-dial-code");
+            $("#phone_number").val(response.phone_number);
           }
         }else{
           var input = document.querySelector("#phone_number");

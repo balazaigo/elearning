@@ -23,6 +23,13 @@
           <label for="coursesID">Course ID</label>
         </div>
       </div>
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <input type="text" id="kite_id" name="kite_id" class="form-control cm-replaceSpace"
+            placeholder="Kite ID"  onkeypress="return /[0-9]/i.test(event.key)">
+          <label for="kite_id">Kite ID</label>
+        </div>
+      </div>
       <div class="col-md-12 mb-2">
         <div class="form-floating">
           <select class="sort-select form-select" id="category" name="category">
@@ -271,6 +278,29 @@
             $("#end_date").val(response.end_date);
             $("#coursesName").val(response.name);
             $("#coursesID").val(response.course_id_prefix);
+            console.log('response.kite_id', response.kite_id);
+            if(response.kite_id == 0 || response.kite_id == null){
+              $("#kite_id").val("");
+            }else{
+              $("#kite_id").val(response.kite_id);
+              /*$.ajax({
+                url: API_CONTENT_URL + '/next_kite_id/',
+                type: 'get',
+                dataType: 'json',
+                headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+                success:function(response){
+                  //console.log('next_kite_id',response);
+                  $("#kite_id").val(response.kite_id);
+                },
+                error: function(error) {
+                        if (error.status === 401) {
+                          alert("Session Expired, Please login again.");
+                          logoutSession();
+                        }
+                  console.log(error);
+                }
+              });*/
+            }
             $("#description").val(response.description);
             if(response.description) {
               var cuChar = Number(256) - $("#description").val().length;
@@ -348,6 +378,24 @@
           console.log(error);
         }
       });
+  }else{
+    $.ajax({
+      url: API_CONTENT_URL + '/next_kite_id/',
+      type: 'get',
+      dataType: 'json',
+      headers: {"Content-type": "application/json; charset=UTF-8", "Authorization": "Bearer " + getUserInfo().access_token},
+      success:function(response){
+        //console.log('next_kite_id',response);
+        $("#kite_id").val(response.kite_id);
+      },
+      error: function(error) {
+              if (error.status === 401) {
+                alert("Session Expired, Please login again.");
+                logoutSession();
+              }
+        console.log(error);
+      }
+    });
   }
 
 function decodeHtml(html) {
@@ -397,6 +445,7 @@ function decodeHtml(html) {
         end_date: { required: true },
         member: { required: true },
         description: { required: true, minlength: 4, maxlength: 256 },
+        kite_id: { required: true, number: true, min: 1, max: 4294967295 },
       },
       messages: {
         coursesName: {
@@ -408,6 +457,12 @@ function decodeHtml(html) {
           required: "Please enter a Course ID Prefix",
           minlength: "Course ID Prefix must consist of at least 1 characters",
           maxlength: "Course ID Prefix must consist of max of 20 characters",
+        },
+        kite_id: {
+          required: "Please enter a Kite ID",
+          number: "Kite ID must be a number",
+          min: "Kite ID must consist of at least 1 characters",
+          max: "Ensure this value is less than or equal to 4294967295.",
         },
         category: { required: "Please select the category" },
         courseFile: { required: "Please upload attachment" },
@@ -451,6 +506,7 @@ function decodeHtml(html) {
         var tags = $("#tags").val().join(",");
         var formData = new FormData();
         formData.append("course_id_prefix", $("#coursesID").val());
+        formData.append("kite_id", $("#kite_id").val());
         formData.append("name", $("#coursesName").val());
         formData.append("description", $("#description").val());
         formData.append("platform_id", $("#platform_id").val());
