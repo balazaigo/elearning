@@ -2,9 +2,13 @@
 let API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
 let API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
 let SITE_URL_PROTOCOL = window.location.protocol + "//" + window.location.hostname;
+console.log(SITE_URL_PROTOCOL);
 let USER_ENGINE_API_URL = "https://elearningadmin.zaigoinfotech.com/api/v1/ue/";
 if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
 	SITE_URL_PROTOCOL = "http://127.0.0.1:5500/";
+  API_BASE_URL = "https://uatadmin.exper.com";
+  API_CONTENT_URL = "https://uatcontent.exper.com";
+  USER_ENGINE_API_URL = "https://uatadmin.exper.com/api/v1/ue/";
 
 } else if(SITE_URL_PROTOCOL === "http://94.177.203.98"){
 	SITE_URL_PROTOCOL = "http://94.177.203.98/exper-js-new/";
@@ -12,20 +16,23 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
 
 } else if(SITE_URL_PROTOCOL === "http://localhost"){
 	SITE_URL_PROTOCOL = "http://localhost/elearning/";
-  API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
-  API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
-  USER_ENGINE_API_URL = "https://elearningadmin.zaigoinfotech.com/api/v1/ue/";
+  // API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
+  // API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
+  // USER_ENGINE_API_URL = "https://elearningadmin.zaigoinfotech.com/api/v1/ue/";
 
-  /*API_BASE_URL = "https://uatadmin.exper.com";
+  API_BASE_URL = "https://uatadmin.exper.com";
   API_CONTENT_URL = "https://uatcontent.exper.com";
-  USER_ENGINE_API_URL = "https://uatadmin.exper.com/api/v1/ue/";*/
+  USER_ENGINE_API_URL = "https://uatadmin.exper.com/api/v1/ue/";
 
-} else if(SITE_URL_PROTOCOL === "https://localhost"){
+}else if(SITE_URL_PROTOCOL === "https://localhost"){
 	SITE_URL_PROTOCOL = "https://localhost/elearning/";
-  API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
-  API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
-  USER_ENGINE_API_URL = "https://elearningadmin.zaigoinfotech.com/api/v1/ue/";
+  // API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
+  // API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
+  // USER_ENGINE_API_URL = "https://elearningadmin.zaigoinfotech.com/api/v1/ue/";
 
+  API_BASE_URL = "https://uatadmin.exper.com";
+  API_CONTENT_URL = "https://uatcontent.exper.com";
+  USER_ENGINE_API_URL = "https://uatadmin.exper.com/api/v1/ue/";
 } else if(SITE_URL_PROTOCOL === "https://elearning.zaigoinfotech.com"){
 	SITE_URL_PROTOCOL = "https://elearning.zaigoinfotech.com/";
   API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
@@ -45,10 +52,10 @@ if (SITE_URL_PROTOCOL === "http://127.0.0.1"){
   USER_ENGINE_API_URL = "https://uatadmin.exper.com/api/v1/ue/";
 
 }else if(SITE_URL_PROTOCOL === "https://precas.exper.com"){
-  SITE_URL_PROTOCOL = "https://precas.exper.com/";
-  API_BASE_URL = "https://preadmin.exper.com";
-  API_CONTENT_URL = "https://precontent.exper.com";
-  USER_ENGINE_API_URL = "https://preadmin.exper.com/api/v1/ue/";
+  SITE_URL_PROTOCOL = "https://precas.exper.com/";
+  API_BASE_URL = "https://preadmin.exper.com";
+  API_CONTENT_URL = "https://precontent.exper.com";
+  USER_ENGINE_API_URL = "https://preadmin.exper.com/api/v1/ue/";
 
 }
 
