@@ -151,9 +151,9 @@ function get_module_details(cid, module_id, mytagArray){
       var tags_response = "";
         mytagArray.forEach(function (element, index) {
         tag_exists = response.some(function(o){return o["tag_name"] === element;})
-        if(!tag_exists){
+        if(!tag_exists && element){
           var tag_data = {
-              "tag_name": element,
+              "tag_name": decodeURIComponent(element),
               "module_id": module_id,
               "course_id": cid
           }

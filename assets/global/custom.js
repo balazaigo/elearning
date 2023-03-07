@@ -336,3 +336,8 @@ function logoutSession(){
     localStorage.removeItem("system_rights");
     window.location.replace(SITE_URL_PROTOCOL);
 }
+function parseString(str) {
+  var result=str.replace('"','&quot;');
+  result=result.replace("'","&#39;");
+  return result;
+} 
