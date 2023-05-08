@@ -122,7 +122,7 @@ CKEDITOR.dialog.add("bgImageDialog", function (b) {
 				fr.readAsDataURL(n.files[0]);
 			}
 		}
-	};
+	}
 	
 	/* Calculate image dimensions */
 	function getImageDimensions() {

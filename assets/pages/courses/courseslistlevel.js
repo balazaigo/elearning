@@ -1423,7 +1423,7 @@ $(".show-more").on("click", function() {
       linkText = "More >>";
       $content.switchClass("showContent", "hideContent", 400);
       $this.switchClass("showless", "showmore", 1);
-  };
+  }
 
   $this.text(linkText);
 });  

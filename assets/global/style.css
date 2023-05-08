@@ -311,7 +311,7 @@ input[type="checkbox"]:checked + label::before {
 }
 .side-navbar nav ul li a {
 	display: block;
-	padding: 10px 10px;
+	padding: 10px;
 	color: #898FA3;
 	border-left: 3px solid transparent;
 	text-decoration: none;
@@ -341,12 +341,12 @@ input[type="checkbox"]:checked + label::before {
 .active-cont .top-navbar {
 	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.05);
 	background: #fff;
-	padding: 18px 15px 3px 15px;
+	padding: 18px 15px 3px;
 }
 .top-navbar {
 	box-shadow: 0px 6px 25px rgba(154, 105, 69, 0.05);
 	background: #fff;
-	padding: 0px 0px;
+	padding: 0px;
 }
 .title-head h3 {
 	font-family: Inter;
@@ -359,7 +359,6 @@ input[type="checkbox"]:checked + label::before {
 .title-head p {
     font-family: Inter;
     font-style: normal;
-    font-weight: normal;
     font-size: 13px;
     line-height: 24px;
     color: #526884;
@@ -767,7 +766,6 @@ dfn i {
     border-radius: 5px;
     width: 40%;
     overflow-y: scroll;
-    position: relative;
     transition: all 5s ease-in-out;
     position: absolute;
     left: 50%;
@@ -1249,7 +1247,6 @@ span.percent-label {
 	background: transparent !important;
 	box-shadow: none;
 	color: #999;
-	font-size: 100%;
 	font-family: inter;
 	line-height: normal;
 	border-radius: 0;
@@ -1406,11 +1403,6 @@ span.percent-label {
 li.draggable-item {
 	width: inherit;
 	padding: 0px;
-	background-color: #fff;
-	-webkit-transition: transform .25s ease-in-out;
-	-moz-transition: transform .25s ease-in-out;
-	-o-transition: transform .25s ease-in-out;
-	transition: transform .25s ease-in-out;
 	-webkit-transition: box-shadow .25s ease-in-out;
 	-moz-transition: box-shadow .25s ease-in-out;
 	-o-transition: box-shadow .25s ease-in-out;
@@ -1749,7 +1741,6 @@ span.obg {
 	height: 25px;
 }
 .assign-details .dropdown-toggle::after {
-	display: inline-block;
 	margin-left: .255em;
 	vertical-align: .255em;
 	content: "";
@@ -1888,13 +1879,13 @@ span.obg {
 }
 .content-part .pagination a:hover {
 	background: #20204F;
-	;
+	
 	color: #fff;
 	border-radius: 5px;
 }
 .content-part .pagination a.active {
 	background: #20204F;
-	;
+	
 	color: #fff;
 	border-radius: 5px;
 }
@@ -2033,7 +2024,7 @@ span.obg {
 	font-size: 14px;
 }
 .assign-details .drop-down .button span {
-	padding: 5px 5px 5px 5px !important;
+	padding: 5px !important;
 }
 .drop-down .button {
 	border: 0px solid #000;
@@ -2059,8 +2050,7 @@ span.obg {
 	-ms-flex-order: 1;
 	order: 1;
 	display: inline-block;
-	padding: 1rem;
-	margin: 0 0 10px 0;
+	margin: 0 0 10px;
 	cursor: pointer;
 	font-weight: 500;
 	-webkit-transition: background ease 0.2s;
@@ -2972,7 +2962,6 @@ a.palette-item {
 	height: auto;
 	padding: 5px 10px;
 	border: 1px solid #cfd8dc;
-	border-radius: 0.25rem;
 	margin-bottom: 1rem;
 	transition: 0.5s all;
 	border-radius: 30px;
@@ -3279,7 +3268,6 @@ form#multiple {
 /*If you dont want the button*/
 #clickHere {
 	display: inline-block;
-	cursor: pointer;
 	color: #999;
 	font-size: 17px;
 	width: 150px;
@@ -3493,7 +3481,6 @@ form#multiple {
 #multiple button {
 	background: #fff;
 	width: 100%;
-	color: #333;
 	padding: 30px;
 	border: 2px dashed #A6A5B8;
 	font-size: 25px;
@@ -3639,12 +3626,10 @@ option:not(:first-of-type) {
 .drop-down .button{
 	cursor: pointer;
 }
-.dpc-closeh{
-	border-radius: 0px !important; 
+.dpc-closeh{ 
     width: 97.2%;
     background-color: rgb(131,152,183);
     margin-left: 12px;
-    border-radius: 0px;
 }
 .powered_by{
     position: fixed;
@@ -3763,7 +3748,7 @@ option:not(:first-of-type) {
     right: 41px;
     top: 5px;
     position: absolute;
-    padding: 2px 0px 0px 0px;
+    padding: 2px 0px 0px;
 }
 .showmeonhover { display: none; }
 #rolebox .cright .icon_counts:hover .showmeonhover {
@@ -3814,13 +3799,11 @@ option:not(:first-of-type) {
 	background: #fff;
 	border-radius: 10px !important;
 	width: 35%;
-	position: relative;
 	transition: all 5s ease-in-out;
 	position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	overflow: auto;
 	height: 600px;
     overflow: hidden;
     overflow-y: scroll;
@@ -4227,7 +4210,7 @@ li.dashed {
   font-size:24px;
 }
 #menu-btn {
-  border-radius:0px 0px 7px 0px !important;
+  border-radius:0px 0px 7px !important;
   right:-77px;
 }
 div#sidebar:not(.active-nav) > a > i.bx.bx-menu {
@@ -4343,7 +4326,7 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 }
 #addCourses .pos_btn-close{
 	position: absolute;
-    padding: 28px 0px 28px 0px !important;
+    padding: 28px 0px !important;
     width: 0.5em;
     height: 0.5em;
     right: -6px;

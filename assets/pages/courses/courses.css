@@ -9,7 +9,7 @@
 }
 
 .options {
-	margin: 5px 0px 0px 0px;
+	margin: 5px 0px 0px;
 	float: left;
 }
 
@@ -122,7 +122,6 @@
     border-style: dashed;
     border-color: #e0e0e0;
     border-width: 2px;
-    width: auto;
     padding-bottom: 44px;
     width: 100%;
     display: grid;

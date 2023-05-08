@@ -120,7 +120,7 @@ CKEDITOR.dialog.add("base64imageDialog", function(editor){
 				fr.readAsDataURL(n.files[0]);
 			}
 		}
-	};
+	}
 	
 	/* Calculate image dimensions */
 	function getImageDimensions() {

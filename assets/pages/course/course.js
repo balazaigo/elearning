@@ -5,7 +5,7 @@ function dragStart(e) {
   dragSrcEl = this;
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', this.innerHTML);
-};
+}
  
 function dragEnter(e) {
   this.classList.add('over');
