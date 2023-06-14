@@ -1,0 +1,43 @@
+
+<div class="row loader" id="course_preview-loader" style="margin-top: 200px;"><span>Syncing to Bot...</span></div>
+<input type="hidden" id="course_param">
+
+<button type="button" class="btn-close d-none" id="closesynctobotpopup" data-bs-dismiss="modal" aria-label="Close"></button>
+<script type="text/javascript">
+	var xhrPreview = '';
+$(document).ready(function(){
+	setTimeout(function(){
+		var cid = document.getElementById("course_param").getAttribute("data-cid");
+		var cname = document.getElementById("course_param").getAttribute("data-cname");
+        var formData = new FormData();
+        formData.append("name", cname);
+		    var url = CHAT_BOT_API + `course/`+cid+`/send_to_bot_memory`;
+		    xhrPreview = $.ajax({
+                url: url,
+                type: 'POST',
+                method: "POST",
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                headers: { "Authorization": "Bearer " + getUserInfo().access_token},
+                success:function(data){
+                    $("#closesynctobotpopup").trigger("click");
+                    $("#course_preview-loader").attr("style", "display:none;");
+                    toastr.success("Course Contents Synced To Bot Successfully.");
+                }, 
+                error: function(error) {
+                    if (error.status === 401) {
+                    alert("Session Expired, Please login again.");
+                    logoutSession();
+                    }
+                    toastr.error(error);
+                    console.log(error);
+                }
+		    });
+	}, 0);
+});
+$('#popup_course_icon').on('hidden.bs.modal', function (event) {
+	xhrPreview.abort();
+});

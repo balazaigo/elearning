@@ -123,8 +123,9 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
       course_head += "<h4 class='header_breadcrumbs'>"+data.description+"</h4>";
       course_head += "</div>";
       course_head += "<div class='course_head_right'>";
+        course_head += "<div class='course_head_right'>";
       //course_head += `<h4 class='header_breadcrumbs'><div class='col-6 cleft tbtn course_header_box'><img src='../assets/images/desktop_preview.png' onclick="moduleDesktopPreview('${e.target.dataset.cid}');"/> <img src='../assets/images/mobile_preview.png' onClick="moduleMobilePreview('${e.target.dataset.cid}');"/></div></h4>`;
-      course_head += `<h4 class='header_breadcrumbs'><div class='col-6 cleft tbtn course_header_box'><img src='../assets/images/desktop_preview.png' onclick="moduleDesktopPreview('${queries_param.cid}');"/></div></h4>`;
+      course_head += `<h4 class='header_breadcrumbs'><div class='col-6 cleft tbtn course_header_box'> <img src='../assets/images/desktop_preview.png' onclick="moduleDesktopPreview('${queries_param.cid}');"/><img src='../assets/images/chatbot2.png' onClick="synctobot('${queries_param.cid}', this);" data-course_name="${data.course_name}" style="margin-right: 15px;padding: 2px;"/></div></h4>`;
       course_head += "<div class='header_breadcrumbs' style='margin-top:-3px;display: inline-block;width:100%;'><div class='start_date_chead'><span class='percent-label'>Start Date:</span><span class='course_head_date'> "+data.start_date+"</span></div>&nbsp;&nbsp;<div class='end_date_chead'><span class='percent-label'>End Date:</span><span class='course_head_date'> "+data.end_date+"</span></div></div>";
       course_head += "</div>";
       course_head += "<input type='hidden' value='"+queries_param.cid+"' name='course_id' id='course_id' class='navigate_refresh' href='course/course' data-flinkto='course' data-cid='"+queries_param.cid+"'>";
