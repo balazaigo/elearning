@@ -2,6 +2,7 @@
 let API_BASE_URL = "https://elearningadmin.zaigoinfotech.com";
 let API_CONTENT_URL = "https://elearningcontent.zaigoinfotech.com";
 let SITE_URL_PROTOCOL = window.location.protocol + "//" + window.location.hostname;
+//chatbot api added
 console.log(SITE_URL_PROTOCOL);
 let USER_ENGINE_API_URL = "https://elearningadmin.zaigoinfotech.com/api/v1/ue/";
 let CHAT_BOT_API = "https://experapi.buildchatbot.ai/api/v1/";
