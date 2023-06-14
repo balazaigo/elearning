@@ -11,8 +11,8 @@ $(document).ready(function(){
 		var cname = document.getElementById("course_param").getAttribute("data-cname");
         var formData = new FormData();
         formData.append("name", cname);
-		    //var url = CHAT_BOT_API + `course/`+cid+`/send_to_bot_memory`;
-            var url = "https://experapi.buildchatbot.ai/api/v1/course/"+cid+"/send_to_bot_memory";
+		    var url = CHAT_BOT_API + `course/`+cid+`/send_to_bot_memory`;
+            //var url = "https://experapi.buildchatbot.ai/api/v1/course/"+cid+"/send_to_bot_memory";
 		    xhrPreview = $.ajax({
                 url: url,
                 type: 'POST',
