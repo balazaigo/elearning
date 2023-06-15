@@ -30,10 +30,14 @@ $(document).ready(function(){
                 }, 
                 error: function(error) {
                     if (error.status === 401) {
-                    alert("Session Expired, Please login again.");
-                    logoutSession();
+                        alert("Session Expired, Please login again.");
+                        logoutSession();
+                        toastr.error(error);
                     }
-                    toastr.error(error);
+                    if (error.status === 500) {
+                        toastr.error("Technical Error. Please Contact Admin.");
+                        logoutSession();
+                    }
                     console.log(error);
                 }
 		    });
