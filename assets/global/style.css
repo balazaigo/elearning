@@ -3419,7 +3419,7 @@ form#multiple {
 .course_details .wrapper .course_head_right {
     grid-column: span 9;
     margin-left: 0;
-    margin-top: -12px;
+    margin-top: -10px;
 }
 .case_details .wrapper .course_head_right {
     grid-column: span 7;
