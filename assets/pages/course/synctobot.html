@@ -2,7 +2,7 @@
 <div class="row loader" id="course_preview-loader" style="margin-top: 200px;"><span>Syncing to Bot...</span></div>
 <input type="hidden" id="course_param">
 
-<button type="button" class="btn-close d-none" id="closesynctobotpopup" data-bs-dismiss="modal" aria-label="Close"></button>
+<button type="button" class="btn-close closesynctobotpopup d-none" data-bs-dismiss="modal" aria-label="Close"></button>
 <script type="text/javascript">
 	var xhrPreview = '';
 $(document).ready(function(){
@@ -24,15 +24,24 @@ $(document).ready(function(){
                 data: formData,
                 headers: { "Authorization": "Bearer " + getUserInfo().access_token},
                 success:function(data){
-                    $("#closesynctobotpopup").trigger("click");
-                    $("#course_preview-loader").attr("style", "display:none;");
-                    toastr.success("Course Contents Synced To Bot Successfully.");
+                    console.log(data);
+                    setTimeout(function(){
+                        //$("#popup_course_icon").modal("hide");
+                        $(".closesynctobotpopup").trigger("click");
+                        $("#course_preview-loader").attr("style", "display:none;");
+                        toastr.success("Course Contents Synced To Bot Successfully.");
+                    }, 1000);
                 }, 
                 error: function(error) {
+                    var errorJson = jQuery.parseJSON(error.responseText);
+                    console.log('errorJson',errorJson);
+                    if(errorJson == null){
+                        toastr.error("Technical Error. Please Contact Admin.");
+                    }
                     if (error.status === 401) {
                         alert("Session Expired, Please login again.");
                         logoutSession();
-                        toastr.error(error);
+                        toastr.error("Technical Error. Please Contact Admin.");
                     }
                     if (error.status === 500) {
                         toastr.error("Technical Error. Please Contact Admin.");
@@ -45,4 +54,5 @@ $(document).ready(function(){
 });
 $('#popup_course_icon').on('hidden.bs.modal', function (event) {
 	xhrPreview.abort();
+    getcourseSyncStatus();
 });

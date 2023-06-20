@@ -3362,7 +3362,11 @@ form#multiple {
 .course_details .wrapper .left_icon,  .case_details .wrapper .left_icon{
     grid-column: span 1;
 }
-.course_details .wrapper .course_head, .case_details .wrapper .course_head {
+.course_details .wrapper .course_head {
+	grid-column: span 15;
+	margin-left: 0;
+}
+.case_details .wrapper .course_head {
 	grid-column: span 17;
 	margin-left: 0;
 }
@@ -3412,7 +3416,12 @@ form#multiple {
 	margin-top: 10px; 
 	display: block;
 }
-.course_details .wrapper .course_head_right, .case_details .wrapper .course_head_right {
+.course_details .wrapper .course_head_right {
+    grid-column: span 9;
+    margin-left: 0;
+    margin-top: -12px;
+}
+.case_details .wrapper .course_head_right {
     grid-column: span 7;
     margin-left: 0;
     margin-top: -12px;

@@ -955,7 +955,7 @@ function synctobot(cid, e){
   var cname = $(e).attr("data-course_name");
   console.log(cname);
   const container = document.getElementById("popup_course_icon");
-  const modal = new bootstrap.Modal(container, { backdrop: true, keyboard: true });
+  const modal = new bootstrap.Modal(container, { backdrop: "static", keyboard: false });
   var url = `${SITE_URL_PROTOCOL}/assets/pages/course/synctobot.html?t=` + Math.floor(Date.now() / 1000);
   $('.modal-content').load(url,function(result){
     document.getElementById("course_param").setAttribute("data-cid", cid);
