@@ -3363,7 +3363,7 @@ form#multiple {
     grid-column: span 1;
 }
 .course_details .wrapper .course_head {
-	grid-column: span 15;
+	grid-column: span 17;
 	margin-left: 0;
 }
 .case_details .wrapper .course_head {
@@ -3417,7 +3417,7 @@ form#multiple {
 	display: block;
 }
 .course_details .wrapper .course_head_right {
-    grid-column: span 9;
+    grid-column: span 7;
     margin-left: 0;
     margin-top: -10px;
 }
