@@ -226,8 +226,8 @@ document.getElementById("app-admin").innerHTML = '<div class="row loader" id="ro
       }
       var errorJson = jQuery.parseJSON(error.responseText);
       console.log(errorJson);
-      if(errorJson.msg){
-          toastr.error(errorJson.msg);
+      if(errorJson.data.msg){
+          toastr.error(errorJson.data.msg);
       }
       //toastr.error("Response Error: " + error.message);
       console.log(error);

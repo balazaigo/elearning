@@ -35,17 +35,17 @@ $(document).ready(function(){
                 error: function(error) {
                     var errorJson = jQuery.parseJSON(error.responseText);
                     console.log('errorJson',errorJson);
-                    if(errorJson == null){
-                        toastr.error("Technical Error. Please Contact Admin.");
-                    }
                     if (error.status === 401) {
                         alert("Session Expired, Please login again.");
                         logoutSession();
                         toastr.error("Technical Error. Please Contact Admin.");
                     }
-                    if (error.status === 500) {
-                        toastr.error("Technical Error. Please Contact Admin.");
-                        logoutSession();
+                    if(errorJson.data.msg){
+                        setTimeout(function(){
+                            toastr.error(errorJson.data.msg);
+                            $(".closesynctobotpopup").trigger("click");
+                            $("#course_preview-loader").attr("style", "display:none;");
+                        }, 1000);
                     }
                     console.log(error);
                 }
