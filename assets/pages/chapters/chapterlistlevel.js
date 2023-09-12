@@ -122,7 +122,7 @@
             formData.append("attachment_type", file.type);
             formData.append("attachment_name", file.name);
             formData.append("created_date", todayDate);
-            formData.append("status", 0);
+            formData.append("status", 1);
             formData.append("chapter_topic_id", chapter_topic_id);
             formData.append("chapter_id", chapter_id);
             $.ajax({
@@ -1527,7 +1527,7 @@ const checkIfTagExistAlready = (allTags, currentTag) => {
         formData.append("attachment_type", file.type);
         formData.append("attachment_name", file.name);
         formData.append("created_date", todayDate);
-        formData.append("status", 0);
+        formData.append("status", 1);
         formData.append("module_id", module_id);
         formData.append("course_id", cid);
         $.ajax({
